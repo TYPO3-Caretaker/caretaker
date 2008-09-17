@@ -23,6 +23,7 @@ $TCA['tx_caretaker_test'] = array (
 		'cruser_id' => 'cruser_id',
 		'default_sortby' => 'ORDER BY crdate',
 		'delete' => 'deleted',
+		'dividers2tabs'=> 1,
 	    'enablecolumns' => array (        
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',
@@ -62,6 +63,23 @@ $TCA['tx_caretaker_instance'] = array (
 	)
 );
 
+$TCA['tx_caretaker_instance_test_rel'] = array (
+	'ctrl' => array (
+		'title'     => 'Instance >> Test Relation',
+		'label'     => 'instance_id',
+		'tstamp'    => 'tstamp',
+		'crdate'    => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'delete' => 'deleted',
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
+		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/test.png',
+		'enablecolumns' => array (        
+			'disabled' => 'hidden',
+		),
+	),
+	'feInterface' => array ('fe_admin_fieldList' => '' )
+);
+
 $TCA['tx_caretaker_group'] = array (
 	'ctrl' => array (
 		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group',
@@ -71,6 +89,7 @@ $TCA['tx_caretaker_group'] = array (
 		'cruser_id' => 'cruser_id',
 		'default_sortby' => 'ORDER BY crdate',
 		'delete' => 'deleted',
+		'treeParentField' => 'parent_group',
 		'enablecolumns' => array (        
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',
@@ -85,6 +104,25 @@ $TCA['tx_caretaker_group'] = array (
 		'fe_admin_fieldList' => 'hidden, main_instance,name,testgroups,tests,contacts,accounts',
 	)
 );
+
+$TCA['tx_caretaker_group_test_rel'] = array (
+	'ctrl' => array (
+		'title'     => 'Group >> Test Relation',
+		'label'     => 'group_id',
+		'tstamp'    => 'tstamp',
+		'crdate'    => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'delete' => 'deleted',
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
+		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/test.png',
+		'enablecolumns' => array (        
+			'disabled' => 'hidden',
+		),
+	),
+	'feInterface' => array ('fe_admin_fieldList' => '' )
+);
+
+
 /*
 $TCA['tx_caretaker_testresults'] = array (
 	'ctrl' => array (
@@ -100,6 +138,7 @@ $TCA['tx_caretaker_testresults'] = array (
 	),
 	'feInterface' => array ('fe_admin_fieldList' => '' )
 );
+*/
 
 $TCA['tx_caretaker_accounts'] = array (
     'ctrl' => array (
@@ -118,7 +157,6 @@ $TCA['tx_caretaker_accounts'] = array (
     ),
     'feInterface' => array ( 'fe_admin_fieldList' => 'hidden, protocol, username, password, url, description' )
 );
-*/
 
 	// add plugin
 /*
@@ -138,5 +176,9 @@ if (TYPO3_MODE == 'BE')	{
 */
 	// include the service definitions
 //include_once(t3lib_extMgm::extPath('caretaker').'ext_caretaker_services.php');
+
+if (TYPO3_MODE=='BE') {
+	include_once(t3lib_extMgm::extPath($_EXTKEY).'classes/class.tx_caretaker_befunctions.php');
+}
 
 ?>

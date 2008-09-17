@@ -32,17 +32,20 @@
 			<label index="tx_caretaker_test.test_mode">Test Mode</label>
 			<label index="tx_caretaker_test.test_mode.instance">run for each instance</label>
 			<label index="tx_caretaker_test.test_mode.group">run once for group</label>
+			<label index="tx_caretaker_test.instances">Instances</label>
+			<label index="tx_caretaker_test.groups">Groups</label>
 
 			<label index="tx_caretaker_instance">Instance</label>
 			<label index="tx_caretaker_instance.tab.relations">Tests &amp; Groups</label>
 			<label index="tx_caretaker_instance.tab.infos">Infos</label>
 			<label index="tx_caretaker_instance.title">Name</label>
 			<label index="tx_caretaker_instance.description">Description</label>
+			<label index="tx_caretaker_instance.url">Instance URL</label>
 			<label index="tx_caretaker_instance.groups">Instance groups</label>
 			<label index="tx_caretaker_instance.tests">Instance Tests</label>
 			<label index="tx_caretaker_instance.flexinfo">Infos</label>
 
-			<label index="tx_caretaker_instance.encryption_key">Encryption key</label>
+			<label index="tx_caretaker_instance.public_key">Public Key of Instance</label>
 
 			<label index="tx_caretaker_group">Instance group</label>
 			<label index="tx_caretaker_group.tab.relations">Tests &amp; Groups</label>

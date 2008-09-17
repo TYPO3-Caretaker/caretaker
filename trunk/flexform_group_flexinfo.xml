@@ -31,26 +31,6 @@
 							</config>
 						</TCEforms>
 					</project_manager>
-					<domain>
-						<TCEforms>
-							<label>Main Domain</label>
-							<config>
-								<type>input</type>
-								<size>30</size>
-								<eval>trim</eval>
-							</config>
-						</TCEforms>
-					</domain>
-					<additional_domains>
-						<TCEforms>
-							<label>Additional Domains</label>
-							<config>
-								<type>text</type>
-								<cols>30</cols>
-								<rows>5</rows>
-							</config>
-						</TCEforms>
-					</additional_domains>
 				</el>	
 			</ROOT>			
 		</sDEF>
@@ -91,66 +71,6 @@
 				</el>
 			</ROOT>
 		</sContact>
-		<sCMS>
-			<ROOT>
-				<type>Array</type>
-				 <TCEforms>
-				 	<sheetTitle>TYPO3</sheetTitle>
-				</TCEforms>
-				<el>
-					<admin_user>
-						<TCEforms>
-							<label>Admin Username</label>
-							<config>
-								<type>input</type>
-								<size>30</size>
-								<eval>trim</eval>
-							</config>
-						</TCEforms>
-					</admin_user>
-					<admin_pw>
-						<TCEforms>
-							<label>Admin Password</label>
-							<config>
-								<type>input</type>
-								<size>30</size>
-								<eval>trim</eval>
-							</config>
-						</TCEforms>
-					</admin_pw>
-					<install_tool_pw>
-						<TCEforms>
-							<label>Install Tool Password</label>
-							<config>
-								<type>input</type>
-								<size>30</size>
-								<eval>trim</eval>
-							</config>
-						</TCEforms>
-					</install_tool_pw>
-					<red_user>
-						<TCEforms>
-							<label>Redacteur Username</label>
-							<config>
-								<type>input</type>
-								<size>30</size>
-								<eval>trim</eval>
-							</config>
-						</TCEforms>
-					</red_user>
-					<red_pw>
-						<TCEforms>
-							<label>Redacteur Password</label>
-							<config>
-								<type>input</type>
-								<size>30</size>
-								<eval>trim</eval>
-							</config>
-						</TCEforms>
-					</red_pw>
-				</el>
-			</ROOT>
-		</sCMS>
 		<sHosting>
 			<ROOT>
 				<type>Array</type>

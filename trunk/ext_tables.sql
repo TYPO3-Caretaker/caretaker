@@ -13,6 +13,9 @@ CREATE TABLE tx_caretaker_test (
     starttime int(11) DEFAULT '0' NOT NULL,
     endtime int(11) DEFAULT '0' NOT NULL,
     fe_group int(11) DEFAULT '0' NOT NULL,
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_diffsource mediumblob NOT NULL,
 
 	title varchar(255) DEFAULT '' NOT NULL,
 	description varchar(255) DEFAULT '' NOT NULL,
@@ -21,6 +24,9 @@ CREATE TABLE tx_caretaker_test (
 	test_service varchar(255) DEFAULT '' NOT NULL,
 	test_mode  varchar(255) DEFAULT '' NOT NULL,
 	test_conf text NOT NULL,
+
+	instances int(11) DEFAULT '0' NOT NULL,
+	groups int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -41,18 +47,42 @@ CREATE TABLE tx_caretaker_instance (
     starttime int(11) DEFAULT '0' NOT NULL,
     endtime int(11) DEFAULT '0' NOT NULL,
     fe_group int(11) DEFAULT '0' NOT NULL,
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_diffsource mediumblob NOT NULL,
 
 	title varchar(255) DEFAULT '' NOT NULL,
 	description varchar(255) DEFAULT '' NOT NULL,
+	public_key varchar(255) DEFAULT '' NOT NULL,
+	url varchar(255) DEFAULT '' NOT NULL,
 
-	encryption_key varchar(255) DEFAULT '' NOT NULL,
-	groups blob NOT NULL,
-	tests blob NOT NULL,
+	groups text NOT NULL,
+	tests int(11) DEFAULT '0' NOT NULL,
 
 	flexinfo text NOT NULL,	
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
+);
+
+#
+# Table structure for table 'tx_caretaker_instance_test_rel'
+#
+CREATE TABLE tx_caretaker_instance_test_rel (
+	uid int(11) DEFAULT '0' NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+
+	instance_id int(11) DEFAULT '0' NOT NULL,
+	test_id    int(11) DEFAULT '0' NOT NULL,
+	instance_sorting int(11) DEFAULT '0' NOT NULL,
+	test_sorting int(11) DEFAULT '0' NOT NULL,
+
+	PRIMARY KEY (uid),
 );
 
 #
@@ -69,6 +99,9 @@ CREATE TABLE tx_caretaker_group (
     starttime int(11) DEFAULT '0' NOT NULL,
     endtime int(11) DEFAULT '0' NOT NULL,
     fe_group int(11) DEFAULT '0' NOT NULL,
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_diffsource mediumblob NOT NULL,
 
 	title varchar(255) DEFAULT '' NOT NULL,
 	description varchar(255) DEFAULT '' NOT NULL,
@@ -82,10 +115,11 @@ CREATE TABLE tx_caretaker_group (
 	KEY parent (pid)
 );
 
+
 #
-# Table structure for table 'tx_caretaker_instance_test_rel'
+# Table structure for table 'tx_caretaker_instance_group_mm'
 #
-CREATE TABLE tx_caretaker_instance_test_rel (
+CREATE TABLE tx_caretaker_instance_group_mm (
 	pid int(11) DEFAULT '0' NOT NULL,
 	uid_local int(11) DEFAULT '0' NOT NULL,
 	uid_foreign int(11) DEFAULT '0' NOT NULL,
@@ -96,16 +130,23 @@ CREATE TABLE tx_caretaker_instance_test_rel (
 );
 
 #
-# Table structure for table 'tx_caretaker_instancegroup_test_rel'
+# Table structure for table 'tx_caretaker_group_test_rel'
 #
 CREATE TABLE tx_caretaker_group_test_rel (
+	uid int(11) DEFAULT '0' NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
-	uid_local int(11) DEFAULT '0' NOT NULL,
-	uid_foreign int(11) DEFAULT '0' NOT NULL,
-	tablenames varchar(30) DEFAULT '' NOT NULL,
-	sorting int(11) DEFAULT '0' NOT NULL,
-	KEY uid_local (uid_local),
-	KEY uid_foreign (uid_foreign)
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+
+	group_id int(11) DEFAULT '0' NOT NULL,
+	test_id    int(11) DEFAULT '0' NOT NULL,
+	group_sorting int(11) DEFAULT '0' NOT NULL,
+	test_sorting int(11) DEFAULT '0' NOT NULL,
+
+	PRIMARY KEY (uid),
 );
 
 #
