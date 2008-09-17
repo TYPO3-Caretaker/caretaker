@@ -149,11 +149,6 @@ $TCA['tx_caretaker_test'] = array (
 	  			'foreign_label'    => 'instance_id',
 	     		'foreign_selector' => 'instance_id',
 	    		'foreign_unique'   => 'instance_id',
-				/*
-				'symmetric_field'  => 'test_id',
-				'symmetric_label'  => 'test_id',
-				'symmetric_sortby' => 'test_sorting',
-				*/
 				'maxitems' => 99,
 	    	    'autoSizeMax' => 25,
 	    		'size' => 5, 
@@ -194,8 +189,8 @@ $TCA['tx_caretaker_test'] = array (
 		
 	),
 	'types' => array (
-		'0' => array('showitem' => 'title;;1;;1-1-1, description,test_service;;;;2-2-2, test_mode, test_interval, --div--;Instances & Groups, instances, groups' ),
-		'1' => array('showitem' => 'title;;1;;1-1-1, description,test_service;;;;2-2-2, test_mode, test_interval, test_conf, --div--;Instances & Groups, groups, instances')
+		'0' => array('showitem' => 'title;;1;;1-1-1, description,test_service;;;;2-2-2, test_mode, test_interval, --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.relations, instances, groups' ),
+		'1' => array('showitem' => 'title;;1;;1-1-1, description,test_service;;;;2-2-2, test_mode, test_interval, test_conf, --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.relations, groups, instances')
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'hidden, starttime,endtime,fe_group')
@@ -376,7 +371,7 @@ $TCA["tx_caretaker_instance_test_rel"] = array (
 			),
 		),
 		'instance_id' => array(
-			'label'   => 'Instance',
+			'label'   => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_test_rel.instance_id',
 			'config'  => Array (
 				'type'    => 'select',
 				'foreign_table' => 'tx_caretaker_instance',
@@ -384,7 +379,7 @@ $TCA["tx_caretaker_instance_test_rel"] = array (
 			),
 		),
 		'test_id' => array(
-			'label'   => 'Test',
+			'label'   => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_test_rel.test_id',
 			'config'  => Array (
 				'type'    => 'select',
 				'foreign_table' => 'tx_caretaker_test',
@@ -392,11 +387,11 @@ $TCA["tx_caretaker_instance_test_rel"] = array (
 			),
 		),
 		'instance_sorting' => array(
-			'label' => 'Instance Sorting',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_test_rel.instance_sorting',
 			'type' => 'passthrough',
 		),
 		'test_sorting' => array(
-			'label' => 'Test Sorting',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_test_rel.test_sorting',
 			'type' => 'passthrough',
 		),
 	),
@@ -564,7 +559,7 @@ $TCA["tx_caretaker_group_test_rel"] = array (
 			),
 		),
 		'group_id' => array(
-			'label'   => 'Instance',
+			'label'   => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.group_id',
 			'config'  => Array (
 				'type'    => 'select',
 				'foreign_table' => 'tx_caretaker_group',
@@ -572,7 +567,7 @@ $TCA["tx_caretaker_group_test_rel"] = array (
 			),
 		),
 		'test_id' => array(
-			'label'   => 'Test',
+			'label'   => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.test_id',
 			'config'  => Array (
 				'type'    => 'select',
 				'foreign_table' => 'tx_caretaker_test',
@@ -580,11 +575,11 @@ $TCA["tx_caretaker_group_test_rel"] = array (
 			),
 		),
 		'group_sorting' => array(
-			'label' => 'Group Sorting',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.group_sorting',
 			'type' => 'passthrough',
 		),
 		'test_sorting' => array(
-			'label' => 'Test Sorting',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.test_sorting',
 			'type' => 'passthrough',
 		),
 	),

@@ -59,6 +59,7 @@ class tx_caretaker_befunctions {
 			}
 		}
 	}
+	
 }
 
 ?>

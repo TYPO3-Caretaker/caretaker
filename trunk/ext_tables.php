@@ -65,14 +65,15 @@ $TCA['tx_caretaker_instance'] = array (
 
 $TCA['tx_caretaker_instance_test_rel'] = array (
 	'ctrl' => array (
-		'title'     => 'Instance >> Test Relation',
+		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_test_rel',
 		'label'     => 'instance_id',
 		'tstamp'    => 'tstamp',
 		'crdate'    => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'delete' => 'deleted',
+		'hideTable' => 1,
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/test.png',
+		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/instance_test.png',
 		'enablecolumns' => array (        
 			'disabled' => 'hidden',
 		),
@@ -107,14 +108,15 @@ $TCA['tx_caretaker_group'] = array (
 
 $TCA['tx_caretaker_group_test_rel'] = array (
 	'ctrl' => array (
-		'title'     => 'Group >> Test Relation',
+		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group_test_rel',
 		'label'     => 'group_id',
 		'tstamp'    => 'tstamp',
 		'crdate'    => 'crdate',
 		'cruser_id' => 'cruser_id',
-		'delete' => 'deleted',
+		'delete'    => 'deleted',
+		'hideTable' => 1,
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/test.png',
+		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/group_test.png',
 		'enablecolumns' => array (        
 			'disabled' => 'hidden',
 		),
