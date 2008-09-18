@@ -331,22 +331,11 @@ $TCA["tx_caretaker_instance"] = array (
 				'eval' => 'trim,nospace',
 			)
 		),
-		'flexinfo' => Array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.flexinfo',
-			'config' => Array (
-				'type' => 'flex',
-				'ds'=> Array (
-					'default' => 'FILE:EXT:caretaker/flexform_instance_flexinfo.xml', 
-				)
-			)
-		),
 	),
 	"types" => array (
 		"0" => array("showitem" => '
 				title;;1, description, url, public_key,
 				--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests,
-				--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.infos, flexinfo
 			'
 		)
 	),
@@ -520,21 +509,10 @@ $TCA['tx_caretaker_group'] = array (
 				), 	    
 			)
 		),
-		 'flexinfo' => Array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.flexinfo',
-			'config' => Array (
-				'type' => 'flex',
-				'ds'=> Array (
-					'default' => 'FILE:EXT:caretaker/flexform_group_flexinfo.xml', 
-				)
-			)
-		),
     ),
 	"types" => array (
 		"0" => array("showitem" => 'title;;1;;1-1-1, description,parent_group,
 		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.tab.relations, tests,
-		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.tab.infos, flexinfo
 		'
     	)
 	),

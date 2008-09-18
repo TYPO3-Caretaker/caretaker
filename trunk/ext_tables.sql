@@ -59,8 +59,6 @@ CREATE TABLE tx_caretaker_instance (
 	groups text NOT NULL,
 	tests int(11) DEFAULT '0' NOT NULL,
 
-	flexinfo text NOT NULL,	
-
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
@@ -108,8 +106,6 @@ CREATE TABLE tx_caretaker_group (
 	parent_group int(11) DEFAULT '0' NOT NULL,
 
 	tests blob NOT NULL,
-
-	flexinfo text NOT NULL,	
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
