@@ -8,7 +8,7 @@
  * @Author	Martin Ficzel		<martin@work.de>
  * @Author	Patrick Kollodzik	<patrick@work.de>
  * 
- * $$Id: ds.tx_caretaker_typo3_version.xml 33 2008-06-13 14:00:38Z thomas $$
+ * $$Id: ds.tx_caretaker_typo3_extensions.xml 33 2008-06-13 14:00:38Z thomas $$
  */
 -->
 
@@ -19,15 +19,30 @@
 	<ROOT>
 		<type>array</type>
 		<el>
-			<mode>
+			<os_version>
 				<TCEforms>
-					<label>Enter minimal required TYPO3-Version (MainVersion.MajorVersion.MinorVersion)</label>
+					<label>Minimum reqired OS Versions (Format: OS-Name:MinVersion)</label>
 					<config>
-						<type>input</type>
-						<size>10</size>
+						<type>text</type>
 					</config>
 				</TCEforms>
-			</mode>
+			</os_version>	
+			<mysql_version>
+				<TCEforms>
+					<label>Minimal required mySQL Vesion</label>
+					<config>
+						<type>input</type>
+					</config>
+				</TCEforms>
+			</mysql_version>
+			<php_version>
+				<TCEforms>
+					<label>Minimal required PHP-Version</label>
+					<config>
+						<type>input</type>
+					</config>
+				</TCEforms>
+			</php_version>
 		</el>
 	</ROOT>
 </T3DataStructure>

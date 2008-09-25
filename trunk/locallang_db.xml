@@ -24,7 +24,6 @@
 			<label index="tx_caretaker_test">Test</label>
 			<label index="tx_caretaker_test.tab.relations">Instances &amp; Groups</label>
 			<label index="tx_caretaker_test.tab.description">Description</label>
-			
 			<label index="tx_caretaker_test.title">Name</label>
 			<label index="tx_caretaker_test.description">Description</label>
 			<label index="tx_caretaker_test.test_service.select_service">Please select a test</label>
@@ -43,7 +42,6 @@
 			<label index="tx_caretaker_instance_test_rel.test_id">Test</label>
 			<label index="tx_caretaker_instance_test_rel.instance_sorting">Instance Sorting</label>
 			<label index="tx_caretaker_instance_test_rel.test_sorting">Test Sorting</label>
-			
 			<label index="tx_caretaker_instance">Instance</label>
 			<label index="tx_caretaker_instance.tab.relations">Tests &amp; Groups</label>
 			<label index="tx_caretaker_instance.title">Name</label>
@@ -51,8 +49,6 @@
 			<label index="tx_caretaker_instance.url">Instance URL</label>
 			<label index="tx_caretaker_instance.groups">Instance groups</label>
 			<label index="tx_caretaker_instance.tests">Instance Tests</label>
-			<label index="tx_caretaker_instance.flexinfo">Infos</label>
-
 			<label index="tx_caretaker_instance.public_key">Public Key of Instance</label>
 
 			<label index="tx_caretaker_group">Instance group</label>
@@ -62,23 +58,18 @@
 			<label index="tx_caretaker_group.description">Description</label>
 			<label index="tx_caretaker_group.parent_group">Parent Group</label>
 			<label index="tx_caretaker_group.parent_group.select">Select Parent Group</label>
-
-			<label index="tx_caretaker_group.flexinfo">Infos</label>
 			<label index="tx_caretaker_group.tests">Tests</label>
-			
 			<label index="tx_caretaker_group_test_rel">Group-Test Relation</label>
 			<label index="tx_caretaker_group_test_rel.group_id">Instance</label>
 			<label index="tx_caretaker_group_test_rel.test_id">Test</label>
 			<label index="tx_caretaker_group_test_rel.group_sorting">Instance Sorting</label>
 			<label index="tx_caretaker_group_test_rel.test_sorting">Test Sorting</label>
-			
 			<label index="tx_caretaker_testresults">Test results</label>
 			<label index="tx_caretaker_testresults.test_id">Test ID</label>
 			<label index="tx_caretaker_testresults.instance_id">Instance ID</label>
 			<label index="tx_caretaker_testresults.status">Status</label>
 			<label index="tx_caretaker_testresults.info_short">Short infor</label>
-			<label index="tx_caretaker_testresults.info_long">Long info</label>
-			
+			<label index="tx_caretaker_testresults.info_long">Long info</label>		
 			<label index="tx_caretaker_accounts">Accounts</label>
 			<label index="tx_caretaker_accounts.hidden">Deactivated</label>
 			<label index="tx_caretaker_accounts.protocol">Protocol</label>
@@ -88,6 +79,7 @@
 			<label index="tx_caretaker_accounts.description">Description</label>
 
 			<label index="tt_content.list_type_pi1">Caretaker Frontend</label>
+			
 		</languageKey>
 		<languageKey index="de" type="array">
 

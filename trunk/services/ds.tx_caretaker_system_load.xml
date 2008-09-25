@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- 
+/**
+ * This is a file of the caretaker project.
+ * Copyright 2008 by n@work Internet Informationssystem GmbH (www.work.de)
+ * 
+ * @Author	Thomas Hempel 		<thomas@work.de>
+ * @Author	Martin Ficzel		<martin@work.de>
+ * @Author	Patrick Kollodzik	<patrick@work.de>
+ * 
+ * $$Id: ds.tx_caretaker_typo3_extensions.xml 33 2008-06-13 14:00:38Z thomas $$
+ */
+-->
+
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+	<ROOT>
+		<type>array</type>
+		<el>
+			<max_cpu_load>
+				<TCEforms>
+					<label>Maximal System Load (Format MaxVal:WarningVal)</label>
+					<config>
+						<type>input</type>
+					</config>
+				</TCEforms>
+			</max_cpu_load>	
+			<max_io_wait>
+				<TCEforms>
+					<label>Maximal IO-Wait (Format MaxVal:WarningVal)</label>
+					<config>
+						<type>input</type>
+					</config>
+				</TCEforms>
+			</max_io_wait>
+			<min_free_memory>
+				<TCEforms>
+					<label>Minimal required free RAM (Format MinVal:WaringVal)</label>
+					<config>
+						<type>input</type>
+					</config>
+				</TCEforms>
+			</min_free_memory>
+			<min_free_disk>
+				<TCEforms>
+					<label>Minimal reqired free RAM (Format MinVal:WaringVal)</label>
+					<config>
+						<type>input</type>
+					</config>
+				</TCEforms>
+			</min_free_disk>
+		</el>
+	</ROOT>
+</T3DataStructure>

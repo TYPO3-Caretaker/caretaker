@@ -13,12 +13,15 @@
 -->
 
 <T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
 	<ROOT>
 		<type>array</type>
 		<el>
 			<required_extensions>
 				<TCEforms>
-					<label><![CDATA[ Extensions:Versions wich are required (Prefix with >=,>,=,<,<= default is >= ) ]]></label>
+					<label><![CDATA[ Extensions:Versions wich are required ( Format: ExtKey [Operator] [Version] ) ]]></label>
 					<config>
 						<type>text</type>
 						<cols>30</cols>
@@ -28,7 +31,7 @@
 			</required_extensions>	
 			<forbidden_installed_extensions>
 				<TCEforms>
-					<label><![CDATA[ Extensions:Versions wich must not be installed (Prefix with <=,>,=,<,>= default is < ) ]]></label>
+					<label><![CDATA[ Extensions:Versions wich must not be installed ( Format: ExtKey [Operator] [Version] ) ]]></label>
 					<config>
 						<type>text</type>
 						<cols>30</cols>
@@ -38,7 +41,7 @@
 			</forbidden_installed_extensions>
 			<forbidden_existing_extensions>
 				<TCEforms>
-					<label><![CDATA[ Extensions:Versions wich must not exist (Prefix with >=,>,=,<,<= default is < ) ]]></label>
+					<label><![CDATA[ Extensions:Versions wich must not exist ( Format: ExtKey [Operator] [Version] ) ]]></label>
 					<config>
 						<type>text</type>
 						<cols>30</cols>

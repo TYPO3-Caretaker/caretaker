@@ -171,6 +171,9 @@ if (TYPO3_MODE) {
 	// register Tests
 tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_typo3_version'   ,'TYPO3-> Version', 'Retrieves the version of TYPO3' );
 tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_typo3_extensions',  'TYPO3 -> Extensions' , 'Retrieves a list of all available extensions (includes paths, versions and status)' );
+tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_system_info',  'System -> Info' , 'Retrieves System Informations' );
+tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_system_load',  'System -> Load' , 'Retrieves System Status Infos' );
+tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_httptest',  'HTTP -> Test' , 'Request the URL and Check Result' );
 
 // t3lib_div::devLog('getAllCaretakerServices', 'caretaker' , 0 ,tx_caretaker_ServiceHelper::getAllCaretakerServices() );
 // debug( tx_caretaker_ServiceHelper::getAllCaretakerServices() );
