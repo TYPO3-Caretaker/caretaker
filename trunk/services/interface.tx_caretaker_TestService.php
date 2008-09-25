@@ -7,7 +7,7 @@
  * @Author	Martin Ficzel		<martin@work.de>
  * @Author	Patrick Kollodzik	<patrick@work.de>
  * 
- * $$Id: class.tx_caretaker_befunctions.php 33 2008-06-13 14:00:38Z thomas $$
+ * $$Id: class.tx_caretaker_service_interface.php 33 2008-06-13 14:00:38Z thomas $$
  */
 
 /***************************************************************
@@ -32,34 +32,38 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * This class provides various methods that are needed for the backend.
- *
- * @author	Thomas Hempel <hempel@work.de>
- * @package	TYPO3
- * @subpackage	caretaker
- */
 
-class tx_caretaker_befunctions {
-
-	/**
-	 * Searches all services that are registered for the type caretaker and returns them as
-	 * selectable items for a backend select input field.
-	 *
-	 * @param array $data: The items that are already in the items list
-	 */
-	public function serviceItems($data) {
-		global $T3_SERVICES;
-
-		$services = $T3_SERVICES['caretaker'];
-
-		if (is_array($services)) {
-			foreach ($services as $serviceKey => $serviceConfig) {
-				$data['items'][] = array($serviceConfig['title'], $serviceKey);
-			}
-		}
-	}
+interface tx_caretaker_TestService {
 	
+	/**
+	 * This is called *BEFORE* the data is send to the instance
+	 *
+	 * @param array $flexFormData: the config data from the flexform of the test record 
+	 * @return tx_caretaker_TestConf: the config object for the testrunner
+	 */
+	public function prepareTestConf($flexFormData);
+	
+	/**
+	 * This is called *AFTER* the result was returned from an instance and after it was decoded by the caretaker extension.
+	 *
+	 * @param array $testResult: The parsed XML data that was returned form the instance
+	 * @return tx_caretaker_TestResult: 
+	 */
+	public function processTestResult($testResult);
+	
+	/**
+	 * Get a list of all extra Options for this test.   
+	 *
+	 * @return array : Array of tx_caretaker_test_option Objects
+	 */
+	public function getTestOptionList();
+	
+	/**
+	 * Render the extra Infos for the option specifies in $optionKey
+	 *
+	 * @param string $optionKey: 
+	 */
+	public function getSingleTestOption($optionKey);
 }
 
 ?>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- 
+/**
+ * This is a file of the caretaker project.
+ * Copyright 2008 by n@work Internet Informationssystem GmbH (www.work.de)
+ * 
+ * @Author	Thomas Hempel 		<thomas@work.de>
+ * @Author	Martin Ficzel		<martin@work.de>
+ * @Author	Patrick Kollodzik	<patrick@work.de>
+ * 
+ * $$Id: ds.tx_caretaker_typo3_extensions.xml 33 2008-06-13 14:00:38Z thomas $$
+ */
+-->
+
+<T3DataStructure>
+	<ROOT>
+		<type>array</type>
+		<el>
+			<required_extensions>
+				<TCEforms>
+					<label><![CDATA[ Extensions:Versions wich are required (Prefix with >=,>,=,<,<= default is >= ) ]]></label>
+					<config>
+						<type>text</type>
+						<cols>30</cols>
+						<rows>5</rows>
+					</config>
+				</TCEforms>
+			</required_extensions>	
+			<forbidden_installed_extensions>
+				<TCEforms>
+					<label><![CDATA[ Extensions:Versions wich must not be installed (Prefix with <=,>,=,<,>= default is < ) ]]></label>
+					<config>
+						<type>text</type>
+						<cols>30</cols>
+						<rows>5</rows>
+					</config>
+				</TCEforms>
+			</forbidden_installed_extensions>
+			<forbidden_existing_extensions>
+				<TCEforms>
+					<label><![CDATA[ Extensions:Versions wich must not exist (Prefix with >=,>,=,<,<= default is < ) ]]></label>
+					<config>
+						<type>text</type>
+						<cols>30</cols>
+						<rows>5</rows>
+					</config>
+				</TCEforms>
+			</forbidden_existing_extensions>
+		</el>
+	</ROOT>
+</T3DataStructure>

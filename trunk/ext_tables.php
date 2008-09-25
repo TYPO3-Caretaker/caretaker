@@ -14,6 +14,9 @@
 
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
+
+// register Records
+
 $TCA['tx_caretaker_test'] = array (
 	'ctrl' => array (
 		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test',
@@ -124,24 +127,6 @@ $TCA['tx_caretaker_group_test_rel'] = array (
 	'feInterface' => array ('fe_admin_fieldList' => '' )
 );
 
-
-/*
-$TCA['tx_caretaker_testresults'] = array (
-	'ctrl' => array (
-		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults',
-		'label'     => 'uid',
-		'tstamp'    => 'tstamp',
-		'crdate'    => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'default_sortby' => 'ORDER BY crdate',
-		'delete' => 'deleted',
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/test_result.png',
-	),
-	'feInterface' => array ('fe_admin_fieldList' => '' )
-);
-*/
-
 $TCA['tx_caretaker_accounts'] = array (
     'ctrl' => array (
         'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_accounts',
@@ -160,27 +145,44 @@ $TCA['tx_caretaker_accounts'] = array (
     'feInterface' => array ( 'fe_admin_fieldList' => 'hidden, protocol, username, password, url, description' )
 );
 
-	// add plugin
+
+/*
+$TCA['tx_caretaker_testresults'] = array (
+	'ctrl' => array (
+		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults',
+		'label'     => 'uid',
+		'tstamp'    => 'tstamp',
+		'crdate'    => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'default_sortby' => 'ORDER BY crdate',
+		'delete' => 'deleted',
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
+		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/test_result.png',
+	),
+	'feInterface' => array ('fe_admin_fieldList' => '' )
+);
+*/
+
+	// load Service Helper
+if (TYPO3_MODE) {
+	include_once(t3lib_extMgm::extPath($_EXTKEY).'classes/class.tx_caretaker_ServiceHelper.php');
+}
+
+	// register Tests
+tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_typo3_version'   ,'TYPO3-> Version', 'Retrieves the version of TYPO3' );
+tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_typo3_extensions',  'TYPO3 -> Extensions' , 'Retrieves a list of all available extensions (includes paths, versions and status)' );
+
+// t3lib_div::devLog('getAllCaretakerServices', 'caretaker' , 0 ,tx_caretaker_ServiceHelper::getAllCaretakerServices() );
+// debug( tx_caretaker_ServiceHelper::getAllCaretakerServices() );
+
+	// register FE-Plugin
 /*
 t3lib_div::loadTCA('tt_content');
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1']='layout,select_key,pages,recursive';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1']='pi_flexform';
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi1', 'FILE:EXT:'.$_EXTKEY.'/pi1/flexform_ds.xml');
-
 t3lib_extMgm::addPlugin(array('LLL:EXT:'.$_EXTKEY.'/locallang_db.xml:tt_content.list_type_pi1', $_EXTKEY.'_pi1'),'list_type');
-
 t3lib_extMgm::addStaticFile($_EXTKEY,'res/ts/','Caretaker');
-
-
-if (TYPO3_MODE == 'BE')	{
-	t3lib_extMgm::addModule('web','txcaretakerM1','',t3lib_extMgm::extPath($_EXTKEY).'mod1/');
-}
-*/
-	// include the service definitions
-//include_once(t3lib_extMgm::extPath('caretaker').'ext_caretaker_services.php');
-
-if (TYPO3_MODE=='BE') {
-	include_once(t3lib_extMgm::extPath($_EXTKEY).'classes/class.tx_caretaker_befunctions.php');
-}
+*/ 
 
 ?>

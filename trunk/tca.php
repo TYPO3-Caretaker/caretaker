@@ -111,9 +111,8 @@ $TCA['tx_caretaker_test'] = array (
 			'config' => Array (
 				'type' => 'select',
 				'items' => array (
-					0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service.select_service', 0)
+					0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service.select_service', '')
 				),
-				'itemsProcFunc' => 'EXT:caretaker/classes/class.tx_caretaker_befunctions.php:tx_caretaker_befunctions->serviceItems',
 				'size' => 1,
 				'maxitems' => 1,
 			)
@@ -132,6 +131,8 @@ $TCA['tx_caretaker_test'] = array (
 			)
 		),
 		'test_conf' => Array (
+			'displayCond' => 'FIELD:test_service:REQ:true',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_conf',
 			'config' => Array (
 				'type' => 'flex',
 				'ds_pointerField' => 'test_service',
@@ -189,8 +190,10 @@ $TCA['tx_caretaker_test'] = array (
 		
 	),
 	'types' => array (
-		'0' => array('showitem' => 'title;;1;;1-1-1, description,test_service;;;;2-2-2, test_mode, test_interval, --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.relations, instances, groups' ),
-		'1' => array('showitem' => 'title;;1;;1-1-1, description,test_service;;;;2-2-2, test_mode, test_interval, test_conf, --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.relations, groups, instances')
+		'0' => array('showitem' => 'title;;1;;1-1-1, test_service;;;;2-2-2, test_mode, test_interval, test_conf,
+					 --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.relations, instances, groups,
+					 --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.description, description'
+					)
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'hidden, starttime,endtime,fe_group')

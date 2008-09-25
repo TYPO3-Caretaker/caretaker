@@ -23,6 +23,8 @@
 			
 			<label index="tx_caretaker_test">Test</label>
 			<label index="tx_caretaker_test.tab.relations">Instances &amp; Groups</label>
+			<label index="tx_caretaker_test.tab.description">Description</label>
+			
 			<label index="tx_caretaker_test.title">Name</label>
 			<label index="tx_caretaker_test.description">Description</label>
 			<label index="tx_caretaker_test.test_service.select_service">Please select a test</label>
