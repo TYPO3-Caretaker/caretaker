@@ -46,7 +46,6 @@
 			
 			<label index="tx_caretaker_instance">Instance</label>
 			<label index="tx_caretaker_instance.tab.relations">Tests &amp; Groups</label>
-			<label index="tx_caretaker_instance.tab.infos">Infos</label>
 			<label index="tx_caretaker_instance.title">Name</label>
 			<label index="tx_caretaker_instance.description">Description</label>
 			<label index="tx_caretaker_instance.url">Instance URL</label>
