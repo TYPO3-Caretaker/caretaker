@@ -190,13 +190,14 @@ $TCA['tx_caretaker_test'] = array (
 		
 	),
 	'types' => array (
-		'0' => array('showitem' => 'title;;1;;1-1-1, test_service;;;;2-2-2, test_mode, test_interval, test_conf,
+		'0' => array('showitem' => 'title;;1;;1-1-1, test_service;;2;;2-2-2, test_conf,
 					 --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.relations, instances, groups,
 					 --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.description, description'
 					)
 	),
 	'palettes' => array (
-		'1' => array('showitem' => 'hidden, starttime,endtime,fe_group')
+		'1' => array('showitem' => 'hidden, starttime,endtime,fe_group'),
+		'2' => array('showitem' => 'test_mode, test_interval')
 	)
 );
 
