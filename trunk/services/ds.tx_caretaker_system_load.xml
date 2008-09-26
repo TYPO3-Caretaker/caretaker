@@ -19,38 +19,97 @@
 	<ROOT>
 		<type>array</type>
 		<el>
-			<max_cpu_load>
+			
+			<!-- CPU LOAD -->
+			<cpu_load_warning>
 				<TCEforms>
-					<label>Maximal System Load (Format MaxVal:WarningVal)</label>
+					<label>CPU Load Warning-Value</label>
 					<config>
 						<type>input</type>
+						<eval>int</eval>
+						<size>10</size>
 					</config>
 				</TCEforms>
-			</max_cpu_load>	
-			<max_io_wait>
+			</cpu_load_warning>
+			<cpu_load_error>
 				<TCEforms>
-					<label>Maximal IO-Wait (Format MaxVal:WarningVal)</label>
+					<label>CPU Load Error-Value</label>
 					<config>
 						<type>input</type>
+						<eval>int</eval>
+						<size>10</size>					
 					</config>
 				</TCEforms>
-			</max_io_wait>
-			<min_free_memory>
+			</cpu_load_error>	
+		
+				
+			<!-- IO Wait -->
+			<io_wait_warning>
 				<TCEforms>
-					<label>Minimal required free RAM (Format MinVal:WaringVal)</label>
+					<label>Max IO-Wait Warning-Value</label>
 					<config>
 						<type>input</type>
+						<eval>int</eval>
+						<size>10</size>
 					</config>
 				</TCEforms>
-			</min_free_memory>
-			<min_free_disk>
+			</io_wait_warning>
+			<io_wait_error>
 				<TCEforms>
-					<label>Minimal reqired free RAM (Format MinVal:WaringVal)</label>
+					<label>Max IO-Wait Error-Value</label>
 					<config>
 						<type>input</type>
+						<eval>int</eval>
+						<size>10</size>
 					</config>
 				</TCEforms>
-			</min_free_disk>
+			</io_wait_error>
+
+			
+			<!-- Free Mem -->
+			<free_ram_warning>
+				<TCEforms>
+					<label>Free RAM Warning-Value</label>
+					<config>
+						<type>input</type>
+						<eval>int</eval>
+						<size>10</size>						
+					</config>
+				</TCEforms>
+			</free_ram_warning>
+			<free_ram_warning>
+				<TCEforms>
+					<label>Free RAM Warning-Value</label>
+					<config>
+						<type>input</type>
+						<eval>int</eval>
+						<size>10</size>						
+					</config>
+				</TCEforms>
+			</free_ram_warning>
+
+			
+			<!-- Free Disk --> 
+			<free_disk_warning>
+				<TCEforms>
+					<label>Free DiskSpace Warning-Value</label>
+					<config>
+						<type>input</type>
+						<eval>int</eval>
+						<size>10</size>			
+					</config>
+				</TCEforms>
+			</free_disk_warning>
+			<free_disk_error>
+				<TCEforms>
+					<label>Free DiskSpace Error-Value</label>
+					<config>
+						<type>input</type>
+						<eval>int</eval>
+						<size>10</size>		
+					</config>
+				</TCEforms>
+			</free_disk_error>			
 		</el>
 	</ROOT>
 </T3DataStructure>

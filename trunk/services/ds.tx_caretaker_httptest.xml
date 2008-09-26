@@ -29,7 +29,7 @@
 				</TCEforms>
 			</request_url>	
 			
-			<max_response_time>
+			<response_time_error>
 				<TCEforms>
 					<label>Maximal allowed Response Time in Milliseconds</label>
 					<config>
@@ -38,9 +38,9 @@
 						<size>10</size>
 					</config>
 				</TCEforms>
-			</max_response_time>
+			</response_time_error>
 			
-			<warning_response_time>
+			<response_time_warning>
 				<TCEforms>
 					<label>Milliseconds for Warning</label>
 					<config>
@@ -49,7 +49,7 @@
 						<eval>int</eval>
 					</config>
 				</TCEforms>
-			</warning_response_time>
+			</response_time_warning>
 			
 			<expected_http_status>
 				<TCEforms>
