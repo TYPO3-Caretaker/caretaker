@@ -582,24 +582,42 @@ $TCA['tx_caretaker_testresults'] = array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.test_uid',
 			'config' => Array (
-				'type'     => 'input',
-				'size'     => '10',
+				'type'     => 'select',
+				'items' => array (
+					0 => array('',''),
+				),
+				'foreign_table'     => 'tx_caretaker_test',
+				'size' => 1,
+				'minitems'=> 1,
+				'maxitems'=>1,
 			)
 		),
 		'instance_uid' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.instance_uid',
 			'config' => Array (
-				'type'     => 'input',
-				'size'     => '10',
+				'type'     => 'select',
+				'items' => array (
+					0 => array('',''),
+				),
+				'foreign_table'     => 'tx_caretaker_instance',
+				'size' => 1,
+				'minitems'=> 1,
+				'maxitems'=>1,
 			)
 		),
 		'group_uid' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.group_uid',
 			'config' => Array (
-				'type'     => 'input',
-				'size'     => '10',
+				'type'     => 'select',
+				'items' => array (
+					0 => array('',''),
+				),
+				'foreign_table'     => 'tx_caretaker_group',
+				'size' => 1,
+				'minitems'=> 1,
+				'maxitems'=>1,
 			)
 		),
 		'result_status' => Array (
