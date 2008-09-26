@@ -16,100 +16,131 @@
 	<meta>
 		<langDisable>1</langDisable>
 	</meta>
-	<ROOT>
-		<type>array</type>
-		<el>
-			
-			<!-- CPU LOAD -->
-			<cpu_load_warning>
-				<TCEforms>
-					<label>CPU Load Warning-Value</label>
-					<config>
-						<type>input</type>
-						<eval>int</eval>
-						<size>10</size>
-					</config>
-				</TCEforms>
-			</cpu_load_warning>
-			<cpu_load_error>
-				<TCEforms>
-					<label>CPU Load Error-Value</label>
-					<config>
-						<type>input</type>
-						<eval>int</eval>
-						<size>10</size>					
-					</config>
-				</TCEforms>
-			</cpu_load_error>	
-		
-				
-			<!-- IO Wait -->
-			<io_wait_warning>
-				<TCEforms>
-					<label>Max IO-Wait Warning-Value</label>
-					<config>
-						<type>input</type>
-						<eval>int</eval>
-						<size>10</size>
-					</config>
-				</TCEforms>
-			</io_wait_warning>
-			<io_wait_error>
-				<TCEforms>
-					<label>Max IO-Wait Error-Value</label>
-					<config>
-						<type>input</type>
-						<eval>int</eval>
-						<size>10</size>
-					</config>
-				</TCEforms>
-			</io_wait_error>
+	<sheets>
+		<sCPU>
+			<ROOT>
+				<TCEforms> 
+                        <sheetTitle>CPU Load</sheetTitle> 
+                </TCEforms> 
+				<type>array</type>
+				<el>
+					<cpu_load_warning>
+						<TCEforms>
+							<label>CPU Load Warning-Value</label>
+							<config>
+								<type>input</type>
+								<eval>int</eval>
+								<size>10</size>
+							</config>
+						</TCEforms>
+					</cpu_load_warning>
+					<cpu_load_error>
+						<TCEforms>
+							<label>CPU Load Error-Value</label>
+							<config>
+								<type>input</type>
+								<eval>int</eval>
+								<size>10</size>					
+							</config>
+						</TCEforms>
+					</cpu_load_error>	
+				</el>
+			</ROOT>
+		</sCPU>
+		<sIO>
+			<ROOT>
+				<TCEforms> 
+                        <sheetTitle>IO-Wait</sheetTitle> 
+                </TCEforms> 
+				<type>array</type>
+				<el>				
+					<!-- IO Wait -->
+					<io_wait_warning>
+						<TCEforms>
+							<label>IO-Wait Warning-Value</label>
+							<config>
+								<type>input</type>
+								<eval>int</eval>
+								<size>10</size>
+							</config>
+						</TCEforms>
+					</io_wait_warning>
+					<io_wait_error>
+						<TCEforms>
+							<label>IO-Wait Error-Value</label>
+							<config>
+								<type>input</type>
+								<eval>int</eval>
+								<size>10</size>
+							</config>
+						</TCEforms>
+					</io_wait_error>
+				</el>
+			</ROOT>
+		</sIO>
+		<sRAM>
+			<ROOT>
+				<TCEforms> 
+                        <sheetTitle>FreeRAM</sheetTitle> 
+                </TCEforms> 
+				<type>array</type>
+				<el>			
+					<!-- Free Mem -->
+					<free_ram_warning>
+						<TCEforms>
+							<label>FreeRAM Warning-Value</label>
+							<config>
+								<type>input</type>
+								<eval>int</eval>
+								<size>10</size>						
+							</config>
+						</TCEforms>
+					</free_ram_warning>
+					<free_ram_error>
+						<TCEforms>
+							<label>Free RAM Error-Value</label>
+							<config>
+								<type>input</type>
+								<eval>int</eval>
+								<size>10</size>						
+							</config>
+						</TCEforms>
+					</free_ram_error>
+				</el>
+			</ROOT>
+		</sRAM>
+		<sDISK>
+			<ROOT>
+				<TCEforms> 
+                        <sheetTitle>FreeDisk</sheetTitle> 
+                </TCEforms> 
+				<type>array</type>
+				<el>			
 
-			
-			<!-- Free Mem -->
-			<free_ram_warning>
-				<TCEforms>
-					<label>Free RAM Warning-Value</label>
-					<config>
-						<type>input</type>
-						<eval>int</eval>
-						<size>10</size>						
-					</config>
-				</TCEforms>
-			</free_ram_warning>
-			<free_ram_warning>
-				<TCEforms>
-					<label>Free RAM Warning-Value</label>
-					<config>
-						<type>input</type>
-						<eval>int</eval>
-						<size>10</size>						
-					</config>
-				</TCEforms>
-			</free_ram_warning>
-
-			
-			<!-- Free Disk --> 
-			<free_disk_warning>
-				<TCEforms>
-					<label>Free DiskSpace Warning-Value</label>
-					<config>
-						<type>input</type>
-						<eval>int</eval>
-						<size>10</size>			
-					</config>
-				</TCEforms>
-			</free_disk_warning>
-			<free_disk_error>
-				<TCEforms>
-					<label>Free DiskSpace Error-Value</label>
-					<config>
-						<type>input</type>
-						<eval>int</eval>
-						<size>10</size>		
-					</config>
-				</TCEforms>
-			</free_disk_error>			
-		</el>
-	</ROOT>
+					
+					<!-- Free Disk --> 
+					<free_disk_warning>
+						<TCEforms>
+							<label>Free Disk Warning-Value</label>
+							<config>
+								<type>input</type>
+								<eval>int</eval>
+								<size>10</size>			
+							</config>
+						</TCEforms>
+					</free_disk_warning>
+					<free_disk_error>
+						<TCEforms>
+							<label>Free Disk Error-Value</label>
+							<config>
+								<type>input</type>
+								<eval>int</eval>
+								<size>10</size>		
+							</config>
+						</TCEforms>
+					</free_disk_error>			
+				</el>
+			</ROOT>
+		</sDISK>
+	</sheets>
 </T3DataStructure>

@@ -64,12 +64,21 @@
 			<label index="tx_caretaker_group_test_rel.test_id">Test</label>
 			<label index="tx_caretaker_group_test_rel.group_sorting">Instance Sorting</label>
 			<label index="tx_caretaker_group_test_rel.test_sorting">Test Sorting</label>
+			
 			<label index="tx_caretaker_testresults">Test results</label>
-			<label index="tx_caretaker_testresults.test_id">Test ID</label>
-			<label index="tx_caretaker_testresults.instance_id">Instance ID</label>
-			<label index="tx_caretaker_testresults.status">Status</label>
-			<label index="tx_caretaker_testresults.info_short">Short infor</label>
-			<label index="tx_caretaker_testresults.info_long">Long info</label>		
+			<label index="tx_caretaker_testresults.test_uid">Test ID</label>
+			<label index="tx_caretaker_testresults.instance_uid">Instance ID</label>
+			<label index="tx_caretaker_testresults.group_uid">Group ID</label>
+			<label index="tx_caretaker_testresults.result_status">Result Status</label>
+			<label index="tx_caretaker_testresults.result_status.neutral">Neutral</label>
+			<label index="tx_caretaker_testresults.result_status.ok">OK</label>
+			<label index="tx_caretaker_testresults.result_status.warning">Warning</label>
+			<label index="tx_caretaker_testresults.result_status.error">Error</label>
+			<label index="tx_caretaker_testresults.result_status.unknown">Unknown</label>
+			<label index="tx_caretaker_testresults.result_value">Result Value</label>
+			<label index="tx_caretaker_testresults.result_msg">Result Message</label>
+			<label index="tx_caretaker_testresults.result_data">Result XML (Data for Debugging)</label>
+					
 			<label index="tx_caretaker_accounts">Accounts</label>
 			<label index="tx_caretaker_accounts.hidden">Deactivated</label>
 			<label index="tx_caretaker_accounts.protocol">Protocol</label>

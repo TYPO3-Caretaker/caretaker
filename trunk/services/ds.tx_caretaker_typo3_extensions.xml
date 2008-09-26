@@ -16,39 +16,66 @@
 	<meta>
 		<langDisable>1</langDisable>
 	</meta>
-	<ROOT>
-		<type>array</type>
-		<el>
-			<required_extensions>
-				<TCEforms>
-					<label><![CDATA[ Extensions:Versions wich are required ( Format: ExtKey [Operator] [Version] ) ]]></label>
-					<config>
-						<type>text</type>
-						<cols>30</cols>
-						<rows>5</rows>
-					</config>
-				</TCEforms>
-			</required_extensions>	
-			<forbidden_installed_extensions>
-				<TCEforms>
-					<label><![CDATA[ Extensions:Versions wich must not be installed ( Format: ExtKey [Operator] [Version] ) ]]></label>
-					<config>
-						<type>text</type>
-						<cols>30</cols>
-						<rows>5</rows>
-					</config>
-				</TCEforms>
-			</forbidden_installed_extensions>
-			<forbidden_existing_extensions>
-				<TCEforms>
-					<label><![CDATA[ Extensions:Versions wich must not exist ( Format: ExtKey [Operator] [Version] ) ]]></label>
-					<config>
-						<type>text</type>
-						<cols>30</cols>
-						<rows>5</rows>
-					</config>
-				</TCEforms>
-			</forbidden_existing_extensions>
-		</el>
-	</ROOT>
+	<sheets>
+		<sALLOWED>
+			<ROOT>
+				<TCEforms> 
+                        <sheetTitle>Allowed Extensions</sheetTitle> 
+                </TCEforms> 
+				<type>array</type>
+				<el>
+					<allowed_extensions>
+						<TCEforms>
+							<label><![CDATA[ Extensions:Versions wich can exist ( Format: ExtKey:[minVersion]:[maxVersion] ) ]]></label>
+							<config>
+								<type>text</type>
+								<cols>30</cols>
+								<rows>5</rows>
+							</config>
+						</TCEforms>
+					</allowed_extensions>	
+					<required_extensions>
+						<TCEforms>
+							<label><![CDATA[ Extensions:Versions wich are required ( Format: ExtKey:[minVersion]:[maxVersion] ) ]]></label>
+							<config>
+								<type>text</type>
+								<cols>30</cols>
+								<rows>5</rows>
+							</config>
+						</TCEforms>
+					</required_extensions>	
+				</el>
+			</ROOT>
+		</sALLOWED>
+		<sDISALLOWED>
+			<ROOT>
+				<TCEforms> 
+                        <sheetTitle>Forbidden Extensions</sheetTitle> 
+                </TCEforms> 
+				<type>array</type>
+				<el>
+					<forbidden_active_extensions>
+						<TCEforms>
+							<label><![CDATA[ Extensions:Versions wich must not be installed ( Format: ExtKey:[minVersion]:[maxVersion] ) ]]></label>
+							<config>
+								<type>text</type>
+								<cols>30</cols>
+								<rows>5</rows>
+							</config>
+						</TCEforms>
+					</forbidden_active_extensions>
+					<forbidden_present_extensions>
+						<TCEforms>
+							<label><![CDATA[ Extensions:Versions wich must not exist ( Format: ExtKey:[minVersion]:[maxVersion] ) ]]></label>
+							<config>
+								<type>text</type>
+								<cols>30</cols>
+								<rows>5</rows>
+							</config>
+						</TCEforms>
+					</forbidden_present_extensions>
+				</el>
+			</ROOT>
+		</sDISALLOWED>
+	</sheets>
 </T3DataStructure>

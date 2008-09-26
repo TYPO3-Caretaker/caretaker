@@ -570,8 +570,6 @@ $TCA["tx_caretaker_group_test_rel"] = array (
 	'palettes' => array ()
 );
 
-/*
-
 $TCA['tx_caretaker_testresults'] = array (
 	'ctrl' => $TCA['tx_caretaker_testresults']['ctrl'],
 	'interface' => array (
@@ -579,91 +577,78 @@ $TCA['tx_caretaker_testresults'] = array (
 	),
 	'feInterface' => $TCA['tx_caretaker_testresults']['feInterface'],
 	'columns' => array (
-		'test_id' => Array (
+		'test_uid' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.test_id',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.test_uid',
 			'config' => Array (
 				'type'     => 'input',
-				'size'     => '4',
-				'max'      => '4',
-				'eval'     => 'int',
-				'checkbox' => '0',
-				'range'    => Array (
-					'upper' => '1000',
-					'lower' => '10'
-				),
-				'default' => 0
+				'size'     => '10',
 			)
 		),
-		'instance_id' => Array (
+		'instance_uid' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.instance_id',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.instance_uid',
 			'config' => Array (
 				'type'     => 'input',
-				'size'     => '4',
-				'max'      => '4',
-				'eval'     => 'int',
-				'checkbox' => '0',
-				'range'    => Array (
-					'upper' => '1000',
-					'lower' => '10'
-				),
-				'default' => 0
+				'size'     => '10',
 			)
 		),
-		'status' => Array (
+		'group_uid' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.status',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.group_uid',
 			'config' => Array (
 				'type'     => 'input',
-				'size'     => '4',
-				'max'      => '4',
-				'eval'     => 'int',
-				'checkbox' => '0',
-				'range'    => Array (
-					'upper' => '1000',
-					'lower' => '10'
-				),
-				'default' => 0
+				'size'     => '10',
 			)
 		),
-		'info_short' => Array (
+		'result_status' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.info_short',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_status',
+			'config' => Array (
+				'type'     => 'select',
+				'items' => array (
+					0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_status.neutral', -1),
+					1 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_status.ok', 0),
+					2 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_status.warning', 1),
+					3 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_status.error', 2),
+					4 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_status.unknown', 3),
+				),
+				'default' => -1
+			)
+		),
+		'result_value' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_value',
 			'config' => Array (
 				'type' => 'input',
-				'size' => '30',
-				'eval' => 'trim',
+				'size' => 20,
 			)
 		),
-		'info_long' => Array (
+		'result_msg' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.info_long',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_msg',
 			'config' => Array (
-				'type' => 'text',
-				'cols' => '30',
-				'rows' => '5',
+				'type'     => 'input',
+				'size'     => '50',
 			)
 		),
-		'resultxml' => Array (
+		'result_data' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_data',
 			'config' => Array (
-				'type' => 'passthrough',
+				'type'     => 'text',
 			)
 		),
-		'resultplain' => Array (
-			'config' => Array (
-				'type' => 'passthrough',
-			)
-		),
+		
 	),
 	'types' => array (
-		'0' => array('showitem' => 'test_id;;;;1-1-1, instance_id, status, info_short, info_long, resultxml, resultplain')
+		'0' => array('showitem' => 'test_uid;;;;1-1-1, instance_uid, group_uid, result_status;;;;2-2-2, result_value, result_msg, result_data')
 	),
 	'palettes' => array (
 		'1' => array('showitem' => '')
 	)
 );
-*/
+
 
 
 $TCA['tx_caretaker_accounts'] = array (

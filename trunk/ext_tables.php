@@ -38,7 +38,7 @@ $TCA['tx_caretaker_test'] = array (
 		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/test.png',
 	),
 	'feInterface' => array (
-		'fe_admin_fieldList' => 'hidden,exec_interval, testservice, testconf, name, last_exec',
+		'fe_admin_fieldList' => '',
 	),
 );
 
@@ -62,7 +62,7 @@ $TCA['tx_caretaker_instance'] = array (
 		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/instance.png',
 	),
 	'feInterface' => array (
-		'fe_admin_fieldList' => 'hidden,instancegroup,testgroups, tests, request_mode, encryption_mode, encryption_key, project_name, project_manager, domain, additional_domains, contacts, server_type, server_provider, server_customer_id, server_more, cms_url, cms_admin, cms_pwd, cms_install_pwd, accounts, contract, request_url',
+		'fe_admin_fieldList' => '',
 	)
 );
 
@@ -105,7 +105,7 @@ $TCA['tx_caretaker_group'] = array (
 		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/group.png',
 	),
 	'feInterface' => array (
-		'fe_admin_fieldList' => 'hidden, main_instance,name,testgroups,tests,contacts,accounts',
+		'fe_admin_fieldList' => '',
 	)
 );
 
@@ -136,17 +136,15 @@ $TCA['tx_caretaker_accounts'] = array (
         'cruser_id' => 'cruser_id',
         'default_sortby' => 'ORDER BY crdate',
         'delete' => 'deleted',
-        'enablecolumns' => array (        
+        'enablecolumns' => array ( 
           'disabled' => 'hidden',
         ),
         'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
         'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/account.png',
     ),
-    'feInterface' => array ( 'fe_admin_fieldList' => 'hidden, protocol, username, password, url, description' )
+    'feInterface' => array ( 'fe_admin_fieldList' => '' )
 );
 
-
-/*
 $TCA['tx_caretaker_testresults'] = array (
 	'ctrl' => array (
 		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults',
@@ -154,6 +152,7 @@ $TCA['tx_caretaker_testresults'] = array (
 		'tstamp'    => 'tstamp',
 		'crdate'    => 'crdate',
 		'cruser_id' => 'cruser_id',
+		// 'hideTable' => 1,
 		'default_sortby' => 'ORDER BY crdate',
 		'delete' => 'deleted',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
@@ -161,7 +160,6 @@ $TCA['tx_caretaker_testresults'] = array (
 	),
 	'feInterface' => array ('fe_admin_fieldList' => '' )
 );
-*/
 
 	// load Service Helper
 if (TYPO3_MODE) {
@@ -169,14 +167,11 @@ if (TYPO3_MODE) {
 }
 
 	// register Tests
-tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_typo3_version'   ,'TYPO3-> Version', 'Retrieves the version of TYPO3' );
+tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_typo3_info'   ,'TYPO3-> Info', 'Retrieves the version of TYPO3' );
 tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_typo3_extensions',  'TYPO3 -> Extensions' , 'Retrieves a list of all available extensions (includes paths, versions and status)' );
 tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_system_info',  'System -> Info' , 'Retrieves System Informations' );
 tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_system_load',  'System -> Load' , 'Retrieves System Status Infos' );
 tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_httptest',  'HTTP -> Test' , 'Request the URL and Check Result' );
-
-// t3lib_div::devLog('getAllCaretakerServices', 'caretaker' , 0 ,tx_caretaker_ServiceHelper::getAllCaretakerServices() );
-// debug( tx_caretaker_ServiceHelper::getAllCaretakerServices() );
 
 	// register FE-Plugin
 /*
