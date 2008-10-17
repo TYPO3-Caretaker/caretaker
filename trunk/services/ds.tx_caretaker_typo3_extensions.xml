@@ -26,7 +26,7 @@
 				<el>
 					<allowed_extensions>
 						<TCEforms>
-							<label><![CDATA[ Extensions:Versions wich can exist ( Format: ExtKey:[minVersion]:[maxVersion] ) ]]></label>
+							<label><![CDATA[ Extensions:Versions which can exist ( Format: ExtKey:[minVersion]:[maxVersion] ) ]]></label>
 							<config>
 								<type>text</type>
 								<cols>30</cols>
@@ -36,7 +36,7 @@
 					</allowed_extensions>	
 					<required_extensions>
 						<TCEforms>
-							<label><![CDATA[ Extensions:Versions wich are required ( Format: ExtKey:[minVersion]:[maxVersion] ) ]]></label>
+							<label><![CDATA[ Extensions:Versions which are required ( Format: ExtKey:[minVersion]:[maxVersion] ) ]]></label>
 							<config>
 								<type>text</type>
 								<cols>30</cols>
@@ -56,7 +56,7 @@
 				<el>
 					<forbidden_active_extensions>
 						<TCEforms>
-							<label><![CDATA[ Extensions:Versions wich must not be installed ( Format: ExtKey:[minVersion]:[maxVersion] ) ]]></label>
+							<label><![CDATA[ Extensions:Versions which must not be installed ( Format: ExtKey:[minVersion]:[maxVersion] ) ]]></label>
 							<config>
 								<type>text</type>
 								<cols>30</cols>
@@ -66,7 +66,7 @@
 					</forbidden_active_extensions>
 					<forbidden_present_extensions>
 						<TCEforms>
-							<label><![CDATA[ Extensions:Versions wich must not exist ( Format: ExtKey:[minVersion]:[maxVersion] ) ]]></label>
+							<label><![CDATA[ Extensions:Versions which must not exist ( Format: ExtKey:[minVersion]:[maxVersion] ) ]]></label>
 							<config>
 								<type>text</type>
 								<cols>30</cols>
