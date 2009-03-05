@@ -36,34 +36,13 @@
 interface tx_caretaker_TestService {
 	
 	/**
-	 * This is called *BEFORE* the data is send to the instance
-	 *
-	 * @param array $flexFormData: the config data from the flexform of the test record 
-	 * @return tx_caretaker_TestConf: the config object for the testrunner
+	 * Run the Test defined in TestConf and return a Testresult Object 
+	 * 
+	 * @param array $flexFormData Flexform Configuration
+	 * @return tx_caretaker_TestResult
 	 */
-	public function prepareTestConf($flexFormData);
+	public function runTest($flexFormData);
 	
-	/**
-	 * This is called *AFTER* the result was returned from an instance and after it was decoded by the caretaker extension.
-	 *
-	 * @param array $testResult: The parsed XML data that was returned form the instance
-	 * @return tx_caretaker_TestResult: 
-	 */
-	public function processTestResult($testResult);
-	
-	/**
-	 * Get a list of all extra Options for this test.   
-	 *
-	 * @return array : Array of tx_caretaker_test_option Objects
-	 */
-	public function getTestOptionList();
-	
-	/**
-	 * Render the extra Infos for the option specifies in $optionKey
-	 *
-	 * @param string $optionKey: 
-	 */
-	public function getSingleTestOption($optionKey);
 }
 
 ?>

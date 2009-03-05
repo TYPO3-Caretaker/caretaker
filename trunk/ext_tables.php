@@ -127,24 +127,6 @@ $TCA['tx_caretaker_group_test_rel'] = array (
 	'feInterface' => array ('fe_admin_fieldList' => '' )
 );
 
-$TCA['tx_caretaker_accounts'] = array (
-    'ctrl' => array (
-        'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_accounts',
-        'label'     => 'protocol',
-        'tstamp'    => 'tstamp',
-        'crdate'    => 'crdate',
-        'cruser_id' => 'cruser_id',
-        'default_sortby' => 'ORDER BY crdate',
-        'delete' => 'deleted',
-        'enablecolumns' => array ( 
-          'disabled' => 'hidden',
-        ),
-        'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-        'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/account.png',
-    ),
-    'feInterface' => array ( 'fe_admin_fieldList' => '' )
-);
-
 $TCA['tx_caretaker_testresults'] = array (
 	'ctrl' => array (
 		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults',
@@ -161,17 +143,6 @@ $TCA['tx_caretaker_testresults'] = array (
 	'feInterface' => array ('fe_admin_fieldList' => '' )
 );
 
-	// load Service Helper
-if (TYPO3_MODE) {
-	include_once(t3lib_extMgm::extPath($_EXTKEY).'classes/class.tx_caretaker_ServiceHelper.php');
-}
-
-	// register Tests
-tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_typo3_info'   ,'TYPO3-> Info', 'Retrieves the version of TYPO3' );
-tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_typo3_extensions',  'TYPO3 -> Extensions' , 'Retrieves a list of all available extensions (includes paths, versions and status)' );
-tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_system_info',  'System -> Info' , 'Retrieves System Informations' );
-tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_system_load',  'System -> Load' , 'Retrieves System Status Infos' );
-tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_httptest',  'HTTP -> Test' , 'Request the URL and Check Result' );
 
 	// register FE-Plugin
 /*

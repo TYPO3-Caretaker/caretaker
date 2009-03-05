@@ -17,7 +17,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author' => 'Martin Ficzel,Thomas Hempel,Christopher Hlubek,Tobias Liebig',
 	'author_email' => 'ficzel@work.de,hempel@work.de,hlubek@networkteam.com,liebig@networkteam.com',
 	'shy' => '',
-	'dependencies' => 'caretaker_instance,tt_address',
+	'dependencies' => 'cms',
 	'conflicts' => '',
 	'priority' => '',
 	'module' => '',
@@ -32,8 +32,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'version' => '0.0.0',
 	'constraints' => array(
 		'depends' => array(
-			'caretaker_instance' => '',
-			'tt_address' => '',
+			'cms' => '',
 		),
 		'conflicts' => array(
 		),

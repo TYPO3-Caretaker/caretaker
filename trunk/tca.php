@@ -117,19 +117,6 @@ $TCA['tx_caretaker_test'] = array (
 				'maxitems' => 1,
 			)
 		),
-		'test_mode' => Array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_mode',
-			'config' => Array (
-				'type' => 'select',
-				'items' => array (
-					0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_mode.instance', 'instance'),
-					1 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_mode.group', 'group')
-				),
-				'size' => 1,
-				'maxitems' => 1,
-			)
-		),
 		'test_conf' => Array (
 			'displayCond' => 'FIELD:test_service:REQ:true',
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_conf',
@@ -139,65 +126,34 @@ $TCA['tx_caretaker_test'] = array (
 				'ds' => array()
 			)
 		),
-		'instances' => Array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.instances',
-			'config' => Array (
-				'type' => 'inline',
-				'foreign_table'    => 'tx_caretaker_instance_test_rel',
-	    		'foreign_field'    => 'test_id',
-	    		'foreign_sortby'   => 'test_sorting',
-	  			'foreign_label'    => 'instance_id',
-	     		'foreign_selector' => 'instance_id',
-	    		'foreign_unique'   => 'instance_id',
-				'maxitems' => 99,
-	    	    'autoSizeMax' => 25,
-	    		'size' => 5, 
-				'appearance' => Array( 
-					'collapseAll' => 1, 
-					'expandSingle' => 1, 
-	    			'newRecordLinkAddTitle' => 1,
-	   				'newRecordLinkPosition' => 'both',
-				    'useCombination' => 1, 
-	    
-				), 	    
-			)
-		),
 		'groups' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.groups',
+		
 			'config' => Array (
-				'type' => 'inline',
-				'foreign_table'    => 'tx_caretaker_group_test_rel',
-	    		'foreign_field'    => 'test_id',
-	    		'foreign_sortby'   => 'test_sorting',
-	  			'foreign_label'    => 'group_id',
-	     		'foreign_selector' => 'group_id',
-	    		'foreign_unique'   => 'group_id',
-				'maxitems' => 99,
-	    	    'autoSizeMax' => 25,
-	    		'size' => 5, 
-				'appearance' => Array( 
-					'collapseAll' => 1, 
-					'expandSingle' => 1, 
-	    			'newRecordLinkAddTitle' => 1,
-	   				'newRecordLinkPosition' => 'both',
-				    'useCombination' => 1, 
-	    
-				), 	    
-			)
+				'type'          => 'select',
+				'form_type'     => 'user',
+				'userFunc'      => 'tx_ttaddress_treeview->displayGroupTree',
+				'treeView'      => 1,
+				'foreign_table' => 'tx_caretaker_group',
+				'size'          => 5,
+				'autoSizeMax'   => 25,
+				'minitems'      => 0,
+				'maxitems'      => 50,
+				'MM'            => 'tx_caretaker_group_test_mm',
+			),
+			
 		),
 		
 	),
 	'types' => array (
-		'0' => array('showitem' => 'title;;1;;1-1-1, test_service;;2;;2-2-2, test_conf,
-					 --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.relations, instances, groups,
+		'0' => array('showitem' => 'title;;1;;1-1-1, test_service;;;;2-2-2,test_interval, test_conf;;;;3-3-3,
+					 --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.relations, groups,
 					 --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.description, description'
 					)
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'hidden, starttime,endtime,fe_group'),
-		'2' => array('showitem' => 'test_mode, test_interval')
 	)
 );
 
@@ -302,30 +258,6 @@ $TCA["tx_caretaker_instance"] = array (
 			'MM'            => 'tx_caretaker_instance_group_mm',
 	      )
 	    ),
-		'tests' => Array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tests',
-			'config' => Array (
-				'type' => 'inline',
-				'foreign_table'    => 'tx_caretaker_instance_test_rel',
-	    		'foreign_field'    => 'instance_id',
-	    		'foreign_sortby'   => 'instance_sorting',
-	  			'foreign_label'    => 'test_id',
-	     		'foreign_selector' => 'test_id',
-	    		'foreign_unique'   => 'test_id',
-				'maxitems' => 99,
-	    	    'autoSizeMax' => 25,
-	    		'size' => 5, 
-				'appearance' => Array( 
-					'collapseAll' => 1, 
-					'expandSingle' => 1, 
-	    			'newRecordLinkAddTitle' => 1,
-	   				'newRecordLinkPosition' => 'both',
-				    'useCombination' => 1, 
-	    
-				), 	    
-			)
-		),
 		'public_key' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.public_key',
@@ -337,62 +269,15 @@ $TCA["tx_caretaker_instance"] = array (
 		),
 	),
 	"types" => array (
-		"0" => array("showitem" => '
-				title;;1, description, url, public_key,
-				--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests,
-			'
-		)
+		"0" => array("showitem" => 'title;;1, description;;;;1-1-1, url;;;;-2-2-2, public_key,
+									--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations,groups
+		')
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'hidden,starttime,endtime,fe_group')
 	)
 );
 
-$TCA["tx_caretaker_instance_test_rel"] = array (
-	"ctrl" => $TCA["tx_caretaker_instance_test_rel"]["ctrl"],
-	"interface" => array (
-		"showRecordFieldList" => "hidden,instancegroup,testgroups,tests,request_mode,encryption_mode,encryption_key,project_namename,project_manager,domain,additional_domains,contacts,server_type,server_provider,server_customer_id,server_other,cms_url,cms_admin,cms_pwd,cms_install_pwd,accesses,other,request_url"
-	),
-	"feInterface" => $TCA["tx_caretaker_instance_test_rel"]["feInterface"],
-	"columns" => array (
-		'hidden' => Array (        
-			'exclude' => 1,
-			'label'   => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
-			'config'  => Array (
-				'type'    => 'check',
-				'default' => '0'
-			),
-		),
-		'instance_id' => array(
-			'label'   => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_test_rel.instance_id',
-			'config'  => Array (
-				'type'    => 'select',
-				'foreign_table' => 'tx_caretaker_instance',
-				'maxitems' => 1
-			),
-		),
-		'test_id' => array(
-			'label'   => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_test_rel.test_id',
-			'config'  => Array (
-				'type'    => 'select',
-				'foreign_table' => 'tx_caretaker_test',
-				'maxitems' => 1
-			),
-		),
-		'instance_sorting' => array(
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_test_rel.instance_sorting',
-			'type' => 'passthrough',
-		),
-		'test_sorting' => array(
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_test_rel.test_sorting',
-			'type' => 'passthrough',
-		),
-	),
-	"types" => array (
-		"0" => array("showitem" => 'hidden,instance_id,test_id')
-	),
-	'palettes' => array ()
-);
 
 $TCA['tx_caretaker_group'] = array (
 	'ctrl' => $TCA['tx_caretaker_group']['ctrl'],
@@ -491,18 +376,16 @@ $TCA['tx_caretaker_group'] = array (
 		),
 		'tests' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tests',
-			'config' => Array (
-				'type' => 'inline',
-				'foreign_table'    => 'tx_caretaker_group_test_rel',
-	    		'foreign_field'    => 'group_id',
-	    		'foreign_sortby'   => 'group_sorting',
-	  			'foreign_label'    => 'test_id',
-	     		'foreign_selector' => 'test_id',
-	    		'foreign_unique'   => 'test_id',
-				'maxitems' => 99,
-	    	    'autoSizeMax' => 25,
-	    		'size' => 5, 
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.tests',
+			'config' => Array (		
+				'type'          => 'inline',
+				'foreign_table' => 'tx_caretaker_test',
+				'MM'            => 'tx_caretaker_group_test_mm',
+				'MM_opposite_field' => 'group',
+				'size'          => 5,
+				'autoSizeMax'   => 10,
+				'minitems'      => 0,
+				'maxitems'      => 99,
 				'appearance' => Array( 
 					'collapseAll' => 1, 
 					'expandSingle' => 1, 
@@ -510,65 +393,41 @@ $TCA['tx_caretaker_group'] = array (
 	   				'newRecordLinkPosition' => 'both',
 				    'useCombination' => 1, 
 	    
-				), 	    
+				),
 			)
+			
+		),
+		'instances'=>Array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.instances',
+			'config' => Array (
+				/*		
+				'type'          => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_caretaker_instance',
+				*/
+		
+				'type'          => 'select',
+				'foreign_table' => 'tx_caretaker_instance',
+				'MM'            => 'tx_caretaker_instance_group_mm',
+				'MM_opposite_field' => 'group',
+				'size'          => 5,
+				'autoSizeMax'   => 10,
+				'minitems'      => 0,
+				'maxitems'      => 99,
+			
+ 			)
 		),
     ),
 	"types" => array (
-		"0" => array("showitem" => 'title;;1;;1-1-1, description,parent_group,
-		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.tab.relations, tests,
+		"0" => array("showitem" => 'title;;1;;1-1-1, description,parent_group;;;;2-2-2,
+		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.tab.relations, instances;;;;3-3-3,tests;;;;4-4-4,
 		'
     	)
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'hidden,starttime,endtime,fe_group')
 	)
-);
-
-$TCA["tx_caretaker_group_test_rel"] = array (
-	"ctrl" => $TCA["tx_caretaker_group_test_rel"]["ctrl"],
-	"interface" => array (
-		"showRecordFieldList" => "hidden,instancegroup,testgroups,tests,request_mode,encryption_mode,encryption_key,project_namename,project_manager,domain,additional_domains,contacts,server_type,server_provider,server_customer_id,server_other,cms_url,cms_admin,cms_pwd,cms_install_pwd,accesses,other,request_url"
-	),
-	"feInterface" => $TCA["tx_caretaker_group_test_rel"]["feInterface"],
-	"columns" => array (
-		'hidden' => Array (        
-			'exclude' => 1,
-			'label'   => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
-			'config'  => Array (
-				'type'    => 'check',
-				'default' => '0'
-			),
-		),
-		'group_id' => array(
-			'label'   => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.group_id',
-			'config'  => Array (
-				'type'    => 'select',
-				'foreign_table' => 'tx_caretaker_group',
-				'maxitems' => 1
-			),
-		),
-		'test_id' => array(
-			'label'   => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.test_id',
-			'config'  => Array (
-				'type'    => 'select',
-				'foreign_table' => 'tx_caretaker_test',
-				'maxitems' => 1
-			),
-		),
-		'group_sorting' => array(
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.group_sorting',
-			'type' => 'passthrough',
-		),
-		'test_sorting' => array(
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.test_sorting',
-			'type' => 'passthrough',
-		),
-	),
-	"types" => array (
-		"0" => array("showitem" => 'hidden,group_id,test_id')
-	),
-	'palettes' => array ()
 );
 
 $TCA['tx_caretaker_testresults'] = array (
@@ -666,77 +525,6 @@ $TCA['tx_caretaker_testresults'] = array (
 	'palettes' => array (
 		'1' => array('showitem' => '')
 	)
-);
-
-
-
-$TCA['tx_caretaker_accounts'] = array (
-    'ctrl' => $TCA['tx_caretaker_accounts']['ctrl'],
-    'interface' => array (
-        'showRecordFieldList' => 'hidden,protocol,username,password,url,description'
-    ),
-    'feInterface' => $TCA['tx_caretaker_accounts']['feInterface'],
-    'columns' => array (
-        'hidden' => array (        
-          'exclude' => 1,
-          'label'   => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_accounts.hidden',
-          'config'  => array (
-            'type'    => 'check',
-            'default' => '0'
-          )
-        ),
-        'protocol' => Array (
-            'exclude' => 1,
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_accounts.protocol',
-            'config' => Array (
-                'type' => 'input',
-                'size' => '30',
-                'eval' => 'trim',
-            )
-        ),
-        'username' => Array (
-            'exclude' => 1,
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_accounts.username',
-            'config' => Array (
-                'type' => 'input',
-                'size' => '30',
-                'eval' => 'trim',
-            )
-        ),
-        'password' => Array (
-            'exclude' => 1,
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_accounts.password',
-            'config' => Array (
-                'type' => 'input',
-                'size' => '30',
-                'eval' => 'trim',
-            )
-        ),
-        'url' => Array (
-            'exclude' => 1,
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_accounts.url',
-            'config' => Array (
-                'type' => 'input',
-                'size' => '30',
-                'eval' => 'trim',
-            )
-        ),
-        'description' => Array (
-            'exclude' => 1,
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_accounts.description',
-            'config' => Array (
-                'type' => 'text',
-                'cols' => '30',
-                'rows' => '5',
-            )
-        ),
-    ),
-    'types' => array (
-        '0' => array('showitem' => 'hidden;;;;1-1-1, protocol,username, password, url, description')
-    ),
-    'palettes' => array (
-        '1' => array('showitem' => '')
-    )
 );
 
 
