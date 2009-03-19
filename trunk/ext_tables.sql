@@ -53,6 +53,7 @@ CREATE TABLE tx_caretaker_instance (
 	description varchar(255) DEFAULT '' NOT NULL,
 	public_key varchar(255) DEFAULT '' NOT NULL,
 	url varchar(255) DEFAULT '' NOT NULL,
+	ip varchar(255) DEFAULT '' NOT NULL,
 
 	groups text NOT NULL,
 
@@ -101,6 +102,7 @@ CREATE TABLE tx_caretaker_instance_group_mm (
 	tablenames varchar(30) DEFAULT '' NOT NULL,
 	sorting int(11) DEFAULT '0' NOT NULL,
 	sorting_foreign int(11) DEFAULT '0' NOT NULL,
+	PRIMARY KEY (uid),
 	KEY uid_local (uid_local),
 	KEY uid_foreign (uid_foreign)
 );

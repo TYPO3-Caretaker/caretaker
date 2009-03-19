@@ -33,29 +33,59 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-interface tx_caretaker_TestService {
-	
-	function init();
-	/**
-	 * Set the instance for the test execution
-	 * @param $instance
-	 */
-	function setInstance($instance);
+require_once (t3lib_extMgm::extPath('caretaker').'/services/interface.tx_caretaker_TestService.php');
+require_once(PATH_t3lib.'class.t3lib_svbase.php');
 
-	/**
-	 * Set the configuttion for this test
-	 * @param $configuration
-	 */
-	function setConfiguration($configuration);
+
+class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_TestService{
 	
+	var $instance;
+	var $configuration = false;
+	var $ff_config = false;
+	
+	function setInstance($instance){
+		$this->instance = $instance;
+	}
+	
+	function setConfiguration($configuration){
+		if (is_array( $configuration) ){
+			$this->configuration  = $configuration;
+		} else if ($configuration){
+			$this->ff_config = true;
+			$this->configuration = t3lib_div::xml2array($configuration);
+		}
+	}
+	
+	function getConfigValue($key, $sheet=false){
+		if (!$this->configuration) return false;
+		  
+		$result = false;
+		if ($this->ff_config){
+			if (!$sheet) $sheet = 'sDEF';
+			if (isset($this->configuration['data'][$sheet]['lDEF'][$key]['vDEF']) ){
+				$result = $this->configuration['data'][$sheet]['lDEF'][$key]['vDEF'];
+			}
+		} else {
+			if ($sheet==false && isset($this->configuration[$key]) ){
+				$result = $this->configuration[$key];
+			} else if (isset($this->configuration[$sheet][$key]) ){
+				$result = $this->configuration[$sheet][$key];
+			}
+		} 
+		return $result;
+	}
+		
 	/**
 	 * Run the Test defined in TestConf and return a Testresult Object 
 	 * 
 	 * @param array $flexFormData Flexform Configuration
 	 * @return tx_caretaker_TestResult
 	 */
-	public function runTest();
-	
+	public function runTest(){
+		$result = new tx_caretaker_TestResult();
+		return $result;
+	}
+
 }
 
 ?>

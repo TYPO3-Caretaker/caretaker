@@ -24,10 +24,12 @@ class tx_caretaker_TestRunner_testcase extends tx_phpunit_testcase  {
 	 * @param unknown_type $bar
 	 * @param unknown_type $baz
 	 */
+	/*
 	public function test_foo( $foo, $bar, $baz ){
 		$this->assertEquals( $foo, $bar, $baz );
-	// 	$this->assertEquals( 1,1 );
+
 	}
+	*/
 }
 
 ?>

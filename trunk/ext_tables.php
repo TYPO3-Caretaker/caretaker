@@ -154,4 +154,31 @@ t3lib_extMgm::addPlugin(array('LLL:EXT:'.$_EXTKEY.'/locallang_db.xml:tt_content.
 t3lib_extMgm::addStaticFile($_EXTKEY,'res/ts/','Caretaker');
 */ 
 
+	// Register dummy testservice
+t3lib_extMgm::addService(
+	'caretaker',
+	'caretaker_test_service',
+	'tx_caretaker_dummy',	
+	array(
+		'title' => 'Dummy Test Service',
+		'description' => 'a very basic test implementation',
+		'subtype' => 'tx_caretaker_dummy',
+		'available' => TRUE,
+		'priority' => 50,
+		'quality' => 50,
+		'os' => '',
+		'exec' => '',
+		'classFile' => t3lib_extMgm::extPath('caretaker').'services/class.tx_caretaker_TestDummy.php',
+		'className' => 'tx_caretaker_TestDummy',
+	)
+);
+
+	// load Service Helper
+include_once(t3lib_extMgm::extPath('caretaker').'classes/class.tx_caretaker_ServiceHelper.php');
+
+	// register Tests
+tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_ping',  'Ping' , 'Retrieves System Informations' );
+tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_http',  'HTTP' , 'Call an URI and cehck the HTTP-Status' );
+
+
 ?>
