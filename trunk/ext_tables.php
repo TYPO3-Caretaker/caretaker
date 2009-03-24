@@ -178,7 +178,8 @@ include_once(t3lib_extMgm::extPath('caretaker').'classes/class.tx_caretaker_Serv
 
 	// register Tests
 tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_ping',  'Ping' , 'Retrieves System Informations' );
-tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_http',  'HTTP' , 'Call an URI and cehck the HTTP-Status' );
+tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_http',  'HTTP' , 'Call an URI and check the HTTP-Status' );
+tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_snmp',  'SNMP' , 'Request an SNMP Status and check Result' );
 
 
 ?>

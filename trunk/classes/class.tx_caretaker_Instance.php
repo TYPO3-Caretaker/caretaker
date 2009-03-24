@@ -10,8 +10,8 @@ class tx_caretaker_Instance {
 	private $db_data;
 	private $groups;
 	
-	function __construct($id, $host_name='', $host_ip='', $data=array()){
-		$this->uid = $id;
+	function __construct($uid, $host_name='', $host_ip='', $data=array()){
+		$this->uid = $uid;
 		$this->host_name = $host_name;
 		$this->host_ip   = $host_ip;
 		$this->db_data   = $data;

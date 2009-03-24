@@ -19,7 +19,7 @@ class tx_caretaker_TestResult {
 		$this->value = $value;
 		$this->comment = $comment;
 	}
-	
+		
 	function getState(){
 		return $this->status;
 	}

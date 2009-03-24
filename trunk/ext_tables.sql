@@ -138,7 +138,7 @@ CREATE TABLE tx_caretaker_testresults (
 	group_uid int(11) DEFAULT '0' NOT NULL,
 	
 	result_status int(11) DEFAULT '0' NOT NULL,
-	result_value int(11) DEFAULT '0' NOT NULL,
+	result_value float DEFAULT '0' NOT NULL,
 	result_msg varchar(255) DEFAULT '' NOT NULL,
 	result_data tinytext NOT NULL,
 

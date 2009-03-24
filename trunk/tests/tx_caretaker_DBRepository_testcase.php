@@ -21,7 +21,7 @@ class tx_caretaker_DBRepository_testcase extends tx_phpunit_testcase  {
 		$target = $all_instances[count($all_instances)-1];
 		$test   = $instance_repoistory->getByUid( $target->getUid() );
 		$this->assertEquals( $target, $test, 'instance found by id');
-		
+
 		$target = $all_instances[0];
 		$test   = $instance_repoistory->getByUid( $target->getUid() );
 		$this->assertEquals( $target, $test, 'instance found by id');
