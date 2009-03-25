@@ -16,12 +16,12 @@ class tx_caretaker_Group {
 		$this->data  = $data;
 	}
 		
-	public function getSubgroups($recursive = false){
+	public function getGroups($recursive = false){
 		if (!$this->sub_groups){
 			$group_repository = tx_caretaker_GroupRepository::getInstance();
 			$this->sub_groups = $group_repository->getByParentId($this->uid, $recursive );
 		}
-		return $this->sub_groups;	
+		return $this->sub_groups;
 	}
 	
 	function getTests(){
@@ -33,8 +33,58 @@ class tx_caretaker_Group {
 		return $this->tests;
 	}
 		
+	function updateState($instance){
+		//debug('updateState Group:'.$this->title.$this->uid);
+		
+		$tests = $this->getTests();
+		foreach($tests as $test){
+			$test->updateState($instance);
+		}
+		
+		$groups = $this->getGroups();
+		foreach($groups as $group){
+			$group->updateState($instance);
+		}
+		
+	}
+	
 	function getState($instance){
 		
+		$tests  = $this->getTests();
+		$groups = $this->getGroups();
+		
+		$state = TX_CARETAKER_UNDEFINED;
+		$num_tests = count($tests)+count($groups);
+		$num_errors = 0;
+		$num_warnings = 0;
+		
+		foreach($tests as $test){
+			$result = $test->getState($instance);
+			$state = $result->getState();
+			if ($state == TX_CARETAKER_ERROR ){
+				$num_errors ++;
+			} else if ($state == TX_CARETAKER_WARNING || $state == TX_CARETAKER_UNDEFINED){
+				$num_warnings ++;
+			}
+		}
+		
+		foreach($groups as $group){
+			$result = $group->getState($instance);
+			$state  = $result->getState();
+			if ($state == TX_CARETAKER_ERROR ){
+				$num_errors ++;
+			} else if ($state == TX_CARETAKER_WARNING || $state == TX_CARETAKER_UNDEFINED){
+				$num_warnings ++;
+			}
+		}
+		
+		if  ($num_errors > 0){
+			return tx_caretaker_TestResult::create(TX_CARETAKER_ERROR,$num_tests-$num_errors-$num_warnings, $num_errors.' Errors and '.$num_warnings.' Warnings in '.$num_tests.' Tests.' );
+		} else if ($num_warnings > 0){
+			return tx_caretaker_TestResult::create(TX_CARETAKER_WARNING,$num_tests-$num_warnings, $num_warnings.' Warnings in '.$num_tests.' Tests.');
+		} else {
+			return tx_caretaker_TestResult::create(TX_CARETAKER_OK,$num_tests, '');
+		}
 	}
 		
 

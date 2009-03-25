@@ -28,6 +28,8 @@ class tx_caretaker_DBRepository_testcase extends tx_phpunit_testcase  {
 
 	}
 	
+	
+	
 	function test_group_repository(){
 		$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
 		$all_instances = $instance_repoistory->getAll();
@@ -36,27 +38,16 @@ class tx_caretaker_DBRepository_testcase extends tx_phpunit_testcase  {
 		$groups = $test_instance->getGroups();
 		$this->assertGreaterThan(0 ,count($groups), 'there are no groups present');
 		
-		$subgroups = $groups[0]->getSubgroups();
-		$this->assertGreaterThan(0 ,count($subgroups), 'there are no subgroups found');
-		
-		$groups_recursive = $test_instance->getGroupsRecursive();
-		$this->assertGreaterThan(count($groups) ,count($groups_recursive), 'there are more groups found if the search is done recursive');
-
 	}	
-
-	function test_test_repository(){
-		$instance_repoistory = tx_caretaker_InstanceRepository::getInstance();
+	
+	function test_instance_update(){
+		$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
 		$all_instances = $instance_repoistory->getAll();
-		$test_instance = $all_instances[0];
+		$target = $all_instances[count($all_instances)-1];
 		
-		$tests = $test_instance->getTestsRecursive();
-		$this->assertGreaterThan(0 ,count($tests), 'there are no tests present');
-		$this->assertEquals(get_class($tests[0]) , 'tx_caretaker_Test', 'the first result is not a test object');
-		
-		$tests = $test_instance->getPendingTests();
+		$target->updateState();
 		
 	}
-	
 	
 }
 ?>

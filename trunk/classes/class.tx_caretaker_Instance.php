@@ -41,34 +41,17 @@ class tx_caretaker_Instance {
 		}
 		return $this->groups;
 	}
-	
-	function getGroupsRecursive(){
+
+	/*
+	 * update the state of this group
+	 */
+	function updateState(){
+		// debug('updateState Instance:'.$this->uid);
+		
 		$groups = $this->getGroups();
-		$subgroups = array();
-		foreach ($groups as $group){
-			$subgroups = array_merge($subgroups, $group->getSubgroups(true) );
-		}
-		return array_merge($groups, $subgroups);
-	}
-	
-	function getTestsRecursive(){
-		$groups = $this->getGroupsRecursive();
-		$tests = array();
 		foreach($groups as $group){
-			$tests = array_merge($tests, $group->getTests() );	
+			$group->updateState($this);
 		}
-		return $tests;
-	}
-	
-	function getPendingTests(){
-		$allTests = $this->getTestsRecursive();
-		$pendingTests = array();
-		foreach ($allTests as $test){
-			if ($test->isPending($this) ){
-				$pendingTests[] = $test;
-			}
-		}
-		return $pendingTests;
 	}
 	
 	/*
@@ -76,9 +59,28 @@ class tx_caretaker_Instance {
 	 * @return tx_caretaker_TestResult
 	 */
 	function getState(){
-		
+		$groups = $this->getGroups();
+		$state = TX_CARETAKER_UNDEFINED;
+		$num_tests = count($tests);
+		$num_error = 0;
+		$num_warning = 0;
+		foreach($groups as $group){
+			$result = $group->getState($this);
+			$state  = $result->getState();
+			if ($state == TX_CARETAKER_ERROR ){
+				$num_error ++;
+			} else if ($state == TX_CARETAKER_WARNING || $state == TX_CARETAKER_UNDEFINED){
+				$num_warning ++;
+			}
+		}
+		if  ($num_error > 0){
+			return tx_caretaker_TestResult::create(TX_CARETAKER_ERROR,$num_tests-$num_error-$num_warning, $num_error.' Errors and '.$num_warning.' Warnings in '.$num_tests.' Tests.' );
+		} else if ($num_warning > 0){
+			return tx_caretaker_TestResult::create(TX_CARETAKER_WARNING,$num_tests-$num_warning, $num_warning.' Warnings in '.$num_tests.' Tests.');
+		} else {
+			return tx_caretaker_TestResult::create(TX_CARETAKER_OK,$num_tests, '');
+		}
 	}
-	
 	
 	
 	

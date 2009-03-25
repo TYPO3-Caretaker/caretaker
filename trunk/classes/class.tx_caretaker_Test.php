@@ -9,12 +9,13 @@ class tx_caretaker_Test {
 	private $test_type;
 	private $test_conf = false;
 	private $test_conf_mode = false;
+	private $test_interval  = false; 
 	
-	function __construct($uid, $type, $conf){
+	function __construct($uid, $type, $conf, $interval = 86400){
 		$this->uid = $uid;
 		$this->test_type = $type;
-		$this->test_conf_mode = $conf_mode;
 		$this->test_conf = $conf;
+		$this->test_interval = $interval;
 	}
 	
 	function getUid(){
@@ -46,22 +47,24 @@ class tx_caretaker_Test {
 		
 	}
 	
-	/*
-	 * check weather this test was executed in time for this instance
-	 *  
-	 * @param $instance tx_caretaker_Instance
-	 * @return boolean
-	 */
-	function isPending($instance){
-		
+	function updateState($instance){
+		//debug('updateState Test:'.$this->uid);
+		$last_result = $this->getState($instance);
+		if ($last_result == false || ($last_result->getTstamp() < time()-$this->test_interval) ){
+			$this->runTest($instance);
+		}
 	}
 	
-	function getTestResults($instance){
-		
+	function getState($instance){
+		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
+		$result = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
+		return $result;
 	}
 	
-	function getTestResultRange($startdate, $stopdate){
-		
+	function getTestResultRange($instance, $startdate, $stopdate){
+		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
+		$result = $test_result_repository->getRangeByInstanceAndTest($instance, $this , $startdate, $stopdate);
+		return $result;
 	}
 		
 }

@@ -39,7 +39,7 @@ class tx_caretaker_TestRepository{
 	}
 	
 	function dbrow2instance($row){
-		$instance = new tx_caretaker_Test( $row['uid'], $row['test_service'], $row['test_conf'] );
+		$instance = new tx_caretaker_Test( $row['uid'], $row['test_service'], $row['test_conf'], $row['test_interval'] );
 		return $instance; 
 	}
 }

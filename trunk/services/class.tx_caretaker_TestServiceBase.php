@@ -38,17 +38,18 @@ require_once(PATH_t3lib.'class.t3lib_svbase.php');
 
 
 class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_TestService{
-	
 	var $instance;
 	var $configuration = false;
 	var $ff_config = false;
-	
+
 	function setInstance($instance){
 		$this->instance = $instance;
 	}
 	
 	function setConfiguration($configuration){
+		
 		if (is_array( $configuration) ){
+			$this->ff_config = false;	
 			$this->configuration  = $configuration;
 		} else if ($configuration){
 			$this->ff_config = true;
@@ -56,7 +57,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 		}
 	}
 	
-	function getConfigValue($key, $sheet=false){
+	function getConfigValue($key, $default=false, $sheet=false){
 		if (!$this->configuration) return false;
 		  
 		$result = false;
@@ -72,7 +73,11 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 				$result = $this->configuration[$sheet][$key];
 			}
 		} 
-		return $result;
+		if ($result){
+			return $result;
+		} else {
+			return $default;
+		}
 	}
 		
 	/**

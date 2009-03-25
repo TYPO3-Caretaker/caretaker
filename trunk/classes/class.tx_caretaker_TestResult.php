@@ -13,11 +13,18 @@ class tx_caretaker_TestResult {
 	var $status=0;
 	var $value=0;
 	var $comment='';
+	var $ts = 0;
 	
-	function __construct ($status=TX_CARETAKER_STATE_UNDEFINED, $value=0, $comment='' ){
+	function __construct ($ts, $status=TX_CARETAKER_STATE_UNDEFINED, $value=0, $comment=''){
 		$this->status = $status;
 		$this->value = $value;
 		$this->comment = $comment;
+		$this->ts = $ts;
+	}
+	
+	static function create($status=TX_CARETAKER_STATE_UNDEFINED, $value=0, $comment=''){
+		$ts = time();
+		return new tx_caretaker_TestResult($ts, $status, $value, $comment);
 	}
 		
 	function getState(){
@@ -30,6 +37,10 @@ class tx_caretaker_TestResult {
 	
 	function getComment(){
 		return $this->comment;
+	}
+	
+	function getTstamp(){
+		return $this->ts;
 	}
 	
 }

@@ -4,10 +4,14 @@ require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Te
 
 class tx_caretaker_TestResultRepository {
 
+	// @var $instance tx_caretaker_TestResultRepository
 	private static $instance = null;
 
 	private function __construct (){}	
 	
+	/*
+	 * @return tx_caretaker_TestResultRepository
+	 */
 	public function getInstance(){
 		if (!self::$instance) {
 			self::$instance = new tx_caretaker_TestResultRepository();
@@ -47,11 +51,12 @@ class tx_caretaker_TestResultRepository {
 	}
 	
 	function dbrow2instance($row){
-		$instance = new tx_caretaker_TestResult($row['result_status'], $row['result_value'], $row['result_msg']);
+		$instance = new tx_caretaker_TestResult($row['tstamp'], $row['result_status'], $row['result_value'], $row['result_msg']);
 		return $instance; 
 	}
 	
 	/*
+	 * Prepare a db record for storing of test results
 	 * @return integer uid of created result record
 	 */
 	function prepareTest($instance, $test){
@@ -68,10 +73,11 @@ class tx_caretaker_TestResultRepository {
 	} 
 	
 	/*
-	 * 	
+	 * Save a Test Result into an prepared db-record
 	 */
 	function saveTestResult($uid, $result){
 		$values = array(
+			'tstamp'        => $result->getTstamp(),
 			'result_status' => $result->getState(),
 			'result_value'  => $result->getValue(),
 			'result_msg'    => $result->getComment(),
