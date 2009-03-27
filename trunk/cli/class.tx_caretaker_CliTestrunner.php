@@ -28,28 +28,44 @@ class tx_caretaker_CliTestrunner extends t3lib_cli {
         $this->cli_options[]=array('-g', 'Same as --group');
         $this->cli_options[]=array('--test', 'Specify TestID to update');
         $this->cli_options[]=array('-t', 'Same as --test');
+        $this->cli_options[]=array('-f', 'force Refresh of testResults');
                 
     }
 	
-    function update($instanceID, $groupID){
+    function update($instanceID, $groupID, $testID ){
+    	
+    	$force = (isset($this->cli_args['-f'])||isset($this->cli_args['--force']));
     	
     	if ($instanceID > 0){
     		
-	    	$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
+  	    	$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
 			$instance = $instance_repoistory->getByUid($instanceID, $this);
 			
 			if ($instance) {
-				$res = $instance->updateState();
-				$this->cli_echo(chr(10).chr(10).'Result:'.$res->getState().' '.$res->getComment().chr(10) );
-			} else {
+
+	    		if ($groupID){
+	    			$group_repoistory    = tx_caretaker_GroupRepository::getInstance();
+					$group = $group_repoistory->getByUid($groupID, $this);
+					$res = $group->updateState($instance,$force);
+	    		} else if ($testID) {
+	    			$test_repoistory    = tx_caretaker_TestRepository::getInstance();
+					$test = $test_repoistory->getByUid($testID, $this);
+					$res = $test->updateState($instance,$force);
+	    		} else {
+					$res = $instance->updateState($force);
+				}
+
+    		} else {
 				$this->cli_echo('instance '.$instanceID.' not found'.chr(10));
 			}
+    		
+			
     	}
     	
     }
     
     function log($msg){
-    	$this->cli_echo(chr(10).$msg);
+    	$this->cli_echo($msg.chr(10));
     }
     
     function get($instanceID, $groupID, $testID){

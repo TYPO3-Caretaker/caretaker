@@ -51,11 +51,13 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		if (!$force_update ){
 			$result = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
 			if ( $result->getTstamp() > time()-$this->test_interval ) {
+				$this->log('cache '.$result->getState().' '.$result->getValue().' '.$result->getComment() );
 				return $result;
 			} else if ($this->start_hour || $this->stop_hour ) {
 				$local_time = localtime(time(), true);
 				$local_hour = $local_time['tm_hour'];
 				if ($local_hour < $this->start_hour || $local_hour > $this->stop_hour ){
+					$this->log('cache '.$result->getState().' '.$result->getValue().' '.$result->getComment() );
 					return $result;	
 				}
 			} 
