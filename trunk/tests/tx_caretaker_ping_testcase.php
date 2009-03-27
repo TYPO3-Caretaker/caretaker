@@ -18,8 +18,8 @@ class tx_caretaker_ping_testcase extends tx_phpunit_testcase  {
 
 	function test_ping_ok(){
 		$conf = $this->splitTestConf($this->ping_test_ok);
-		$test     = new tx_caretaker_Test(9996, 'tx_caretaker_ping', $conf );
-		$instance = new tx_caretaker_Instance(9996, $conf['host'], $conf['ip']);
+		$test     = new tx_caretaker_Test(9996,'ping-test', false, 'tx_caretaker_ping', $conf );
+		$instance = new tx_caretaker_Instance(9996, 'instance' , false, $conf['host'], $conf['ip']);
 		$result   = $test->runTest($instance);
 		$this->assertEquals( $result->getState(), TX_CARETAKER_STATE_OK, 'State was not OK' );		
 		
@@ -27,8 +27,8 @@ class tx_caretaker_ping_testcase extends tx_phpunit_testcase  {
 	
 	function test_ping_warning(){
 		$conf = $this->splitTestConf($this->ping_test_warning);
-		$test     = new tx_caretaker_Test(9995, 'tx_caretaker_ping', $conf );
-		$instance = new tx_caretaker_Instance(9995, $conf['host'], $conf['ip']);
+		$test     = new tx_caretaker_Test(9995,'ping-test', false, 'tx_caretaker_ping', $conf );
+		$instance = new tx_caretaker_Instance(9995,  'instance' , false, $conf['host'], $conf['ip']);
 		$result   = $test->runTest($instance);
 		$this->assertEquals( $result->getState(), TX_CARETAKER_STATE_WARNING, 'State was not OK' );		
 		
@@ -36,8 +36,8 @@ class tx_caretaker_ping_testcase extends tx_phpunit_testcase  {
 	
 	function test_ping_error(){
 		$conf = $this->splitTestConf($this->ping_test_error);
-		$test     = new tx_caretaker_Test(9994, 'tx_caretaker_ping', $conf );
-		$instance = new tx_caretaker_Instance(9994, $conf['host'], $conf['ip']);
+		$test     = new tx_caretaker_Test(9994,'ping-test',false, 'tx_caretaker_ping', $conf );
+		$instance = new tx_caretaker_Instance(9994,  'instance' , false, $conf['host'], $conf['ip']);
 		$result   = $test->runTest($instance);
 		$this->assertEquals( $result->getState(), TX_CARETAKER_STATE_ERROR, 'State was not OK' );		
 		

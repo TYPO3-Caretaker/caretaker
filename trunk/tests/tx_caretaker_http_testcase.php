@@ -15,16 +15,16 @@ class tx_caretaker_http_testcase extends tx_phpunit_testcase  {
 	
 	function test_hhtp_test_ok(){
 		$conf = $this->splitTestConf($this->http_test_ok);
-		$test     = new tx_caretaker_Test(9999, 'tx_caretaker_http', $conf );
-		$instance = new tx_caretaker_Instance(9999, $conf['host'], $conf['ip']);
-		$result   = $test->runTest($instance);
+		$test     = new tx_caretaker_Test(9999, 'http-test', false, 'tx_caretaker_http', $conf );
+		$instance = new tx_caretaker_Instance(9999, 'instance' ,false, $conf['host'], $conf['ip']);
+		$result   = $test->runTest($instance, false);
 		$this->assertEquals( $result->getState(), TX_CARETAKER_STATE_OK, 'State was not OK' );
 	}
 	
 	function test_hhtp_test_error(){
 		$conf = $this->splitTestConf($this->http_test_error);
-		$test     = new tx_caretaker_Test(9997, 'tx_caretaker_http', $conf );
-		$instance = new tx_caretaker_Instance(9997, $conf['host'], $conf['ip']);
+		$test     = new tx_caretaker_Test(9997, 'http-test' , false,'tx_caretaker_http', $conf );
+		$instance = new tx_caretaker_Instance(9997, 'instance' ,false, $conf['host'], $conf['ip']);
 		$result   = $test->runTest($instance);
 		$this->assertEquals( $result->getState(), TX_CARETAKER_STATE_ERROR, 'State was not OK' );
 	}

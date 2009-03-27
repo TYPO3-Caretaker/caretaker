@@ -21,6 +21,8 @@ CREATE TABLE tx_caretaker_test (
 	description varchar(255) DEFAULT '' NOT NULL,
 
 	test_interval int(11) DEFAULT '0' NOT NULL,
+	test_interval_start_hour tinyint(4) DEFAULT '0' NOT NULL,
+	test_interval_stop_hour tinyint(4) DEFAULT '0' NOT NULL,
 	test_service varchar(255) DEFAULT '' NOT NULL,
 	test_conf text NOT NULL,
 

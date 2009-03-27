@@ -29,6 +29,9 @@
 			<label index="tx_caretaker_test.test_service.select_service">Please select a test</label>
 			<label index="tx_caretaker_test.test_service">Test Service</label>
 			<label index="tx_caretaker_test.test_interval">Test Interval</label>
+			<label index="tx_caretaker_test.test_interval_start_hour">Run after this Hour</label>
+			<label index="tx_caretaker_test.test_interval_stop_hour">Run before this Hour</label>
+			
 			<label index="tx_caretaker_test.test_service">Test Service</label>
 			<label index="tx_caretaker_test.test_conf">Test Configuration</label>
 			<label index="tx_caretaker_test.test_mode">Test Mode</label>

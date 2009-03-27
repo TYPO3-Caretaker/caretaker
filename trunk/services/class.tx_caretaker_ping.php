@@ -1,6 +1,5 @@
 <?php
 
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestResult.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_TestServiceBase.php');
 
 class tx_caretaker_ping extends tx_caretaker_TestServiceBase {
@@ -16,27 +15,21 @@ class tx_caretaker_ping extends tx_caretaker_TestServiceBase {
 			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_UNKNOWN, 0 , 'Port was not defined' );
 		}
 		
-		$starttime=microtime();
+		$starttime=microtime(true);
 		$socket=@fsockopen($this->instance->getHost(),$port);
-		$endtime=microtime();
+		$endtime=microtime(true);
 	 
 		if ($socket!=false){
 			fclose($socket);
-			list($msec,$sec)=explode(" ",$starttime);
-			$starttime=(float)$msec+(float)$sec;
-			list($msec,$sec)=explode(" ",$endtime);
-			$endtime=(float)$msec+(float)$sec;
-			$time=($endtime-$starttime)*1000;
+			$time=$endtime-$starttime;
 			
 			if ($time_error && $time > $time_error) {
-				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Ping took '.$time.' milliseconds' );
+				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Ping took '.$time.' seconds' );
 			} 
 
 			if ($time_warning && $time > $time_warning) {
-				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'Ping took '.$time.' milliseconds' );
-				
+				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'Ping took '.$time.' seconds' );
 			} 
-
 			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time , '' );
 			
 		} else {

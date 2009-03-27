@@ -1,6 +1,5 @@
 <?php
 
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestResult.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_TestServiceBase.php');
 
 class tx_caretaker_http extends tx_caretaker_TestServiceBase {
@@ -20,7 +19,7 @@ class tx_caretaker_http extends tx_caretaker_TestServiceBase {
 	    	return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_UNDEFINED, 0 , 'No HTTP-Code or no query was set' );
 		}
 		
-		$starttime=microtime();
+		$starttime=microtime(true);
 		
 		$curl = curl_init();
         if (!$curl) {
@@ -35,21 +34,21 @@ class tx_caretaker_http extends tx_caretaker_TestServiceBase {
 		$info    = curl_getinfo($curl);
 		curl_close($curl);
 			
-		$endtime=microtime();
+		$endtime=microtime(true);
 		$time = $endtime-$starttime;
 		
 		if ($time_error && $time > $time_error ){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'HTTP-Request took '.$time.' miliseconds.' );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'HTTP-Request took '.$time.' miliseconds. :: '.$request_url );
 		}
 		
 		if ($time_warning && $time > $time_warning ){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'HTTP-Request took '.$time.' miliseconds.' );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'HTTP-Request took '.$time.' miliseconds. :: '.$request_url );
 		}
 		
 		if ($info['http_code'] == $expected_code){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time , '' );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time , 'Status OK :: '.$request_url );
 		} else {
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Returned Status '.$info['http_code'].' does not match expeted state '.$expected_code );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Returned Status '.$info['http_code'].' does not match expeted state '.$expected_code.' :: '.$request_url );
 		}
 		
 	}

@@ -1,6 +1,7 @@
 <?php
  
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestResultRange.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestResult.php');
 
 class tx_caretaker_TestResultRepository {
 

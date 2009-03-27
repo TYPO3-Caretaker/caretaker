@@ -1,89 +1,96 @@
 <?php 
 
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Node.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_GroupRepository.php');
 
-class tx_caretaker_Instance {
+class tx_caretaker_Instance extends tx_caretaker_Node {
 
-	var $uid;
-	var $host_name;
-	var $host_ip;
-	private $db_data;
+	public $host;
 	private $groups;
 	
-	function __construct($uid, $host_name='', $host_ip='', $data=array()){
-		$this->uid = $uid;
-		$this->host_name = $host_name;
-		$this->host_ip   = $host_ip;
-		$this->db_data   = $data;
+	function __construct( $uid, $title, $parent, $host) {
+		parent::__construct($uid, $title, $parent, 'Instance');
+		$this->host = $host;
 	}
-	
-	
-	function getUid (){
-		return $this->uid;
-	}
-	
+		
 	function getHost (){
-		return $this->host_name;
-	}
-	
-	function getIp (){
-		return $this->host_ip;
-	}
-	
-	function getData (){
-		return $this->db_data;
+		return $this->host;
 	}
 	
 	function getGroups (){
 		if (!$this->groups){
 			$group_repository = tx_caretaker_GroupRepository::getInstance();
-			$this->groups = $group_repository->getByInstanceId($this->uid);
+			$this->groups = $group_repository->getByInstanceId($this->uid, $this);
 		}
 		return $this->groups;
 	}
-
-	/*
-	 * update the state of this group
-	 */
-	function updateState(){
-		// debug('updateState Instance:'.$this->uid);
+	
+	function updateState( $force = false ){
+		
+		$this->log( 'update' );
 		
 		$groups = $this->getGroups();
+		$state = TX_CARETAKER_STATE_UNDEFINED;
+		$num_tests = count($groups);
+		$num_error   = 0;
+		$num_warning = 0;
 		foreach($groups as $group){
-			$group->updateState($this);
+			$test_result = $group->updateState($this, $force);
+			$state  = $test_result->getState();
+			if ( $state == TX_CARETAKER_STATE_ERROR ){
+				$num_error ++;
+			} else if ($state == TX_CARETAKER_STATE_WARNING || $state == TX_CARETAKER_STATE_UNDEFINED){
+				$num_warning ++;
+			}
 		}
+		if  ($num_error > 0){
+			$instance_result = tx_caretaker_TestResult::create(TX_CARETAKER_ERROR,$num_tests-$num_error-$num_warning, $num_error.' Errors and '.$num_warning.' Warnings in '.$num_tests.' Tests.' );
+		} else if ($num_warning > 0){
+			$instance_result = tx_caretaker_TestResult::create(TX_CARETAKER_WARNING,$num_tests-$num_warning, $num_warning.' Warnings in '.$num_tests.' Tests.');
+		} else {
+			$instance_result = tx_caretaker_TestResult::create(TX_CARETAKER_OK,$num_tests, $num_tests.' groups are ok');
+		}
+		
+		$this->log( '-> '.$instance_result->getState().' :: '.$instance_result->getComment(), false );
+		
+		return $instance_result;
+		
 	}
 	
 	/*
 	 * 
 	 * @return tx_caretaker_TestResult
 	 */
-	function getState(){
+	function getState(  ){
+		
+		$this->log( 'get' );
+		
 		$groups = $this->getGroups();
-		$state = TX_CARETAKER_UNDEFINED;
-		$num_tests = count($tests);
-		$num_error = 0;
+		$state = TX_CARETAKER_STATE_UNDEFINED;
+		$num_tests = count($groups);
+		$num_error   = 0;
 		$num_warning = 0;
 		foreach($groups as $group){
-			$result = $group->getState($this);
-			$state  = $result->getState();
-			if ($state == TX_CARETAKER_ERROR ){
+			$test_result = $group->getState($this, $update);
+			$state  = $test_result->getState();
+			if ( $state == TX_CARETAKER_STATE_ERROR ){
 				$num_error ++;
-			} else if ($state == TX_CARETAKER_WARNING || $state == TX_CARETAKER_UNDEFINED){
+			} else if ($state == TX_CARETAKER_STATE_WARNING || $state == TX_CARETAKER_STATE_UNDEFINED){
 				$num_warning ++;
 			}
 		}
 		if  ($num_error > 0){
-			return tx_caretaker_TestResult::create(TX_CARETAKER_ERROR,$num_tests-$num_error-$num_warning, $num_error.' Errors and '.$num_warning.' Warnings in '.$num_tests.' Tests.' );
+			$instance_result = tx_caretaker_TestResult::create(TX_CARETAKER_ERROR,$num_tests-$num_error-$num_warning, $num_error.' Errors and '.$num_warning.' Warnings in '.$num_tests.' Tests.' );
 		} else if ($num_warning > 0){
-			return tx_caretaker_TestResult::create(TX_CARETAKER_WARNING,$num_tests-$num_warning, $num_warning.' Warnings in '.$num_tests.' Tests.');
+			$instance_result = tx_caretaker_TestResult::create(TX_CARETAKER_WARNING,$num_tests-$num_warning, $num_warning.' Warnings in '.$num_tests.' Tests.');
 		} else {
-			return tx_caretaker_TestResult::create(TX_CARETAKER_OK,$num_tests, '');
+			$instance_result = tx_caretaker_TestResult::create(TX_CARETAKER_OK,$num_tests, $num_tests.' groups are ok');
 		}
+		
+		$this->log( '-> '.$instance_result->getState().' :: '.$instance_result->getComment(), false );
+		
+		return $instance_result;
 	}
-	
-	
-	
 }
 
 ?>

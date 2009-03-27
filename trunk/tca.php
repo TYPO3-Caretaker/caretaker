@@ -93,16 +93,48 @@ $TCA['tx_caretaker_test'] = array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_interval',
 			'config' => Array (
-				'type'     => 'input',
-				'size'     => '4',
-				'max'      => '4',
-				'eval'     => 'int',
-				'checkbox' => '0',
-				'range'    => Array (
-					'upper' => '1000',
-					'lower' => '10'
+				'type'     => 'select',
+				'items'    =>Array(
+					Array('1 Minute',       60),
+					Array('5 Minutes',     300),
+					Array('10 Minutes',    600),
+					Array('15 Minutes',    900),
+					Array('20 Minutes',   1200),
+					Array('30 Minutes',   1800),
+					Array('45 Minutes',   2700),
+					Array('1 Hour',       3600),
+					Array('2 Hours',      7200),
+					Array('4 Hours',     14400),
+					Array('8 Hours',     28800),
+					Array('10 Hours',    36000),
+					Array('12 Hours',    43200),
+					Array('1 Day',       86400),
+					Array('2 Days',     172800),
+					Array('1 Week',     604800),
 				),
 				'default' => 0
+			)
+		),
+		'test_interval_start_hour' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_interval_start_hour',
+			'config' => Array (
+				'type'     => 'select',
+				'items'    =>Array(
+					Array('',0),Array(1,1),Array(2,2),Array(3,3),Array(4,4),	Array(5,5),Array(6,6),Array(7,7),Array(8,8),Array(9,9),Array(10,10),Array(11,11),Array(12,12),
+					Array(13,13),Array(14,14),Array(15,15),Array(16,16),Array(17,17),Array(18,18),Array(19,19),Array(20,20),Array(21,21),Array(22,22),Array(23,23),Array(24,24),					
+				)
+			)
+		),
+		'test_interval_stop_hour' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_interval_stop_hour',
+			'config' => Array (
+				'type'     => 'select',
+				'items'    =>Array(
+					Array('',0),Array(1,1),Array(2,2),Array(3,3),Array(4,4),	Array(5,5),Array(6,6),Array(7,7),Array(8,8),Array(9,9),Array(10,10),Array(11,11),Array(12,12),
+					Array(13,13),Array(14,14),Array(15,15),Array(16,16),Array(17,17),Array(18,18),Array(19,19),Array(20,20),Array(21,21),Array(22,22),Array(23,23),Array(24,24),					
+				)
 			)
 		),
 		'test_service' => Array (
@@ -147,13 +179,14 @@ $TCA['tx_caretaker_test'] = array (
 		
 	),
 	'types' => array (
-		'0' => array('showitem' => 'title;;1;;1-1-1, test_service;;;;2-2-2,test_interval, test_conf;;;;3-3-3,
+		'0' => array('showitem' => 'title;;1;;1-1-1, test_service;;;;2-2-2,test_interval;;2, test_conf;;;;3-3-3,
 					 --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.relations, groups,
 					 --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.description, description'
 					)
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'hidden, starttime,endtime,fe_group'),
+		'2' => array('showitem' => 'test_interval_start_hour,test_interval_stop_hour'),
 	)
 );
 

@@ -33,6 +33,7 @@ class tx_caretaker_DBRepository_testcase extends tx_phpunit_testcase  {
 	function test_group_repository(){
 		$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
 		$all_instances = $instance_repoistory->getAll();
+
 		$test_instance = $all_instances[0];
 		
 		$groups = $test_instance->getGroups();
@@ -40,14 +41,14 @@ class tx_caretaker_DBRepository_testcase extends tx_phpunit_testcase  {
 		
 	}	
 	
+	/*
 	function test_instance_update(){
 		$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
 		$all_instances = $instance_repoistory->getAll();
 		$target = $all_instances[count($all_instances)-1];
 		
-		$target->updateState();
-		
+		$res = $target->getState(true);
 	}
-	
+	*/
 }
 ?>
