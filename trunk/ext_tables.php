@@ -208,5 +208,28 @@ tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 't
 tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_http',  'HTTP' , 'Call an URI and check the HTTP-Status' );
 tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_snmp',  'SNMP' , 'Request an SNMP Status and check Result' );
 
+	// Register Backend Modules
+if (TYPO3_MODE=="BE")	{
+		// add module after 'File'
+	if (!isset($TBE_MODULES['caretakerNav']))	{
+		$temp_TBE_MODULES = array();
+		foreach($TBE_MODULES as $key => $val) {
+			if ($key == 'file') {
+				
+				$temp_TBE_MODULES[$key] = $val;
+				$temp_TBE_MODULES['caretakerNav'] = '';
+			} else {
+				$temp_TBE_MODULES[$key] = $val;
+			}
+		}
+
+		$TBE_MODULES = $temp_TBE_MODULES;
+	}
+	
+	t3lib_extMgm::addModule("caretakerNav","","",t3lib_extMgm::extPath($_EXTKEY)."mod_nav/");
+	t3lib_extMgm::addModule("caretakerNav","caretakerOverview","bottom",t3lib_extMgm::extPath($_EXTKEY)."mod_overview/");
+	
+}
+
 
 ?>
