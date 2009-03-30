@@ -58,13 +58,14 @@ CREATE TABLE tx_caretaker_instance (
 	ip varchar(255) DEFAULT '' NOT NULL,
 
 	groups text NOT NULL,
+	instancegroup int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
 
 #
-# Table structure for table 'tx_caretaker_instancegroup'
+# Table structure for table 'tx_caretaker_group'
 #
 CREATE TABLE tx_caretaker_group (
 	uid int(11) NOT NULL auto_increment,
@@ -88,6 +89,33 @@ CREATE TABLE tx_caretaker_group (
 	
 	tests blob NOT NULL,
 
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
+
+#
+# Table structure for table 'tx_caretaker_instancegroup'
+#
+CREATE TABLE tx_caretaker_instancegroup (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+    starttime int(11) DEFAULT '0' NOT NULL,
+    endtime int(11) DEFAULT '0' NOT NULL,
+    fe_group int(11) DEFAULT '0' NOT NULL,
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_diffsource mediumblob NOT NULL,
+
+	title varchar(255) DEFAULT '' NOT NULL,
+	description varchar(255) DEFAULT '' NOT NULL,
+	parent_group int(11) DEFAULT '0' NOT NULL,
+	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );

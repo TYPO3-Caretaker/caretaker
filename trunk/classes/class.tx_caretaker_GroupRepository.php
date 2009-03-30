@@ -15,7 +15,7 @@ class tx_caretaker_GroupRepository {
 		return self::$instance;
 	}
 	
-	public function getByInstanceId($instanceId, $parent = false){
+	public function getByInstanceUid($instanceId, $parent = false){
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_foreign', 'tx_caretaker_instance_group_mm', 'uid_local='.(int)$instanceId);
 		$instance_group_ids = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
@@ -42,7 +42,7 @@ class tx_caretaker_GroupRepository {
 		
 	}
 	
-	public function getByParentGroupId($parent_group_uid, $parent){
+	public function getByParentGroupUid($parent_group_uid, $parent){
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_group', 'hidden=0 AND deleted=0 AND parent_group='.(int)$parent_group_uid);
 		$result = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){

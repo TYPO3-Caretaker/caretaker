@@ -24,13 +24,22 @@ class tx_caretaker_InstanceRepository {
 	}
 	
 	function getByUid($id, $parent = false){
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instance', 'deleted=0 AND hidden=0 AND uid = '.$id);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instance', 'deleted=0 AND hidden=0 AND uid = '.(int)$id);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		if ( $row){
 			return $this->dbrow2instance($row, $parent);
 		} else {
 			return false; 
 		}
+	}
+	
+	function getByInstancegroupUid($id, $parent = false){
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instance', 'deleted=0 AND hidden=0 AND instancegroup = '.(int)$id);
+		$result = array();
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
+			$result[] = $this->dbrow2instance($row, $parent);
+		}
+		return $result;
 	}
 	
 	

@@ -54,6 +54,11 @@
 			<label index="tx_caretaker_instance.tests">Instance Tests</label>
 			<label index="tx_caretaker_instance.public_key">Public Key of Instance</label>
 
+			<label index="tx_caretaker_instancegroup">Instancegroup</label>
+			<label index="tx_caretaker_instancegroup.title">Title</label>
+			<label index="tx_caretaker_instancegroup.description">Description</label>
+			<label index="tx_caretaker_instancegroup.parent_group">Parent Group</label>
+
 			<label index="tx_caretaker_group">Group</label>
 			<label index="tx_caretaker_group.tab.relations">Instances &amp; Tests</label>
 			<label index="tx_caretaker_group.title">Title</label>

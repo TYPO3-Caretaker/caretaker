@@ -22,9 +22,10 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		$this->test_interval = $interval;
 		$this->start_hour    = $start_hour;
 		$this->stop_hour     = $stop_hour;
+		
 	}
 	
-	function runTest($instance){
+	function runTest(){
 		
 		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_type);
 		
@@ -34,7 +35,7 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		}
 		
 			// execute test
-		$test_service->setInstance($instance);
+		$test_service->setInstance( $this->getInstance() );
 		$test_service->setConfiguration($this->test_conf);
 		$test_result = $test_service->runTest();
 		
@@ -43,14 +44,15 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		
 	}
 	
-	function updateState($instance, $force_update){
+	function updateState($force_update = false){
 		
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
+		$instance = $this->getInstance();
 		
 			// check cache and return
 		if (!$force_update ){
 			$result = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
-			if ( $result->getTstamp() > time()-$this->test_interval ) {
+			if ($result && $result->getTstamp() > time()-$this->test_interval ) {
 				$this->log('cache '.$result->getState().' '.$result->getValue().' '.$result->getComment() );
 				return $result;
 			} else if ($this->start_hour || $this->stop_hour ) {
@@ -74,8 +76,8 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		
 	}
 	
-	function getState($instance){
-		
+	function getState(){
+		$instance  = $this->getInstance();
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$result    = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
 	

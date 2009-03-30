@@ -309,9 +309,24 @@ $TCA["tx_caretaker_instance"] = array (
 				'eval' => 'trim,nospace',
 			)
 		),
+		'instancegroup'=> Array (
+	      'exclude' => 1,
+	      'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.groups',
+	      'config' => Array (
+			'type'          => 'select',
+			'form_type'     => 'user',
+			'userFunc'      => 'tx_ttaddress_treeview->displayGroupTree',
+			'treeView'      => 1,
+			'foreign_table' => 'tx_caretaker_instancegroup',
+			'size'          => 5,
+			'autoSizeMax'   => 25,
+			'minitems'      => 0,
+			'maxitems'      => 1,
+	      )
+	    ),
 	),
 	"types" => array (
-		"0" => array("showitem" => 'title;;1, description;;;;1-1-1, url;;;;-2-2-2, ip, public_key,
+		"0" => array("showitem" => 'title;;1, description;;;;1-1-1, instancegroup, url;;;;-2-2-2, ip, public_key,
 									--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations,groups
 		')
 	),
@@ -466,6 +481,111 @@ $TCA['tx_caretaker_group'] = array (
 		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.tab.relations, instances;;;;3-3-3,tests;;;;4-4-4,
 		'
     	)
+	),
+	'palettes' => array (
+		'1' => array('showitem' => 'hidden,starttime,endtime,fe_group')
+	)
+);
+
+
+$TCA['tx_caretaker_instancegroup'] = array (
+	'ctrl' => $TCA['tx_caretaker_instancegroup']['ctrl'],
+	'interface' => array (
+		'showRecordFieldList' => 'hidden,tests,name'
+	),
+	"feInterface" => $TCA["tx_caretaker_instancegroup"]["feInterface"],
+	"columns" => array (
+	
+		'hidden' => Array (        
+			'exclude' => 1,
+			'label'   => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+			'config'  => Array (
+				'type'    => 'check',
+				'default' => '0'
+			),
+		),
+		'starttime' => Array (        
+            'exclude' => 1,
+            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
+            'config' => Array (
+                'type' => 'input',
+                'size' => '8',
+                'max' => '20',
+                'eval' => 'date',
+                'default' => '0',
+                'checkbox' => '0'
+            )
+        ),
+        'endtime' => Array (        
+            'exclude' => 1,
+            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
+            'config' => Array (
+                'type' => 'input',
+                'size' => '8',
+                'max' => '20',
+                'eval' => 'date',
+                'checkbox' => '0',
+                'default' => '0',
+                'range' => Array (
+                    'upper' => mktime(0,0,0,12,31,2020),
+                    'lower' => mktime(0,0,0,date('m')-1,date('d'),date('Y'))
+                )
+            )
+        ),
+        'fe_group' => Array (        
+            'exclude' => 1,
+            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.fe_group',
+            'config' => Array (
+                'type' => 'select',
+                'items' => Array (
+                    Array('', 0),
+                    Array('LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login', -1),
+                    Array('LLL:EXT:lang/locallang_general.xml:LGL.any_login', -2),
+                    Array('LLL:EXT:lang/locallang_general.xml:LGL.usergroups', '--div--')
+                ),
+                'foreign_table' => 'fe_groups'
+            )
+        ),
+        'title' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.title',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '30',
+				'eval' => 'trim',
+			)
+		),
+		'description' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.description',
+			'config' => Array (		
+				'type' => 'text',
+				'cols' => '50',
+				'rows' => '5',
+			)
+		),
+		'parent_group'=>Array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.parent_group',
+			'config' => Array (		
+				'type'          => 'select',
+				'form_type'     => 'user',
+				'userFunc'      => 'tx_ttaddress_treeview->displayGroupTree',
+				'treeView'      => 1,
+				'foreign_table' => 'tx_caretaker_instancegroup',
+				'size'          => 1,
+				'autoSizeMax'   => 10,
+				'minitems'      => 0,
+				'maxitems'      => 2,
+		
+				'items' => Array (
+                    Array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.parent_group.select', 0),
+                ),
+			)
+		)
+    ),
+	"types" => array (
+		"0" => array("showitem" => 'title;;1;;1-1-1, description,parent_group;;;;2-2-2')
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'hidden,starttime,endtime,fe_group')

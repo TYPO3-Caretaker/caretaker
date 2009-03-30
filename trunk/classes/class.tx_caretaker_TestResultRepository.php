@@ -24,6 +24,7 @@ class tx_caretaker_TestResultRepository {
 	 * get the latest Testresult for the gioven 
 	 */
 	function getLatestByInstanceAndTest($instance, $test){
+		
 		$result_range = new tx_caretaker_TestResultRange();
 	
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresults', 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid(), '', 'tstamp DESC', '1'  );

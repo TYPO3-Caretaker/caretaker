@@ -109,6 +109,33 @@ $TCA['tx_caretaker_group'] = array (
 	)
 );
 
+
+$TCA['tx_caretaker_instancegroup'] = array (
+	'ctrl' => array (
+		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup',
+		'label'     => 'title',
+		'tstamp'    => 'tstamp',
+		'crdate'    => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'default_sortby' => 'ORDER BY crdate',
+		'delete' => 'deleted',
+		'treeParentField' => 'parent_group',
+		'enablecolumns' => array (        
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime',
+			'fe_group' => 'fe_group',
+		),
+		'dividers2tabs'=> 1,
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
+		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/instancegroup.png',
+	),
+	'feInterface' => array (
+		'fe_admin_fieldList' => '',
+	)
+);
+
+
 $TCA['tx_caretaker_group_test_rel'] = array (
 	'ctrl' => array (
 		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group_test_rel',

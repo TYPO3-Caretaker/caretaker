@@ -14,7 +14,7 @@ class tx_caretaker_TestResult {
 	var $value=0;
 	var $comment='';
 	var $ts = 0;
-	
+
 	function __construct ($ts, $status=TX_CARETAKER_STATE_UNDEFINED, $value=0, $comment=''){
 		$this->status = $status;
 		$this->value = $value;
@@ -31,6 +31,19 @@ class tx_caretaker_TestResult {
 		return $this->status;
 	}
 	
+	function getStateInfo (){
+		switch ($this->status){
+			case TX_CARETAKER_STATE_OK:
+				return 'OK';
+			case TX_CARETAKER_STATE_ERROR:
+				return 'ERROR';
+			case TX_CARETAKER_STATE_WARNING:
+				return 'WARNING';
+			case TX_CARETAKER_STATE_UNDEFINED:
+				return 'UNDEFINED';
+		}
+	}
+	
 	function getValue(){
 		return $this->value;
 	}
@@ -42,6 +55,8 @@ class tx_caretaker_TestResult {
 	function getTstamp(){
 		return $this->ts;
 	}
+	
+
 	
 }
 

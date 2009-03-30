@@ -1,14 +1,18 @@
 <?php
 
+require_once ('interface.tx_caretaker_LoggerInterface.php');
+
 abstract class tx_caretaker_Node {
 	
 	public $uid     = false;
 	public $title   = false;
 	public $type    = '';
-	public $parent = false;
 	
+	public $parent    = false;
+	public $logger    = false;
+	public $instance  = false;
 	
-	public function __construct($uid, $title, $parent, $type=''){
+	public function __construct( $uid, $title, $parent, $type=''){
 		$this->uid    = $uid;
 		$this->title  = $title;
 		$this->parent = $parent;
@@ -23,14 +27,39 @@ abstract class tx_caretaker_Node {
 		return $this->title;
 	}
 	
+	public function getInstance(){
+		
+		if ( is_a($this, 'tx_caretaker_Instance') ){
+			return $this;
+		} else if ($this->parent){
+			return $this->parent->getInstance();
+		} else {
+			trigger_error  ( 'no instance was set'.chr(10) ) ;
+			return false;
+		}
+	}
+	
+	public function setLogger (tx_caretaker_LoggerInterface $logger){
+		$this->logger = $logger;
+	}
+	
 	public function log($msg, $add_info=true){
 		
-		if ($this->parent && method_exists($this->parent,'log') ){
-			if ($add_info){
+		if ($add_info){
 				$msg = $this->type.' '.$this->title.'['.$this->uid.'] '.$msg;
-			}
-			$this->parent->log('  '.$msg , false);
-		} 
+		}
+			
+		if ($this->logger){
+			$this->logger->log($msg);
+		} else if ($this->parent) {
+			
+			$this->parent->log(' | '.$msg , false);
+		}
 	}
+	
+	abstract public function updateState($force_update = false);
+	
+	abstract public function getState();
+	
 }
 ?>
