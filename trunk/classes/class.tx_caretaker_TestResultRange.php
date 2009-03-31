@@ -7,6 +7,8 @@ class tx_caretaker_TestResultRange implements Iterator {
     var $min = 0;
     var $max = 0;
 	var $len = 0;
+	var $ts_min = 0;
+	var $ts_max = 0;
 	
     public function __construct() {
         $this->position = 0;
@@ -15,12 +17,18 @@ class tx_caretaker_TestResultRange implements Iterator {
     function addResult($result){
     	$this->array[]=$result;	
     	
-    	if ($result->getValue() < $this->min){
-    		$this->min = $result->getValue();
+    	$val = $result->getValue();
+    	if ($val < $this->min){
+    		$this->min = $val;
+    	} else if ($val > $this->max){
+    		$this->max = $val;
     	}
     	
-   		if ($result->getValue() > $this->max){
-    		$this->max = $result->getValue();
+    	$ts = $result->getTstamp();
+    	if ($this->ts_min > 0 && $val < $this->ts_min ){
+    		$this->ts_min  = $ts;
+    	} else if ($val > $this->ts_max){
+    		$this->ts_max = $ts;
     	}
     	 
     	$this->len ++;
@@ -60,7 +68,7 @@ class tx_caretaker_TestResultRange implements Iterator {
 		$num_undefined = 0;
 		$num_errors    = 0;
 		$num_warnings  = 0;
-			
+		
 		for($i= 0 ; $i < $num_tests; $i++ ){
 			switch ( $this->array[$i]->getState() ){
 				case TX_CARETAKER_STATE_ERROR:
@@ -81,11 +89,11 @@ class tx_caretaker_TestResultRange implements Iterator {
 		} 
 		
 		if  ($num_errors > 0){
-			$aggregated_state = tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR,$num_tests-$num_errors-$num_warnings, $num_errors.' errors and '.$num_warnings.' warnings in '.$num_tests.' results.'.$undefined_info );
+			$aggregated_state = tx_caretaker_TestResult::restore($this->ts_max, TX_CARETAKER_STATE_ERROR,$num_tests-$num_errors-$num_warnings, $num_errors.' errors and '.$num_warnings.' warnings in '.$num_tests.' results.'.$undefined_info );
 		} else if ($num_warnings > 0){
-			$aggregated_state = tx_caretaker_TestResult::create(TX_CARETAKER_STATE_WARNING,$num_tests-$num_warnings, $num_warnings.' warnings in '.$num_tests.' results.'.$undefined_info);
+			$aggregated_state = tx_caretaker_TestResult::restore($this->ts_max, TX_CARETAKER_STATE_WARNING,$num_tests-$num_warnings, $num_warnings.' warnings in '.$num_tests.' results.'.$undefined_info);
 		} else {
-			$aggregated_state = tx_caretaker_TestResult::create(TX_CARETAKER_STATE_OK,$num_tests, $num_tests.' results are OK'.$undefined_info);
+			$aggregated_state = tx_caretaker_TestResult::restore($this->ts_max, TX_CARETAKER_STATE_OK,$num_tests, $num_tests.' results are OK'.$undefined_info);
 		}
 		
 		return $aggregated_state;

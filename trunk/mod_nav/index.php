@@ -34,6 +34,9 @@ unset($MCONF);
 require ("conf.php");
 require ($BACK_PATH."init.php");
 require ($BACK_PATH."template.php");
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_InstancegroupRepository.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_InstanceRepository.php');
+
 $LANG->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
 require_once (PATH_t3lib."class.t3lib_scbase.php");
 $BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
@@ -41,7 +44,9 @@ $BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users
 
 class tx_caretaker_mod_nav extends t3lib_SCbase {
 	var $pageinfo;
-
+	var $instancegroup_repository;
+	var $instance_repository;
+	
 	/**
 	 * Initializes the Module
 	 * @return	void
@@ -56,24 +61,13 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->include_once[]=PATH_t3lib."class.t3lib_tcemain.php";
 		}
 		*/
+		
+		$this->instancegroup_repository = tx_caretaker_InstancegroupRepository::getInstance();
+		$this->instance_repository = tx_caretaker_InstanceRepository::getInstance();
+		
 	}
 
-	/**
-	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
-	 *
-	 * @return	void
-	 */
-	function menuConfig()	{
-		global $LANG;
-		$this->MOD_MENU = Array (
-			"function" => Array (
-				"1" => $LANG->getLL("function1"),
-				"2" => $LANG->getLL("function2"),
-				"3" => $LANG->getLL("function3"),
-			)
-		);
-		parent::menuConfig();
-	}
+
 
 	/**
 	 * Main function of the module. Write the content to $this->content
@@ -92,43 +86,52 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 		if (($this->id && $access) || ($BE_USER->user["admin"] && !$this->id))	{
 
 				// Draw the header.
-			$this->doc = t3lib_div::makeInstance("mediumDoc");
+			$this->doc = t3lib_div::makeInstance("template");
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->form='<form action="" method="POST">';
 
-				// JavaScript
-			$this->doc->JScode = '
-				<script language="javascript" type="text/javascript">
-					script_ended = 0;
-					function jumpToUrl(URL)	{
-						document.location = URL;
-					}
-				</script>
-			';
-			$this->doc->postCode='
-				<script language="javascript" type="text/javascript">
-					script_ended = 1;
-					if (top.fsMod) top.fsMod.recentIds["web"] = 0;
-				</script>
-			';
+				// Setting JavaScript for menu.
+			$this->doHighlight = 1;	
+			$this->doc->JScode=$this->doc->wrapScriptTags(
+			($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
+
+			function jumpTo(params,linkObj,highLightID)	{ //
+				var theUrl = top.TS.PATH_typo3+top.currentSubScript+"?"+params;
+				if (top.condensedMode)	{
+					top.content.document.location=theUrl;
+				} else {
+					parent.list_frame.document.location=theUrl;
+				}
+				'.($this->doHighlight?'hilight_row("row"+top.fsMod.recentIds["txdirectmailM1"],highLightID);':'').'
+				'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) {linkObj.blur();}').'
+				return false;
+			}
+			
+			// Highlighting rows in the page tree:
+			function hilight_row(frameSetModule,highLightID) { //
+					// Remove old:
+				theObj = document.getElementById(top.fsMod.navFrameHighlightedID[frameSetModule]);
+				if (theObj)	{
+					theObj.style.backgroundColor="";
+				}
+
+					// Set new:
+				top.fsMod.navFrameHighlightedID[frameSetModule] = highLightID;
+				theObj = document.getElementById(highLightID);
+				if (theObj)	{
+					theObj.style.backgroundColor="'.t3lib_div::modifyHTMLColorAll($this->doc->bgColor,-5).'";
+				}
+			}
+			
+			');
 
 			$headerSection = $this->doc->getHeader("pages",$this->pageinfo,$this->pageinfo["_thePath"])."<br />".$LANG->sL("LLL:EXT:lang/locallang_core.xml:labels.path").": ".t3lib_div::fixed_lgd_pre($this->pageinfo["_thePath"],50);
 
 			$this->content.=$this->doc->startPage($LANG->getLL("title"));
 			$this->content.=$this->doc->header($LANG->getLL("title"));
-			$this->content.=$this->doc->spacer(5);
-			$this->content.=$this->doc->section("",$this->doc->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->id,"SET[function]",$this->MOD_SETTINGS["function"],$this->MOD_MENU["function"])));
-			$this->content.=$this->doc->divider(5);
-
 
 			// Render content:
 			$this->moduleContent();
-
-
-			// ShortCut
-			if ($BE_USER->mayMakeShortcut())	{
-				$this->content.=$this->doc->spacer(20).$this->doc->section("",$this->doc->makeShortcutIcon("id",implode(",",array_keys($this->MOD_MENU)),$this->MCONF["name"]));
-			}
 
 			$this->content.=$this->doc->spacer(10);
 		} else {
@@ -160,27 +163,89 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function moduleContent()	{
-		switch((string)$this->MOD_SETTINGS["function"])	{
-			case 1:
-				$content="<div align=center><strong>Hello World!</strong></div><br />
-					The 'Kickstarter' has made this module automatically, it contains a default framework for a backend module but apart from it does nothing useful until you open the script '".substr(t3lib_extMgm::extPath("caretaker"),strlen(PATH_site))."mod1/index.php' and edit it!
-					<HR>
-					<br />This is the GET/POST vars sent to the script:<br />".
-					"GET:".t3lib_div::view_array($_GET)."<br />".
-					"POST:".t3lib_div::view_array($_POST)."<br />".
-					"";
-				$this->content.=$this->doc->section("Message #1:",$content,0,1);
-			break;
-			case 2:
-				$content="<div align=center><strong>Menu item #2...</strong></div>";
-				$this->content.=$this->doc->section("Message #2:",$content,0,1);
-			break;
-			case 3:
-				$content="<div align=center><strong>Menu item #3...</strong></div>";
-				$this->content.=$this->doc->section("Message #3:",$content,0,1);
-			break;
+	function moduleContent() {
+		
+		$root_instancegroups = $this->instancegroup_repository->getByParentGroupUid(0, false);
+		
+		foreach($root_instancegroups as $instancegroup){
+			$this->content.= $this->show_node_recursive($instancegroup);
 		}
+		
+		$root_instances = $this->instance_repository->getByInstancegroupUid(0, false);
+		foreach($root_instances as $instance){
+			$this->content.= $this->show_node_recursive($instance);
+		}
+		
+	}
+	
+	function show_node_recursive($node, $level=0 ){
+		
+			// show node and icon
+		$result = '';
+		$uid    = $node->getUid();
+		$title  = $node->getTitle();
+		$row    = array('uid'=>$uid, 'pid'=>0, 'title'=>$title, 'deleted'=>0, 'hidden'=>0, 'starttime'=>0 ,'endtime'=>0, 'fe_group'=>0 );
+		$table  = 'tx_caretaker_'.strToLower($node->getType());
+		
+		$params = false;
+		switch (true){
+			case is_a($node, 'tx_caretaker_Instancegroup'):
+				$params = 'id=instancegroup_'.$uid;
+				break;
+			case is_a($node, 'tx_caretaker_Instance'):
+				$params = 'id=instance_'.$uid;
+				break;
+			case is_a($node, 'tx_caretaker_Testgroup'):
+				$instance = $node->getInstance();
+				$params = 'id=instance_'.$instance->getUid().'_testgroup_'.$uid;
+				break;
+			case is_a($node, 'tx_caretaker_Test'):
+				$instance = $node->getInstance();
+				$params = 'id=instance_'.$instance->getUid().'_test_'.$uid;
+				break;		
+		}
+		
+		
+		$result .= str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;',$level);
+		$result .= '<a href="#" onclick="return jumpTo(\''.$params.'\',this,\''.$table.'_'.$uid.'\');">&nbsp;&nbsp;';
+		
+		if (false) {
+			$state = $node->getState();
+			switch( $state->getState() ){
+				case 0:
+					$result .= '<span style="color:green;">';
+					break;
+				case 1:
+					$result .= '<span style="color:yellow;">';
+					break;
+				case 2:
+					$result .= '<span style="color:red;">';
+					break;
+				default:
+					$result .= '<span style="color:grey;">';
+					break;			
+			}
+		} else {
+			$result .= '<span>';
+		}
+		
+		$result .=	t3lib_iconWorks::getIconImage($table,$row,$this->doc->backPath,'title="foo" align="top"').
+				'&nbsp;'.htmlspecialchars($row['title']);
+		$result .= '</span>';		
+		$result .= '</a></li>';
+		$result .= '<br/>';		
+		
+			// show subitems of tx_caretaker_AggregatorNodes
+		if (is_a($node, 'tx_caretaker_AggregatorNode') ){
+			$children = $node->getChildren();
+			if (count($children)>0){
+				foreach($children as $child){
+					$result.= $this->show_node_recursive($child, $level + 1) ;
+				}
+			}
+		}
+		
+		return $result;
 	}
 }
 

@@ -34,7 +34,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 		$test_results = new tx_caretaker_TestResultRange(); 
 		
 		foreach($children as $child){ 
-			$test_result = $child->updateState($force_update);
+			$test_result = $child->getState($force_update);
 			$test_results->addResult($test_result);
 		}
 		

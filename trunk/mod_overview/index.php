@@ -36,12 +36,18 @@ require ($BACK_PATH."init.php");
 require ($BACK_PATH."template.php");
 $LANG->includeLLFile("EXT:caretaker/mod_overview/locallang.xml");
 require_once (PATH_t3lib."class.t3lib_scbase.php");
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_InstancegroupRepository.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_InstanceRepository.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestgroupRepository.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestRepository.php');
+
 $BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
 	// DEFAULT initialization of a module [END]
 
 class tx_caretaker_mod_overview extends t3lib_SCbase {
-	var $pageinfo;
 
+	var $info;
+	
 	/**
 	 * Initializes the Module
 	 * @return	void
@@ -51,6 +57,9 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 
 		parent::init();
 
+		$this->id = $_GET['id'];
+		$this->info = $this->extractID($_GET['id']);
+		
 		/*
 		if (t3lib_div::_GP("clear_all_cache"))	{
 			$this->include_once[]=PATH_t3lib."class.t3lib_tcemain.php";
@@ -67,9 +76,11 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		global $LANG;
 		$this->MOD_MENU = Array (
 			"function" => Array (
-				"1" => $LANG->getLL("function1"),
-				"2" => $LANG->getLL("function2"),
-				"3" => $LANG->getLL("function3"),
+				"days" => $LANG->getLL("days"),
+				"weeks" => $LANG->getLL("weeks"),
+				"months" => $LANG->getLL("months"),
+				"year" => $LANG->getLL("year"),
+		
 			),
 		);
 		parent::menuConfig();
@@ -86,10 +97,12 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 
 		// Access check!
 		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
-		$access = is_array($this->pageinfo) ? 1 : 0;
+		//$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
+		// $access = is_array($this->pageinfo) ? 1 : 0;
 
-		if (($this->id && $access) || ($BE_USER->user["admin"] && !$this->id))	{
+	
+		
+		if ( true /*($this->id && $access) || ($BE_USER->user["admin"] && !$this->id)*/ )	{
 
 				// Draw the header.
 			$this->doc = t3lib_div::makeInstance("mediumDoc");
@@ -144,6 +157,28 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		}
 	}
 
+	function extractID($id_string){
+		$parts = explode('_', $id_string);
+		$info  = array();
+		for($i=0; $i<count($parts);$i +=2 ){
+			switch ($parts[$i]){
+				case 'instancegroup':
+					$info['instancegroup']=(int)$parts[$i+1];
+					break;
+				case 'instance':
+					$info['instance']=(int)$parts[$i+1];
+					break;
+				case 'testgroup':
+					$info['testgroup']=(int)$parts[$i+1];
+					break;
+				case 'test':
+					$info['test']=(int)$parts[$i+1];
+					break;
+			}
+		}
+		return ($info); 
+	}
+	
 	/**
 	 * Prints out the module HTML
 	 *
@@ -161,27 +196,115 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function moduleContent()	{
+					
+		$info="
+			<br />This is the GET/POST vars sent to the script:<br />".
+			"GET:".t3lib_div::view_array($_GET)."<br />".
+			"POST:".t3lib_div::view_array($_POST)."<br />".
+			"info:".t3lib_div::view_array($this->info)."<br />".
+			"";
+		
+		$content = '';
+		
 		switch((string)$this->MOD_SETTINGS["function"])	{
-			case 1:
-				$content="<div align=center><strong>Hello World!</strong></div><br />
-					The 'Kickstarter' has made this module automatically, it contains a default framework for a backend module but apart from it does nothing useful until you open the script '".substr(t3lib_extMgm::extPath("caretaker"),strlen(PATH_site))."mod1/index.php' and edit it!
-					<HR>
-					<br />This is the GET/POST vars sent to the script:<br />".
-					"GET:".t3lib_div::view_array($_GET)."<br />".
-					"POST:".t3lib_div::view_array($_POST)."<br />".
-					"";
-				$this->content.=$this->doc->section("Message #1:",$content,0,1);
-			break;
+			
+			case 'days':
+				$content.= $this->showInfo($this->info) ;
+				break;
 			case 2:
-				$content="<div align=center><strong>Menu item #2...</strong></div>";
-				$this->content.=$this->doc->section("Message #2:",$content,0,1);
+				$content.="<div align=center><strong>Menu item #2...</strong></div>";
 			break;
 			case 3:
-				$content="<div align=center><strong>Menu item #3...</strong></div>";
-				$this->content.=$this->doc->section("Message #3:",$content,0,1);
+				$content.="<div align=center><strong>Menu item #3...</strong></div>";
 			break;
 		}
+		$this->content.= $content.$info;
+		
 	}
+	
+	function showInfo($info){
+		$node = $this->getNode($info);
+		if ($node){
+			return ($this->showNodeInfo($node));
+		} else {
+			return $this->doc->section( 'Error:','please select a node');
+		}
+	}
+	
+	function getNode($info){
+		if ($info['instancegroup']>0){
+			$instancegroup_repoistory    = tx_caretaker_InstancegroupRepository::getInstance();
+			$instancegroup = $instancegroup_repoistory->getByUid($info['instancegroup'], false);
+			return $instancegroup;		
+		} else if ($info['instance']>0){
+			$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
+			$instance = $instance_repoistory->getByUid($info['instance'], false);
+			if ($info['testgroup']>0){
+    			$group_repoistory    = tx_caretaker_TestgroupRepository::getInstance();
+				$group = $group_repoistory->getByUid($info['testgroup'], $instance);
+				return $group;		
+    		} else if ($info['test']>0) {
+    			$test_repoistory    = tx_caretaker_TestRepository::getInstance();
+				$test = $test_repoistory->getByUid($info['test'], $instance);
+				return $test;		
+    		} else {
+				return $instance;		
+			}
+		} else {
+			return false;
+		}
+	}
+	
+	function showNodeInfo($node){
+		$content = '';
+		$nodeinfo = $node->getType().':'.$node->getUid();
+		if ($instance = $node->getInstance()){
+			$nodeinfo .= ' :: '.$instance->getType().':'.$instance->getUid();
+		}
+		$content .= $this->doc->header($nodeinfo );
+		
+		$res = $node->getState();
+		$content .= $this->doc->section( 'current result:','<table>'.
+			'<tr><td>State</td><td>'.$res->getStateInfo().'</td></tr>'.
+			'<tr><td>Value</td><td>'.$res->getValue().'</td></tr>'.
+			'<tr><td>lastRun</td><td>'.strftime('%x %X',$res->getTstamp()).'</td></tr>'.
+			'<tr><td>Comment</td><td>'.$res->getComment().'</td></tr>'.
+			'</table>'
+		 );
+		return ($content);
+		
+	}
+	
+	/*
+    
+    function updateInstance( $instanceID, $groupID, $testID, $force = false ){
+    	
+		require_once ('class.tx_caretaker_InstanceRepository.php');
+		
+      	$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
+		$instance = $instance_repoistory->getByUid($instanceID, $this);
+		$instance->setLogger($this);
+		
+		if ($instance) {
+
+    		if ($groupID){
+    			$group_repoistory    = tx_caretaker_GroupRepository::getInstance();
+				$group = $group_repoistory->getByUid($groupID, $instance);
+				$res = $group->updateState($force);
+    		} else if ($testID) {
+    			$test_repoistory    = tx_caretaker_TestRepository::getInstance();
+				$test = $test_repoistory->getByUid($testID, $instance);
+				$res = $test->updateState($force);
+    		} else {
+				$res = $instance->updateState($force);
+			}
+    	} else {
+			$this->log('instance '.$instanceID.' not found'.chr(10));
+		}
+    }
+    
+    */
+    
 }
 
 

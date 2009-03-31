@@ -34,7 +34,7 @@ class tx_caretaker_TestResultRepository {
 			$result = $this->dbrow2instance($row);
 			return $result;
 		} else {
-			return false;
+			return tx_caretaker_TestResult::undefined();
 		} 		
 	}
 	
@@ -53,7 +53,7 @@ class tx_caretaker_TestResultRepository {
 	}
 	
 	function dbrow2instance($row){
-		$instance = new tx_caretaker_TestResult($row['tstamp'], $row['result_status'], $row['result_value'], $row['result_msg']);
+		$instance = tx_caretaker_TestResult::restore($row['tstamp'], $row['result_status'], $row['result_value'], $row['result_msg']);
 		return $instance; 
 	}
 	

@@ -7,9 +7,10 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="title">Caretaker Overview</label>
-			<label index="function1">Function #1</label>
-			<label index="function2">Function #2</label>
-			<label index="function3">Function #3</label>
+			<label index="days">3 Tage</label>
+			<label index="weeks">2 Wochen</label>
+			<label index="months">3 Monate</label>
+			<label index="year">1 Jahr</label>
 		</languageKey>
 	</data>
 </T3locallang>

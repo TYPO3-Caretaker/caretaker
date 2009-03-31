@@ -29,6 +29,10 @@ abstract class tx_caretaker_Node {
 		return $this->title;
 	}
 	
+	public function getType(){
+		return $this->type;
+	}	
+
 	public function getInstance(){
 		
 		if ( is_a($this, 'tx_caretaker_Instance') ){
@@ -36,7 +40,6 @@ abstract class tx_caretaker_Node {
 		} else if ($this->parent){
 			return $this->parent->getInstance();
 		} else {
-			trigger_error  ( 'no instance was set'.chr(10) ) ;
 			return false;
 		}
 	}

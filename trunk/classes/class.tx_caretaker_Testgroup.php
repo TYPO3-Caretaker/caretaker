@@ -7,7 +7,7 @@ require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Te
 class tx_caretaker_Testgroup extends tx_caretaker_AggregatorNode {
 	
 	public function __construct($uid, $title, $parent){
-		parent::__construct($uid, $title, $parent, 'Group' );
+		parent::__construct($uid, $title, $parent, 'Testgroup' );
 	}
 	
 	function getChildren (){

@@ -56,7 +56,7 @@ class tx_caretaker_CliTestrunner extends t3lib_cli implements tx_caretaker_Logge
 		if ($instance) {
 
     		if ($groupID){
-    			$group_repoistory    = tx_caretaker_GroupRepository::getInstance();
+    			$group_repoistory    = tx_caretaker_TestgroupRepository::getInstance();
 				$group = $group_repoistory->getByUid($groupID, $instance);
 				$res = $group->updateState($force);
     		} else if ($testID) {

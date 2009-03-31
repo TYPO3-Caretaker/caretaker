@@ -22,6 +22,17 @@ class tx_caretaker_TestResult {
 		$this->ts = $ts;
 	}
 	
+	static function undefined (){
+		$ts = time();
+		return new tx_caretaker_TestResult($ts, TX_CARETAKER_STATE_UNDEFINED, 0, 'Result is undefined');
+	}
+	
+	
+	static function restore ($ts, $status=TX_CARETAKER_STATE_UNDEFINED, $value=0, $comment=''){
+		return new tx_caretaker_TestResult($ts, $status, $value, $comment);
+	}
+	
+	
 	static function create($status=TX_CARETAKER_STATE_UNDEFINED, $value=0, $comment=''){
 		$ts = time();
 		return new tx_caretaker_TestResult($ts, $status, $value, $comment);

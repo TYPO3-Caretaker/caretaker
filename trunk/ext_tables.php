@@ -210,8 +210,8 @@ if (TYPO3_MODE=="BE")	{
 		$TBE_MODULES = $temp_TBE_MODULES;
 	}
 	
-	t3lib_extMgm::addModule("caretakerNav","","",t3lib_extMgm::extPath($_EXTKEY)."mod_nav/");
-	t3lib_extMgm::addModule("caretakerNav","caretakerOverview","bottom",t3lib_extMgm::extPath($_EXTKEY)."mod_overview/");
+	t3lib_extMgm::addModule("txcaretakerNav","","",t3lib_extMgm::extPath($_EXTKEY)."mod_nav/");
+	t3lib_extMgm::addModule("txcaretakerNav","txcaretakerOverview","bottom",t3lib_extMgm::extPath($_EXTKEY)."mod_overview/");
 	
 }
 
