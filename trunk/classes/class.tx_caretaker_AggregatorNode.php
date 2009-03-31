@@ -21,7 +21,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 		}
 	
 		$group_result = $test_results->getAggregatedState();
-		$this->log( ' ⌊ '.$group_result->getStateInfo().' :: '.$group_result->getComment(), false );
+		$this->log( ' |> '.$group_result->getStateInfo().' :: '.$group_result->getComment(), false );
 		
 		return $group_result;
 	}
@@ -40,7 +40,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 		
 		$group_result = $test_results->getAggregatedState();
 			
-		$this->log( ' ⌊ '.$group_result->getStateInfo().' :: '.$group_result->getComment(), false );
+		$this->log( ' |> '.$group_result->getStateInfo().' :: '.$group_result->getComment(), false );
 		
 		return $group_result;
 	}

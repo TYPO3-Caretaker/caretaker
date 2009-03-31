@@ -27,7 +27,7 @@ class tx_caretaker_TestResultRepository {
 		
 		$result_range = new tx_caretaker_TestResultRange();
 	
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresults', 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid(), '', 'tstamp DESC', '1'  );
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid(), '', 'tstamp DESC', '1'  );
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		
 		if ($row) {
@@ -44,7 +44,7 @@ class tx_caretaker_TestResultRepository {
 	function getRangeByInstanceAndTest($instance, $test, $start_ts, $stop_ts){
 		$result_range = new tx_caretaker_TestResultRange();
 		$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresults', 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid().' AND tstamp >='.$start_ts.' AND tstamp <='.$stop_ts, '', 'tstamp ASC'  );
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid().' AND tstamp >='.$start_ts.' AND tstamp <='.$stop_ts, '', 'tstamp ASC'  );
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
 			$result = $this->dbrow2instance($row);
 			$result_range->addResult($result);
@@ -70,7 +70,7 @@ class tx_caretaker_TestResultRepository {
 			'tstamp' => time()
 		);		
 		
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_testresults', $values);
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_testresult', $values);
 		return $GLOBALS['TYPO3_DB']->sql_insert_id();
 	} 
 	
@@ -84,7 +84,7 @@ class tx_caretaker_TestResultRepository {
 			'result_value'  => $result->getValue(),
 			'result_msg'    => $result->getComment(),
 		);
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_caretaker_testresults', 'uid='.$uid, $values);
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_caretaker_testresult', 'uid='.$uid, $values);
 	}
 	
 	

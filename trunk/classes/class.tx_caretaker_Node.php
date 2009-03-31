@@ -1,6 +1,8 @@
 <?php
 
 require_once ('interface.tx_caretaker_LoggerInterface.php');
+require_once ('class.tx_caretaker_TestResultRange.php');
+
 
 abstract class tx_caretaker_Node {
 	
@@ -46,7 +48,7 @@ abstract class tx_caretaker_Node {
 	public function log($msg, $add_info=true){
 		
 		if ($add_info){
-				$msg = $this->type.' '.$this->title.'['.$this->uid.'] '.$msg;
+				$msg = ' +- '.$this->type.' '.$this->title.'['.$this->uid.'] '.$msg;
 		}
 			
 		if ($this->logger){

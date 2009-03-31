@@ -2,7 +2,7 @@
 
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_InstancegroupRepository.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_InstanceRepository.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_GroupRepository.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestgroupRepository.php');
 
 class tx_caretaker_DBRepository_testcase extends tx_phpunit_testcase  {
 	
@@ -31,7 +31,7 @@ class tx_caretaker_DBRepository_testcase extends tx_phpunit_testcase  {
 	
 	
 	
-	function test_group_repository(){
+	function test_testgroup_repository(){
 		$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
 		$all_instances = $instance_repoistory->getAll();
 

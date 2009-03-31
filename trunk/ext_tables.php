@@ -84,9 +84,9 @@ $TCA['tx_caretaker_instance_test_rel'] = array (
 	'feInterface' => array ('fe_admin_fieldList' => '' )
 );
 
-$TCA['tx_caretaker_group'] = array (
+$TCA['tx_caretaker_testgroup'] = array (
 	'ctrl' => array (
-		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group',
+		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup',
 		'label'     => 'title',
 		'tstamp'    => 'tstamp',
 		'crdate'    => 'crdate',
@@ -136,27 +136,11 @@ $TCA['tx_caretaker_instancegroup'] = array (
 );
 
 
-$TCA['tx_caretaker_group_test_rel'] = array (
-	'ctrl' => array (
-		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group_test_rel',
-		'label'     => 'group_id',
-		'tstamp'    => 'tstamp',
-		'crdate'    => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'delete'    => 'deleted',
-		'hideTable' => 1,
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/group_test.png',
-		'enablecolumns' => array (        
-			'disabled' => 'hidden',
-		),
-	),
-	'feInterface' => array ('fe_admin_fieldList' => '' )
-);
 
-$TCA['tx_caretaker_testresults'] = array (
+
+$TCA['tx_caretaker_testresult'] = array (
 	'ctrl' => array (
-		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults',
+		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresult',
 		'label'     => 'test_uid',
 		'tstamp'    => 'tstamp',
 		'crdate'    => 'crdate',

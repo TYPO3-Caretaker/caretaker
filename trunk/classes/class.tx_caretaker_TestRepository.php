@@ -16,7 +16,7 @@ class tx_caretaker_TestRepository{
 	
 	public function getByGroupId ($group_id, $parent = false){
 		$ids = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_group_test_mm', 'uid_foreign='.(int)$group_id);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_testgroup_test_mm', 'uid_foreign='.(int)$group_id);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
 			$ids[] = $row['uid_local'];
 		}

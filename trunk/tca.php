@@ -167,12 +167,12 @@ $TCA['tx_caretaker_test'] = array (
 				'form_type'     => 'user',
 				'userFunc'      => 'tx_ttaddress_treeview->displayGroupTree',
 				'treeView'      => 1,
-				'foreign_table' => 'tx_caretaker_group',
+				'foreign_table' => 'tx_caretaker_testgroup',
 				'size'          => 5,
 				'autoSizeMax'   => 25,
 				'minitems'      => 0,
 				'maxitems'      => 50,
-				'MM'            => 'tx_caretaker_group_test_mm',
+				'MM'            => 'tx_caretaker_testgroup_test_mm',
 			),
 			
 		),
@@ -292,12 +292,12 @@ $TCA["tx_caretaker_instance"] = array (
 			'form_type'     => 'user',
 			'userFunc'      => 'tx_ttaddress_treeview->displayGroupTree',
 			'treeView'      => 1,
-			'foreign_table' => 'tx_caretaker_group',
+			'foreign_table' => 'tx_caretaker_testgroup',
 			'size'          => 5,
 			'autoSizeMax'   => 25,
 			'minitems'      => 0,
 			'maxitems'      => 50,
-			'MM'            => 'tx_caretaker_instance_group_mm',
+			'MM'            => 'tx_caretaker_instance_testgroup_mm',
 	      )
 	    ),
 		'public_key' => Array (
@@ -336,12 +336,12 @@ $TCA["tx_caretaker_instance"] = array (
 );
 
 
-$TCA['tx_caretaker_group'] = array (
-	'ctrl' => $TCA['tx_caretaker_group']['ctrl'],
+$TCA['tx_caretaker_testgroup'] = array (
+	'ctrl' => $TCA['tx_caretaker_testgroup']['ctrl'],
 	'interface' => array (
 		'showRecordFieldList' => 'hidden,tests,name'
 	),
-	"feInterface" => $TCA["tx_caretaker_group"]["feInterface"],
+	"feInterface" => $TCA["tx_caretaker_testgroup"]["feInterface"],
 	"columns" => array (
 	
 		'hidden' => Array (        
@@ -396,7 +396,7 @@ $TCA['tx_caretaker_group'] = array (
         ),
         'title' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.title',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.title',
 			'config' => Array (
 				'type' => 'input',
 				'size' => '30',
@@ -405,7 +405,7 @@ $TCA['tx_caretaker_group'] = array (
 		),
 		'description' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.description',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.description',
 			'config' => Array (		
 				'type' => 'text',
 				'cols' => '50',
@@ -414,30 +414,30 @@ $TCA['tx_caretaker_group'] = array (
 		),
 		'parent_group'=>Array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.parent_group',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.parent_group',
 			'config' => Array (		
 				'type'          => 'select',
 				'form_type'     => 'user',
 				'userFunc'      => 'tx_ttaddress_treeview->displayGroupTree',
 				'treeView'      => 1,
-				'foreign_table' => 'tx_caretaker_group',
+				'foreign_table' => 'tx_caretaker_testgroup',
 				'size'          => 1,
 				'autoSizeMax'   => 10,
 				'minitems'      => 0,
 				'maxitems'      => 2,
 		
 				'items' => Array (
-                    Array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.parent_group.select', 0),
+                    Array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.parent_group.select', 0),
                 ),
 			)
 		),
 		'tests' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.tests',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tests',
 			'config' => Array (		
 				'type'          => 'inline',
 				'foreign_table' => 'tx_caretaker_test',
-				'MM'            => 'tx_caretaker_group_test_mm',
+				'MM'            => 'tx_caretaker_testgroup_test_mm',
 				'MM_opposite_field' => 'group',
 				'size'          => 5,
 				'autoSizeMax'   => 10,
@@ -456,7 +456,7 @@ $TCA['tx_caretaker_group'] = array (
 		),
 		'instances'=>Array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.instances',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.instances',
 			'config' => Array (
 				/*		
 				'type'          => 'group',
@@ -466,7 +466,7 @@ $TCA['tx_caretaker_group'] = array (
 		
 				'type'          => 'select',
 				'foreign_table' => 'tx_caretaker_instance',
-				'MM'            => 'tx_caretaker_instance_group_mm',
+				'MM'            => 'tx_caretaker_instance_testgroup_mm',
 				'MM_opposite_field' => 'group',
 				'size'          => 5,
 				'autoSizeMax'   => 10,
@@ -478,7 +478,7 @@ $TCA['tx_caretaker_group'] = array (
     ),
 	"types" => array (
 		"0" => array("showitem" => 'title;;1;;1-1-1, description,parent_group;;;;2-2-2,
-		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_group.tab.relations, instances;;;;3-3-3,tests;;;;4-4-4,
+		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.relations, instances;;;;3-3-3,tests;;;;4-4-4,
 		'
     	)
 	),
@@ -592,16 +592,16 @@ $TCA['tx_caretaker_instancegroup'] = array (
 	)
 );
 
-$TCA['tx_caretaker_testresults'] = array (
-	'ctrl' => $TCA['tx_caretaker_testresults']['ctrl'],
+$TCA['tx_caretaker_testresult'] = array (
+	'ctrl' => $TCA['tx_caretaker_testresult']['ctrl'],
 	'interface' => array (
 		'showRecordFieldList' => 'test_id,instance_id,status,info_short,info_long,resultxml,resultplain'
 	),
-	'feInterface' => $TCA['tx_caretaker_testresults']['feInterface'],
+	'feInterface' => $TCA['tx_caretaker_testresult']['feInterface'],
 	'columns' => array (
 		'test_uid' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.test_uid',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresult.test_uid',
 			'config' => Array (
 				'type'     => 'select',
 				'items' => array (
@@ -615,7 +615,7 @@ $TCA['tx_caretaker_testresults'] = array (
 		),
 		'instance_uid' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.instance_uid',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresult.instance_uid',
 			'config' => Array (
 				'type'     => 'select',
 				'items' => array (
@@ -629,13 +629,13 @@ $TCA['tx_caretaker_testresults'] = array (
 		),
 		'group_uid' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.group_uid',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresult.group_uid',
 			'config' => Array (
 				'type'     => 'select',
 				'items' => array (
 					0 => array('',''),
 				),
-				'foreign_table'     => 'tx_caretaker_group',
+				'foreign_table'     => 'tx_caretaker_testgroup',
 				'size' => 1,
 				'minitems'=> 1,
 				'maxitems'=>1,
@@ -643,22 +643,22 @@ $TCA['tx_caretaker_testresults'] = array (
 		),
 		'result_status' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_status',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresult.result_status',
 			'config' => Array (
 				'type'     => 'select',
 				'items' => array (
-					0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_status.neutral', -1),
-					1 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_status.ok', 0),
-					2 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_status.warning', 1),
-					3 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_status.error', 2),
-					4 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_status.unknown', 3),
+					0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresult.result_status.neutral', -1),
+					1 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresult.result_status.ok', 0),
+					2 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresult.result_status.warning', 1),
+					3 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresult.result_status.error', 2),
+					4 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresult.result_status.unknown', 3),
 				),
 				'default' => -1
 			)
 		),
 		'result_value' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_value',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresult.result_value',
 			'config' => Array (
 				'type' => 'input',
 				'size' => 20,
@@ -666,7 +666,7 @@ $TCA['tx_caretaker_testresults'] = array (
 		),
 		'result_msg' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_msg',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresult.result_msg',
 			'config' => Array (
 				'type'     => 'input',
 				'size'     => '50',
@@ -674,7 +674,7 @@ $TCA['tx_caretaker_testresults'] = array (
 		),
 		'result_data' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresults.result_data',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresult.result_data',
 			'config' => Array (
 				'type'     => 'text',
 			)
