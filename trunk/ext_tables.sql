@@ -65,9 +65,9 @@ CREATE TABLE tx_caretaker_instance (
 );
 
 #
-# Table structure for table 'tx_caretaker_group'
+# Table structure for table 'tx_caretaker_testgroup'
 #
-CREATE TABLE tx_caretaker_group (
+CREATE TABLE tx_caretaker_testgroup (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,
@@ -122,9 +122,9 @@ CREATE TABLE tx_caretaker_instancegroup (
 
 
 #
-# Table structure for table 'tx_caretaker_instance_group_mm'
+# Table structure for table 'tx_caretaker_instance_testgroup_mm'
 #
-CREATE TABLE tx_caretaker_instance_group_mm (
+CREATE TABLE tx_caretaker_instance_testgroup_mm (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 	uid_local int(11) DEFAULT '0' NOT NULL,
@@ -138,9 +138,9 @@ CREATE TABLE tx_caretaker_instance_group_mm (
 );
 
 #
-# Table structure for table 'tx_caretaker_group_test_mm'
+# Table structure for table 'tx_caretaker_testgroup_test_mm'
 #
-CREATE TABLE tx_caretaker_group_test_mm (
+CREATE TABLE tx_caretaker_testgroup_test_mm (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 	uid_local int(11) DEFAULT '0' NOT NULL,
@@ -153,9 +153,9 @@ CREATE TABLE tx_caretaker_group_test_mm (
 );
 
 #
-# Table structure for table 'tx_caretaker_testresults'
+# Table structure for table 'tx_caretaker_testresult'
 #
-CREATE TABLE tx_caretaker_testresults (
+CREATE TABLE tx_caretaker_testresult (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,
