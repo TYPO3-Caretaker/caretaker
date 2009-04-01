@@ -62,9 +62,15 @@ abstract class tx_caretaker_Node {
 		}
 	}
 	
-	abstract public function updateState($force_update = false);
+	abstract public function updateTestResult($force_update = false);
 	
-	abstract public function getState();
+	abstract public function getTestResult();
+	
+	abstract public function getTestResultRange($startdate, $stopdate);
+	
+	public function getRange($start, $stop){
+		return new tx_caretaker_TestResultRange();
+	}
 	
 }
 ?>

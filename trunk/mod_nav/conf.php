@@ -3,7 +3,7 @@
 	// DO NOT REMOVE OR CHANGE THESE 3 LINES:
 define('TYPO3_MOD_PATH', '../typo3conf/ext/caretaker/mod_nav/');
 $BACK_PATH='../../../../typo3/';
-$MCONF['name']='caretakerNav';
+$MCONF['name']='txcaretakerNav';
 
 	
 $MCONF['access']='user,group';

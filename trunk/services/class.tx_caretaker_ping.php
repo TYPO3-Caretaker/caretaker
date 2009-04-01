@@ -16,26 +16,23 @@ class tx_caretaker_ping extends tx_caretaker_TestServiceBase {
 		}
 		
 		$starttime=microtime(true);
-		$socket=@fsockopen($this->instance->getHost(),$port);
+		$res = false;
+		$msg = system ("ping -c 1 ".$this->instance->getHost(),$res );
 		$endtime=microtime(true);
-	 
-		if ($socket!=false){
-			fclose($socket);
-			$time=$endtime-$starttime;
-			
+		$time=$endtime-$starttime;
+
+		if ($res == 0){ 
 			if ($time_error && $time > $time_error) {
 				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Ping took '.$time.' seconds' );
 			} 
-
+	
 			if ($time_warning && $time > $time_warning) {
 				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'Ping took '.$time.' seconds' );
 			} 
 			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time , '' );
-			
 		} else {
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, 0 , 'Error: Ping failed on '.$this->instance->getHost().':80' );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Ping failed. '.$msg );
 		}
-		
 	}
 	
 }

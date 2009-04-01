@@ -210,8 +210,8 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 		$result .= '<a href="#" onclick="return jumpTo(\''.$params.'\',this,\''.$table.'_'.$uid.'\');">&nbsp;&nbsp;';
 		
 		if (false) {
-			$state = $node->getState();
-			switch( $state->getState() ){
+			$test_result = $node->getTestResult();
+			switch( $test_result->getState() ){
 				case 0:
 					$result .= '<span style="color:green;">';
 					break;

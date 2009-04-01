@@ -42,7 +42,7 @@ class tx_caretaker_TestResultRepository {
 	 * @return tx_caretaker_testResultRange
 	 */
 	function getRangeByInstanceAndTest($instance, $test, $start_ts, $stop_ts){
-		$result_range = new tx_caretaker_TestResultRange();
+		$result_range = new tx_caretaker_TestResultRange($start_ts, $stop_ts);
 		$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid().' AND tstamp >='.$start_ts.' AND tstamp <='.$stop_ts, '', 'tstamp ASC'  );
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){

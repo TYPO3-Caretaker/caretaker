@@ -197,11 +197,11 @@ if (TYPO3_MODE=="BE")	{
 		// add module after 'File'
 	if (!isset($TBE_MODULES['caretakerNav']))	{
 		$temp_TBE_MODULES = array();
+		debug($TBE_MODULES);
 		foreach($TBE_MODULES as $key => $val) {
-			if ($key == 'file') {
-				
-				$temp_TBE_MODULES[$key] = $val;
+			if ($key == 'help') {
 				$temp_TBE_MODULES['caretakerNav'] = '';
+				$temp_TBE_MODULES[$key] = $val;
 			} else {
 				$temp_TBE_MODULES[$key] = $val;
 			}

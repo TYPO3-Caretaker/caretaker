@@ -41,7 +41,7 @@ class tx_caretaker_CliTestrunner extends t3lib_cli implements tx_caretaker_Logge
 		$instancegroup = $instancegroup_repoistory->getByUid($instancegroupID, $this);
 		$instancegroup->setLogger($this);
 		if ($instancegroup) {
-			$res = $instancegroup->updateState($force);
+			$res = $instancegroup->updateTestResult($force);
     	} else {
 			$this->cli_echo('instancegroup '.$instancegroupID.' not found'.chr(10));
 		}
@@ -58,13 +58,13 @@ class tx_caretaker_CliTestrunner extends t3lib_cli implements tx_caretaker_Logge
     		if ($groupID){
     			$group_repoistory    = tx_caretaker_TestgroupRepository::getInstance();
 				$group = $group_repoistory->getByUid($groupID, $instance);
-				$res = $group->updateState($force);
+				$res = $group->updateTestResult($force);
     		} else if ($testID) {
     			$test_repoistory    = tx_caretaker_TestRepository::getInstance();
 				$test = $test_repoistory->getByUid($testID, $instance);
-				$res = $test->updateState($force);
+				$res = $test->updateTestResult($force);
     		} else {
-				$res = $instance->updateState($force);
+				$res = $instance->updateTestResult($force);
 			}
     	} else {
 			$this->log('instance '.$instanceID.' not found'.chr(10));

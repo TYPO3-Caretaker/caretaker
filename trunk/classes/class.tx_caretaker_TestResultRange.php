@@ -3,15 +3,17 @@
 class tx_caretaker_TestResultRange implements Iterator {
 	
   	private $position = 0;
-    private $array = array();
+    var $array = array();
     var $min = 0;
     var $max = 0;
 	var $len = 0;
 	var $ts_min = 0;
 	var $ts_max = 0;
 	
-    public function __construct() {
+    public function __construct($ts_min=0, $ts_max=0) {
         $this->position = 0;
+        $this->ts_min = $ts_min;
+        $this->ts_max = $ts_max;
     }
 
     function addResult($result){
@@ -25,13 +27,17 @@ class tx_caretaker_TestResultRange implements Iterator {
     	}
     	
     	$ts = $result->getTstamp();
-    	if ($this->ts_min > 0 && $val < $this->ts_min ){
+    	if ($this->ts_min > 0 && $ts < $this->ts_min ){
     		$this->ts_min  = $ts;
-    	} else if ($val > $this->ts_max){
+    	} else if ($ts > $this->ts_max){
     		$this->ts_max = $ts;
     	}
     	 
     	$this->len ++;
+    }
+    
+    function getLength(){
+    	return $this->len;
     }
     
     function getMinValue(){
@@ -41,6 +47,15 @@ class tx_caretaker_TestResultRange implements Iterator {
     function getMaxValue(){
     	return $this->max;
     }
+    
+    function getMinTstamp(){
+    	return $this->ts_min;
+    }
+    
+    function getMaxTstamp(){
+    	return $this->ts_max;
+    }
+    
     
     function rewind() {
         $this->position = 0;
@@ -62,7 +77,7 @@ class tx_caretaker_TestResultRange implements Iterator {
         return isset($this->array[$this->position]);
     }
 	
-	function getAggregatedState(){
+	function getAggregatedTestResult(){
 		
 		$num_tests = count($this->array);
 		$num_undefined = 0;

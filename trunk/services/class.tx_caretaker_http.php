@@ -16,7 +16,7 @@ class tx_caretaker_http extends tx_caretaker_TestServiceBase {
 			
 		} 
 	*/
-		$request_url =$this->instance->getHost().$request_query;
+		$request_url =$this->instance->getUrl().$request_query;
 		
 		if ( !($expected_code && $request_url)) { 
 			

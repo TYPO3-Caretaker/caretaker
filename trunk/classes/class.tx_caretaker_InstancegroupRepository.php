@@ -6,6 +6,8 @@ class tx_caretaker_InstanceGroupRepository {
 	
 	private static $instance = null;
 
+	private function __construct (){}	
+	
 	public function getInstance(){
 		if (!self::$instance) {
 			self::$instance = new tx_caretaker_InstanceGroupRepository();

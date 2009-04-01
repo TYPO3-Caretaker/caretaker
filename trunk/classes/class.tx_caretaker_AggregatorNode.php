@@ -8,7 +8,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 	
 	abstract function getChildren();
 	
-	function updateState( $force_update = false){
+	function updateTestResult( $force_update = false){
 		
 		$this->log('update', 1);
 		
@@ -16,17 +16,17 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 		$test_results = new tx_caretaker_TestResultRange(); 
 		
 		foreach($children as $child){
-			$test_result = $child->updateState($force_update);
+			$test_result = $child->updateTestResult($force_update);
 			$test_results->addResult($test_result);
 		}
 	
-		$group_result = $test_results->getAggregatedState();
+		$group_result = $test_results->getAggregatedTestResult();
 		$this->log( ' |> '.$group_result->getStateInfo().' :: '.$group_result->getComment(), false );
 		
 		return $group_result;
 	}
 		
-	function getState(){
+	function getTestResult(){
 		
 		$this->log( 'get', 1 );
 		
@@ -34,15 +34,23 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 		$test_results = new tx_caretaker_TestResultRange(); 
 		
 		foreach($children as $child){ 
-			$test_result = $child->getState($force_update);
+			$test_result = $child->getTestResult($force_update);
 			$test_results->addResult($test_result);
 		}
 		
-		$group_result = $test_results->getAggregatedState();
+		$group_result = $test_results->getAggregatedTestResult();
 			
 		$this->log( ' |> '.$group_result->getStateInfo().' :: '.$group_result->getComment(), false );
 		
 		return $group_result;
+	}
+	
+	
+	function getTestResultRange($startdate, $stopdate){
+		
+		$test_results = new tx_caretaker_TestResultRange(); 
+		return $test_results;
+		
 	}
 	
 }

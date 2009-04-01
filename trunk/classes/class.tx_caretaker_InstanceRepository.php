@@ -7,6 +7,8 @@ class tx_caretaker_InstanceRepository {
 
 	private static $instance = null;
 
+	private function __construct (){}	
+	
 	public function getInstance(){
 		if (!self::$instance) {
 			self::$instance = new tx_caretaker_InstanceRepository();
@@ -44,7 +46,7 @@ class tx_caretaker_InstanceRepository {
 	
 	
 	function dbrow2instance($row, $parent = false){
-		$instance = new tx_caretaker_Instance($row['uid'], $row['title'], $parent, $row['url'] );
+		$instance = new tx_caretaker_Instance($row['uid'], $row['title'], $parent, $row['url'], $row['host'] , $row['ip']);
 		return $instance; 
 	}
 	

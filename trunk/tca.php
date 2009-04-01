@@ -275,6 +275,15 @@ $TCA["tx_caretaker_instance"] = array (
 				'eval' => 'trim',
 			)
 		),
+		'host' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.host',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '30',
+				'eval' => 'trim',
+			)
+		),
 		'ip' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.ip',
@@ -326,7 +335,7 @@ $TCA["tx_caretaker_instance"] = array (
 	    ),
 	),
 	"types" => array (
-		"0" => array("showitem" => 'title;;1, description;;;;1-1-1, instancegroup, url;;;;-2-2-2, ip, public_key,
+		"0" => array("showitem" => 'title;;1, description;;;;1-1-1, instancegroup, url;;;;-2-2-2, host, ip, public_key,
 									--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations,groups
 		')
 	),
