@@ -35,6 +35,42 @@ class tx_caretaker_CliTestrunner extends t3lib_cli implements tx_caretaker_Logge
                 
     }
 	
+ 	function showStatusInstancegroup( $instancegroupID ){
+    	
+  	  	$instancegroup_repoistory    = tx_caretaker_InstancegroupRepository::getInstance();
+		$instancegroup = $instancegroup_repoistory->getByUid($instancegroupID, $this);
+		$instancegroup->setLogger($this);
+		if ($instancegroup) {
+			$res = $instancegroup->getTestResult();
+    	} else {
+			$this->cli_echo('instancegroup '.$instancegroupID.' not found'.chr(10));
+		}
+    }
+    
+    function showStatusInstance( $instanceID, $groupID, $testID ){
+   	
+      	$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
+		$instance = $instance_repoistory->getByUid($instanceID, $this);
+		$instance->setLogger($this);
+		
+		if ($instance) {
+
+    		if ($groupID){
+    			$group_repoistory    = tx_caretaker_TestgroupRepository::getInstance();
+				$group = $group_repoistory->getByUid($groupID, $instance);
+				$res = $group->getTestResult();
+    		} else if ($testID) {
+    			$test_repoistory    = tx_caretaker_TestRepository::getInstance();
+				$test = $test_repoistory->getByUid($testID, $instance);
+				$res = $test->getTestResult();
+    		} else {
+				$res = $instance->getTestResult();
+			}
+    	} else {
+			$this->log('instance '.$instanceID.' not found'.chr(10));
+		}
+    }
+    
    function updateInstancegroup( $instancegroupID, $force = false ){
     	
   	  	$instancegroup_repoistory    = tx_caretaker_InstancegroupRepository::getInstance();
@@ -95,7 +131,7 @@ class tx_caretaker_CliTestrunner extends t3lib_cli implements tx_caretaker_Logge
             exit;
         } 
         
-        if ($task == 'update'){
+        if ($task == 'update' || $task == 'get' ){
         	
        		$instancegroupID = (int)$this->readArgument('--instancegroup', '-I');
         	$instanceID      = (int)$this->readArgument('--instance', '-i');
@@ -109,12 +145,21 @@ class tx_caretaker_CliTestrunner extends t3lib_cli implements tx_caretaker_Logge
         		$this->log('Instance or Instancegroup must be specified');
         	}
         	
-        	if ($instanceID){
-        		$this->updateInstance($instanceID, $groupID, $testID, $force);
-        	} 
-        	
-        	if ($instancegroupID){
-        		$this->updateInstancegroup($instancegroupID, $force);
+        	if ($task == 'update'){
+	        	if ($instanceID){
+	        		$this->updateInstance($instanceID, $groupID, $testID, $force);
+	        	} 
+	        	if ($instancegroupID){
+	        		$this->updateInstancegroup($instancegroupID, $force);
+	        	}
+        	}
+        	if ($task == 'get'){
+	        	if ($instanceID){
+	        		$this->showStatusInstance($instanceID, $groupID, $testID);
+	        	} 
+	        	if ($instancegroupID){
+	        		$this->showStatusInstancegroup($instancegroupID);
+	        	}
         	}
         	
         	exit;
