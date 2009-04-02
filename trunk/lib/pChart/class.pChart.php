@@ -1496,29 +1496,102 @@
      /* This function draw a filled line graph */
 	
     function drawFilledXYGraph($Data,$DataDescription,$YSerieName,$XSerieName,$PaletteID,$Alpha=100,$AroundZero=FALSE)
-   {
-     $YLast = -1; $XLast = -1;
-     foreach ( $Data as $Key => $Values )
-      {
-       if ( isset($Data[$Key][$YSerieName]) && isset($Data[$Key][$XSerieName]) )
+    {
+
+       $LayerWidth  = $this->GArea_X2-$this->GArea_X1;
+       $LayerHeight = $this->GArea_Y2-$this->GArea_Y1;
+       $GraphID = 0;
+       $ID = 0;
+       
+       $aPoints   = "";
+       $aPoints[] = $this->GAreaXOffset;
+       $aPoints[] = $LayerHeight;
+
+       $this->Layers[0] = imagecreatetruecolor($LayerWidth,$LayerHeight);
+       $C_White         = $this->AllocateColor($this->Layers[0],255,255,255);
+       imagefilledrectangle($this->Layers[0],0,0,$LayerWidth,$LayerHeight,$C_White);
+       imagecolortransparent($this->Layers[0],$C_White);
+
+       $XPos  = $this->GAreaXOffset;
+       $XLast = -1; $PointsCount = 2;
+       $YZero = $LayerHeight - ((0-$this->VMin) * $this->DivisionRatio);
+       if ( $YZero > $LayerHeight ) { $YZero = $LayerHeight; }
+
+       $XLast = 0;
+       $YLast = 0;
+       foreach ( $Data as $Key => $Values )
+       {
+         if ( isset($Data[$Key][$YSerieName]) && isset($Data[$Key][$XSerieName]) )
+         {
+           $X = $Data[$Key][$XSerieName];
+           $Y = $Data[$Key][$YSerieName];
+
+           $XPos = (($X-$this->VXMin) * $this->XDivisionRatio);
+           $YPos = $LayerHeight - (($Y-$this->VMin)  * $this->DivisionRatio);
+           
+           if ( !is_numeric($Y) )
+           {
+             $PointsCount++;
+             $aPoints[] = $XLast;
+             $aPoints[] = $LayerHeight;
+             $YLast = $Empty;
+           }
+           else
+           {
+             $PointsCount++;
+
+             if ( $YLast <> $Empty )
+             { 
+               $aPoints[] = $XPos;
+               $aPoints[] = $YPos; 
+             }
+             else
+             {
+               $PointsCount++;
+               $aPoints[] = $XPos;
+               $aPoints[] = $LayerHeight;
+               $aPoints[] = $XPos;
+               $aPoints[] = $YPos;
+             }
+
+             if ($YLast <> $Empty && $AroundZero)
+             {
+               $Points   = "";
+               $Points[] = $XLast;
+               $Points[] = $YLast;
+               $Points[] = $XPos;
+               $Points[] = $YPos;
+               $Points[] = $XPos;
+               $Points[] = $YZero;
+               $Points[] = $XLast;
+               $Points[] = $YZero;
+
+               $C_Graph = $this->AllocateColor($this->Layers[0],$this->Palette[$PaletteID]["R"],$this->Palette[$PaletteID]["G"],$this->Palette[$PaletteID]["B"]);
+               imagefilledpolygon($this->Layers[0],$Points,4,$C_Graph);
+             }
+             $XLast = $X;
+             $YLast = $YPos;
+           }
+         }
+         $XLast = $XPos;
+         $XPos  = $XPos + $this->DivisionWidth;
+
+       }
+       $aPoints[] = $XLast;
+       $aPoints[] = $LayerHeight;
+
+       if ( $AroundZero == FALSE )
         {
-         $X = $Data[$Key][$XSerieName];
-         $Y = $Data[$Key][$YSerieName];
-
-         $Y = $this->GArea_Y2 - (($Y-$this->VMin) * $this->DivisionRatio);
-         $X = $this->GArea_X1 + (($X-$this->VXMin) * $this->XDivisionRatio);
-
-         if ($XLast != -1 && $YLast != -1)
-          {
-          	//   function drawFilledRectangle($X1,$Y1,$X2,$Y2,$R,$G,$B,$DrawBorder=TRUE,$Alpha=100,$NoFallBack=FALSE)
-          	
-           $this->drawFilledRectangle($XLast,$YLast,$X,0,$this->Palette[$PaletteID]["R"],$this->Palette[$PaletteID]["G"],$this->Palette[$PaletteID]["B"],FALSE,20);
-          }
-
-         $XLast = $X;
-         $YLast = $Y;
+         $C_Graph = $this->AllocateColor($this->Layers[0],$this->Palette[$PaletteID]["R"],$this->Palette[$PaletteID]["G"],$this->Palette[$PaletteID]["B"]);
+         imagefilledpolygon($this->Layers[0],$aPoints,$PointsCount,$C_Graph);
         }
-      }
+
+       imagecopymerge($this->Picture,$this->Layers[0],$this->GArea_X1,$this->GArea_Y1,0,0,$LayerWidth,$LayerHeight,$Alpha);
+       imagedestroy($this->Layers[0]);
+       $GraphID++;
+       
+       $this->drawXYGraph($Data,$DataDescription,$YSerieName,$XSerieName,$PaletteID);
+       
     }
 
     

@@ -7,11 +7,11 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="title">Caretaker Overview</label>
-			<label index="today">Today</label>
-			<label index="days">3 Tage</label>
-			<label index="weeks">2 Wochen</label>
-			<label index="months">3 Monate</label>
-			<label index="year">1 Jahr</label>
+			<label index="day">12 H</label>
+			<label index="today">24 H</label>
+			<label index="days">3 Days</label>
+			<label index="weeks">14 Days</label>
+			<label index="months">90 Days</label>
 		</languageKey>
 	</data>
 </T3locallang>

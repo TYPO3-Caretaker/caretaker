@@ -194,24 +194,26 @@ tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 't
 
 	// Register Backend Modules
 if (TYPO3_MODE=="BE")	{
-		// add module after 'File'
-	if (!isset($TBE_MODULES['caretakerNav']))	{
-		$temp_TBE_MODULES = array();
-		debug($TBE_MODULES);
-		foreach($TBE_MODULES as $key => $val) {
-			if ($key == 'help') {
-				$temp_TBE_MODULES['caretakerNav'] = '';
-				$temp_TBE_MODULES[$key] = $val;
-			} else {
-				$temp_TBE_MODULES[$key] = $val;
-			}
-		}
 
-		$TBE_MODULES = $temp_TBE_MODULES;
-	}
-	
 	t3lib_extMgm::addModule("txcaretakerNav","","",t3lib_extMgm::extPath($_EXTKEY)."mod_nav/");
-	t3lib_extMgm::addModule("txcaretakerNav","txcaretakerOverview","bottom",t3lib_extMgm::extPath($_EXTKEY)."mod_overview/");
+	t3lib_extMgm::addModule("txcaretakerNav","txcaretakerOverview","",t3lib_extMgm::extPath($_EXTKEY)."mod_overview/");
+	
+	if (isset($TBE_MODULES['file']) ){
+		$caretaker_modconf = $TBE_MODULES['txcaretakerNav'];
+		unset($TBE_MODULES['txcaretakerNav']);
+	}
+		// move module after 'file'
+	$temp_TBE_MODULES = array();
+	foreach ($TBE_MODULES as $key=>$value){
+		if ($key == 'file'){ 
+			$temp_TBE_MODULES[$key]=$value;
+			$temp_TBE_MODULES['txcaretakerNav']=$caretaker_modconf;
+		} else {
+			$temp_TBE_MODULES[$key]=$value;
+		}
+	}
+	$TBE_MODULES = $temp_TBE_MODULES;
+	
 	
 }
 

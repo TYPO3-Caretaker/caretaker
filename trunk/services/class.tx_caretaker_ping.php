@@ -16,8 +16,9 @@ class tx_caretaker_ping extends tx_caretaker_TestServiceBase {
 		}
 		
 		$starttime=microtime(true);
+		$command = "ping -c 1 ".$this->instance->getHost().' >/dev/null' ;
 		$res = false;
-		$msg = system ("ping -c 1 ".$this->instance->getHost(),$res );
+		$msg = system ($command, $res);
 		$endtime=microtime(true);
 		$time=$endtime-$starttime;
 

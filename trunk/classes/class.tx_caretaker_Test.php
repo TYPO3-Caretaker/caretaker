@@ -86,10 +86,10 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		return $result;
 	}
 	
-	function getTestResultRange($startdate, $stopdate){
+	function getTestResultRange($startdate, $stopdate, $distance = FALSE){
 		$instance  = $this->getInstance();
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$result = $test_result_repository->getRangeByInstanceAndTest($instance, $this , $startdate, $stopdate);
+		$result = $test_result_repository->getRangeByInstanceAndTest($instance, $this , $startdate, $stopdate, $distance);
 		return $result;
 	}
 		

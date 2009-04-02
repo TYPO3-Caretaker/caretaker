@@ -46,7 +46,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 	}
 	
 	
-	function getTestResultRange($startdate, $stopdate){
+	function getTestResultRange($startdate, $stopdate , $distance=FALSE){
 		
 		$test_results = new tx_caretaker_TestResultRange(); 
 		return $test_results;

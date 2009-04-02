@@ -76,14 +76,11 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		global $LANG;
 		$this->MOD_MENU = Array (
 			"function" => Array (
-				"0.25" => '6h',
-				"0.5" => '12h',
-				"1" => $LANG->getLL("today"),
-				"3" => $LANG->getLL("days"),
-				"14" => $LANG->getLL("weeks"),
-				"90" => $LANG->getLL("months"),
-				"365" => $LANG->getLL("year"),
-		
+				"0.5" =>$LANG->getLL("day"),
+				"1"   => $LANG->getLL("today"),
+				"3"   => $LANG->getLL("days"),
+				"14"  => $LANG->getLL("weeks"),
+				"90"  => $LANG->getLL("months"),
 			),
 		);
 		parent::menuConfig();
@@ -202,17 +199,17 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 							
 		$num_days = (float)$this->MOD_SETTINGS["function"]; 
 		if (!$num_days) $num_days = 3;
-		$this->content.= $this->showInfo($this->info, $num_days) ;
-		
-	}
-	
-	function showInfo($info, $num_days){
 
-		$node = $this->getNode($info);
+		$node = $this->getNode($this->info);
 		if ($node){
-			return ($this->showNodeInfo($node, $num_days));
+			if ( isset ($_GET['SET']['action']) ){
+				if ($_GET['SET']['action'] == 'update'){
+					$node->updateTestResult(true);	
+				}
+			}
+			$this->content.= ($this->showNodeInfo($node, $num_days));
 		} else {
-			return $this->doc->section( 'Error:','please select a node');
+			$this->content.= $this->doc->section( 'Error:','please select a node');
 		}
 	}
 	
@@ -243,11 +240,13 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 	function showNodeInfo($node, $num_days){
 
 		$content = '';
-		$nodeinfo = $node->getType().':'.$node->getUid();
+		$nodeinfo = $node->getType().':'.$node->getTitle().'['.$node->getUid().']';
 		if ($instance = $node->getInstance()){
-			$nodeinfo .= ' :: '.$instance->getType().':'.$instance->getUid();
+			$instanceinfo = $instance->getType().':'.$instance->getTitle().'['.$instance->getUid().']';
+		} else {
+			$instanceinfo = '';
 		}
-		$content .= $this->doc->header($nodeinfo );
+		$content .= $this->doc->header($instanceinfo.' '.$nodeinfo );
 		
 		$test_result = $node->getTestResult();
 		$content .= $this->doc->section( 'current result:','<table>'.
@@ -257,13 +256,19 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 			'<tr><td>Comment</td><td>'.$test_result->getComment().'</td></tr>'.
 			'</table>'
 		 );
-		 
+		
+		$actions = '<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update" >update</a>';
+		
+		$content .= $this->doc->section( 'action:', $actions);
 			// show graph
 		if ($num_days){
 			
 			require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestResultRangeRenderer_pChart.php');
 			
-			$result_range = $node->getTestResultRange(time()-86400*$num_days , time());	
+
+			$dist = $num_days*100;
+			$result_range = $node->getTestResultRange(time()-86400*$num_days , time(), $dist );	
+						
 			$filename = 'typo3temp/caretaker/charts/'.$this->id.'_'.$num_days.'.png';
 			$renderer = tx_caretaker_TestResultRangeRenderer_pChart::getInstance();
 			$renderer->render($result_range, PATH_site.$filename);
