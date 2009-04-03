@@ -205,28 +205,25 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 				break;		
 		}
 		
-		
+			
 		$result .= str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;',$level);
 		$result .= '<a href="#" onclick="return jumpTo(\''.$params.'\',this,\''.$table.'_'.$uid.'\');">&nbsp;&nbsp;';
 		
-		if (false) {
-			$test_result = $node->getTestResult();
-			switch( $test_result->getState() ){
-				case 0:
-					$result .= '<span style="color:green;">';
-					break;
-				case 1:
-					$result .= '<span style="color:yellow;">';
-					break;
-				case 2:
-					$result .= '<span style="color:red;">';
-					break;
-				default:
-					$result .= '<span style="color:grey;">';
-					break;			
-			}
-		} else {
-			$result .= '<span>';
+		
+		$test_result = $node->getTestResult();
+		switch( $test_result->getState() ){
+			case 0:
+				$result .= '<span style="color:green;">';
+				break;
+			case 1:
+				$result .= '<span style="color:yellow;">';
+				break;
+			case 2:
+				$result .= '<span style="color:red;">';
+				break;
+			default:
+				$result .= '<span style="color:grey;">';
+				break;			
 		}
 		
 		$result .=	t3lib_iconWorks::getIconImage($table,$row,$this->doc->backPath,'title="foo" align="top"').

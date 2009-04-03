@@ -36,10 +36,7 @@ require ($BACK_PATH."init.php");
 require ($BACK_PATH."template.php");
 $LANG->includeLLFile("EXT:caretaker/mod_overview/locallang.xml");
 require_once (PATH_t3lib."class.t3lib_scbase.php");
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_InstancegroupRepository.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_InstanceRepository.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestgroupRepository.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestRepository.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Helper.php');
 
 $BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
 	// DEFAULT initialization of a module [END]
@@ -200,7 +197,8 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		$num_days = (float)$this->MOD_SETTINGS["function"]; 
 		if (!$num_days) $num_days = 3;
 
-		$node = $this->getNode($this->info);
+		$node = tx_caretaker_Helper::getNode($this->info['instancegroup'], $this->info['instance'], $this->info['testgroup'], $this->info['test']);
+
 		if ($node){
 			if ( isset ($_GET['SET']['action']) ){
 				if ($_GET['SET']['action'] == 'update'){
@@ -212,31 +210,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 			$this->content.= $this->doc->section( 'Error:','please select a node');
 		}
 	}
-	
-	function getNode($info){
-		if ($info['instancegroup']>0){
-			$instancegroup_repoistory    = tx_caretaker_InstancegroupRepository::getInstance();
-			$instancegroup = $instancegroup_repoistory->getByUid($info['instancegroup'], false);
-			return $instancegroup;		
-		} else if ($info['instance']>0){
-			$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
-			$instance = $instance_repoistory->getByUid($info['instance'], false);
-			if ($info['testgroup']>0){
-    			$group_repoistory    = tx_caretaker_TestgroupRepository::getInstance();
-				$group = $group_repoistory->getByUid($info['testgroup'], $instance);
-				return $group;		
-    		} else if ($info['test']>0) {
-    			$test_repoistory    = tx_caretaker_TestRepository::getInstance();
-				$test = $test_repoistory->getByUid($info['test'], $instance);
-				return $test;		
-    		} else {
-				return $instance;		
-			}
-		} else {
-			return false;
-		}
-	}
-	
+		
 	function showNodeInfo($node, $num_days){
 
 		$content = '';
@@ -264,7 +238,6 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		if ($num_days){
 			
 			require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestResultRangeRenderer_pChart.php');
-			
 
 			$dist = $num_days*100;
 			$result_range = $node->getTestResultRange(time()-86400*$num_days , time(), $dist );	
@@ -280,36 +253,6 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		return ($content);
 		
 	}
-	
-	/*
-    
-    function updateInstance( $instanceID, $groupID, $testID, $force = false ){
-    	
-		require_once ('class.tx_caretaker_InstanceRepository.php');
-		
-      	$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
-		$instance = $instance_repoistory->getByUid($instanceID, $this);
-		$instance->setLogger($this);
-		
-		if ($instance) {
-
-    		if ($groupID){
-    			$group_repoistory    = tx_caretaker_GroupRepository::getInstance();
-				$group = $group_repoistory->getByUid($groupID, $instance);
-				$res = $group->updateState($force);
-    		} else if ($testID) {
-    			$test_repoistory    = tx_caretaker_TestRepository::getInstance();
-				$test = $test_repoistory->getByUid($testID, $instance);
-				$res = $test->updateState($force);
-    		} else {
-				$res = $instance->updateState($force);
-			}
-    	} else {
-			$this->log('instance '.$instanceID.' not found'.chr(10));
-		}
-    }
-    
-    */
     
 }
 

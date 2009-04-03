@@ -3,10 +3,9 @@
 if (!defined('TYPO3_cliMode'))  die('You cannot run this script directly!');
 
 require_once(PATH_t3lib.'class.t3lib_cli.php');
-require_once ('class.tx_caretaker_InstancegroupRepository.php');
-require_once ('class.tx_caretaker_InstanceRepository.php');
-require_once ('interface.tx_caretaker_LoggerInterface.php');
 
+require_once ('class.tx_caretaker_Helper.php');
+require_once ('interface.tx_caretaker_LoggerInterface.php');
 
 class tx_caretaker_CliTestrunner extends t3lib_cli implements tx_caretaker_LoggerInterface {
 	
@@ -32,80 +31,11 @@ class tx_caretaker_CliTestrunner extends t3lib_cli implements tx_caretaker_Logge
         $this->cli_options[]=array('--test', 'Specify TestID to update');
         $this->cli_options[]=array('-t', 'Same as --test');
         $this->cli_options[]=array('-f', 'force Refresh of testResults');
+        $this->cli_options[]=array('--status', 'Return status code');
+        $this->cli_options[]=array('-r', 'Same as --status');
                 
     }
-	
- 	function showStatusInstancegroup( $instancegroupID ){
-    	
-  	  	$instancegroup_repoistory    = tx_caretaker_InstancegroupRepository::getInstance();
-		$instancegroup = $instancegroup_repoistory->getByUid($instancegroupID, $this);
-		$instancegroup->setLogger($this);
-		if ($instancegroup) {
-			$res = $instancegroup->getTestResult();
-    	} else {
-			$this->cli_echo('instancegroup '.$instancegroupID.' not found'.chr(10));
-		}
-    }
-    
-    function showStatusInstance( $instanceID, $groupID, $testID ){
-   	
-      	$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
-		$instance = $instance_repoistory->getByUid($instanceID, $this);
-		$instance->setLogger($this);
-		
-		if ($instance) {
 
-    		if ($groupID){
-    			$group_repoistory    = tx_caretaker_TestgroupRepository::getInstance();
-				$group = $group_repoistory->getByUid($groupID, $instance);
-				$res = $group->getTestResult();
-    		} else if ($testID) {
-    			$test_repoistory    = tx_caretaker_TestRepository::getInstance();
-				$test = $test_repoistory->getByUid($testID, $instance);
-				$res = $test->getTestResult();
-    		} else {
-				$res = $instance->getTestResult();
-			}
-    	} else {
-			$this->log('instance '.$instanceID.' not found'.chr(10));
-		}
-    }
-    
-   function updateInstancegroup( $instancegroupID, $force = false ){
-    	
-  	  	$instancegroup_repoistory    = tx_caretaker_InstancegroupRepository::getInstance();
-		$instancegroup = $instancegroup_repoistory->getByUid($instancegroupID, $this);
-		$instancegroup->setLogger($this);
-		if ($instancegroup) {
-			$res = $instancegroup->updateTestResult($force);
-    	} else {
-			$this->cli_echo('instancegroup '.$instancegroupID.' not found'.chr(10));
-		}
-    }
-    
-    function updateInstance( $instanceID, $groupID, $testID, $force = false ){
-   	
-      	$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
-		$instance = $instance_repoistory->getByUid($instanceID, $this);
-		$instance->setLogger($this);
-		
-		if ($instance) {
-
-    		if ($groupID){
-    			$group_repoistory    = tx_caretaker_TestgroupRepository::getInstance();
-				$group = $group_repoistory->getByUid($groupID, $instance);
-				$res = $group->updateTestResult($force);
-    		} else if ($testID) {
-    			$test_repoistory    = tx_caretaker_TestRepository::getInstance();
-				$test = $test_repoistory->getByUid($testID, $instance);
-				$res = $test->updateTestResult($force);
-    		} else {
-				$res = $instance->updateTestResult($force);
-			}
-    	} else {
-			$this->log('instance '.$instanceID.' not found'.chr(10));
-		}
-    }
     
     function log($msg){
     	$this->cli_echo($msg.chr(10));
@@ -137,7 +67,8 @@ class tx_caretaker_CliTestrunner extends t3lib_cli implements tx_caretaker_Logge
         	$instanceID      = (int)$this->readArgument('--instance', '-i');
         	$groupID         = (int)$this->readArgument('--group','-g');
         	$testID          = (int)$this->readArgument('--test','-t');
-        	$force           = $this->readArgument('--force','-f');
+        	$force           = (boolean)$this->readArgument('--force','-f');
+        	$return_status   = (boolean)$this->readArgument('--status','-r');
         	
         	if (!($instancegroupID || $instanceID)) {
         		$this->log('Instance or Instancegroup must be specified');
@@ -145,23 +76,24 @@ class tx_caretaker_CliTestrunner extends t3lib_cli implements tx_caretaker_Logge
         		$this->log('Instance or Instancegroup must be specified');
         	}
         	
-        	if ($task == 'update'){
-	        	if ($instanceID){
-	        		$this->updateInstance($instanceID, $groupID, $testID, $force);
-	        	} 
-	        	if ($instancegroupID){
-	        		$this->updateInstancegroup($instancegroupID, $force);
-	        	}
-        	}
-        	if ($task == 'get'){
-	        	if ($instanceID){
-	        		$this->showStatusInstance($instanceID, $groupID, $testID);
-	        	} 
-	        	if ($instancegroupID){
-	        		$this->showStatusInstancegroup($instancegroupID);
-	        	}
-        	}
+        	$node = tx_caretaker_Helper::getNode($instancegroupID, $instanceID, $groupID, $testID);
+        	$node->setLogger($this);
         	
+        	if ($node) {
+        		$res = FALSE;
+	        	if ($task == 'update'){
+		        	 $res = $node->updateTestResult($force);
+	        	}
+	        	
+	        	if ($task == 'get'){
+		        	 $res = $node->getTestResult();
+	        	}
+	        	
+	        	if ($return_status){
+	        		exit ($res->getStatus());
+	        	} 
+        	} 
+
         	exit;
         }
         

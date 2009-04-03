@@ -15,7 +15,6 @@ class tx_caretaker_TestResultRange implements Iterator {
 	var $seconds_warning = 0;
 	var $seconds_error = 0;
 	
-	
 	public function __construct($ts_min=0, $ts_max=0) {
 		$this->position = 0;
 		$this->ts_min = $ts_min;
@@ -171,7 +170,7 @@ class tx_caretaker_TestResultRange implements Iterator {
 		} 
 		
 		if  ($num_errors > 0){
-			$aggregated_state = tx_caretaker_TestResult::restore($this->ts_max, TX_CARETAKER_STATE_ERROR,$num_tests-$num_errors-$num_warnings, $num_errors.' errors and '.$num_warnings.' warnings in '.$num_tests.' results.'.$undefined_info );
+			$aggregated_state = tx_caretaker_TestResult::restore($this->ts_max, TX_CARETAKER_STATE_ERROR, $num_tests-$num_errors-$num_warnings, $num_errors.' errors and '.$num_warnings.' warnings in '.$num_tests.' results.'.$undefined_info );
 		} else if ($num_warnings > 0){
 			$aggregated_state = tx_caretaker_TestResult::restore($this->ts_max, TX_CARETAKER_STATE_WARNING,$num_tests-$num_warnings, $num_warnings.' warnings in '.$num_tests.' results.'.$undefined_info);
 		} else {
