@@ -63,14 +63,14 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 					return $result;	
 				}
 			} 
-		}
+		}	
 			
 			// update
 		$test_id = $test_result_repository->prepareTest($instance, $this);
 		$result = $this->runTest($instance);
 		$test_result_repository->saveTestResult($test_id, $result);
 		
-		$this->log('update '.$result->getState().' '.$result->getValue().' '.$result->getComment() );
+		$this->log('update '.$result->getStateInfo().' '.$result->getValue().' '.$result->getComment() );
 		
 		return $result;
 		
@@ -81,7 +81,7 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$result    = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
 	
-		$this->log($result->getState().' '.$result->getValue().' '.$result->getComment() );
+		$this->log('cache '.$result->getStateInfo().' '.$result->getValue().' '.$result->getComment() );
 		
 		return $result;
 	}
