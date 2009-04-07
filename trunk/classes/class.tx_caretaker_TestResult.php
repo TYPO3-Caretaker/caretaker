@@ -1,9 +1,5 @@
 <?php
 
-/*
- * @TODO add comments
- */
-
 define("TX_CARETAKER_STATE_OK",          0);
 define("TX_CARETAKER_STATE_WARNING",     1);
 define("TX_CARETAKER_STATE_ERROR",       2);
@@ -16,7 +12,7 @@ class tx_caretaker_TestResult {
 	var $ts = 0;
 
 	function __construct ($ts, $status=TX_CARETAKER_STATE_UNDEFINED, $value=0, $msg=''){
-		$this->status = $status;
+		$this->status = (int)$status;
 		$this->value = $value;
 		$this->msg = $msg;
 		$this->ts = $ts;

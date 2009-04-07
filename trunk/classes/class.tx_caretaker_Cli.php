@@ -7,7 +7,7 @@ require_once(PATH_t3lib.'class.t3lib_cli.php');
 require_once ('class.tx_caretaker_Helper.php');
 require_once ('interface.tx_caretaker_LoggerInterface.php');
 
-class tx_caretaker_CliTestrunner extends t3lib_cli implements tx_caretaker_LoggerInterface {
+class tx_caretaker_Cli extends t3lib_cli implements tx_caretaker_LoggerInterface {
 	
 	/**
 	 * Constructor
@@ -90,11 +90,10 @@ class tx_caretaker_CliTestrunner extends t3lib_cli implements tx_caretaker_Logge
 	        	}
 	        	
 	        	if ($return_status){
-	        		exit ($res->getStatus());
+	        		$this->log('State: '.$res->getState().':'.$res->getStateInfo() );
+	        		exit ( (int)$res->() );
 	        	} 
         	} 
-
-        	exit;
         }
         
         if ($task = 'help'){
@@ -120,7 +119,7 @@ class tx_caretaker_CliTestrunner extends t3lib_cli implements tx_caretaker_Logge
 }
 
 // Call the functionality
-$GLOBALS['tx_caretaker_CliTestrunner'] = t3lib_div::makeInstance('tx_caretaker_CliTestrunner');
-$GLOBALS['tx_caretaker_CliTestrunner']->cli_main($_SERVER['argv']);
+$sobe = t3lib_div::makeInstance('tx_caretaker_Cli');
+$sobe->cli_main($_SERVER['argv']);
 
 ?>
