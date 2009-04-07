@@ -91,7 +91,7 @@ class tx_caretaker_Cli extends t3lib_cli implements tx_caretaker_LoggerInterface
 	        	
 	        	if ($return_status){
 	        		$this->log('State: '.$res->getState().':'.$res->getStateInfo() );
-	        		exit ( (int)$res->() );
+	        		exit ( (int)$res->getState() );
 	        	} 
         	} 
         }
