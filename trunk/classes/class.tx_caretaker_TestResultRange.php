@@ -21,8 +21,17 @@ class tx_caretaker_TestResultRange implements Iterator {
 		$this->ts_max = $ts_max;
 	}
 
-	function addResult($result){
-		$this->array[]=$result;	
+	function addResult($result, $pos = false ){
+		
+		switch ($pos){
+			case 'first':
+				array_unshift($this->array,$result);
+				break;
+			case 'last':
+			default:
+				$this->array[] = $result;
+				break;
+		}
 		$this->len ++;
 		
 		$val = $result->getValue();
@@ -40,8 +49,20 @@ class tx_caretaker_TestResultRange implements Iterator {
 		}
 		
 		if ( $this->len > 1 ) {
-			$last_state = $this->array[$this->len-2]->getState();
-			$time_range = $result->getTstamp() - $this->array[$this->len-2]->getTstamp();
+			switch ($pos){
+				case 'first':
+					$last_state = $this->array[1]->getState();
+					$last_time  = $this->array[1]->getTstamp();
+					$time_range = $last_time - $result->getTstamp();
+					break;
+				case 'last':
+				default:
+					$last_state = $this->array[$this->len-2]->getState();
+					$last_time  = $this->array[$this->len-2]->getTstamp();
+					$time_range = $result->getTstamp() - $last_time;
+					break;	
+			}
+				
 			switch ($last_state) {
 				case TX_CARETAKER_STATE_OK : 
 					$this->seconds_ok += $time_range;
@@ -56,9 +77,7 @@ class tx_caretaker_TestResultRange implements Iterator {
 					$this->seconds_error += $time_range;
 					break;	
 			}
-		} 
-		
-		
+		}
 	}
 	
 		// get time infos
@@ -122,27 +141,6 @@ class tx_caretaker_TestResultRange implements Iterator {
 		return $this->ts_max;
 	}
 	
-	
-	function rewind() {
-		$this->position = 0;
-	}
-
-	function current() {
-		return $this->array[$this->position];
-	}
-
-	function key() {
-		return $this->position;
-	}
-
-	function next() {
-		++$this->position;
-	}
-
-	function valid() {
-		return isset($this->array[$this->position]);
-	}
-	
 	function getAggregatedTestResult(){
 		
 		$num_tests = count($this->array);
@@ -180,6 +178,62 @@ class tx_caretaker_TestResultRange implements Iterator {
 		return $aggregated_state;
 	}
 	
+	
+	function getFirst (){
+		if ( $this->len > 0 ){
+			return $this->array[0];
+		} else {
+			return false;
+		}
+	}
+	
+	function getLast (){
+		if ( $this->len > 0 ){
+			return $this->array[$this->len - 1];
+		} else {
+			return false;
+		}
+	}
+	
+		// Iterator methods
+		
+	function rewind() {
+		$this->position = 0;
+	}
+
+	function current() {
+		return $this->array[$this->position];
+	}
+
+	function key() {
+		return $this->position;
+	}
+
+	function next() {
+		++$this->position;
+	}
+
+	function valid() {
+		return isset($this->array[$this->position]);
+	}
+	
+	
+		// arrayacess methods
+		/* 
+    public function offsetSet($offset, $value) {
+    	$this->array[$offset] = $value;
+    }
+    public function offsetExists($offset) {
+        return isset($this->array[$offset]);
+    }
+    public function offsetUnset($offset) {
+        unset($this->array[$offset]);
+    }
+    public function offsetGet($offset) {
+        return isset($this->array[$offset]) ? $this->array[$offset] : null;
+    }	
+     	*/
+		
 }
 
 ?>

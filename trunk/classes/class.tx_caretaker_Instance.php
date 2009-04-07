@@ -2,6 +2,7 @@
 
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_AggregatorNode.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestgroupRepository.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_InstancegroupRepository.php');
 
 class tx_caretaker_Instance extends tx_caretaker_AggregatorNode {
 
@@ -21,7 +22,6 @@ class tx_caretaker_Instance extends tx_caretaker_AggregatorNode {
 		return $this->url;
 	}
 	
-	
 	function getHost (){
 		return $this->host;
 	}
@@ -30,12 +30,10 @@ class tx_caretaker_Instance extends tx_caretaker_AggregatorNode {
 		return $this->ip;
 	}
 	
-	function getChildren (){
-		if (!$this->groups){
-			$group_repository = tx_caretaker_TestgroupRepository::getInstance();
-			$this->children = $group_repository->getByInstanceUid($this->uid, $this);
-		}
-		return $this->children;
+	function findChildren (){
+		$testgroup_repository = tx_caretaker_TestgroupRepository::getInstance();
+		$children = $testgroup_repository->getByInstanceUid($this->uid, $this);
+		return $children;
 	}
 	
 }

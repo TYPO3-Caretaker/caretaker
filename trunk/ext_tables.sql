@@ -121,7 +121,6 @@ CREATE TABLE tx_caretaker_instancegroup (
 	KEY parent (pid)
 );
 
-
 #
 # Table structure for table 'tx_caretaker_instance_testgroup_mm'
 #
@@ -139,16 +138,37 @@ CREATE TABLE tx_caretaker_instance_testgroup_mm (
 );
 
 #
-# Table structure for table 'tx_caretaker_testgroup_test_mm'
+# Table structure for table 'tx_caretaker_instance_instancegroup_mm'
 #
-CREATE TABLE tx_caretaker_testgroup_test_mm (
+CREATE TABLE tx_caretaker_instance_instancegroup_mm (
 	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
+
 	uid_local int(11) DEFAULT '0' NOT NULL,
 	uid_foreign int(11) DEFAULT '0' NOT NULL,
+
 	tablenames varchar(30) DEFAULT '' NOT NULL,
 	sorting int(11) DEFAULT '0' NOT NULL,
 	sorting_foreign int(11) DEFAULT '0' NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY uid_local (uid_local),
+	KEY uid_foreign (uid_foreign)
+);
+
+#
+# Table structure for table 'tx_caretaker_testgroup_test_mm'
+#
+CREATE TABLE tx_caretaker_testgroup_test_mm (
+
+	uid int(11) NOT NULL auto_increment,
+	uid_local int(11) DEFAULT '0' NOT NULL,
+	uid_foreign int(11) DEFAULT '0' NOT NULL,
+	
+	tablenames varchar(30) DEFAULT '' NOT NULL,
+	sorting int(11) DEFAULT '0' NOT NULL,
+	sorting_foreign int(11) DEFAULT '0' NOT NULL,
+
+	PRIMARY KEY (uid),
 	KEY uid_local (uid_local),
 	KEY uid_foreign (uid_foreign)
 );
@@ -158,22 +178,36 @@ CREATE TABLE tx_caretaker_testgroup_test_mm (
 #
 CREATE TABLE tx_caretaker_testresult (
 	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,
-    crdate int(11) DEFAULT '0' NOT NULL,
-    cruser_id int(11) DEFAULT '0' NOT NULL,
-    deleted tinyint(4) DEFAULT '0' NOT NULL,
 
 	test_uid int(11) DEFAULT '0' NOT NULL,
 	instance_uid int(11) DEFAULT '0' NOT NULL,
-	group_uid int(11) DEFAULT '0' NOT NULL,
 	
 	result_status int(11) DEFAULT '0' NOT NULL,
 	result_value float DEFAULT '0' NOT NULL,
 	result_msg varchar(255) DEFAULT '' NOT NULL,
-	result_data tinytext NOT NULL,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid)
+	KEY test_instance_uid (test_uid,instance_uid)
+	
+);
+
+#
+# Table structure for table 'tx_caretaker_aggregatorresult'
+#
+CREATE TABLE tx_caretaker_aggregatorresult (
+	uid int(11) NOT NULL auto_increment,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	
+	aggregator_uid int(11) DEFAULT '0' NOT NULL,
+	aggregator_type varchar(255) DEFAULT '' NOT NULL,
+	instance_uid int(11) DEFAULT '0' NOT NULL,
+	
+	result_status int(11) DEFAULT '0' NOT NULL,
+	result_value float DEFAULT '0' NOT NULL,
+	result_msg varchar(255) DEFAULT '' NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY aggregator (aggregator_uid,aggregator_type,instance_uid)
 );
 

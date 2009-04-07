@@ -43,10 +43,13 @@ class tx_caretaker_TestResultRepository {
 	 */
 	function getRangeByInstanceAndTest($instance, $test, $start_ts, $stop_ts, $distance= FALSE){
 		$result_range = new tx_caretaker_TestResultRange($start_ts, $stop_ts);
+		$base_condition = 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid().' ';
+		
 		$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid().' AND tstamp >='.$start_ts.' AND tstamp <='.$stop_ts, '', 'tstamp ASC'  );
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', $base_condition.'AND tstamp >='.$start_ts.' AND tstamp <='.$stop_ts, '', 'tstamp ASC'  );
 
 		$last = 0;
+		/*
 		if ($distance){
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
 				if ($row['tstamp']> $last+$distance ){
@@ -56,11 +59,39 @@ class tx_caretaker_TestResultRepository {
 				}
 			}
 		} else {
+		*/
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
 				$result = $this->dbrow2instance($row);
 				$result_range->addResult($result);
 			}
+		/*
 		}
+		*/
+		
+			// add first value if needed
+		$first = $result_range->getFirst();
+		if ($first && $first->getTstamp() > $start_ts){
+			$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', $base_condition.' AND tstamp <'.$start_ts, '', 'tstamp DESC' , 1  );
+			if ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$row['tstamp'] = $start_ts;
+				$result = $this->dbrow2instance($row);
+				$result_range->addResult($result, 'first');
+			}
+		}
+		
+			// add last value if needed
+		$last = $result_range->getLast(); 
+		if ($last && $last->getTstamp() < $stop_ts){
+			$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', $base_condition.' AND tstamp >'.$stop_ts, '', 'tstamp ASC' , 1  );
+			if ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$row['tstamp'] = $stop_ts;
+				$result = $this->dbrow2instance($row);
+				$result_range->addResult($result, 'last');
+			}
+		}
+
 		return $result_range; 
 	}
 	
@@ -94,7 +125,7 @@ class tx_caretaker_TestResultRepository {
 			'tstamp'        => $result->getTstamp(),
 			'result_status' => $result->getState(),
 			'result_value'  => $result->getValue(),
-			'result_msg'    => $result->getComment(),
+			'result_msg'    => $result->getMsg(),
 		);
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_caretaker_testresult', 'uid='.$uid, $values);
 	}

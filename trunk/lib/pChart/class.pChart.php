@@ -1492,6 +1492,33 @@
         }
       }
     }
+    
+   /* This function draw a line graph */
+   function drawOrthoXYGraph($Data,$DataDescription,$YSerieName,$XSerieName,$PaletteID=0)
+    {
+     $YLast = -1; $XLast = -1;
+     foreach ( $Data as $Key => $Values )
+      {
+       if ( isset($Data[$Key][$YSerieName]) && isset($Data[$Key][$XSerieName]) )
+        {
+         $X = $Data[$Key][$XSerieName];
+         $Y = $Data[$Key][$YSerieName];
+
+         $Y = $this->GArea_Y2 - (($Y-$this->VMin) * $this->DivisionRatio);
+         $X = $this->GArea_X1 + (($X-$this->VXMin) * $this->XDivisionRatio);
+
+         if ($XLast != -1 && $YLast != -1)
+          {
+           $this->drawLine($XLast,$YLast,$X,$YLast,$this->Palette[$PaletteID]["R"],$this->Palette[$PaletteID]["G"],$this->Palette[$PaletteID]["B"],TRUE);
+           $this->drawLine($X,$YLast,$X,$Y,$this->Palette[$PaletteID]["R"],$this->Palette[$PaletteID]["G"],$this->Palette[$PaletteID]["B"],TRUE);
+          }
+
+         $XLast = $X;
+         $YLast = $Y;
+        }
+      }
+    }
+    
 
      /* This function draw a filled line graph */
 	
@@ -1594,6 +1621,109 @@
        
     }
 
+    function drawFilledOrthoXYGraph($Data,$DataDescription,$YSerieName,$XSerieName,$PaletteID,$Alpha=100,$AroundZero=FALSE)
+    {
+
+       $LayerWidth  = $this->GArea_X2-$this->GArea_X1;
+       $LayerHeight = $this->GArea_Y2-$this->GArea_Y1;
+       $GraphID = 0;
+       $ID = 0;
+       
+       $aPoints   = "";
+       $aPoints[] = $this->GAreaXOffset;
+       $aPoints[] = $LayerHeight;
+       $PointsCount = 1;
+
+       $this->Layers[0] = imagecreatetruecolor($LayerWidth,$LayerHeight);
+       $C_White         = $this->AllocateColor($this->Layers[0],255,255,255);
+       imagefilledrectangle($this->Layers[0],0,0,$LayerWidth,$LayerHeight,$C_White);
+       imagecolortransparent($this->Layers[0],$C_White);
+
+       $XPos  = $this->GAreaXOffset;
+       $XLast = -1; 
+       $YZero = $LayerHeight - ((0-$this->VMin) * $this->DivisionRatio);
+       if ( $YZero > $LayerHeight ) { $YZero = $LayerHeight; }
+
+       $XLast = 0;
+       $YLast = 0;
+       foreach ( $Data as $Key => $Values )
+       {
+         if ( isset($Data[$Key][$YSerieName]) && isset($Data[$Key][$XSerieName]) )
+         {
+           $X = $Data[$Key][$XSerieName];
+           $Y = $Data[$Key][$YSerieName];
+
+           $XPos = (($X-$this->VXMin) * $this->XDivisionRatio);
+           $YPos = $LayerHeight - (($Y-$this->VMin)  * $this->DivisionRatio);
+			             
+           if ( !is_numeric($Y) )
+           {
+             $PointsCount++;
+             $aPoints[] = $XLast;
+             $aPoints[] = $LayerHeight;
+             $YLast = $Empty;
+           }
+           else
+           {
+            
+
+             if ( $YLast <> $Empty )
+             { 
+               $PointsCount += 2;
+               $aPoints[] = $XPos;
+               $aPoints[] = $YLast; 
+               $aPoints[] = $XPos;
+               $aPoints[] = $YPos; 
+             }
+             else
+             {
+               $PointsCount += 2;
+               $aPoints[] = $XPos;
+               $aPoints[] = $LayerHeight;
+               $aPoints[] = $XPos;
+               $aPoints[] = $YPos;
+             }
+
+             if ($YLast <> $Empty && $AroundZero)
+             {
+               $Points   = "";
+               $Points[] = $XLast;
+               $Points[] = $YLast;
+               $Points[] = $XPos;
+               $Points[] = $YLast;
+               $Points[] = $XPos;
+               $Points[] = $YZero;
+               $Points[] = $XLast;
+               $Points[] = $YZero;
+
+               $C_Graph = $this->AllocateColor($this->Layers[0],$this->Palette[$PaletteID]["R"],$this->Palette[$PaletteID]["G"],$this->Palette[$PaletteID]["B"]);
+               imagefilledpolygon($this->Layers[0],$Points,4,$C_Graph);
+             }
+             $XLast = $X;
+             $YLast = $YPos;
+           }
+         }
+         $XLast = $XPos;
+         $XPos  = $XPos + $this->DivisionWidth;
+
+       }
+       $PointsCount ++;
+       $aPoints[] = $XLast;
+       $aPoints[] = $LayerHeight;
+              
+       if ( $AroundZero == FALSE )
+        {
+         $C_Graph = $this->AllocateColor($this->Layers[0],$this->Palette[$PaletteID]["R"],$this->Palette[$PaletteID]["G"],$this->Palette[$PaletteID]["B"]);
+         imagefilledpolygon($this->Layers[0],$aPoints,$PointsCount,$C_Graph);
+        }
+
+       imagecopymerge($this->Picture,$this->Layers[0],$this->GArea_X1,$this->GArea_Y1,0,0,$LayerWidth,$LayerHeight,$Alpha);
+       imagedestroy($this->Layers[0]);
+       $GraphID++;
+       
+       $this->drawOrthoXYGraph($Data,$DataDescription,$YSerieName,$XSerieName,$PaletteID);
+       
+    }
     
    /* This function draw a cubic curve */
    function drawCubicCurve($Data,$DataDescription,$Accuracy=.1,$SerieName="")

@@ -53,24 +53,26 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		if (!$force_update ){
 			$result = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
 			if ($result && $result->getTstamp() > time()-$this->test_interval ) {
-				$this->log('cache '.$result->getState().' '.$result->getValue().' '.$result->getComment() );
+				$this->log('cache '.$result->getState().' '.$result->getValue().' '.$result->getMsg() );
 				return $result;
 			} else if ($this->start_hour || $this->stop_hour ) {
 				$local_time = localtime(time(), true);
 				$local_hour = $local_time['tm_hour'];
 				if ($local_hour < $this->start_hour || $local_hour > $this->stop_hour ){
-					$this->log('cache '.$result->getState().' '.$result->getValue().' '.$result->getComment() );
+					$this->log('cache '.$result->getState().' '.$result->getValue().' '.$result->getMsg() );
 					return $result;	
 				}
-			} 
-		}	
+			}
+		}
 			
-			// update
+			// prepare
 		$test_id = $test_result_repository->prepareTest($instance, $this);
+			// run
 		$result = $this->runTest($instance);
+			// save
 		$test_result_repository->saveTestResult($test_id, $result);
 		
-		$this->log('update '.$result->getStateInfo().' '.$result->getValue().' '.$result->getComment() );
+		$this->log('update '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMsg() );
 		
 		return $result;
 		
@@ -81,7 +83,7 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$result    = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
 	
-		$this->log('cache '.$result->getStateInfo().' '.$result->getValue().' '.$result->getComment() );
+		$this->log('cache '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMsg() );
 		
 		return $result;
 	}

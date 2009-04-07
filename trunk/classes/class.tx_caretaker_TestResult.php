@@ -12,13 +12,13 @@ define("TX_CARETAKER_STATE_UNDEFINED",  -1);
 class tx_caretaker_TestResult {
 	var $status=0;
 	var $value=0;
-	var $comment='';
+	var $msg='';
 	var $ts = 0;
 
-	function __construct ($ts, $status=TX_CARETAKER_STATE_UNDEFINED, $value=0, $comment=''){
+	function __construct ($ts, $status=TX_CARETAKER_STATE_UNDEFINED, $value=0, $msg=''){
 		$this->status = $status;
 		$this->value = $value;
-		$this->comment = $comment;
+		$this->msg = $msg;
 		$this->ts = $ts;
 	}
 	
@@ -57,8 +57,8 @@ class tx_caretaker_TestResult {
 		return $this->value;
 	}
 	
-	function getComment(){
-		return $this->comment;
+	function getMsg(){
+		return $this->msg;
 	}
 	
 	function getTstamp(){

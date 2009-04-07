@@ -3,16 +3,16 @@
 require_once ('interface.tx_caretaker_LoggerInterface.php');
 require_once ('class.tx_caretaker_TestResultRange.php');
 
-
 abstract class tx_caretaker_Node {
 	
 	public $uid     = false;
 	public $title   = false;
 	public $type    = '';
 	
-	public $parent    = false;
-	public $logger    = false;
-	public $instance  = false;
+	protected $parent    = NULL;
+	protected $logger    = false;
+	protected $instance  = false;
+	protected $real_parent = NULL;
 	
 	public function __construct( $uid, $title, $parent, $type=''){
 		$this->uid    = $uid;
@@ -20,11 +20,11 @@ abstract class tx_caretaker_Node {
 		$this->parent = $parent;
 		$this->type   = $type;
 	}
-
+	
 	public function getUid(){
 		return $this->uid;
 	}
-	
+		
 	public function getTitle(){
 		return $this->title;
 	}
@@ -32,7 +32,7 @@ abstract class tx_caretaker_Node {
 	public function getType(){
 		return $this->type;
 	}	
-
+	
 	public function getInstance(){
 		
 		if ( is_a($this, 'tx_caretaker_Instance') ){

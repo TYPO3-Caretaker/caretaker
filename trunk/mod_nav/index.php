@@ -216,7 +216,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 				$result .= '<span style="color:green;">';
 				break;
 			case 1:
-				$result .= '<span style="color:yellow;">';
+				$result .= '<span style="color:orange;">';
 				break;
 			case 2:
 				$result .= '<span style="color:red;">';

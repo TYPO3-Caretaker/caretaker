@@ -202,6 +202,9 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		if ($node){
 			if ( isset ($_GET['SET']['action']) ){
 				if ($_GET['SET']['action'] == 'update'){
+					$node->updateTestResult();	
+				}
+				if ($_GET['SET']['action'] == 'update_forced'){
 					$node->updateTestResult(true);	
 				}
 			}
@@ -227,31 +230,40 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 			'<tr><td>State</td><td>'.$test_result->getStateInfo().'</td></tr>'.
 			'<tr><td>Value</td><td>'.$test_result->getValue().'</td></tr>'.
 			'<tr><td>lastRun</td><td>'.strftime('%x %X',$test_result->getTstamp()).'</td></tr>'.
-			'<tr><td>Comment</td><td>'.$test_result->getComment().'</td></tr>'.
+			'<tr><td>Comment</td><td>'.$test_result->getMsg().'</td></tr>'.
 			'</table>'
 		 );
 		
-		$actions = '<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update" >update</a>';
+		$actions = ''; 
+		$actions .= '<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update" >update</a>';
+		$actions .= '&nbsp;<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update_forced" >update [force refresh]</a>';
 		
 		$content .= $this->doc->section( 'action:', $actions);
 			// show graph
 		if ($num_days){
-			
-			require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestResultRangeRenderer_pChart.php');
-
-			$dist = $num_days*100;
-			$result_range = $node->getTestResultRange(time()-86400*$num_days , time(), $dist );	
-						
-			$filename = 'typo3temp/caretaker/charts/'.$this->id.'_'.$num_days.'.png';
-			$renderer = tx_caretaker_TestResultRangeRenderer_pChart::getInstance();
-			$renderer->render($result_range, PATH_site.$filename);
-
-			$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
-			$content .= $this->doc->section( 'chart:','<img src="'.$base.$filename.'" />');
-			
+			$content .= $this->doc->section( 'chart:',$this->showNodeGraph($node, $num_days) );
 		}
 		return ($content);
 		
+	}
+	
+	function showNodeGraph($node, $num_days){
+		require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestResultRangeRenderer_pChart.php');
+
+			$dist = $num_days*100;
+			$result_range = $node->getTestResultRange(time()-86400*$num_days , time(), $dist );	
+		
+			$filename = 'typo3temp/caretaker/charts/'.$this->id.'_'.$num_days.'.png';
+			$renderer = tx_caretaker_TestResultRangeRenderer_pChart::getInstance();
+			$result   = $renderer->render($result_range, PATH_site.$filename);
+			$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+			
+			if ($result){
+				return '<img src="'.$base.$filename.'" />';
+			} else {
+				return '<strong>Graph Error</strong>';
+			}
+			
 	}
     
 }

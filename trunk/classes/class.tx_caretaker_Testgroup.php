@@ -10,20 +10,17 @@ class tx_caretaker_Testgroup extends tx_caretaker_AggregatorNode {
 		parent::__construct($uid, $title, $parent, 'Testgroup' );
 	}
 	
-	function getChildren (){
+	function findChildren (){
 		
-		if (!$this->children){
-				// read subgroups
-			$group_repository = tx_caretaker_TestgroupRepository::getInstance();
-			$subgroups = $group_repository->getByParentGroupUid($this->uid, $this );
-				// read instances
-			$test_repository = tx_caretaker_TestRepository::getInstance();
-			$tests = $test_repository->getByGroupId($this->uid, $this);
-				// save
-			$this->children = array_merge($subgroups, $tests);
-			
-		}
-		return $this->children;
+			// read subgroups
+		$group_repository = tx_caretaker_TestgroupRepository::getInstance();
+		$subgroups = $group_repository->getByParentGroupUid($this->uid, $this );
+			// read instances
+		$test_repository = tx_caretaker_TestRepository::getInstance();
+		$tests = $test_repository->getByGroupId($this->uid, $this);
+			// save
+		$children = array_merge($subgroups, $tests);
+		return $children;
 	}
 	
 

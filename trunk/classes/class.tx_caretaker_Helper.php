@@ -17,7 +17,7 @@ class tx_caretaker_Helper {
 		if ($instancegroupId>0){
 			$instancegroup_repoistory    = tx_caretaker_InstancegroupRepository::getInstance();
 			$instancegroup = $instancegroup_repoistory->getByUid($instancegroupId, false);
-			if ($instancegroup) return $instancegroup;		
+			if ($instancegroup) return $instancegroup;
 		} else if ($instanceId>0){
 			$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
 			$instance = $instance_repoistory->getByUid($instanceId, false);
@@ -36,6 +36,10 @@ class tx_caretaker_Helper {
 			}
 		} 
 		return false;
+	}
+	
+	static function findNodePath($instancegroupId, $instanceId, $testgroupId, $testId){
+			
 	}
 	
 }

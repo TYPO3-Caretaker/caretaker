@@ -36,10 +36,11 @@ class tx_caretaker_InstanceRepository {
 	}
 	
 	function getByInstancegroupUid($id, $parent = false){
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instance', 'deleted=0 AND hidden=0 AND instancegroup = '.(int)$id);
+		
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local', 'tx_caretaker_instance_instancegroup_MM', 'uid_foreign = '.(int)$id);
 		$result = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
-			$result[] = $this->dbrow2instance($row, $parent);
+			$result[] = $this->getByUid($row['uid_local'], $parent);
 		}
 		return $result;
 	}

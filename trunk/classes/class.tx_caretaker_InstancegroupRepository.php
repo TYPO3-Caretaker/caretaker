@@ -33,7 +33,6 @@ class tx_caretaker_InstanceGroupRepository {
 		} else {
 			return false;
 		}
-		
 	}
 	
 	public function getByParentGroupUid($parent_group_uid, $parent){
@@ -44,7 +43,28 @@ class tx_caretaker_InstanceGroupRepository {
 		} 
 		return $result;
 	}
-
+	
+	public function getByChildGroupUid($child_group_uid){
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('parent_group', 'tx_caretaker_instancegroup', 'hidden=0 AND deleted=0 AND uid='.(int)$child_group_uid);
+		$result = array();
+		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
+			$parent_item = $this->getByUid ($row['parent_group']);
+			return $parent_item;
+		} 
+		return false;
+	}
+	
+	/*
+	public function getByChildInstanceUid($child_group_uid){
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('parent_group', 'tx_caretaker_instancegroup', 'hidden=0 AND deleted=0 AND uid='.(int)$child_group_uid);
+		$result = array();
+		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
+			$parent_item = $this->getByUid ($row['parent_group']);
+			return $parent_item;
+		} 
+		return false;
+	}
+	*/
 	
 	function dbrow2instance($row, $parent){
 		$instance = new tx_caretaker_Instancegroup($row['uid'], $row['title'], $parent);

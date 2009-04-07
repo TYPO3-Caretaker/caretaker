@@ -330,7 +330,8 @@ $TCA["tx_caretaker_instance"] = array (
 			'size'          => 5,
 			'autoSizeMax'   => 25,
 			'minitems'      => 0,
-			'maxitems'      => 1,
+			'maxitems'      => 99,
+			'MM'            => 'tx_caretaker_instance_instancegroup_mm',
 	      )
 	    ),
 	),
