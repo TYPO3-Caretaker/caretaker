@@ -39,42 +39,20 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 		$this->log( ' |> '.$group_result->getStateInfo().' :: '.$group_result->getMsg(), false );
 		
 			// save aggregator node state to cache
-		// $last_result = $this->getTestResult();
-		// if ($last_result->getState() != $group_result->getState() || $last_result->getValue() != $group_result->getValue() ){
-			$result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
-			$result_repository->addNodeResult($this, $group_result);
-		// }
+		$result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
+		$result_repository->addNodeResult($this, $group_result);
 		
 		return $group_result;
 	}
 		
 	function getTestResult(){
-		
+
+			// read aggregator node state from cache
 		$this->log( 'get', 1 );
 		$result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
 		$group_result = $result_repository->getLatestByNode($this);
 		$this->log( ' |> '.$group_result->getStateInfo().' :: '.$group_result->getMsg(), false );
 		return $group_result;
-		
-		/*
-		$this->log( 'get', 1 );
-		
-			// read aggregartor node state from cache
-			
-		$children  = $this->getChildren();
-		$test_results = new tx_caretaker_TestResultRange(); 
-		
-		foreach($children as $child){ 
-			$test_result = $child->getTestResult($force_update);
-			$test_results->addResult($test_result);
-		}
-		
-		$group_result = $test_results->getAggregatedTestResult();
-			
-		$this->log( ' |> '.$group_result->getStateInfo().' :: '.$group_result->getMsg(), false );
-		
-		return $group_result;
-		*/
 		
 	}
 	

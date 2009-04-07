@@ -66,15 +66,12 @@ class tx_caretaker_TestResultRangeRenderer_pChart implements tx_caretaker_TestRe
 			    		break;		
 		    	}
 		    }
-		    $lastState  = $result->getValue();
+		    $lastState  = $result->getState();
 		    $lastResult = $result;
 		}
 
 		if ($lastResult) {
 			
-			// $DataSet->AddPoint($lastValue,"Values");  
-			// $DataSet->AddPoint($test_result_range->getMaxTstamp()+1000000,"Times");
-			  
 			switch ( $lastResult->getState() ){
 				case -1:
 		    		$rangesUndefined[count($rangesUndefined)-1][1]= $lastResult->getTstamp();
