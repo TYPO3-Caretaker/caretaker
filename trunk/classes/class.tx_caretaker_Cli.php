@@ -6,6 +6,8 @@ require_once(PATH_t3lib.'class.t3lib_cli.php');
 
 require_once ('class.tx_caretaker_Helper.php');
 require_once ('interface.tx_caretaker_LoggerInterface.php');
+require_once ('class.tx_caretaker_EmailNotifier.php');
+
 
 class tx_caretaker_Cli extends t3lib_cli implements tx_caretaker_LoggerInterface {
 	
@@ -80,6 +82,10 @@ class tx_caretaker_Cli extends t3lib_cli implements tx_caretaker_LoggerInterface
         	$node->setLogger($this);
         	
         	if ($node) {
+        		
+        		$notifier = new tx_caretaker_EmailNotifier();
+        		$node->setNotifier ($notifier);
+        	
         		$res = FALSE;
 	        	if ($task == 'update'){
 		        	 $res = $node->updateTestResult($force);
@@ -89,6 +95,8 @@ class tx_caretaker_Cli extends t3lib_cli implements tx_caretaker_LoggerInterface
 		        	 $res = $node->getTestResult();
 	        	}
 	        	
+	        	$notifier->sendNotifications();
+	        	
 	        	if ($return_status){
 	        		$this->log('State: '.$res->getState().':'.$res->getStateInfo() );
 	        		exit ( (int)$res->getState() );
@@ -96,6 +104,9 @@ class tx_caretaker_Cli extends t3lib_cli implements tx_caretaker_LoggerInterface
 	        		exit;
 	        	}
         	} 
+        	
+        	
+        	
         }
         
         if ($task = 'help'){

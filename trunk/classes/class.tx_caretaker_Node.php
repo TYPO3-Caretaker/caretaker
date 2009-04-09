@@ -1,27 +1,28 @@
 <?php
 
 require_once ('interface.tx_caretaker_LoggerInterface.php');
+require_once ('interface.tx_caretaker_NotifierInterface.php');
 require_once ('class.tx_caretaker_TestResultRange.php');
 
 abstract class tx_caretaker_Node {
 	
-	public $uid     = false;
-	public $title   = false;
-	public $type    = '';
-	
+	protected $uid       = false;
+	protected $title     = false;
+	protected $type      = '';
 	protected $parent    = NULL;
 	protected $logger    = false;
-	protected $instance  = false;
-	protected $real_parent = NULL;
+	protected $notifier  = false;
+	protected $notificationIds = array();
 	
-	public function __construct( $uid, /*$pid, $hidden,*/ $title, $parent, $type=''){
+	public function __construct( $uid, $title, $parent, $type=''){
 		$this->uid    = $uid;
-	/*	$this->pid    = $pid;
-		$this->hidden = $hidden;*/
 		$this->title  = $title;
-		
 		$this->parent = $parent;
 		$this->type   = $type;
+	}
+	
+	public function setNotificationIds($id_array){
+		$this->notificationIds = $id_array;
 	}
 	
 	public function getUid(){
@@ -56,24 +57,6 @@ abstract class tx_caretaker_Node {
 		}
 	}
 	
-	public function setLogger (tx_caretaker_LoggerInterface $logger){
-		$this->logger = $logger;
-	}
-	
-	public function log($msg, $add_info=true){
-		
-		if ($add_info){
-				$msg = ' +- '.$this->type.' '.$this->title.'['.$this->uid.'] '.$msg;
-		}
-			
-		if ($this->logger){
-			$this->logger->log($msg);
-		} else if ($this->parent) {
-			
-			$this->parent->log(' | '.$msg , false);
-		}
-	}
-	
 	abstract public function updateTestResult($force_update = false);
 	
 	abstract public function getTestResult();
@@ -83,6 +66,51 @@ abstract class tx_caretaker_Node {
 	public function getRange($start, $stop){
 		return new tx_caretaker_TestResultRange();
 	}
+		
 	
+	/*
+	 * Logging Methods
+	 */
+	
+	public function setLogger (tx_caretaker_LoggerInterface $logger){
+		$this->logger = $logger;
+	}
+	
+
+	
+	public function log($msg, $add_info=true){
+		if ($add_info){
+				$msg = ' +- '.$this->type.' '.$this->title.'['.$this->uid.'] '.$msg;
+		}
+		if ($this->logger){
+			$this->logger->log($msg);
+		} else if ($this->parent) {
+			$this->parent->log(' | '.$msg , false);
+		}
+	}
+	
+	/*
+	 * Notification Methods
+	 */
+	
+	public function setNotifier (tx_caretaker_NotifierInterface $notifier){
+		$this->notifier = $notifier;
+	}
+	
+	public function sendNotification( $state, $msg){
+		if ( count($this->notificationIds) > 0 ){ 
+			$this->notify( $this->notificationIds, $state, $this->type.' '.$this->title.'['.$this->uid.'] '.$msg);
+		}
+	}
+	
+	protected function notify( $recipients, $state, $msg){
+		if ($this->notifier){
+			$this->notifier->addNotification($recipients, $state, $msg);
+		} else if ($this->parent) {
+			$this->parent->notify($recipients, $state, $msg, false);
+		}
+	}
+	
+
 }
 ?>

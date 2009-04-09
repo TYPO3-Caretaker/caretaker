@@ -21,23 +21,10 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			
-			<label index="tx_caretaker_test">Test</label>
-			<label index="tx_caretaker_test.tab.relations">Groups</label>
-			<label index="tx_caretaker_test.tab.description">Description</label>
-			<label index="tx_caretaker_test.title">Name</label>
-			<label index="tx_caretaker_test.description">Description</label>
-			<label index="tx_caretaker_test.test_service.select_service">Please select a test</label>
-			<label index="tx_caretaker_test.test_service">Test Service</label>
-			<label index="tx_caretaker_test.test_interval">Test Interval</label>
-			<label index="tx_caretaker_test.test_interval_start_hour">Run after this Hour</label>
-			<label index="tx_caretaker_test.test_interval_stop_hour">Run before this Hour</label>
-			
-			<label index="tx_caretaker_test.test_service">Test Service</label>
-			<label index="tx_caretaker_test.test_conf">Test Configuration</label>
-			<label index="tx_caretaker_test.test_mode">Test Mode</label>
-			<label index="tx_caretaker_test.test_mode.group">run once for group</label>
-			<label index="tx_caretaker_test.instances">Instances</label>
-			<label index="tx_caretaker_test.groups">Groups</label>
+			<label index="tx_caretaker_instancegroup">Instancegroup</label>
+			<label index="tx_caretaker_instancegroup.title">Title</label>
+			<label index="tx_caretaker_instancegroup.description">Description</label>
+			<label index="tx_caretaker_instancegroup.parent_group">Parent Group</label>
 
 			<label index="tx_caretaker_instance_test_rel">Instance-Test Relation</label>
 			<label index="tx_caretaker_instance_test_rel.instance_id">Instance</label>
@@ -46,6 +33,7 @@
 			<label index="tx_caretaker_instance_test_rel.test_sorting">Test Sorting</label>
 			<label index="tx_caretaker_instance">Instance</label>
 			<label index="tx_caretaker_instance.tab.relations">Groups</label>
+			<label index="tx_caretaker_instance.tab.notifications">Notifications</label>
 			<label index="tx_caretaker_instance.title">Name</label>
 			<label index="tx_caretaker_instance.description">Description</label>
 			<label index="tx_caretaker_instance.url">Instance URL</label>
@@ -54,14 +42,11 @@
 			<label index="tx_caretaker_instance.groups">Instance groups</label>
 			<label index="tx_caretaker_instance.tests">Instance Tests</label>
 			<label index="tx_caretaker_instance.public_key">Public Key of Instance</label>
-
-			<label index="tx_caretaker_instancegroup">Instancegroup</label>
-			<label index="tx_caretaker_instancegroup.title">Title</label>
-			<label index="tx_caretaker_instancegroup.description">Description</label>
-			<label index="tx_caretaker_instancegroup.parent_group">Parent Group</label>
+			<label index="tx_caretaker_instance.notifications">Notifications</label>
 
 			<label index="tx_caretaker_testgroup">Group</label>
 			<label index="tx_caretaker_testgroup.tab.relations">Instances &amp; Tests</label>
+			<label index="tx_caretaker_testgroup.tab.notifications">Notifications</label>
 			<label index="tx_caretaker_testgroup.title">Title</label>
 			<label index="tx_caretaker_testgroup.description">Description</label>
 			<label index="tx_caretaker_testgroup.parent_group">Parent Group</label>
@@ -72,28 +57,28 @@
 			<label index="tx_caretaker_testgroup_test_rel.test_id">Test</label>
 			<label index="tx_caretaker_testgroup_test_rel.group_sorting">Instance Sorting</label>
 			<label index="tx_caretaker_testgroup_test_rel.test_sorting">Test Sorting</label>
+			<label index="tx_caretaker_testgroup.notifications">Notifications</label>
 			
-			<label index="tx_caretaker_testresult">Test results</label>
-			<label index="tx_caretaker_testresult.test_uid">Test ID</label>
-			<label index="tx_caretaker_testresult.instance_uid">Instance ID</label>
-			<label index="tx_caretaker_testresult.group_uid">Group ID</label>
-			<label index="tx_caretaker_testresult.result_status">Result Status</label>
-			<label index="tx_caretaker_testresult.result_status.neutral">Neutral</label>
-			<label index="tx_caretaker_testresult.result_status.ok">OK</label>
-			<label index="tx_caretaker_testresult.result_status.warning">Warning</label>
-			<label index="tx_caretaker_testresult.result_status.error">Error</label>
-			<label index="tx_caretaker_testresult.result_status.unknown">Unknown</label>
-			<label index="tx_caretaker_testresult.result_value">Result Value</label>
-			<label index="tx_caretaker_testresult.result_msg">Result Message</label>
-			<label index="tx_caretaker_testresult.result_data">Result XML (Data for Debugging)</label>
-					
-			<label index="tx_caretaker_accounts">Accounts</label>
-			<label index="tx_caretaker_accounts.hidden">Deactivated</label>
-			<label index="tx_caretaker_accounts.protocol">Protocol</label>
-			<label index="tx_caretaker_accounts.username">Username</label>
-			<label index="tx_caretaker_accounts.password">Password</label>
-			<label index="tx_caretaker_accounts.url">URL</label>
-			<label index="tx_caretaker_accounts.description">Description</label>
+			<label index="tx_caretaker_test">Test</label>
+			<label index="tx_caretaker_test.tab.relations">Testgroups</label>
+			<label index="tx_caretaker_test.tab.description">Description</label>
+			<label index="tx_caretaker_test.tab.notifications">Notifications</label>
+			<label index="tx_caretaker_test.tab.configuration">Test-Configuration</label>
+			<label index="tx_caretaker_test.title">Name</label>
+			<label index="tx_caretaker_test.notifiactions">Notifications</label>
+			<label index="tx_caretaker_test.description">Description</label>
+			<label index="tx_caretaker_test.test_service.select_service">Please select a test</label>
+			<label index="tx_caretaker_test.test_service">Test Service</label>
+			<label index="tx_caretaker_test.test_interval">Test Interval</label>
+			<label index="tx_caretaker_test.test_interval_start_hour">Run after this Hour</label>
+			<label index="tx_caretaker_test.test_interval_stop_hour">Run before this Hour</label>
+			<label index="tx_caretaker_test.test_service">Test Service</label>
+			<label index="tx_caretaker_test.test_conf">Test Configuration</label>
+			<label index="tx_caretaker_test.test_mode">Test Mode</label>
+			<label index="tx_caretaker_test.test_mode.group">run once for group</label>
+			<label index="tx_caretaker_test.instances">Instances</label>
+			<label index="tx_caretaker_test.groups">Testgroups</label>
+			<label index="tx_caretaker_test.notifications">Notifications</label>
 
 			<label index="tt_content.list_type_pi1">Caretaker Frontend</label>
 			

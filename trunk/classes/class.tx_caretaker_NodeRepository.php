@@ -103,12 +103,22 @@ class tx_caretaker_NodeRepository {
 	
 	private function dbrow2instance($row, $parent = false){
 		$instance = new tx_caretaker_Instance($row['uid'], $row['title'], $parent, $row['url'], $row['host'] , $row['ip']);
+		if ($row['notifications'] ) $instance->setNotificationIds(explode(',', $row['notifications'] ) );
 		return $instance; 
 	}
 	
 	/*
 	 * Methods Testgroup Access
 	 */
+	
+	public function getAllTestgroups($parent = false){
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_testgroup', 'deleted=0 AND hidden=0');
+		$result = array();
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
+			$result[] = $this->dbrow2testgroup($row, $parent);
+		}
+		return $result;
+	}
 	
 	public function getTestgroupByInstanceUid($instanceId, $parent = false){
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_foreign', 'tx_caretaker_instance_testgroup_mm', 'uid_local='.(int)$instanceId);
@@ -149,6 +159,7 @@ class tx_caretaker_NodeRepository {
 	
 	private function dbrow2testgroup($row, $parent){
 		$instance = new tx_caretaker_Testgroup($row['uid'], $row['title'], $parent);
+		if ($row['notifications'] ) $instance->setNotificationIds(explode(',', $row['notifications'] ) );
 		return $instance; 
 	}
 	
@@ -184,6 +195,7 @@ class tx_caretaker_NodeRepository {
 	
 	private function dbrow2test($row, $parent = false){
 		$instance = new tx_caretaker_Test( $row['uid'], $row['title'], $parent, $row['test_service'], $row['test_conf'], $row['test_interval'] );
+		if ($row['notifications'] ) $instance->setNotificationIds(explode(',', $row['notifications'] ) );
 		return $instance; 
 	}
 }

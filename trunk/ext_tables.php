@@ -17,29 +17,29 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 // register Records
 
-$TCA['tx_caretaker_test'] = array (
+$TCA['tx_caretaker_instancegroup'] = array (
 	'ctrl' => array (
-		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test',
+		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup',
 		'label'     => 'title',
 		'tstamp'    => 'tstamp',
 		'crdate'    => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'default_sortby' => 'ORDER BY crdate',
 		'delete' => 'deleted',
-		'dividers2tabs'=> 1,
-	    'enablecolumns' => array (        
+		'treeParentField' => 'parent_group',
+		'enablecolumns' => array (        
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
 			'fe_group' => 'fe_group',
-    	),
-		'type' => 'testservice',
+		),
+		'dividers2tabs'=> 1,
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/test.png',
+		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/instancegroup.png',
 	),
 	'feInterface' => array (
 		'fe_admin_fieldList' => '',
-	),
+	)
 );
 
 $TCA['tx_caretaker_instance'] = array (
@@ -66,23 +66,7 @@ $TCA['tx_caretaker_instance'] = array (
 	)
 );
 
-$TCA['tx_caretaker_instance_test_rel'] = array (
-	'ctrl' => array (
-		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_test_rel',
-		'label'     => 'instance_id',
-		'tstamp'    => 'tstamp',
-		'crdate'    => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'delete' => 'deleted',
-		'hideTable' => 1,
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/instance_test.png',
-		'enablecolumns' => array (        
-			'disabled' => 'hidden',
-		),
-	),
-	'feInterface' => array ('fe_admin_fieldList' => '' )
-);
+
 
 $TCA['tx_caretaker_testgroup'] = array (
 	'ctrl' => array (
@@ -109,51 +93,30 @@ $TCA['tx_caretaker_testgroup'] = array (
 	)
 );
 
-
-$TCA['tx_caretaker_instancegroup'] = array (
+$TCA['tx_caretaker_test'] = array (
 	'ctrl' => array (
-		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup',
+		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test',
 		'label'     => 'title',
 		'tstamp'    => 'tstamp',
 		'crdate'    => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'default_sortby' => 'ORDER BY crdate',
 		'delete' => 'deleted',
-		'treeParentField' => 'parent_group',
-		'enablecolumns' => array (        
+		'dividers2tabs'=> 1,
+	    'enablecolumns' => array (        
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
 			'fe_group' => 'fe_group',
-		),
-		'dividers2tabs'=> 1,
+    	),
+		'type' => 'testservice',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/instancegroup.png',
+		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/test.png',
 	),
 	'feInterface' => array (
 		'fe_admin_fieldList' => '',
-	)
-);
-
-
-
-
-$TCA['tx_caretaker_testresult'] = array (
-	'ctrl' => array (
-		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testresult',
-		'label'     => 'test_uid',
-		'tstamp'    => 'tstamp',
-		'crdate'    => 'crdate',
-		'cruser_id' => 'cruser_id',
-		// 'hideTable' => 1,
-		'default_sortby' => 'ORDER BY crdate',
-		'delete' => 'deleted',
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/test_result.png',
 	),
-	'feInterface' => array ('fe_admin_fieldList' => '' )
 );
-
 
 	// register FE-Plugin
 /*

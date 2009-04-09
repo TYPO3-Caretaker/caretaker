@@ -42,6 +42,10 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 		$result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
 		$result_repository->addNodeResult($this, $group_result);
 		
+		if ($group_result->getState() > 0){
+			$this->sendNotification($group_result->getState(), $group_result->getMsg() );
+		} 
+		
 		return $group_result;
 	}
 		

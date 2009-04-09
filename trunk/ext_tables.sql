@@ -1,8 +1,9 @@
-#
-# Table structure for table 'tx_caretaker_test'
-#
-CREATE TABLE tx_caretaker_test (
 
+
+#
+# Table structure for table 'tx_caretaker_instancegroup'
+#
+CREATE TABLE tx_caretaker_instancegroup (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,
@@ -19,15 +20,8 @@ CREATE TABLE tx_caretaker_test (
 
 	title varchar(255) DEFAULT '' NOT NULL,
 	description varchar(255) DEFAULT '' NOT NULL,
-
-	test_interval int(11) DEFAULT '0' NOT NULL,
-	test_interval_start_hour tinyint(4) DEFAULT '0' NOT NULL,
-	test_interval_stop_hour tinyint(4) DEFAULT '0' NOT NULL,
-	test_service varchar(255) DEFAULT '' NOT NULL,
-	test_conf text NOT NULL,
-
-	groups int(11) DEFAULT '0' NOT NULL,
-
+	parent_group int(11) DEFAULT '0' NOT NULL,
+	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
@@ -60,6 +54,7 @@ CREATE TABLE tx_caretaker_instance (
 
 	groups text NOT NULL,
 	instancegroup int(11) DEFAULT '0' NOT NULL,
+	notifications varchar(255) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -89,16 +84,17 @@ CREATE TABLE tx_caretaker_testgroup (
 	instances int(11) DEFAULT '0' NOT NULL,
 	
 	tests blob NOT NULL,
+	notifications varchar(255) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
 
+#
+# Table structure for table 'tx_caretaker_test'
+#
+CREATE TABLE tx_caretaker_test (
 
-#
-# Table structure for table 'tx_caretaker_instancegroup'
-#
-CREATE TABLE tx_caretaker_instancegroup (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,
@@ -115,11 +111,21 @@ CREATE TABLE tx_caretaker_instancegroup (
 
 	title varchar(255) DEFAULT '' NOT NULL,
 	description varchar(255) DEFAULT '' NOT NULL,
-	parent_group int(11) DEFAULT '0' NOT NULL,
+
+	test_interval int(11) DEFAULT '0' NOT NULL,
+	test_interval_start_hour tinyint(4) DEFAULT '0' NOT NULL,
+	test_interval_stop_hour tinyint(4) DEFAULT '0' NOT NULL,
+	test_service varchar(255) DEFAULT '' NOT NULL,
+	test_conf text NOT NULL,
 	
+	notifications varchar(255) DEFAULT '' NOT NULL,
+
+	groups int(11) DEFAULT '0' NOT NULL,
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
+
 
 #
 # Table structure for table 'tx_caretaker_instance_testgroup_mm'
