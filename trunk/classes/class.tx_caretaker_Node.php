@@ -14,9 +14,12 @@ abstract class tx_caretaker_Node {
 	protected $instance  = false;
 	protected $real_parent = NULL;
 	
-	public function __construct( $uid, $title, $parent, $type=''){
+	public function __construct( $uid, /*$pid, $hidden,*/ $title, $parent, $type=''){
 		$this->uid    = $uid;
+	/*	$this->pid    = $pid;
+		$this->hidden = $hidden;*/
 		$this->title  = $title;
+		
 		$this->parent = $parent;
 		$this->type   = $type;
 	}
@@ -24,6 +27,15 @@ abstract class tx_caretaker_Node {
 	public function getUid(){
 		return $this->uid;
 	}
+	
+	public function getPid(){
+		
+	}
+	
+	public function getHidden(){
+		return $this->hidden;
+	}
+	
 		
 	public function getTitle(){
 		return $this->title;

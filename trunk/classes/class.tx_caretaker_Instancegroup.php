@@ -1,6 +1,7 @@
 <?php 
 
 require_once('class.tx_caretaker_AggregatorNode.php');
+require_once('class.tx_caretaker_NodeRepository.php');
 
 class tx_caretaker_Instancegroup extends tx_caretaker_AggregatorNode {
 	
@@ -10,13 +11,11 @@ class tx_caretaker_Instancegroup extends tx_caretaker_AggregatorNode {
 	}
 	
 	function findChildren (){
-		
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
 			// read subgroups
-		$instancegroup_repository = tx_caretaker_InstancegroupRepository::getInstance();
-		$subgroups = $instancegroup_repository->getByParentGroupUid($this->uid, $this );
+		$subgroups = $node_repository->getInstancegroupsByParentGroupUid($this->uid, $this );
 			// read instances
-		$instance_repository = tx_caretaker_InstanceRepository::getInstance();
-		$instances = $instance_repository->getByInstancegroupUid($this->uid, $this );
+		$instances = $node_repository->getInstancesByInstancegroupUid($this->uid, $this );
 			// save
 		$children = array_merge($subgroups, $instances);
 		
@@ -25,8 +24,8 @@ class tx_caretaker_Instancegroup extends tx_caretaker_AggregatorNode {
 	}
 	
 	function findParent (){
-		$instancegroup_repository = tx_caretaker_InstancegroupRepository::getInstance();
-		$parent = $instancegroup_repository->getByChildGroupUid($this->uid, $this );
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
+		$parent = $node_repository->getInstancegroupByChildGroupUid($this->uid, $this );
 		return $parent;
 	}
 	

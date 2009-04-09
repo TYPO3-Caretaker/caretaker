@@ -237,6 +237,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		$actions = ''; 
 		$actions .= '<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update" >update</a>';
 		$actions .= '&nbsp;<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update_forced" >update [force refresh]</a>';
+		$actions .= '&nbsp;<a onclick="window.location.href=\''.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'typo3/alt_doc.php?edit[tx_caretaker_test]['.$node->getPid().']=new\';return false;" >new</a>';
 		
 		$content .= $this->doc->section( 'action:', $actions);
 			// show graph

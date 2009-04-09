@@ -1,13 +1,13 @@
 <?php 
 
-require_once ('class.tx_caretaker_InstancegroupRepository.php');
-require_once ('class.tx_caretaker_InstanceRepository.php');
-require_once ('class.tx_caretaker_TestgroupRepository.php');
-require_once ('class.tx_caretaker_TestRepository.php');
+require_once ('class.tx_caretaker_NodeRepository.php');
+
 
 class tx_caretaker_Helper {
 	
 	static function getNode($instancegroupId, $instanceId, $testgroupId, $testId){
+		
+		$node_repoistory    = tx_caretaker_NodeRepository::getInstance();
 
 		$instancegroupId = (int)$instancegroupId;
 		$instanceId      = (int)$instanceId;
@@ -15,20 +15,16 @@ class tx_caretaker_Helper {
 		$testId          = (int)$testId;
 		
 		if ($instancegroupId>0){
-			$instancegroup_repoistory    = tx_caretaker_InstancegroupRepository::getInstance();
-			$instancegroup = $instancegroup_repoistory->getByUid($instancegroupId, false);
+			$instancegroup = $node_repoistory->getInstancegroupByUid($instancegroupId, false);
 			if ($instancegroup) return $instancegroup;
 		} else if ($instanceId>0){
-			$instance_repoistory    = tx_caretaker_InstanceRepository::getInstance();
-			$instance = $instance_repoistory->getByUid($instanceId, false);
+			$instance = $node_repoistory->getInstanceByUid($instanceId, false);
 			if ($instance) {
 				if ($testgroupId>0){
-	    			$group_repoistory    = tx_caretaker_TestgroupRepository::getInstance();
-					$group = $group_repoistory->getByUid($testgroupId, $instance);
+					$group = $node_repoistory->getTestgroupByUid($testgroupId, $instance);
 					if ($group) return $group;		
 	    		} else if ($testId>0) {
-	    			$test_repoistory    = tx_caretaker_TestRepository::getInstance();
-					$test = $test_repoistory->getByUid($testId, $instance);
+					$test = $node_repoistory->getTestByUid($testId, $instance);
 					if ($test) return $test;		
 	    		} else {
 					return $instance;		
@@ -36,10 +32,6 @@ class tx_caretaker_Helper {
 			}
 		} 
 		return false;
-	}
-	
-	static function findNodePath($instancegroupId, $instanceId, $testgroupId, $testId){
-			
 	}
 	
 }

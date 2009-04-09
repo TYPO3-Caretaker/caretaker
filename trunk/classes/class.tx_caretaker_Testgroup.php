@@ -1,8 +1,7 @@
 <?php
  
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_AggregatorNode.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestgroupRepository.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestRepository.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_NodeRepository.php');
 
 class tx_caretaker_Testgroup extends tx_caretaker_AggregatorNode {
 	
@@ -13,11 +12,10 @@ class tx_caretaker_Testgroup extends tx_caretaker_AggregatorNode {
 	function findChildren (){
 		
 			// read subgroups
-		$group_repository = tx_caretaker_TestgroupRepository::getInstance();
-		$subgroups = $group_repository->getByParentGroupUid($this->uid, $this );
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
+		$subgroups = $node_repository->getTestgroupsByParentGroupUid($this->uid, $this );
 			// read instances
-		$test_repository = tx_caretaker_TestRepository::getInstance();
-		$tests = $test_repository->getByGroupId($this->uid, $this);
+		$tests = $node_repository->getTestsByGroupId($this->uid, $this);
 			// save
 		$children = array_merge($subgroups, $tests);
 		return $children;

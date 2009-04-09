@@ -34,8 +34,7 @@ unset($MCONF);
 require ("conf.php");
 require ($BACK_PATH."init.php");
 require ($BACK_PATH."template.php");
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_InstancegroupRepository.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_InstanceRepository.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_NodeRepository.php');
 
 $LANG->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
 require_once (PATH_t3lib."class.t3lib_scbase.php");
@@ -44,7 +43,7 @@ $BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users
 
 class tx_caretaker_mod_nav extends t3lib_SCbase {
 	var $pageinfo;
-	var $instancegroup_repository;
+	var $node_repository;
 	var $instance_repository;
 	
 	/**
@@ -62,8 +61,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 		}
 		*/
 		
-		$this->instancegroup_repository = tx_caretaker_InstancegroupRepository::getInstance();
-		$this->instance_repository = tx_caretaker_InstanceRepository::getInstance();
+		$this->node_repository = tx_caretaker_NodeRepository::getInstance();
 		
 	}
 
@@ -165,13 +163,13 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	 */
 	function moduleContent() {
 		
-		$root_instancegroups = $this->instancegroup_repository->getByParentGroupUid(0, false);
+		$root_instancegroups = $this->node_repository->getInstancegroupsByParentGroupUid(0, false);
 		
 		foreach($root_instancegroups as $instancegroup){
 			$this->content.= $this->show_node_recursive($instancegroup);
 		}
 		
-		$root_instances = $this->instance_repository->getByInstancegroupUid(0, false);
+		$root_instances = $this->node_repository->getInstancesByInstancegroupUid(0, false);
 		foreach($root_instances as $instance){
 			$this->content.= $this->show_node_recursive($instance);
 		}
