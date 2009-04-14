@@ -99,11 +99,13 @@ abstract class tx_caretaker_Node {
 	
 	public function sendNotification( $state, $msg){
 		if ( count($this->notificationIds) > 0 ){ 
-			$this->notify( $this->notificationIds, $state, $this->type.' '.$this->title.'['.$this->uid.'] '.$msg);
+			foreach($this->notificationIds as $notfificationId){
+				$this->notify( $notfificationId, $state, $this->type.' '.$this->title.'['.$this->uid.'] '.$msg);
+			}
 		}
 	}
 	
-	protected function notify( $recipients, $state, $msg){
+	private function notify( $recipients, $state, $msg){
 		if ($this->notifier){
 			$this->notifier->addNotification($recipients, $state, $msg);
 		} else if ($this->parent) {

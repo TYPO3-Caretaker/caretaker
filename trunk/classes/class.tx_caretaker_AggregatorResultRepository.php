@@ -64,13 +64,39 @@ class tx_caretaker_AggregatorResultRepository {
 		$nodeType = $node->getType();
 		$nodeUid  = $node->getUid();
 		
-		// debug(array($instanceUid,$nodeType,$nodeUid));
+		$base_condition = 'aggregator_uid='.$nodeUid.' AND aggregator_type="'.$nodeType.'" AND instance_uid='.$instanceUid;
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_aggregatorresult', 'aggregator_uid='.$nodeUid.' AND aggregator_type="'.$nodeType.'" AND instance_uid='.$instanceUid.' AND tstamp >='.$start_ts.' AND tstamp <='.$stop_ts, '', 'tstamp ASC'  );
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_aggregatorresult', $base_condition.' AND tstamp >='.$start_ts.' AND tstamp <='.$stop_ts, '', 'tstamp ASC'  );
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
 			$result = $this->dbrow2instance($row);
 			$result_range->addResult($result);
 		}
+		
+			// add first value if needed
+		$first = $result_range->getFirst();
+		if ($first && $first->getTstamp() > $start_ts){
+			$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_aggregatorresult', $base_condition.' AND tstamp <'.$start_ts, '', 'tstamp DESC' , 1  );
+			if ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$row['tstamp'] = $start_ts;
+				$result = $this->dbrow2instance($row);
+				$result_range->addResult($result, 'first');
+			}
+		}
+		
+			// add last value if needed
+		$last = $result_range->getLast(); 
+		if ($last && $last->getTstamp() < $stop_ts){
+			$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_aggregatorresult', $base_condition.' AND tstamp >'.$stop_ts, '', 'tstamp ASC' , 1  );
+			if ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$row['tstamp'] = $stop_ts;
+				$result = $this->dbrow2instance($row);
+				$result_range->addResult($result, 'last');
+			}
+		}
+		
+		
 		return $result_range; 
 	}
 	

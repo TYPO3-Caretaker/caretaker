@@ -5,11 +5,10 @@ if (!defined('TYPO3_cliMode'))  die('You cannot run this script directly!');
 require_once(PATH_t3lib.'class.t3lib_cli.php');
 
 require_once ('class.tx_caretaker_Helper.php');
-require_once ('interface.tx_caretaker_LoggerInterface.php');
-require_once ('class.tx_caretaker_EmailNotifier.php');
+require_once ('class.tx_caretaker_CliLogger.php');
+require_once ('class.tx_caretaker_CliNotifier.php');
 
-
-class tx_caretaker_Cli extends t3lib_cli implements tx_caretaker_LoggerInterface {
+class tx_caretaker_Cli extends t3lib_cli {
 	
 	/**
 	 * Constructor
@@ -79,12 +78,17 @@ class tx_caretaker_Cli extends t3lib_cli implements tx_caretaker_LoggerInterface
         	}
         	
         	$node = tx_caretaker_Helper::getNode($instancegroupID, $instanceID, $groupID, $testID);
-        	$node->setLogger($this);
         	
         	if ($node) {
         		
-        		$notifier = new tx_caretaker_EmailNotifier();
+        		$notifier = new tx_caretaker_CliNotifier();
+        		$logger   = new tx_caretaker_CliLogger();
+        		if (isset($this->cli_args['-ss']) || isset($this->cli_args['-s']) || isset($this->cli_args['--silent'])){
+        		  	$logger->setSilentMode(true);
+        		}
+        		  
         		$node->setNotifier ($notifier);
+        		$node->setLogger   ($logger);
         	
         		$res = FALSE;
 	        	if ($task == 'update'){
@@ -104,9 +108,6 @@ class tx_caretaker_Cli extends t3lib_cli implements tx_caretaker_LoggerInterface
 	        		exit;
 	        	}
         	} 
-        	
-        	
-        	
         }
         
         if ($task = 'help'){

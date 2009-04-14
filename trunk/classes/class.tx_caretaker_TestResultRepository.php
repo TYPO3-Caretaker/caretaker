@@ -41,7 +41,7 @@ class tx_caretaker_TestResultRepository {
 	/*
 	 * @return tx_caretaker_testResultRange
 	 */
-	function getRangeByInstanceAndTest($instance, $test, $start_ts, $stop_ts, $distance= FALSE){
+	function getRangeByInstanceAndTest($instance, $test, $start_ts, $stop_ts ){
 		$result_range = new tx_caretaker_TestResultRange($start_ts, $stop_ts);
 		$base_condition = 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid().' ';
 		
@@ -49,25 +49,12 @@ class tx_caretaker_TestResultRepository {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', $base_condition.'AND tstamp >='.$start_ts.' AND tstamp <='.$stop_ts, '', 'tstamp ASC'  );
 
 		$last = 0;
-		/*
-		if ($distance){
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
-				if ($row['tstamp']> $last+$distance ){
-					$result = $this->dbrow2instance($row);
-					$result_range->addResult($result);
-					$last = $row['tstamp'];
-				}
-			}
-		} else {
-		*/
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
-				$result = $this->dbrow2instance($row);
-				$result_range->addResult($result);
-			}
-		/*
+
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
+			$result = $this->dbrow2instance($row);
+			$result_range->addResult($result);
 		}
-		*/
-		
+
 			// add first value if needed
 		$first = $result_range->getFirst();
 		if ($first && $first->getTstamp() > $start_ts){
