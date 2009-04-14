@@ -251,8 +251,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 	function showNodeGraph($node, $num_days){
 		require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestResultRangeRenderer_pChart.php');
 
-			$dist = $num_days*100;
-			$result_range = $node->getTestResultRange(time()-86400*$num_days , time(), $dist );	
+			$result_range = $node->getTestResultRange(time()-86400*$num_days , time() );	
 		
 			$filename = 'typo3temp/caretaker/charts/'.$this->id.'_'.$num_days.'.png';
 			$renderer = tx_caretaker_TestResultRangeRenderer_pChart::getInstance();
