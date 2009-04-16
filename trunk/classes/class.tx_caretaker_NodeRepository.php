@@ -66,8 +66,10 @@ class tx_caretaker_NodeRepository {
 	
 	private function dbrow2instancegroup($row, $parent){
 		$instance = new tx_caretaker_Instancegroup($row['uid'], $row['title'], $parent);
+		if ($row['description'] )   $instance->setDescription( $row['description'] );
 		return $instance; 
 	}
+	
 	/*
 	 * Methods for Instance Access 
 	 */
@@ -104,6 +106,7 @@ class tx_caretaker_NodeRepository {
 	private function dbrow2instance($row, $parent = false){
 		$instance = new tx_caretaker_Instance($row['uid'], $row['title'], $parent, $row['url'], $row['host'] , $row['ip']);
 		if ($row['notifications'] ) $instance->setNotificationIds(explode(',', $row['notifications'] ) );
+		if ($row['description'] )   $instance->setDescription( $row['description'] );
 		return $instance; 
 	}
 	
@@ -160,6 +163,7 @@ class tx_caretaker_NodeRepository {
 	private function dbrow2testgroup($row, $parent){
 		$instance = new tx_caretaker_Testgroup($row['uid'], $row['title'], $parent);
 		if ($row['notifications'] ) $instance->setNotificationIds(explode(',', $row['notifications'] ) );
+		if ($row['description'] )   $instance->setDescription( $row['description'] );
 		return $instance; 
 	}
 	
@@ -194,8 +198,9 @@ class tx_caretaker_NodeRepository {
 	}
 	
 	private function dbrow2test($row, $parent = false){
-		$instance = new tx_caretaker_Test( $row['uid'], $row['title'], $parent, $row['test_service'], $row['test_conf'], $row['test_interval'] );
+		$instance = new tx_caretaker_Test( $row['uid'], $row['title'], $parent, $row['test_service'], $row['test_conf'], $row['test_interval'], $row['test_interval_start_hour'], $row['test_interval_stop_hour'] );
 		if ($row['notifications'] ) $instance->setNotificationIds(explode(',', $row['notifications'] ) );
+		if ($row['description'] )   $instance->setDescription( $row['description'] );
 		return $instance; 
 	}
 }

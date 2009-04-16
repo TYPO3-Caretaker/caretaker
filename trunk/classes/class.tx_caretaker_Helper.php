@@ -5,7 +5,7 @@ require_once ('class.tx_caretaker_NodeRepository.php');
 
 class tx_caretaker_Helper {
 	
-	static function getNode($instancegroupId, $instanceId, $testgroupId, $testId){
+	static function getNode($instancegroupId = false, $instanceId = false, $testgroupId = false, $testId = false){
 		
 		$node_repoistory    = tx_caretaker_NodeRepository::getInstance();
 

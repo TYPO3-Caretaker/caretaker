@@ -113,8 +113,22 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 					function jumpToUrl(URL)	{
 						document.location = URL;
 					}
+					
+					function jumpTo(params,linkObj,highLightID)	{ //
+						var theUrl = top.TS.PATH_typo3+top.currentSubScript+"?"+params;
+						if (top.condensedMode)	{
+							top.content.document.location=theUrl;
+						} else {
+							parent.list_frame.document.location=theUrl;
+						}
+						'.($this->doHighlight?'hilight_row("row"+top.fsMod.recentIds["txdirectmailM1"],highLightID);':'').'
+						'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) {linkObj.blur();}').'
+						return false;
+					}
+				
 				</script>
 			';
+			
 			$this->doc->postCode='
 				<script language="javascript" type="text/javascript">
 					script_ended = 1;
@@ -217,38 +231,148 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 	function showNodeInfo($node, $num_days){
 
 		$content = '';
+		$content .= $this->doc->header( $this->getNodeHeader($node) );
+		$content .= $this->doc->section( 'info:',    $this->getNodeInfo($node));
+		$content .= $this->doc->section( 'actions:', $this->getNodeActions($node) );
+		
+		if (is_a($node, 'tx_caretaker_AggregatorNode'))
+			$content .= $this->doc->section( 'children:',$this->getNodeChildren($node));
+		$content .= $this->doc->section( 'status:',  $this->getNodeStatus($node));
+ 		$content .= $this->doc->section( 'chart:',   $this->getNodeGraph($node, $num_days) );
+		
+		return ($content);
+		
+	}
+	
+	function getNodeHeader($node){
 		$nodeinfo = $node->getType().':'.$node->getTitle().'['.$node->getUid().']';
 		if ($instance = $node->getInstance()){
 			$instanceinfo = $instance->getType().':'.$instance->getTitle().'['.$instance->getUid().']';
 		} else {
 			$instanceinfo = '';
 		}
-		$content .= $this->doc->header($instanceinfo.' '.$nodeinfo );
-		
-		$test_result = $node->getTestResult();
-		$content .= $this->doc->section( 'current result:','<table>'.
-			'<tr><td>State</td><td>'.$test_result->getStateInfo().'</td></tr>'.
-			'<tr><td>Value</td><td>'.$test_result->getValue().'</td></tr>'.
-			'<tr><td>lastRun</td><td>'.strftime('%x %X',$test_result->getTstamp()).'</td></tr>'.
-			'<tr><td>Comment</td><td>'.$test_result->getMsg().'</td></tr>'.
-			'</table>'
-		 );
-		
-		$actions = ''; 
-		$actions .= '<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update" >update</a>';
-		$actions .= '&nbsp;<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update_forced" >update [force refresh]</a>';
-		$actions .= '&nbsp;<a onclick="window.location.href=\''.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'typo3/alt_doc.php?edit[tx_caretaker_test]['.$node->getPid().']=new\';return false;" >new</a>';
-		
-		$content .= $this->doc->section( 'action:', $actions);
-			// show graph
-		if ($num_days){
-			$content .= $this->doc->section( 'chart:',$this->showNodeGraph($node, $num_days) );
-		}
-		return ($content);
-		
+		return $instanceinfo.' '.$nodeinfo;
 	}
 	
-	function showNodeGraph($node, $num_days){
+	function getNodeInfo($node){
+		$local_time = localtime(time(), true);
+		$local_hour = $local_time['tm_hour'];
+		
+		switch ( get_class($node) ){
+			case "tx_caretaker_Test":
+				
+				$interval_info = '';
+				$interval = $node->getInterval();
+				if ( $interval < 60){
+					$interval_info .= $interval.' Seconds';
+				} else if ($interval < 60*60){
+					$interval_info .= ($interval/60).' Minutes';
+				} else if ($interval < 60*60*60){
+					$interval_info .= ($interval/(60*60)).' Hours';
+				} else {
+					$interval_info .= ($interval/86400).' Days';
+				}
+				
+				if ($node->getStartHour() || $node->getStopHour() >0){
+					$interval_info .= ' [';
+					if ($node->getStartHour() )
+						$interval_info .= ' after:'.$node->getStartHour();
+					if ($node->getStopHour() )
+						$interval_info .= ' before:'.$node->getStopHour();
+					$interval_info .= ' ]';
+				}
+				
+				$info = '<table>'.
+					'<tr><td>Title</td><td>'.$node->getTitle().'</td></tr>'.
+					'<tr><td>Description</td><td>'.$node->getDescription().'</td></tr>'.
+					'<tr><td>Interval</td><td>'.$interval_info.'</td></tr>'.
+					'</table>';
+				break;
+			default:
+				$info = '<table>'.
+					'<tr><td>Title</td><td>'.$node->getTitle().'</td></tr>'.
+					'<tr><td>Description</td><td>'.$node->getDescription().'</td></tr>'.
+					'</table>';
+				break;
+		}
+		
+		return $info;
+	}
+	
+	function getNodeChildren($node){
+		$children = $node->getChildren();
+		$info = '';
+		foreach ($children as $child){
+
+			$row    = array('uid'=>$child->getUid(), 'pid'=>0, 'title'=>$child->getTitle(), 'deleted'=>0, 'hidden'=>$child->getHidden(), 'starttime'=>0 ,'endtime'=>0, 'fe_group'=>0 );
+			$table  = 'tx_caretaker_'.strToLower( $child->getType() );
+			$title  = $child->getTitle();
+			$icon   = t3lib_iconWorks::getIconImage($table,$row,$this->doc->backPath,'title="'.$title.'" align="top"').
+			
+			$params = false;
+			
+			switch ( $child->getType() ){
+				case 'Instancegroup':
+					$params = 'id=instancegroup_'.$child->getUid();
+					break;
+				case 'Instance':
+					$params = 'id=instance_'.$child->getUid();
+					break;
+				case 'Testgroup':
+					$instance = $child->getInstance();
+					$params = 'id=instance_'.$instance->getUid().'_testgroup_'.$child->getUid();
+					break;
+				case 'Test':
+					$instance = $child->getInstance();
+					$params = 'id=instance_'.$instance->getUid().'_test_'.$child->getUid();
+					break;		
+			}
+		
+			$info .= '<a href="#" onclick="return jumpTo(\''.$params.'\',this,\''.$table.'_'.$uid.'\');">';
+			$info .= $icon.' : '.$title."<br/>";
+			$info .= '</a>';
+			
+		}
+		return $info;
+	}
+	
+	function getNodeStatus($node){
+		$test_result = $node->getTestResult();
+		switch( $test_result->getState() ){
+			case 0:
+				$color = 'green';
+				break;
+			case 1:
+				$color .= 'orange';
+				break;
+			case 2:
+				$color .= 'red';
+				break;
+			default:
+				$color .= 'grey';
+				break;			
+		}
+		
+		$info = '<table>'.
+			'<tr><td>State</td><td><span style="color:'.$color.';" >'.$test_result->getStateInfo().'</span></td></tr>'.
+			'<tr><td>Value</td><td><span style="color:'.$color.';" >'.$test_result->getValue().'</span></td></tr>'.
+			'<tr><td>lastRun</td><td><span style="color:'.$color.';" >'.strftime('%x %X',$test_result->getTstamp()).'</span></td></tr>'.
+			'<tr><td>Comment</td><td><span style="color:'.$color.';" >'.$test_result->getMsg().'</span></td></tr>'.
+			'</table>';
+		
+		return $info;
+			
+	}
+	
+	function getNodeActions($node) {
+		$actions = ''; 
+		$actions .= '<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update" ><img src="../res/icons/arrow_refresh_small.png" title="refresh"/></a>';
+		$actions .= '&nbsp;<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update_forced" ><img src="../res/icons/arrow_refresh.png" title="refresh forced"/></a>';
+		$actions .= '&nbsp;<a href="#" onclick="window.location.href=\''.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'typo3/alt_doc.php?edit[tx_caretaker_'.strtolower($node->getType() ).']['.$node->getUid().']=edit&returnUrl='.urlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')).'\';return false;" ><img src="../res/icons/pencil.png" title="edit"/></a>';
+		return $actions;
+	}
+	
+	function getNodeGraph($node, $num_days){
 		require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestResultRangeRenderer_pChart.php');
 
 			$result_range = $node->getTestResultRange(time()-86400*$num_days , time() );	

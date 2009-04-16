@@ -10,8 +10,8 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 	private $test_conf = false;
 	private $test_conf_mode = false;
 	private $test_interval  = false; 
-	private $start_hour;
-	private $stop_hour; 
+	private $start_hour = false;
+	private $stop_hour  = false; 
 	
 	function __construct($uid, $title, $parent, $type, $conf, $interval = 86400, $start_hour=false, $stop_hour=false ){
 		
@@ -23,6 +23,18 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		$this->start_hour    = $start_hour;
 		$this->stop_hour     = $stop_hour;
 		
+	}
+	
+	function getInterval(){
+		return $this->test_interval;
+	}
+	
+	function getStartHour(){
+		return $this->start_hour;
+	}
+	
+	function getStopHour(){
+		return $this->stop_hour;
 	}
 	
 	function runTest(){
@@ -53,13 +65,13 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		if (!$force_update ){
 			$result = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
 			if ($result && $result->getTstamp() > time()-$this->test_interval ) {
-				$this->log('cache '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMsg() );
+				$this->log('cacheresult '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMsg() );
 				return $result;
-			} else if ($this->start_hour || $this->stop_hour ) {
+			} else if ($this->start_hour > 0 || $this->stop_hour > 0 ) {
 				$local_time = localtime(time(), true);
 				$local_hour = $local_time['tm_hour'];
-				if ($local_hour < $this->start_hour || $local_hour > $this->stop_hour ){
-					$this->log('cache '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMsg() );
+				if ($local_hour < $this->start_hour || $local_hour >= $this->stop_hour ){
+					$this->log('cacheresult '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMsg() );
 					return $result;	
 				}
 			}

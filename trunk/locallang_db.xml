@@ -80,7 +80,10 @@
 			<label index="tx_caretaker_test.groups">Testgroups</label>
 			<label index="tx_caretaker_test.notifications">Notifications</label>
 
-			<label index="tt_content.list_type_pi1">Caretaker Frontend</label>
+			<label index="tt_content.list_type_pi_overview">Caretaker Tactical Overview</label>
+			
+			<label index="pi_overview_title">Caretaker Tactical Overview</label>
+			<label index="pi_overview_plus_wiz_description">Show Tactical Overview of selcted Caretaker Records</label>
 			
 		</languageKey>
 		<languageKey index="de" type="array">

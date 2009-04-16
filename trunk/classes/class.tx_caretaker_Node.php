@@ -13,6 +13,7 @@ abstract class tx_caretaker_Node {
 	protected $logger    = false;
 	protected $notifier  = false;
 	protected $notificationIds = array();
+	protected $description = '';
 	
 	public function __construct( $uid, $title, $parent, $type=''){
 		$this->uid    = $uid;
@@ -25,21 +26,24 @@ abstract class tx_caretaker_Node {
 		$this->notificationIds = $id_array;
 	}
 	
-	public function getUid(){
-		return $this->uid;
+	public function setDescription($decription){
+		$this->description = $decription;
 	}
 	
-	public function getPid(){
-		
+	public function getUid(){
+		return $this->uid;
 	}
 	
 	public function getHidden(){
 		return $this->hidden;
 	}
-	
 		
 	public function getTitle(){
 		return $this->title;
+	}
+	
+	public function getDescription(){
+		return $this->description;
 	}
 	
 	public function getType(){

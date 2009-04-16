@@ -211,6 +211,10 @@ CREATE TABLE tx_caretaker_aggregatorresult (
 	
 	result_status int(11) DEFAULT '0' NOT NULL,
 	result_value float DEFAULT '0' NOT NULL,
+	result_num_ok        int(11) DEFAULT '0' NOT NULL,
+	result_num_warnig    int(11) DEFAULT '0' NOT NULL,
+	result_num_error     int(11) DEFAULT '0' NOT NULL,
+	result_num_undefined int(11) DEFAULT '0' NOT NULL,
 	result_msg varchar(255) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (uid),
