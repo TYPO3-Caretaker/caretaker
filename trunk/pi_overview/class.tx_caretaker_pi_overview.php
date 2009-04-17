@@ -27,34 +27,22 @@
  * @author	 <>
  */
 
-
-require_once(PATH_tslib.'class.tslib_pibase.php');
+require_once(t3lib_extMgm::extPath('caretaker').'/pi_base/class.tx_caretaker_pibase.php');
 require_once(t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Helper.php');
 
-class tx_caretaker_pi_overview extends tslib_pibase {
+class tx_caretaker_pi_overview extends tx_caretaker_pibase {
 	var $prefixId = 'tx_caretaker_pi_overview';		// Same as class name
-	var $scriptRelPath = 'pi_overview/class.user_overview_pi1.php';	// Path to this script relative to the extension dir.
+	var $scriptRelPath = 'pi_overview/class.tx_caretaker_pi_overview.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'caretaker';	// The extension key.
+
 	
-	/**
-	 * The main method of the PlugIn
-	 *
-	 * @param	string		$content: The PlugIn content
-	 * @param	array		$conf: The PlugIn configuration
-	 * @return	The content that is displayed on the website
-	 */
-	function main($content,$conf)	{
-		$this->conf=$conf;
-		$this->pi_setPiVarDefaults();
-		$this->pi_loadLL();
-		$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
-	
+	function getContent(){
 		$node = $this->getNode();
-		debug($node);
-		
-		$content='';
-		
-		return $this->pi_wrapInBaseClass($content);
+		if ($node) {
+			 return $this->showNodeInfo($node);
+		} else {
+			return 'no node found';
+		}
 	}
 	
 	function getNode(){

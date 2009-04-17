@@ -30,7 +30,7 @@ class tx_caretaker_ping extends tx_caretaker_TestServiceBase {
 			if ($time_warning && $time > $time_warning) {
 				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'Ping took '.$time.' seconds' );
 			} 
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time , '' );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time , 'Ping took '.$time.' seconds' );
 		} else {
 			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Ping failed. '.$msg );
 		}

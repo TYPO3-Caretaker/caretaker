@@ -1,0 +1,88 @@
+plugin.tx_caretaker_pi_overview{
+	
+	template = FILE
+	template.file = EXT:caretaker/res/html/pi_overview.html
+
+	nodeMarkers {
+		STATE = TEXT
+		STATE.field = state_info
+		STATE.case = lower
+		
+		TITLE = TEXT
+		TITLE.field =  title
+		TITLE.append = TEXT 
+		TITLE.append.field = instance
+		TITLE.append.noTrimWrap = | [|]|
+		TITLE.append.required = 1
+		TITLE.insertData = 1
+		TITLE.typolink.parameter = {$caretaker.singleLinkParameter}
+		TITLE.typolink.additionalParams.field = link_parameters
+		TITLE.typolink.target = _blank
+		
+		DESCRIPTION = TEXT
+		DESCRIPTION.value = {field:type}: {field:state_msg}
+		DESCRIPTION.insertData = 1
+	} 
+	
+	childMarkers {
+		STATE = TEXT
+		STATE.field = state_info
+		STATE.case = lower
+		
+		TITLE = TEXT
+		TITLE.value = {field:title}
+		TITLE.insertData = 1
+		TITLE.typolink.parameter = {$caretaker.singleLinkParameter}
+		TITLE.typolink.additionalParams.field = link_parameters
+		TITLE.typolink.target = _blank
+		
+		DESCRIPTION = TEXT
+		DESCRIPTION.value = {field:type}: {field:state_msg}
+		DESCRIPTION.insertData = 1
+	} 	
+}
+
+plugin.tx_caretaker_pi_singleview{
+	
+	template = FILE
+	template.file = EXT:caretaker/res/html/pi_singleview.html
+
+	nodeMarkers {
+		STATE = TEXT
+		STATE.field = state_info
+		STATE.case = lower
+		
+		TITLE = TEXT
+		TITLE.field =  title
+		TITLE.append = TEXT 
+		TITLE.append.field = instance
+		TITLE.append.noTrimWrap = | [|]|
+		TITLE.append.required = 1
+		TITLE.insertData = 1
+		TITLE.typolink.parameter = {$caretaker.singleLinkParameter}
+		TITLE.typolink.additionalParams.field = link_parameters
+		TITLE.typolink.target = _blank
+		
+		DESCRIPTION = TEXT
+		DESCRIPTION.field = description
+		 
+	} 
+	
+	childMarkers {
+		STATE = TEXT
+		STATE.field = state_info
+		STATE.case = lower
+		
+		TITLE = TEXT
+		TITLE.value = {field:title}
+		TITLE.insertData = 1
+		TITLE.typolink.parameter = {$caretaker.singleLinkParameter}
+		TITLE.typolink.additionalParams.field = link_parameters
+		TITLE.typolink.target = _blank
+		
+		DESCRIPTION = TEXT
+		DESCRIPTION.value = {field:type}: {field:state_msg}
+		DESCRIPTION.insertData = 1
+	} 	
+}
+

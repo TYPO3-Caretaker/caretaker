@@ -55,7 +55,6 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		parent::init();
 
 		$this->id = $_GET['id'];
-		$this->info = $this->extractID($_GET['id']);
 		
 		/*
 		if (t3lib_div::_GP("clear_all_cache"))	{
@@ -168,27 +167,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		}
 	}
 
-	function extractID($id_string){
-		$parts = explode('_', $id_string);
-		$info  = array();
-		for($i=0; $i<count($parts);$i +=2 ){
-			switch ($parts[$i]){
-				case 'instancegroup':
-					$info['instancegroup']=(int)$parts[$i+1];
-					break;
-				case 'instance':
-					$info['instance']=(int)$parts[$i+1];
-					break;
-				case 'testgroup':
-					$info['testgroup']=(int)$parts[$i+1];
-					break;
-				case 'test':
-					$info['test']=(int)$parts[$i+1];
-					break;
-			}
-		}
-		return ($info); 
-	}
+
 	
 	/**
 	 * Prints out the module HTML
@@ -211,7 +190,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		$num_days = (float)$this->MOD_SETTINGS["function"]; 
 		if (!$num_days) $num_days = 3;
 
-		$node = tx_caretaker_Helper::getNode($this->info['instancegroup'], $this->info['instance'], $this->info['testgroup'], $this->info['test']);
+		$node = tx_caretaker_Helper::id2node( $this->id );
 
 		if ($node){
 			if ( isset ($_GET['SET']['action']) ){

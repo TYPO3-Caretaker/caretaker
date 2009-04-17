@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- 
+/**
+ * This is a file of the caretaker project.
+ * Copyright 2008 by n@work Internet Informationssystem GmbH (www.work.de)
+ * 
+ * @Author	Thomas Hempel 		<thomas@work.de>
+ * @Author	Martin Ficzel		<martin@work.de>
+ * @Author	Patrick Kollodzik	<patrick@work.de>
+ * 
+ * $$Id: flexform_ds.xml 33 2008-06-13 14:00:38Z thomas $$
+ */
+-->
+<T3DataStructure>
+	<meta> 
+             <langDisable>1</langDisable> 
+     </meta> 
+	<ROOT>
+		<TCEforms>
+			<sheetTitle>Main</sheetTitle>
+		</TCEforms>
+		
+		
+		<type>array</type>
+		<el>
+			<mode>
+				<TCEforms>
+					<label>LLL:EXT:caretaker/pi_overview/locallang.xml:plugin_mode</label>
+					<config>
+						<type>select</type>
+						<items type="array">
+							<numIndex index="0" type="array">
+								<numIndex index="0">LLL:EXT:caretaker/pi_overview/locallang.xml:plugin_mode_instancegroup</numIndex>
+								<numIndex index="1">instancegroup</numIndex>
+							</numIndex>
+							<numIndex index="1" type="array">
+								<numIndex index="0">LLL:EXT:caretaker/pi_overview/locallang.xml:plugin_mode_instance</numIndex>
+								<numIndex index="1">instance</numIndex>
+							</numIndex>
+							<numIndex index="2" type="array">
+								<numIndex index="0">LLL:EXT:caretaker/pi_overview/locallang.xml:plugin_mode_instance_testgroup</numIndex>
+								<numIndex index="1">instance_testgroup</numIndex>
+							</numIndex>
+						</items>
+						<minitems>1</minitems>
+						<maxitems>1</maxitems>
+						<size>1</size>
+					</config>
+				</TCEforms>
+			</mode>
+			<instancegroup>
+				<TCEforms>
+					<displayCond>FIELD:mode:IN:instancegroup</displayCond>
+					<label>LLL:EXT:caretaker/pi_overview/locallang.xml:instancegroup</label>
+					<config>
+						<type>select</type>
+						<form_type>user</form_type>
+						<userFunc>tx_ttaddress_treeview->displayGroupTree</userFunc>
+						<treeView>1</treeView>
+						<foreign_table>tx_caretaker_instancegroup</foreign_table>
+						<minitems>0</minitems>
+						<maxitems>2</maxitems>
+						<size>5</size>
+					</config>
+				</TCEforms>
+			</instancegroup>
+			
+			<instance>
+				<TCEforms>
+					<displayCond>FIELD:mode:IN:instance,instance_testgroup</displayCond>
+					<label>LLL:EXT:caretaker/pi_overview/locallang.xml:instancegroup</label>
+					<config>
+						<type>select</type>
+						<foreign_table>tx_caretaker_instance</foreign_table>
+						<minitems>0</minitems>
+						<maxitems>2</maxitems>
+						<size>5</size>
+					</config>
+				</TCEforms>
+			</instance>
+			
+			<testgroup>
+				<TCEforms>
+					<displayCond>FIELD:mode:IN:instance_testgroup</displayCond>
+					<label>LLL:EXT:caretaker/pi_overview/locallang.xml:instancegroup</label>
+					<config>
+						<type>select</type>
+						<form_type>user</form_type>
+						<userFunc>tx_ttaddress_treeview->displayGroupTree</userFunc>
+						<treeView>1</treeView>
+						<foreign_table>tx_caretaker_testgroup</foreign_table>
+						<minitems>0</minitems>
+						<maxitems>2</maxitems>
+						<size>5</size>
+					</config>
+				</TCEforms>
+			</testgroup>
+		</el>
+	</ROOT>
+</T3DataStructure>

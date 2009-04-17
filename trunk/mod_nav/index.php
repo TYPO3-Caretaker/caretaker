@@ -35,6 +35,7 @@ require ("conf.php");
 require ($BACK_PATH."init.php");
 require ($BACK_PATH."template.php");
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_NodeRepository.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Helper.php');
 
 $LANG->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
 require_once (PATH_t3lib."class.t3lib_scbase.php");
@@ -164,7 +165,6 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	function moduleContent() {
 		
 		$root_instancegroups = $this->node_repository->getInstancegroupsByParentGroupUid(0, false);
-		
 		foreach($root_instancegroups as $instancegroup){
 			$this->content.= $this->show_node_recursive($instancegroup);
 		}
@@ -185,28 +185,10 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 		$row    = array('uid'=>$uid, 'pid'=>0, 'title'=>$title, 'deleted'=>0, 'hidden'=>0, 'starttime'=>0 ,'endtime'=>0, 'fe_group'=>0 );
 		$table  = 'tx_caretaker_'.strToLower($node->getType());
 		
-		$params = false;
-		switch (true){
-			case is_a($node, 'tx_caretaker_Instancegroup'):
-				$params = 'id=instancegroup_'.$uid;
-				break;
-			case is_a($node, 'tx_caretaker_Instance'):
-				$params = 'id=instance_'.$uid;
-				break;
-			case is_a($node, 'tx_caretaker_Testgroup'):
-				$instance = $node->getInstance();
-				$params = 'id=instance_'.$instance->getUid().'_testgroup_'.$uid;
-				break;
-			case is_a($node, 'tx_caretaker_Test'):
-				$instance = $node->getInstance();
-				$params = 'id=instance_'.$instance->getUid().'_test_'.$uid;
-				break;		
-		}
-		
+		$params =  'id='.tx_caretaker_Helper::node2id($node);
 			
 		$result .= str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;',$level);
 		$result .= '<a href="#" onclick="return jumpTo(\''.$params.'\',this,\''.$table.'_'.$uid.'\');">&nbsp;&nbsp;';
-		
 		
 		$test_result = $node->getTestResult();
 		switch( $test_result->getState() ){
