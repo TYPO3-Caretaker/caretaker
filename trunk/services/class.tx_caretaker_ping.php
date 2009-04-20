@@ -15,24 +15,34 @@ class tx_caretaker_ping extends tx_caretaker_TestServiceBase {
 			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_UNKNOWN, 0 , 'Port was not defined' );
 		}
 		
+		
+		
 		$starttime=microtime(true);
-		$command = "/sbin/ping -c 1 ".$this->instance->getHost().' >/dev/null' ;
-		$res = false;
-		$msg = system ($command, $res);
-		$endtime=microtime(true);
-		$time=$endtime-$starttime;
-
-		if ($res == 0){ 
-			if ($time_error && $time > $time_error) {
-				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Ping took '.$time.' seconds' );
-			} 
+		
+		$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+		$command   = $confArray['ping.']['cli_command'];
+		if ($command ){
+			
+			$command = str_replace( '###' , $this->instance->getHost(), $command);
+			$res = false;
+			$msg = system ($command, $res);
+			$endtime=microtime(true);
+			$time=$endtime-$starttime;
 	
-			if ($time_warning && $time > $time_warning) {
-				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'Ping took '.$time.' seconds' );
-			} 
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time , 'Ping took '.$time.' seconds' );
+			if ($res == 0){ 
+				if ($time_error && $time > $time_error) {
+					return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Ping took '.$time.' seconds' );
+				} 
+		
+				if ($time_warning && $time > $time_warning) {
+					return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'Ping took '.$time.' seconds' );
+				} 
+				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time , 'Ping took '.$time.' seconds' );
+			} else {
+				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Ping failed. '.$msg );
+			}
 		} else {
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Ping failed. '.$msg );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, 0 , 'CLI Ping-Command must be configured in ExtConf' );
 		}
 	}
 	
