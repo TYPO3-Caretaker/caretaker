@@ -3,7 +3,7 @@
 require_once('class.tx_caretaker_NodeResultRange.php');
 
 
-class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange {
+class tx_caretaker_AggregatorResultRange extends tx_caretaker_NodeResultRange {
 	
 	var $min = 0;
 	var $max = 0;
@@ -12,7 +12,7 @@ class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange {
 		
 		parent::addResult($result);
 		
-		$val = $result->getValue();
+		$val = $result->getNumUNDEFINED() + $result->getNumOK()+  $result->getNumWARNING()+  $result->getNumERROR() ;
 		if ($val < $this->min){
 			$this->min = $val;
 		} else if ($val > $this->max){

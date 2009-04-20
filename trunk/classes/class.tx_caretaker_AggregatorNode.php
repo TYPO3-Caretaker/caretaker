@@ -26,14 +26,14 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 		$children  = $this->getChildren();
 
 		if (count($children)>0){		
-			$test_results = new tx_caretaker_TestResultRange(); 
+			$test_results = array(); 
 			foreach($children as $child){
 				$test_result = $child->updateTestResult($force_update);
-				$test_results->addResult($test_result);
+				$test_results[] = $test_result;
 			}
-			$group_result = $test_results->getAggregatedTestResult();
+			$group_result = $this->getAggregatedResult($test_results);
 		} else {
-			$group_result = tx_caretaker_TestResult::create(TX_CARETAKER_STATE_UNDEFINED, 0, 'No children were found');
+			$group_result = tx_caretaker_AggregatorResult::create(TX_CARETAKER_STATE_UNDEFINED, 0, 'No children were found');
 		}
 		
 		$this->log( ' |> '.$group_result->getStateInfo().' :: '.$group_result->getMsg(), false );
@@ -67,6 +67,52 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 		$group_results = $result_repository->getRangeByNode($this, $startdate, $stopdate);
 		return $group_results;
 		
+	}
+	
+	function getAggregatedResult($test_results){
+		
+		$num_tests = count($test_results);
+		$num_undefined = 0;
+		$num_errors	= 0;
+		$num_ok	= 0;
+		$num_warnings  = 0;
+		
+		for($i= 0 ; $i < $num_tests; $i++ ){
+			switch ( $test_results[$i]->getState() ){
+				case TX_CARETAKER_STATE_OK:
+					$num_ok ++;
+					break;
+				case TX_CARETAKER_STATE_ERROR:
+					$num_errors ++;
+					break;
+				case TX_CARETAKER_STATE_WARNING:
+					$num_warnings ++;
+					break;
+				case TX_CARETAKER_STATE_UNDEFINED:
+					$num_undefined ++;
+					break;
+			}
+		}
+		
+		$undefined_info = '';
+		if ($num_undefined > 0){
+			$undefined_info = ' ['.$num_undefined.' results are in undefined state ]';
+		} 
+		
+		$ts = time();
+		if  ($num_errors > 0){
+			$state = TX_CARETAKER_STATE_ERROR;
+			$msg   = $num_errors.' errors and '.$num_warnings.' warnings in '.$num_tests.' results.'.$undefined_info;
+		} else if ($num_warnings > 0){
+			$state = TX_CARETAKER_STATE_WARNING;
+			$msg   = $num_warnings.' warnings in '.$num_tests.' results.'.$undefined_info;
+		} else {
+			$state = TX_CARETAKER_STATE_OK;
+			$msg   = $num_tests.' results are OK'.$undefined_info;
+		}
+		$aggregated_state = tx_caretaker_AggregatorResult::create($state,$num_undefined,$num_ok,$num_warnings,$num_errors,$msg);
+		
+		return $aggregated_state;
 	}
 	
 }

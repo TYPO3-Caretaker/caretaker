@@ -352,21 +352,21 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 	}
 	
 	function getNodeGraph($node, $num_days){
-		require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestResultRangeRenderer_pChart.php');
-
-			$result_range = $node->getTestResultRange(time()-86400*$num_days , time() );	
 		
-			$filename = 'typo3temp/caretaker/charts/'.$this->id.'_'.$num_days.'.png';
-			$renderer = tx_caretaker_TestResultRangeRenderer_pChart::getInstance();
-			$result   = $renderer->render($result_range, PATH_site.$filename);
-			$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
-			
-			if ($result){
-				return '<img src="'.$base.$filename.'" />';
-			} else {
-				return '<strong>Graph Error</strong>';
-			}
-			
+		require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_ResultRangeRenderer_pChart.php');
+
+		$result_range = $node->getTestResultRange(time()-86400*$num_days , time() );	
+	
+		$filename = 'typo3temp/caretaker/charts/'.$this->id.'_'.$num_days.'.png';
+		$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
+		$result   = $renderer->render($result_range, PATH_site.$filename);
+		$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		
+		if ($result){
+			return '<img src="'.$base.$filename.'" />';
+		} else {
+			return '<strong>Graph Error</strong>';
+		}
 	}
     
 }

@@ -1,7 +1,7 @@
 <?php
  
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestResultRange.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestResult.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_AggregatorResultRange.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_AggregatorResult.php');
 
 class tx_caretaker_AggregatorResultRepository {
 
@@ -52,7 +52,7 @@ class tx_caretaker_AggregatorResultRepository {
 	 * @return tx_caretaker_testResultRange
 	 */
 	function getRangeByNode($node, $start_ts, $stop_ts ){
-		$result_range = new tx_caretaker_TestResultRange($start_ts, $stop_ts);
+		$result_range = new tx_caretaker_AggregatorResultRange($start_ts, $stop_ts);
 		
 		$instance = $node->getInstance();
 		if ($instance) {
@@ -104,7 +104,8 @@ class tx_caretaker_AggregatorResultRepository {
 	 * Prepare a db record for storing of test results
 	 * @return integer uid of created result record
 	 */
-	function addNodeResult($node, $test_result){
+	function addNodeResult(tx_caretaker_AggregatorNode $node, tx_caretaker_AggregatorResult $test_result){
+		
 			//add an undefined row to the testresult column
 		$instance = $node->getInstance();
 		if ($instance) {
@@ -118,10 +119,13 @@ class tx_caretaker_AggregatorResultRepository {
 			'aggregator_type' => $node->getType(),
 			'instance_uid'    => $instanceUid,
 		
-			'result_status'   => $test_result->getState(),
-			'result_value'    => $test_result->getValue(),
-			'result_msg'      => $test_result->getMsg(),
-			'tstamp'          => $test_result->getTstamp()
+			'result_status'        => $test_result->getState(),
+			'result_num_undefined' => $test_result->getNumUNDEFINED(),
+			'result_num_ok'        => $test_result->getNumOK(),
+			'result_num_warnig'    => $test_result->getNumERROR(),
+			'result_num_error'     => $test_result->getNumWARNING(),
+			'result_msg'           => $test_result->getMsg(),
+			'tstamp'               => $test_result->getTstamp()
 		);
 		
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_aggregatorresult', $values);
@@ -129,7 +133,15 @@ class tx_caretaker_AggregatorResultRepository {
 	} 
 	
 	function dbrow2instance($row){
-		$instance = tx_caretaker_TestResult::restore($row['tstamp'], $row['result_status'], $row['result_value'], $row['result_msg']);
+		$instance = tx_caretaker_AggregatorResult::restore(
+			$row['tstamp'], 
+			$row['result_status'], 
+			$row['result_num_undefined'], 
+			$row['result_num_ok'], 
+			$row['result_num_warnig'], 
+			$row['result_num_error'], 
+			$row['result_msg']
+		);
 		return $instance; 
 	}
 	

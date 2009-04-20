@@ -1,6 +1,6 @@
 <?php 
 
-interface tx_caretaker_TestResultRangeRenderer {
+interface tx_caretaker_ResultRangeRenderer {
 
 	public function getInstance();
 	

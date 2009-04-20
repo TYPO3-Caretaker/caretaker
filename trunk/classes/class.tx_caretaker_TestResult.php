@@ -1,21 +1,17 @@
 <?php
 
-define("TX_CARETAKER_STATE_OK",          0);
-define("TX_CARETAKER_STATE_WARNING",     1);
-define("TX_CARETAKER_STATE_ERROR",       2);
-define("TX_CARETAKER_STATE_UNDEFINED",  -1);
- 
-class tx_caretaker_TestResult {
-	var $status=0;
+
+require_once('class.tx_caretaker_NodeResult.php');
+
+class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
+	
 	var $value=0;
 	var $msg='';
-	var $ts = 0;
 
 	function __construct ($ts, $status=TX_CARETAKER_STATE_UNDEFINED, $value=0, $msg=''){
-		$this->status = (int)$status;
+		parent::__construct($ts, $status);
 		$this->value = $value;
-		$this->msg = $msg;
-		$this->ts = $ts;
+		$this->msg   = $msg;
 	}
 	
 	static function undefined (){
@@ -23,7 +19,7 @@ class tx_caretaker_TestResult {
 		return new tx_caretaker_TestResult($ts, TX_CARETAKER_STATE_UNDEFINED, 0, 'Result is undefined');
 	}
 	
-	static function restore ($ts, $status=TX_CARETAKER_STATE_UNDEFINED, $value=0, $comment=''){
+	static function restore($ts, $status=TX_CARETAKER_STATE_UNDEFINED, $value=0, $comment=''){
 		return new tx_caretaker_TestResult($ts, $status, $value, $comment);
 	}
 	
@@ -32,23 +28,6 @@ class tx_caretaker_TestResult {
 		return new tx_caretaker_TestResult($ts, $status, $value, $comment);
 	}
 		
-	function getState(){
-		return $this->status;
-	}
-	
-	function getStateInfo (){
-		switch ($this->status){
-			case TX_CARETAKER_STATE_OK:
-				return 'OK';
-			case TX_CARETAKER_STATE_ERROR:
-				return 'ERROR';
-			case TX_CARETAKER_STATE_WARNING:
-				return 'WARNING';
-			case TX_CARETAKER_STATE_UNDEFINED:
-				return 'UNDEFINED';
-		}
-	}
-	
 	function getValue(){
 		return $this->value;
 	}
@@ -56,13 +35,7 @@ class tx_caretaker_TestResult {
 	function getMsg(){
 		return $this->msg;
 	}
-	
-	function getTstamp(){
-		return $this->ts;
-	}
-	
 
-	
 }
 
 ?>
