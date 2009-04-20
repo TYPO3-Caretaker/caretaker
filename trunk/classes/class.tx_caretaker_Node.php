@@ -6,20 +6,22 @@ require_once ('class.tx_caretaker_TestResultRange.php');
 
 abstract class tx_caretaker_Node {
 	
-	protected $uid       = false;
-	protected $title     = false;
+	public $uid       = false;
+	public $title     = false;
 	protected $type      = '';
 	protected $parent    = NULL;
 	protected $logger    = false;
 	protected $notifier  = false;
 	protected $notificationIds = array();
 	protected $description = '';
+	protected $hidden    = 0;
 	
-	public function __construct( $uid, $title, $parent, $type=''){
+	public function __construct( $uid, $title, $parent, $type='', $hidden = 0){
 		$this->uid    = $uid;
 		$this->title  = $title;
 		$this->parent = $parent;
 		$this->type   = $type;
+		$this->hidden = $hidden;
 	}
 	
 	public function setNotificationIds($id_array){

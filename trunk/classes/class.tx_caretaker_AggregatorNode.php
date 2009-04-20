@@ -8,14 +8,14 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 
 	protected $children = NULL;
 	
-	public function getChildren(){
+	public function getChildren($show_hidden=false){
 		if ($this->children === NULL){
-			$this->children = $this->findChildren();
+			$this->children = $this->findChildren($show_hidden);
 		}
 		return $this->children;
 	}
 	
-	protected function findChildren(){
+	protected function findChildren($hidden=false){
 		return array();
 	}
 	

@@ -5,20 +5,19 @@ require_once('class.tx_caretaker_NodeRepository.php');
 
 class tx_caretaker_Instancegroup extends tx_caretaker_AggregatorNode {
 	
-	function __construct( $uid, $title, $parent) {
-		parent::__construct($uid, $title, $parent, 'Instancegroup');
-		
+	function __construct( $uid, $title, $parent, $hidden=0) {
+		parent::__construct($uid, $title, $parent, 'Instancegroup', $hidden);
 	}
 	
-	function findChildren (){
+	function findChildren ($show_hidden=false){
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
 			// read subgroups
-		$subgroups = $node_repository->getInstancegroupsByParentGroupUid($this->uid, $this );
+		$subgroups = $node_repository->getInstancegroupsByParentGroupUid($this->uid, $this, $show_hidden );
 			// read instances
-		$instances = $node_repository->getInstancesByInstancegroupUid($this->uid, $this );
+		$instances = $node_repository->getInstancesByInstancegroupUid($this->uid, $this, $show_hidden );
 			// save
 		$children = array_merge($subgroups, $instances);
-		
+			// 
 		return $children;
 		
 	}

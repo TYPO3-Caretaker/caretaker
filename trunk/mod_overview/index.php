@@ -190,7 +190,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		$num_days = (float)$this->MOD_SETTINGS["function"]; 
 		if (!$num_days) $num_days = 3;
 
-		$node = tx_caretaker_Helper::id2node( $this->id );
+		$node = tx_caretaker_Helper::id2node( $this->id , true);
 
 		if ($node){
 			if ( isset ($_GET['SET']['action']) ){
@@ -271,6 +271,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 				$info = '<table>'.
 					'<tr><td>Title</td><td>'.$node->getTitle().'</td></tr>'.
 					'<tr><td>Description</td><td>'.$node->getDescription().'</td></tr>'.
+					'<tr><td>Description</td><td>'.$node->getHidden().'</td></tr>'.
 					'</table>';
 				break;
 		}
@@ -279,11 +280,20 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 	}
 	
 	function getNodeChildren($node){
-		$children = $node->getChildren();
+		$children = $node->getChildren(true);
 		$info = '';
 		foreach ($children as $child){
 
-			$row    = array('uid'=>$child->getUid(), 'pid'=>0, 'title'=>$child->getTitle(), 'deleted'=>0, 'hidden'=>$child->getHidden(), 'starttime'=>0 ,'endtime'=>0, 'fe_group'=>0 );
+			$row    = array(
+				'uid'=>$child->getUid(), 
+				'pid'=>0, 
+				'title'=>$child->getTitle(), 
+				'deleted'=>0, 
+				'hidden'=>$child->getHidden(), 
+				'starttime'=>0 ,
+				'endtime'=>0, 
+				'fe_group'=>0 
+			);
 			$table  = 'tx_caretaker_'.strToLower( $child->getType() );
 			$title  = $child->getTitle();
 			$icon   = t3lib_iconWorks::getIconImage($table,$row,$this->doc->backPath,'title="'.$title.'" align="top"').

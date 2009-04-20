@@ -164,15 +164,16 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	 */
 	function moduleContent() {
 		
-		$root_instancegroups = $this->node_repository->getInstancegroupsByParentGroupUid(0, false);
+		$root_instancegroups = $this->node_repository->getInstancegroupsByParentGroupUid(0, false, true );
 		foreach($root_instancegroups as $instancegroup){
 			$this->content.= $this->show_node_recursive($instancegroup);
 		}
 		
-		$root_instances = $this->node_repository->getInstancesByInstancegroupUid(0, false);
+		$root_instances = $this->node_repository->getInstancesByInstancegroupUid(0, false );
 		foreach($root_instances as $instance){
 			$this->content.= $this->show_node_recursive($instance);
 		}
+		
 		
 	}
 	
@@ -182,7 +183,8 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 		$result = '';
 		$uid    = $node->getUid();
 		$title  = $node->getTitle();
-		$row    = array('uid'=>$uid, 'pid'=>0, 'title'=>$title, 'deleted'=>0, 'hidden'=>0, 'starttime'=>0 ,'endtime'=>0, 'fe_group'=>0 );
+		$hidden = $node->getHidden();
+		$row    = array('uid'=>$uid, 'pid'=>0, 'title'=>$title, 'deleted'=>0, 'hidden'=>$hidden, 'starttime'=>0 ,'endtime'=>0, 'fe_group'=>0 );
 		$table  = 'tx_caretaker_'.strToLower($node->getType());
 		
 		$params =  'id='.tx_caretaker_Helper::node2id($node);
@@ -214,7 +216,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 		
 			// show subitems of tx_caretaker_AggregatorNodes
 		if (is_a($node, 'tx_caretaker_AggregatorNode') ){
-			$children = $node->getChildren();
+			$children = $node->getChildren(true);
 			if (count($children)>0){
 				foreach($children as $child){
 					$result.= $this->show_node_recursive($child, $level + 1) ;

@@ -5,7 +5,7 @@ require_once ('class.tx_caretaker_NodeRepository.php');
 
 class tx_caretaker_Helper {
 	
-	static function getNode($instancegroupId = false, $instanceId = false, $testgroupId = false, $testId = false){
+	static function getNode($instancegroupId = false, $instanceId = false, $testgroupId = false, $testId = false, $show_hidden=false){
 		
 		$node_repoistory    = tx_caretaker_NodeRepository::getInstance();
 
@@ -15,16 +15,16 @@ class tx_caretaker_Helper {
 		$testId          = (int)$testId;
 		
 		if ($instancegroupId>0){
-			$instancegroup = $node_repoistory->getInstancegroupByUid($instancegroupId, false);
+			$instancegroup = $node_repoistory->getInstancegroupByUid($instancegroupId, false, $show_hidden);
 			if ($instancegroup) return $instancegroup;
 		} else if ($instanceId>0){
-			$instance = $node_repoistory->getInstanceByUid($instanceId, false);
+			$instance = $node_repoistory->getInstanceByUid($instanceId, false, $show_hidden);
 			if ($instance) {
 				if ($testgroupId>0){
-					$group = $node_repoistory->getTestgroupByUid($testgroupId, $instance);
+					$group = $node_repoistory->getTestgroupByUid($testgroupId, $instance, $show_hidden);
 					if ($group) return $group;		
 	    		} else if ($testId>0) {
-					$test = $node_repoistory->getTestByUid($testId, $instance);
+					$test = $node_repoistory->getTestByUid($testId, $instance, $show_hidden);
 					if ($test) return $test;		
 	    		} else {
 					return $instance;		
@@ -56,7 +56,7 @@ class tx_caretaker_Helper {
 		return $id;
 	}
 	
-	static function id2node ($id_string){
+	static function id2node ($id_string, $show_hidden=false){
 		$parts = explode('_', $id_string);
 		$info  = array();
 		for($i=0; $i<count($parts);$i +=2 ){
@@ -75,7 +75,7 @@ class tx_caretaker_Helper {
 					break;
 			}
 		}
-		return tx_caretaker_Helper::getNode($info['instancegroup'],$info['instance'],$info['testgroup'],$info['test'] );
+		return tx_caretaker_Helper::getNode($info['instancegroup'],$info['instance'],$info['testgroup'],$info['test'], $show_hidden );
 	}
 	
 }

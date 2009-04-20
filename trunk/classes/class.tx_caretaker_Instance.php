@@ -10,8 +10,8 @@ class tx_caretaker_Instance extends tx_caretaker_AggregatorNode {
 	private $ip;
 	private $groups;
 	
-	function __construct( $uid, $title, $parent, $url, $host='', $ip='') {
-		parent::__construct($uid, $title, $parent, 'Instance');
+	function __construct( $uid, $title, $parent, $url, $host='', $ip='', $hidden=0) {
+		parent::__construct($uid, $title, $parent, 'Instance', $hidden);
 		$this->url  = $url;
 		$this->host = $host;
 		$this->ip   = $ip;
@@ -29,9 +29,9 @@ class tx_caretaker_Instance extends tx_caretaker_AggregatorNode {
 		return $this->ip;
 	}
 	
-	function findChildren (){
+	function findChildren ($hidden=false){
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		$children = $node_repository->getTestgroupByInstanceUid($this->uid, $this);
+		$children = $node_repository->getTestgroupByInstanceUid($this->uid, $this, $hidden);
 		return $children;
 	}
 	
