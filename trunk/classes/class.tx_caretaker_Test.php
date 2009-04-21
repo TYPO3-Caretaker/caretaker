@@ -13,7 +13,7 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 	private $start_hour = false;
 	private $stop_hour  = false; 
 	
-	function __construct($uid, $title, $parent, $type, $conf, $interval = 86400, $start_hour=false, $stop_hour=false, $hidden=0 ){
+	function __construct($uid, $title, $parent, $type, $conf, $interval = 86400, $start_hour=false, $stop_hour=false, $hidden=FALSE ){
 		
 		parent::__construct($uid, $title, $parent, 'Test', $hidden);
 		
