@@ -107,7 +107,10 @@ class tx_caretaker_Cli extends t3lib_cli {
 	        	} else {
 	        		exit;
 	        	}
-        	} 
+        	} else {
+        		$this->log('Node not found or inactive');
+        		exit;
+        	}
         }
         
         if ($task = 'help'){
