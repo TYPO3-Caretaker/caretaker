@@ -1,0 +1,138 @@
+@CHARSET "UTF-8";
+
+/*
+#########################
+### Caretaker General ###
+#########################
+*/
+
+div.tx-caretaker-pi-overview,
+div.tx-caretaker-pi-singleview,
+div.tx-caretaker-pi-overview {
+	font-family:Helvetica,Verdana,sans-serif;	
+	font-size:11px;
+}
+
+/*
+##########################
+### Caretaker Overview ###
+##########################
+*/
+
+
+div.caretaker_overview{
+		width:200px;
+		float:left;
+		position:relative;
+		margin: 0 10px 10px 0;	
+
+}
+
+div.caretaker_overview h2{
+		background-color:blue;
+		border:1px solid transparent;
+		color:white;
+		margin: 0 0 2px 0 ;
+		padding: 4px 2px 2px 4px;	
+		white-space:nowrap;	
+}
+
+div.caretaker_overview h2 a{
+		text-decoration:none;
+		color:white;
+}
+
+div.caretaker_overview h2 a:hover{
+		text-decoration:underline;
+}
+
+div.caretaker_overview ul.caretaker_cildren{
+		border:1px solid blue;
+		margin:0px;
+		padding:5px 0px;
+}
+
+div.caretaker_overview_ok h2{ background-color:green; }
+div.caretaker_overview_ok ul.caretaker_cildren{ background-color:#DDFFDD; border-color:green;  }
+
+div.caretaker_overview_warning h2{ background-color:orange; }
+div.caretaker_overview_warning ul.caretaker_cildren{	background-color:#FFFFDD;  border-color:orange; }
+
+div.caretaker_overview_error h2{	background-color:red;}
+div.caretaker_overview_error ul.caretaker_cildren{ background-color:#FFDDDD;  border-color:red; }
+
+div.caretaker_overview_undefined h2{	background-color:grey;}
+div.caretaker_overview_undefined ul.caretaker_cildren{	background-color:#EEEEEE;  border-color:grey;}
+
+div.caretaker_overview ul.caretaker_cildren li{
+		list-style:none;
+		padding: 2px 2px 2px 20px;
+		background-repeat: no-repeat;
+		background-position: 5px 2px;
+}
+
+div.caretaker_overview ul.caretaker_cildren li a{ text-decoration:none; }
+div.caretaker_overview ul.caretaker_cildren li a:hover{ text-decoration:underline; }
+
+div.caretaker_overview ul.caretaker_cildren li.state_ok{  background-image:url(../img/state_ok.gif); }
+div.caretaker_overview ul.caretaker_cildren li.state_ok a{ color:green; }
+
+div.caretaker_overview ul.caretaker_cildren li.state_warning{  background-image:url(../img/state_warning.gif);}
+div.caretaker_overview ul.caretaker_cildren li.state_warning a{ color:orange;}
+
+div.caretaker_overview ul.caretaker_cildren li.state_error{  background-image:url(../img/state_error.gif);}
+div.caretaker_overview ul.caretaker_cildren li.state_error a{ color:red; }
+
+div.caretaker_overview ul.caretaker_cildren li.state_undefined{  }
+div.caretaker_overview ul.caretaker_cildren li.state_undefined a{ color:grey ; }
+
+/*
+############################
+### Caretaker Singleview ###
+############################
+*/
+
+
+div.caretaker_singleview h2 {
+		text-decoration:none;
+		color:white;
+		padding:6px 6px 4px 4px;
+}
+
+div.caretaker_singleview_ok          h2{ background-color:green; }
+div.caretaker_singleview_warning     h2{ background-color:orange; }
+div.caretaker_singleview_error       h2{	background-color:red;}
+div.caretaker_singleview_undefined   h2{	background-color:grey;}
+
+
+
+div.caretaker_singleview ul.caretaker_cildren{
+		margin:0px;
+		padding:5px 0px;
+}
+
+div.caretaker_singleview ul.caretaker_cildren li{
+		list-style:none;
+		padding: 2px 2px 2px 20px;
+		background-repeat: no-repeat;
+		background-position: 5px 2px;
+}
+
+div.caretaker_singleview ul.caretaker_cildren li a{ text-decoration:none; }
+div.caretaker_singleview ul.caretaker_cildren li a:hover{ text-decoration:underline; }
+
+div.caretaker_singleview ul.caretaker_cildren li.state_ok{  background-image:url(../img/state_ok.gif); }
+div.caretaker_singleview ul.caretaker_cildren li.state_ok a{ color:green; }
+
+div.caretaker_singleview ul.caretaker_cildren li.state_warning{  background-image:url(../img/state_warning.gif);}
+div.caretaker_singleview ul.caretaker_cildren li.state_warning a{ color:orange;}
+
+div.caretaker_singleview ul.caretaker_cildren li.state_error{  background-image:url(../img/state_error.gif);}
+div.caretaker_singleview ul.caretaker_cildren li.state_error a{ color:red; }
+
+div.caretaker_singleview ul.caretaker_cildren li.state_undefined{  }
+div.caretaker_singleview ul.caretaker_cildren li.state_undefined a{ color:grey ; }
+
+div.caretaker_singleview table.status {
+	font-size:1em;
+}

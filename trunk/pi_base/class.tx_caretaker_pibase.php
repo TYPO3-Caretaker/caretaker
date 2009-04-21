@@ -19,6 +19,8 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 	
 		$content=$this->getContent();
 		
+		$GLOBALS['TSFE']->additionalHeaderData['caretaker'] = '<link rel="stylesheet" type="text/css" href="'.t3lib_extMgm::siteRelPath('caretaker').'res/css/caretaker.css" />';
+		
 		return $this->pi_wrapInBaseClass($content);
 	}
 
@@ -83,6 +85,7 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		$data['state']       = $result->getState();
 		$data['state_info']  = $result->getStateInfo();
 		$data['state_msg']   = $result->getMsg();
+		$data['state_tstamp']= $result->getTstamp();
 		
 			// instance data
 		if (is_a($node , 'tx_caretaker_Test' ) || is_a($node ,'tx_caretaker_Testgroup') ) {

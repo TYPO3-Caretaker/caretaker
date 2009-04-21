@@ -1,7 +1,9 @@
 <?php 
 
-require_once('interface.tx_caretaker_ResultRangeRenderer.php');
-
+require_once(t3lib_extMgm::extPath('caretaker').'classes/interface.tx_caretaker_ResultRangeRenderer.php');
+require_once(t3lib_extMgm::extPath('caretaker').'/lib/pChart/class.pData.php');  
+require_once(t3lib_extMgm::extPath('caretaker').'/lib/pChart/class.pChart.php');  
+		
 class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRangeRenderer {
 	
 	private static $instance = null;
@@ -26,10 +28,6 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 	function render_Test ($test_result_range, $file, $description = '' ){
 		
 		if ($test_result_range->getLength() < 2 )return false;
-
-			// Standard inclusions     
-		include("../lib/pChart/class.pData.php");  
-		include("../lib/pChart/class.pChart.php");  
 		   
 			// Dataset definition
 		$DataSet   = new pData;
@@ -107,8 +105,8 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$height = 400;
 		
 		$Graph = new pChart($width,$height);  
-		$Graph->setFontProperties("../lib/Fonts/tahoma.ttf",9);
-			
+		$Graph->setFontProperties(t3lib_extMgm::extPath('caretaker').'/lib/Fonts/tahoma.ttf',9);  
+					
 			// initialize custom colors
 		$Graph->setColorPalette(9,0,0,0);
 		$Graph->setColorPalette(10,0,255,0);  //OK
@@ -178,7 +176,6 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 				
 		  // Finish the graph#
 		$info = $test_result_range->getInfos();
-		$Graph->setFontProperties("../lib/Fonts/tahoma.ttf",9);  
 		$Graph->drawTitle(50,22, $description.' '.round(($info['PercentAVAILABLE']*100),2 )."% Verfügbar",50,50,50,585);  
 		
 		
@@ -195,9 +192,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			,"Values_ERROR"
 		);
 		
-		$Graph->setFontProperties("../lib/Fonts/tahoma.ttf",9);  
 		$Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);  
-		
 		$Graph->Render($file);
 		
 		return ($file);
@@ -206,11 +201,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 	function render_Aggregation ($test_result_range, $file, $description = '' ){
 
 		if ($test_result_range->getLength() <2 )return false;
-
-			// Standard inclusions     
-		include("../lib/pChart/class.pData.php");  
-		include("../lib/pChart/class.pChart.php");  
-		   
+				   
 			// Dataset definition
 		$DataSet   = new pData;
 		
@@ -257,8 +248,8 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$height = 400;
 		
 		$Graph = new pChart($width,$height);  
-		$Graph->setFontProperties("../lib/Fonts/tahoma.ttf",9);
-			
+		$Graph->setFontProperties(t3lib_extMgm::extPath('caretaker').'/lib/Fonts/tahoma.ttf',9);  
+					
 			// initialize custom colors
 		$Graph->setColorPalette(9,0,0,0);
 		$Graph->setColorPalette(10,0,255,0);   //OK
@@ -300,7 +291,6 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		
 		  // Finish the graph#
 		$info = $test_result_range->getInfos();
-		$Graph->setFontProperties("../lib/Fonts/tahoma.ttf",9);  
 		$Graph->drawTitle(50,22, $description.' '.round(($info['PercentAVAILABLE']*100),2 )."% Verfügbar",50,50,50,585);  
 		
 		$DataSet->SetSerieName(
@@ -315,9 +305,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			round(($info['PercentERROR']*100),2 ).'% Error'
 			,"Values_ERROR"
 		);
-		
-		
-		$Graph->setFontProperties("../lib/Fonts/tahoma.ttf",9);  
+				
 		$Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);  
 		
 		$Graph->Render($file);

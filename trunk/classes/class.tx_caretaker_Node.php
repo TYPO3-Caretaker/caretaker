@@ -119,6 +119,5 @@ abstract class tx_caretaker_Node {
 		}
 	}
 	
-
 }
 ?>

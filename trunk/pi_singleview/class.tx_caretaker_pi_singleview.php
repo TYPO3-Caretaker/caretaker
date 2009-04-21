@@ -52,14 +52,37 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		$node = false;
 		if ($id){
 			$node = tx_caretaker_Helper::id2node($id);
-
 		} else {
 			$this->pi_initPIflexForm();
 			$node_id =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'node_id');
 			$node = tx_caretaker_Helper::id2node($node_id);
 		}	
-		
 		return $node;
+	}
+	
+	function getNodeData($node){
+		$data = parent::getNodeData($node);
+		
+		require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_ResultRangeRenderer_pChart.php');
+		
+		$range = 24;
+		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
+		
+		$result_range = $node->getTestResultRange(time()-3600*$range , time() );
+		$filename = 'typo3temp/caretaker/charts/'.$this->id.'_'.$num_days.'.png';
+		$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
+		$result   = $renderer->render($result_range, PATH_site.$filename);
+		$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		
+		if ($result){
+			$data['chart'] = '<img src="'.$base.$filename.'" />';
+		} else {
+			$data['chart'] = '<strong>Graph Error</strong>';
+		}
+		
+		$data['range'] = $range/24;
+		
+		return $data;
 	}
 }
 
