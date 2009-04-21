@@ -47,14 +47,19 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 	}
 		
 	function getNode(){
+			
 		$id   = $this->piVars['id'];
+		$node = false;
 		if ($id){
 			$node = tx_caretaker_Helper::id2node($id);
-			if ($node){
-				return $node;
-			}
+
+		} else {
+			$this->pi_initPIflexForm();
+			$node_id =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'node_id');
+			$node = tx_caretaker_Helper::id2node($node_id);
 		}	
-		return false;
+		
+		return $node;
 	}
 }
 

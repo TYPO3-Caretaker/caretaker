@@ -37,35 +37,32 @@ class tx_caretaker_pi_overview extends tx_caretaker_pibase {
 
 	
 	function getContent(){
-		$node = $this->getNode();
-		if ($node) {
-			 return $this->showNodeInfo($node);
+		$nodes = $this->getNodes();
+		
+		if (count($nodes)>0){
+			$content = '';
+			foreach ($nodes as $node){
+				 $content.= $this->showNodeInfo($node);
+			}
+			return $content;
 		} else {
-			return 'no node found';
-		}
+			return 'no node ids found';
+		} 
 	}
 	
-	function getNode(){
+	function getNodes(){
 		$this->pi_initPIflexForm();
-		$mode =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'mode');
+		$node_ids =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'node_ids');
 		
-		$node = false;
-		switch ($mode){
-			case 'instancegroup':
-				$instancegroup =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'instancegroup');
-				$node = tx_caretaker_Helper::getNode($instancegroup);
-				break;
-			case 'instance':
-				$instance =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'instance');
-				$node = tx_caretaker_Helper::getNode(false, $instance);
-				break;
-			case 'instance_testgroup':
-				$instance =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'instance');
-				$testgroup =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'testgroup');
-				$node = tx_caretaker_Helper::getNode(false, $instance, $testgroup);
-				break;	
+		$nodes = array();
+		$ids = explode (chr(10),$node_ids);
+		
+		foreach ($ids as $id){
+			$node = tx_caretaker_Helper::id2node($id);
+			if ($node) $nodes[]=$node;
 		}
-		return $node;
+
+		return $nodes;
 	}
 }
 

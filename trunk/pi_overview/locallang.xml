@@ -11,6 +11,7 @@
 			<label index="plugin_mode_instance_testgroup">Instance + Testgroup</label>
 			<label index="plugin_mode">Mode</label>
 			<label index="submit_button_label">Click here to submit value</label>
+			<label index="node_ids">Caretaker Node IDs</label>
 		</languageKey>
 	</data>
 </T3locallang>
