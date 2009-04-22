@@ -80,7 +80,7 @@ class tx_caretaker_AggregatorResultRepository {
 			if ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$row['tstamp'] = $start_ts;
 				$result = $this->dbrow2instance($row);
-				$result_range->addResult($result, 'first');
+				$result_range->addResult($result);
 			}
 		}
 		
@@ -92,8 +92,12 @@ class tx_caretaker_AggregatorResultRepository {
 			if ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$row['tstamp'] = $stop_ts;
 				$result = $this->dbrow2instance($row);
-				$result_range->addResult($result, 'last');
+				$result_range->addResult($result);
+			} else {
+				$real_last = tx_caretaker_AggregatorResult::restore($stop_ts, $last->getState() , $last->getNumUNDEFINED(), $last->getNumOK() , $last->getNumWARNING(),  $last->getNumERROR(),$last->getMsg() );
+				$result_range->addResult($real_last);
 			}
+			
 		}
 		
 		

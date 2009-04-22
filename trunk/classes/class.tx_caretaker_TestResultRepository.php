@@ -75,7 +75,10 @@ class tx_caretaker_TestResultRepository {
 			if ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$row['tstamp'] = $stop_ts;
 				$result = $this->dbrow2instance($row);
-				$result_range->addResult($result, 'last');
+				$result_range->addResult($result);
+			} else { 
+				$real_last = tx_caretaker_TestResult::restore($stop_ts, $last->getState() , $last->getValue(), $last->getMsg() );
+				$result_range->addResult($real_last);
 			}
 		}
 

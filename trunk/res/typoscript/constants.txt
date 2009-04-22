@@ -1,1 +1,2 @@
-caretaker.singleLinkParameter = 25,0 730x800
+caretaker.singleLinkID = 25,0
+caretaker.singleLinkParameter = 730x800

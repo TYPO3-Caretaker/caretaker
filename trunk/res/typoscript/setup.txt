@@ -15,7 +15,7 @@ plugin.tx_caretaker_pi_overview{
 		TITLE.append.noTrimWrap = | [|]|
 		TITLE.append.required = 1
 		TITLE.insertData = 1
-		TITLE.typolink.parameter = {$caretaker.singleLinkParameter}
+		TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
 		TITLE.typolink.additionalParams.field = link_parameters
 		TITLE.typolink.target = _blank
 		
@@ -32,7 +32,7 @@ plugin.tx_caretaker_pi_overview{
 		TITLE = TEXT
 		TITLE.value = {field:title}
 		TITLE.insertData = 1
-		TITLE.typolink.parameter = {$caretaker.singleLinkParameter}
+		TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
 		TITLE.typolink.additionalParams.field = link_parameters
 		TITLE.typolink.target = _blank
 		

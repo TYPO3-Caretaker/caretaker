@@ -13,15 +13,16 @@ class tx_caretaker_CliNotifier implements tx_caretaker_NotifierInterface{
 		$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
 		$this->mail_from      = $confArray['notification.']['mail_from'];
 		$this->mail_subject   = $confArray['notification.']['mail_subject'];
+		$this->mail_link      = $confArray['notification.']['mail_link'];
 	}
 		
-	public function addNotification ($recipientId, $state, $msg='', $description=''){
+	public function addNotification ($recipientId, $state, $msg='', $description='', $id=false){
 		if (!isset($this->recipients_messages[$recipientId]) ){
 			$this->recipients_messages[$recipientId] = array();
 		}
 		array_unshift(
 			$this->recipients_messages[$recipientId] ,
-			array('msg'=>$msg, 'state'=>$state , 'description'=>$description )
+			array('msg'=>$msg, 'state'=>$state , 'description'=>$description , 'id' => $id)
 		);
 	}
 	
@@ -46,6 +47,9 @@ class tx_caretaker_CliNotifier implements tx_caretaker_NotifierInterface{
 							$msg .= $item['description']."\n";
 						$msg .= "\n";
 						
+						if ($item['id'] && $this->mail_link)
+							$msg .= str_replace('###', $item['id'] , $this->mail_link). "\n";
+							
 						switch ($item['state']){
 							case 1:
 								$num_w ++;

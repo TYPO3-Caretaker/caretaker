@@ -3,6 +3,7 @@
 require_once ('interface.tx_caretaker_LoggerInterface.php');
 require_once ('interface.tx_caretaker_NotifierInterface.php');
 require_once ('class.tx_caretaker_TestResultRange.php');
+require_once ('class.tx_caretaker_Helper.php');
 
 abstract class tx_caretaker_Node {
 	
@@ -106,16 +107,16 @@ abstract class tx_caretaker_Node {
 	public function sendNotification( $state, $msg){
 		if ( count($this->notificationIds) > 0 ){ 
 			foreach($this->notificationIds as $notfificationId){
-				$this->notify( $notfificationId, $state, $this->type.' '.$this->title.'['.$this->uid.'] '.$msg, $this->description );
+				$this->notify( $notfificationId, $state, $this->type.' '.$this->title.'['.$this->uid.'] '.$msg, $this->description, tx_caretaker_Helper::node2id($this) );
 			}
 		}
 	}
 	
-	private function notify( $recipients, $state, $msg = '' , $description = '' ){
+	private function notify( $recipients, $state, $msg = '' , $description = '' ,$node_id ){
 		if ($this->notifier){
-			$this->notifier->addNotification($recipients, $state, $msg, $description);
+			$this->notifier->addNotification($recipients, $state, $msg, $description, $node_id);
 		} else if ($this->parent) {
-			$this->parent->notify($recipients, $state, $msg, $description);
+			$this->parent->notify($recipients, $state, $msg, $description, $node_id);
 		}
 	}
 	

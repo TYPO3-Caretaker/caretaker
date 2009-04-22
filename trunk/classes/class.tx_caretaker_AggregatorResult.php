@@ -60,6 +60,20 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 		return $this->msg;
 	}
 	
+	function is_different(tx_caretaker_AggregatorResult $result){
+		if ( 
+			$this->status        != $result->getState()||
+			$this->num_UNDEFINED != $result->getNumUNDEFINED() ||
+			$this->num_OK        != $result->getNumOK() ||
+			$this->num_WARNING   != $result->getNumWARNING() ||
+			$this->num_ERROR     != $result->getNumERROR()
+		) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 }
 
 ?>
