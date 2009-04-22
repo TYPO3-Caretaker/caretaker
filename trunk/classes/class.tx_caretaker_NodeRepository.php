@@ -94,7 +94,7 @@ class tx_caretaker_NodeRepository {
 		if (!$show_hidden) {
 			$hidden = ' AND hidden=0 ';
 		} 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instance', 'deleted=0 AND '.$hidden);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instance', 'deleted=0 '.$hidden);
 		$result = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
 			$result[] = $this->dbrow2instance($row, $parent);
@@ -143,7 +143,7 @@ class tx_caretaker_NodeRepository {
 		if (!$show_hidden) {
 			$hidden = ' AND hidden=0 ';
 		} 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_testgroup', 'deleted=0 AND'.$hidden);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_testgroup', 'deleted=0 '.$hidden);
 		$result = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
 			$result[] = $this->dbrow2testgroup($row, $parent);

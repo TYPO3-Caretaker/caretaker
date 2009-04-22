@@ -32,6 +32,7 @@
 	// DEFAULT initialization of a module [BEGIN]
 unset($MCONF);
 require ("conf.php");
+
 require ($BACK_PATH."init.php");
 require ($BACK_PATH."template.php");
 $LANG->includeLLFile("EXT:caretaker/mod_overview/locallang.xml");
@@ -391,7 +392,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 	
 		$filename = 'typo3temp/caretaker/charts/'.$this->id.'_'.$num_days.'.png';
 		$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
-		$result   = $renderer->render($result_range, PATH_site.$filename);
+		$result   = $renderer->render($result_range, PATH_site.$filename , $node->getValueDescription(), $node->getTitle()  );
 		$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 		
 		if ($result){

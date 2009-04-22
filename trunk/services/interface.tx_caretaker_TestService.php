@@ -56,6 +56,12 @@ interface tx_caretaker_TestService {
 	 */
 	public function runTest();
 	
+	/**
+	 * 
+	 * @return String Description what is stored in the Value field. 
+	 */
+	public function getValueDescription();
+	
 }
 
 ?>

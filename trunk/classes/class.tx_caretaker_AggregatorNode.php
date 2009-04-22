@@ -115,6 +115,10 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 		return $aggregated_state;
 	}
 	
+	public function getValueDescription(){
+		return 'Number of Tests';
+	}
+	
 }
 
 ?>

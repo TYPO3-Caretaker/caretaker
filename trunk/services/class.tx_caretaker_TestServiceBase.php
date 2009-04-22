@@ -39,10 +39,12 @@ require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Te
 require_once (t3lib_extMgm::extPath('caretaker').'/services/interface.tx_caretaker_TestService.php');
 
 class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_TestService{
-	var $instance;
-	var $configuration = false;
-	var $ff_config = false;
 
+	protected $instance;
+	protected $configuration = false;
+	protected $ff_config = false;
+	protected $valueDescription = '';
+		
 	function setInstance($instance){
 		$this->instance = $instance;
 	}
@@ -91,6 +93,15 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 		$result = new tx_caretaker_TestResult();
 		return $result;
 	}
+	
+	/**
+	 * 
+	 * @return String Description what is stored in the Value field. 
+	 */
+	public function getValueDescription(){
+		return $this->valueDescription;
+	}
+	
 
 }
 

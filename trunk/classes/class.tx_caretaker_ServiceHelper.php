@@ -59,6 +59,7 @@ class tx_caretaker_ServiceHelper {
 	
 	public static function registerCaretakerService ($extKey, $path, $key, $title, $description=''){
 		global $TCA;
+		
 		t3lib_div::loadTCA('tx_caretaker_test');
 		
 			// Register test service

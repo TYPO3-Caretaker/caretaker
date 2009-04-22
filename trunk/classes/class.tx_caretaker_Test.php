@@ -105,8 +105,18 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 	function getTestResultRange($startdate, $stopdate, $distance = FALSE){
 		$instance  = $this->getInstance();
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$result = $test_result_repository->getRangeByInstanceAndTest($instance, $this , $startdate, $stopdate, $distance);
-		return $result;
+		$resultRange = $test_result_repository->getRangeByInstanceAndTest($instance, $this , $startdate, $stopdate, $distance);
+		return $resultRange;
+	}
+	
+	function getValueDescription(){
+		
+		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_type);
+		if ($test_service){
+			return $test_service->getValueDescription();
+		} else {
+			return 'unknown service '.$this->test_type;
+		}
 	}
 		
 }

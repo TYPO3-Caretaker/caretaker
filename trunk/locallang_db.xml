@@ -88,6 +88,10 @@
 			<label index="pi_singleview_title">Caretaker Details</label>
 			<label index="pi_singleview_plus_wiz_description">Show Caretaker Node Details</label>
 			
+			<label index="tt_content.list_type_pi_graphreport">Caretaker Graphical Report</label>
+			<label index="pi_graphreport_title">Caretaker Graphical Report</label>
+			<label index="pi_graphreport_plus_wiz_description">Show combined Graphical Report of selected tests.</label>
+			
 			
 		</languageKey>
 		<languageKey index="de" type="array">

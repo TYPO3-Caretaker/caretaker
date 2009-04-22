@@ -3,7 +3,10 @@
 require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_TestServiceBase.php');
 
 class tx_caretaker_ping extends tx_caretaker_TestServiceBase {
-		
+	
+	function __construct(){
+		$this->valueDescription = "Seconds";
+	}
 	
 	function runTest() {
 		
@@ -45,7 +48,7 @@ class tx_caretaker_ping extends tx_caretaker_TestServiceBase {
 			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, 0 , 'CLI Ping-Command must be configured in ExtConf' );
 		}
 	}
-	
+
 }
 
 ?>

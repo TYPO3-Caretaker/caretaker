@@ -61,6 +61,7 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 	}
 	
 	function getNodeData($node){
+		
 		$data = parent::getNodeData($node);
 		
 		require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_ResultRangeRenderer_pChart.php');
@@ -69,9 +70,11 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
 		
 		$result_range = $node->getTestResultRange(time()-3600*$range , time() );
-		$filename = 'typo3temp/caretaker/charts/'.$this->id.'_'.$num_days.'.png';
+		$filename = 'typo3temp/caretaker/charts/'.$this->id.'_'.$range.'.png';
+		
 		$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
-		$result   = $renderer->render($result_range, PATH_site.$filename);
+		$result   = $renderer->render($result_range, PATH_site.$filename, $node->getValueDescription() , $node->getTitle() );
+				
 		$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 		
 		if ($result){

@@ -124,3 +124,40 @@ plugin.tx_caretaker_pi_singleview{
 	} 	
 }
 
+plugin.tx_caretaker_pi_graphreport{
+	template = FILE
+	template.file = EXT:caretaker/res/html/pi_graphreport.html
+	
+	markers {
+	
+		CHART_TITLE = TEXT
+		CHART_TITLE.value = Chart
+		CHART_TITLE.append = TEXT
+		CHART_TITLE.append.field = range
+		CHART_TITLE.append.stdWrap.wrap = / 24
+		CHART_TITLE.append.prioriCalc = 1
+		CHART_TITLE.append.noTrimWrap = | [|]|
+		
+		CHART_LINKS = COA
+		CHART_LINKS.wrap = <ul class="CaretakerChartLinks" >|</ul>
+		CHART_LINKS.10 = TEXT
+		CHART_LINKS.10.value = 24 Stunden
+		CHART_LINKS.10.typolink.parameter = {page:uid},0
+		CHART_LINKS.10.typolink.parameter.insertData = 1 
+		CHART_LINKS.10.typolink.additionalParams = &tx_caretaker_pi_graphreport[range] = 24
+		CHART_LINKS.10.typolink.additionalParams.insertData = 1
+		CHART_LINKS.10.typolink.useCacheHash = 1
+		CHART_LINKS.10.wrap = <li>|</li>
+		
+		CHART_LINKS.20 < .CHART_LINKS.10
+		CHART_LINKS.20.value = 7 Tage
+		CHART_LINKS.20.typolink.additionalParams = &tx_caretaker_pi_graphreport[range] = 168
+		
+		CHART_LINKS.30 < .CHART_LINKS.10
+		CHART_LINKS.30.value = 30 Tage
+		CHART_LINKS.30.typolink.additionalParams = &tx_caretaker_pi_graphreport[range] = 720
+		
+		CHART = HTML
+		CHART.value.field = chart
+	}	
+}

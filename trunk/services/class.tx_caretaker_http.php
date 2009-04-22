@@ -3,7 +3,10 @@
 require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_TestServiceBase.php');
 
 class tx_caretaker_http extends tx_caretaker_TestServiceBase {
-		
+	
+	function __construct(){
+		$this->valueDescription = "Seconds";
+	}	
 	
 	function runTest() {
 		

@@ -2,15 +2,14 @@
 
 class tx_caretaker_NodeResultRange implements Iterator {
 	
-	public $array = array();
-	public $ts_min = NULL;
-	public $ts_max = NULL;
+	private $array = array();
+	private $ts_min = NULL;
+	private $ts_max = NULL;
 	
-	public function __construct($ts_min = 0, $ts_max = 0) {
-		$this->ts_min = $ts_min;
+	public function __construct($ts_min = 0, $ts_max = 0){
 		$this->ts_max = $ts_max;
+		$this->ts_min = $ts_min;
 	}
-	
 	
 	function addResult($result){
 		$ts = (int)$result->getTstamp();
@@ -22,7 +21,6 @@ class tx_caretaker_NodeResultRange implements Iterator {
 		} else if ($ts > $this->ts_max){
 			$this->ts_max = $ts;
 		}
-		
 	}
 	
 	function getMinTstamp(){
