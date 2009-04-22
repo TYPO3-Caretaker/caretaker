@@ -73,11 +73,11 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		global $LANG;
 		$this->MOD_MENU = Array (
 			"function" => Array (
-				"0.5" =>$LANG->getLL("day"),
-				"1"   => $LANG->getLL("today"),
-				"3"   => $LANG->getLL("days"),
-				"14"  => $LANG->getLL("weeks"),
-				"90"  => $LANG->getLL("months"),
+				"12" =>$LANG->getLL("day"),
+				"24"   => $LANG->getLL("today"),
+				"72"   => $LANG->getLL("days"),
+				"336"  => $LANG->getLL("weeks"),
+				"2160" => $LANG->getLL("months"),
 			),
 		);
 		parent::menuConfig();
@@ -188,8 +188,8 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 	 */
 	function moduleContent()	{
 							
-		$num_days = (float)$this->MOD_SETTINGS["function"]; 
-		if (!$num_days) $num_days = 3;
+		$range = (float)$this->MOD_SETTINGS["function"]; 
+		if (!$range) $range = 24;
 
 		$node = tx_caretaker_Helper::id2node( $this->id , true);
 
@@ -202,13 +202,13 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 					$node->updateTestResult(true);	
 				}
 			}
-			$this->content.= ($this->showNodeInfo($node, $num_days));
+			$this->content.= ($this->showNodeInfo($node, $range));
 		} else {
 			$this->content.= $this->doc->section( 'Error:','please select a node');
 		}
 	}
 		
-	function showNodeInfo($node, $num_days){
+	function showNodeInfo($node, $range){
 
 		$content =  $this->getNodeIcon($node);
 		$content .= $this->doc->header( $this->getNodeHeader($node) );
@@ -219,7 +219,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 			$content .= $this->doc->section( 'children:',$this->getNodeChildren($node));
 			
 		$content .= $this->doc->section( 'status:',  $this->getNodeStatus($node));
- 		$content .= $this->doc->section( 'chart:',   $this->getNodeGraph($node, $num_days) );
+ 		$content .= $this->doc->section( 'chart:',   $this->getNodeGraph($node, $range) );
 		
 		return ($content);
 		
@@ -384,13 +384,13 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		return $actions;
 	}
 	
-	function getNodeGraph($node, $num_days){
+	function getNodeGraph($node, $range){
 		
 		require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_ResultRangeRenderer_pChart.php');
 
-		$result_range = $node->getTestResultRange(time()-86400*$num_days , time() );	
+		$result_range = $node->getTestResultRange(time()-3600*$range , time() );	
 	
-		$filename = 'typo3temp/caretaker/charts/'.$this->id.'_'.$num_days.'.png';
+		$filename = 'typo3temp/caretaker/charts/'.$this->id.'_'.$range.'.png';
 		$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
 		$result   = $renderer->render($result_range, PATH_site.$filename , $node->getValueDescription(), $node->getTitle()  );
 		$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');

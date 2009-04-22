@@ -69,8 +69,9 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		$range = 24;
 		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
 		
+		$id = tx_caretaker_Helper::node2id($node);
 		$result_range = $node->getTestResultRange(time()-3600*$range , time() );
-		$filename = 'typo3temp/caretaker/charts/'.$this->id.'_'.$range.'.png';
+		$filename = 'typo3temp/caretaker/charts/'.$id.'_'.$range.'.png';
 		
 		$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
 		$result   = $renderer->render($result_range, PATH_site.$filename, $node->getValueDescription() , $node->getTitle() );
