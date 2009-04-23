@@ -1,7 +1,7 @@
 <?php 
 
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Test.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Instance.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_Test.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_Instance.php');
 
 class tx_caretaker_ping_testcase extends tx_phpunit_testcase  {
 	

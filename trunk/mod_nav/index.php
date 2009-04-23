@@ -34,7 +34,7 @@ unset($MCONF);
 require ("conf.php");
 require ($BACK_PATH."init.php");
 require ($BACK_PATH."template.php");
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_NodeRepository.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx_caretaker_NodeRepository.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Helper.php');
 
 $LANG->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");

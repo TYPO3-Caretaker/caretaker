@@ -1,7 +1,7 @@
 <?php
 
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_NodeResult.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_NodeResultRange.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_caretaker_NodeResult.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_caretaker_NodeResultRange.php');
 
 class tx_caretaker_NodeResultRange_testcase extends tx_phpunit_testcase  {
 	

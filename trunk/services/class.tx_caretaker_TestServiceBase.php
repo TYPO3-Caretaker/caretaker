@@ -34,9 +34,8 @@
  ***************************************************************/
 
 require_once(PATH_t3lib.'class.t3lib_svbase.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestResult.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_TestResultRange.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/services/interface.tx_caretaker_TestService.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_caretaker_TestResult.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/interfaces/interface.tx_caretaker_TestService.php');
 
 class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_TestService{
 
