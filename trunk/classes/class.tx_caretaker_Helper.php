@@ -1,6 +1,6 @@
 <?php 
 
-require_once ('class.tx_caretaker_NodeRepository.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx_caretaker_NodeRepository.php');
 
 
 class tx_caretaker_Helper {
