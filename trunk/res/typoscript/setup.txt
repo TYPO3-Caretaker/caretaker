@@ -72,7 +72,7 @@ plugin.tx_caretaker_pi_singleview{
 		CHART_TITLE.append.noTrimWrap = | [|]|
 		
 		CHART_LINKS = COA
-		CHART_LINKS.wrap = <ul class="CaretakerChartLinks" >|</ul>
+		CHART_LINKS.wrap = <ul class="chart_links" >|</ul>
 		CHART_LINKS.10 = TEXT
 		CHART_LINKS.10.value = 24 Stunden
 		CHART_LINKS.10.typolink.parameter = {page:uid},0
@@ -139,7 +139,7 @@ plugin.tx_caretaker_pi_graphreport{
 		CHART_TITLE.append.noTrimWrap = | [|]|
 		
 		CHART_LINKS = COA
-		CHART_LINKS.wrap = <ul class="CaretakerChartLinks" >|</ul>
+		CHART_LINKS.wrap = <ul class="chart_links" >|</ul>
 		CHART_LINKS.10 = TEXT
 		CHART_LINKS.10.value = 24 Stunden
 		CHART_LINKS.10.typolink.parameter = {page:uid},0

@@ -136,3 +136,51 @@ div.caretaker_singleview ul.caretaker_cildren li.state_undefined a{ color:grey ;
 div.caretaker_singleview table.status {
 	font-size:1em;
 }
+
+div.caretaker_singleview ul.chart_links {
+	margin:0;
+	padding:0;
+}
+
+div.caretaker_singleview ul.chart_links li {
+	display:inline-block;
+	border:1px solid grey;
+	padding:3px 10px;
+	margin-right:10px;
+	moz-border-radius:3px;
+	background-color:#eeeeee;
+}
+
+/*
+########################
+### Graphical Report ###
+########################
+*/
+
+div.caretaker_singleview ul.chart_links li a {
+	color:black;
+	text-decoration:none;
+}
+
+div.caretaker_graphreport table.status {
+	font-size:1em;
+}
+
+div.caretaker_graphreport ul.chart_links {
+	margin:0;
+	padding:0;
+}
+
+div.caretaker_graphreport ul.chart_links li {
+	display:inline-block;
+	border:1px solid grey;
+	padding:3px 10px;
+	margin-right:10px;
+	moz-border-radius:3px;
+	background-color:#eeeeee;
+}
+
+div.caretaker_graphreport ul.chart_links li a {
+	color:black;
+	text-decoration:none;
+}
