@@ -70,16 +70,8 @@ class tx_caretaker_TestResultRepository {
 			// add last value if needed
 		$last = $result_range->getLast(); 
 		if ($last && $last->getTstamp() < $stop_ts){
-			$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', $base_condition.' AND tstamp >'.$stop_ts, '', 'tstamp ASC' , 1  );
-			if ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$row['tstamp'] = $stop_ts;
-				$result = $this->dbrow2instance($row);
-				$result_range->addResult($result);
-			} else { 
-				$real_last = tx_caretaker_TestResult::restore($stop_ts, $last->getState() , $last->getValue(), $last->getMsg() );
-				$result_range->addResult($real_last);
-			}
+			$real_last = tx_caretaker_TestResult::restore($stop_ts, $last->getState() , $last->getValue(), $last->getMsg() );
+			$result_range->addResult($real_last);
 		}
 
 		return $result_range; 

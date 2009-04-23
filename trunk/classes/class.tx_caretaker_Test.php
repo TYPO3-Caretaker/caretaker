@@ -56,6 +56,15 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		
 	}
 	
+	/*
+	 * Update TestResult and store in DB. 
+	 * 
+	 * If force is not set the execution time and exclude hours are taken in account.
+	 * 
+	 * @param boolean Force update of children
+	 * @return tx_caretaker_NodeResult
+	 */
+	
 	function updateTestResult($force_update = false){
 		
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();

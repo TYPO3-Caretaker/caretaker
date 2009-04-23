@@ -7,8 +7,8 @@ require_once ('class.tx_caretaker_Helper.php');
 
 abstract class tx_caretaker_Node {
 	
-	public $uid       = false;
-	public $title     = false;
+	protected $uid       = false;
+	protected $title     = false;
 	protected $type      = '';
 	protected $parent    = NULL;
 	protected $logger    = false;
@@ -17,12 +17,12 @@ abstract class tx_caretaker_Node {
 	protected $description = '';
 	protected $hidden    = 0;
 	
-	public function __construct( $uid, $title, $parent, $type='', $hidden = 0){
+	public function __construct( $uid, $title, $parent, $type='', $hidden = false ){
 		$this->uid    = $uid;
 		$this->title  = $title;
 		$this->parent = $parent;
 		$this->type   = $type;
-		$this->hidden = $hidden;
+		$this->hidden = (boolean)$hidden;
 	}
 	
 	public function setNotificationIds($id_array){
@@ -64,16 +64,24 @@ abstract class tx_caretaker_Node {
 		}
 	}
 	
+	/*
+	 * Update Node Result and store in DB. 
+	 * 
+	 * @param boolean Force update of children
+	 * @return tx_caretaker_NodeResult
+	 */
+	
 	abstract public function updateTestResult($force_update = false);
+	
+	/*
+	 * Read aggregator node state from DB
+	 * @return tx_caretaker_NodeResult
+	 */
 	
 	abstract public function getTestResult();
 	
 	abstract public function getTestResultRange($startdate, $stopdate, $distance = FALSE);
 	
-	public function getRange($start, $stop){
-		return new tx_caretaker_TestResultRange();
-	}
-		
 	
 	/*
 	 * Logging Methods

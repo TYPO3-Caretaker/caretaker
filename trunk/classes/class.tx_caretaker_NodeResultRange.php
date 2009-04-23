@@ -6,19 +6,33 @@ class tx_caretaker_NodeResultRange implements Iterator {
 	private $ts_min = NULL;
 	private $ts_max = NULL;
 	
+	private $last_ts = 0;
+	
 	public function __construct($ts_min = 0, $ts_max = 0){
 		$this->ts_max = $ts_max;
 		$this->ts_min = $ts_min;
 	}
 	
+	/*
+	 * Add Result to Range
+	 * 
+	 */
 	function addResult($result){
+		
 		$ts = (int)$result->getTstamp();
 		$this->array[$ts] = $result;
-		ksort( $this->array );
 		
-		if ($this->ts_min > 0 && $ts < $this->ts_min ){
+		if ($ts < $this->last_ts){
+			ksort( $this->array );
+		} else {
+			$this->last_ts = $ts;
+		}
+		
+		if ($this->ts_min !== NULL && $ts < $this->ts_min ){
 			$this->ts_min  = $ts;
-		} else if ($ts > $this->ts_max){
+		} 
+		
+		if ($this->ts_max  !== NULL && $ts > $this->ts_max){
 			$this->ts_max = $ts;
 		}
 	}

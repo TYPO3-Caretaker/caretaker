@@ -15,9 +15,16 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 		return $this->children;
 	}
 	
-	protected function findChildren($hidden=false){
-		return array();
-	}
+	abstract function findChildren($hidden=false);
+	
+	/*
+	 * Update Node Result and store in DB. 
+	 * 
+	 * If force is set children will also be forced to update their state.
+	 * 
+	 * @param boolean Force update 
+	 * @return tx_caretaker_AggregatorResult
+	 */
 	
 	function updateTestResult( $force_update = false){
 		
@@ -53,10 +60,14 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 		
 		return $group_result;
 	}
-		
+
+	/*
+	 * Read aggregator node state from DB
+	 * @return tx_caretaker_AggregatorResult
+	 */
+	
 	function getTestResult(){
 
-			// read aggregator node state from cache
 		$this->log( 'get', 1 );
 		$result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
 		$group_result = $result_repository->getLatestByNode($this);
@@ -73,6 +84,13 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 		return $group_results;
 		
 	}
+	
+	/*
+	 * Aggregate Child-Testresults
+	 * 
+	 * @param tx_caretaker_NodeResult[] Child-Results to aggregate
+	 * @return tx_caretaker_AggregatorResult Aggregated State
+	 */
 	
 	function getAggregatedResult($test_results){
 		
