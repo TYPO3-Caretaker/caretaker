@@ -668,7 +668,7 @@
         $this->VMax = preg_replace('/\.[0-9]+/','',$this->VMax)+1;
 
        $DataRange = $this->VMax - $this->VMin;
-       if ( $DataRange == 0 ) { $DataRange = .001; }
+       if ( $DataRange == 0 ) { $DataRange = .1; }
 
        /* Compute automatic scaling */
        $ScaleOk = FALSE; $Factor = 1;
@@ -681,7 +681,7 @@
          while(!$ScaleOk)
           {
            $Scale1 = ( $this->VMax - $this->VMin ) / $Factor;
-           $Scale2 = ( $this->VMax - $this->VMin ) / $Factor / 2;
+           $Scale2 = ( $this->VMax - $this->VMin ) / $Factor / 10;
            $Scale4 = ( $this->VMax - $this->VMin ) / $Factor / 4;
 
            if ( $Scale1 > 1 && $Scale1 <= $MaxDivs && !$ScaleOk) { $ScaleOk = TRUE; $Divisions = floor($Scale1); $Scale = 1;}
