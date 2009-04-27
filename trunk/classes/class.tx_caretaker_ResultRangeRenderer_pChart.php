@@ -140,7 +140,10 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 
 			// plot value line
 		$Graph->setLineStyle(0,0);
-		$Graph->drawXYScale($DataSet->GetData(),$DataSet->GetDataDescription(),"Values","Times",0,0,0,TRUE,45, 1);  
+		
+		// scale drawing changed
+		//$Graph->drawXYScale($DataSet->GetData(),$DataSet->GetDataDescription(),"Values","Times",0,0,0,TRUE,45, 1);  
+		$Graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,0,0,0,TRUE,45, 3);
 		
 		$DataSet->removeAllSeries();
 		$DataSet->AddSerie("Times");
