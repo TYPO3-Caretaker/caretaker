@@ -141,9 +141,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			// plot value line
 		$Graph->setLineStyle(0,0);
 		
-		t3lib_div::debug($test_result_range);
-		
-		// scale drawing changed: added 3 decimal positions
+		// scale drawing changed: added 3 decimal positions for ping tests
 		if(substr($test_result_range->getFirst()->getMsg(), 0, 4) == 'Ping') {
 		
 			$Graph->drawXYScale($DataSet->GetData(),$DataSet->GetDataDescription(),"Values","Times",0,0,0,TRUE,45, 3);  
