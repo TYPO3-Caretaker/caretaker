@@ -668,7 +668,7 @@
         $this->VMax = preg_replace('/\.[0-9]+/','',$this->VMax)+1;
 
        $DataRange = $this->VMax - $this->VMin;
-       if ( $DataRange == 0 ) { $DataRange = .1; }
+       if ( $DataRange == 0 ) { $DataRange = .001; }
 
        /* Compute automatic scaling */
        $ScaleOk = FALSE; $Factor = 1;
