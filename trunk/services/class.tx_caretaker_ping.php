@@ -5,7 +5,7 @@ require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_T
 class tx_caretaker_ping extends tx_caretaker_TestServiceBase {
 	
 	function __construct(){
-		$this->valueDescription = "Seconds";
+		$this->valueDescription = "Micro seconds";
 	}
 	
 	function runTest() {
@@ -34,13 +34,13 @@ class tx_caretaker_ping extends tx_caretaker_TestServiceBase {
 	
 			if ($res == 0){ 
 				if ($time_error && $time > $time_error) {
-					return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Ping took '.$time.' seconds' );
+					return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Ping took '.$time.' micro seconds' );
 				} 
 		
 				if ($time_warning && $time > $time_warning) {
-					return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'Ping took '.$time.' seconds' );
+					return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'Ping took '.$time.' micro seconds' );
 				} 
-				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time , 'Ping took '.$time.' seconds' );
+				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time , 'Ping took '.$time.' micro seconds' );
 			} else {
 				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Ping failed. '.$msg );
 			}
