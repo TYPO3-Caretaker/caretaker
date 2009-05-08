@@ -20,20 +20,25 @@ class tx_caretaker_Cli extends t3lib_cli {
 
        		// Setting help texts:
         $this->cli_help['name'] = 'Caretaker CLI-Testrunner';        
-        $this->cli_help['synopsis'] = '###OPTIONS###';
+        $this->cli_help['synopsis'] = 'update|get|help ###OPTIONS###';
         $this->cli_help['description'] = 'Class with basic functionality for CLI scripts';
         $this->cli_help['examples'] = '/.../cli_dispatch.phpsh caretaker update -i 6 -g 4';
         $this->cli_help['author'] = 'Martin Ficzel, (c) 2008';
+
+        $this->cli_options[]=array('--instancegroup', 'Specify InstancegroupID to update');
+        $this->cli_options[]=array('-I', 'Same as --instancegroup');        
         
-        $this->cli_options[]=array('--instance instanceID', 'Specify InstanceID to update');
-        $this->cli_options[]=array('-i instanceID', 'Same as --instance');
+        $this->cli_options[]=array('--instance', 'Specify InstanceID to update');
+        $this->cli_options[]=array('-i', 'Same as --instance');
+        
         $this->cli_options[]=array('--group', 'Specify TestgroupID to update');
         $this->cli_options[]=array('-g', 'Same as --group');
+        
         $this->cli_options[]=array('--test', 'Specify TestID to update');
         $this->cli_options[]=array('-t', 'Same as --test');
-        $this->cli_options[]=array('-f', 'force Refresh of testResults');
-        $this->cli_options[]=array('--status', 'Return status code');
-        $this->cli_options[]=array('-r', 'Same as --status');
+        
+        $this->cli_options[]=array('-f', 'force Refresh of testResults');        
+        $this->cli_options[]=array('-r', 'Return status code');
                 
     }
 
@@ -69,7 +74,7 @@ class tx_caretaker_Cli extends t3lib_cli {
         	$groupID         = (int)$this->readArgument('--group','-g');
         	$testID          = (int)$this->readArgument('--test','-t');
         	$force           = (boolean)$this->readArgument('--force','-f');
-        	$return_status   = (boolean)$this->readArgument('--status','-r');
+        	$return_status   = (boolean)$this->readArgument('-r');
         	
         	if (!($instancegroupID || $instanceID)) {
         		$this->log('Instance or Instancegroup must be specified');
