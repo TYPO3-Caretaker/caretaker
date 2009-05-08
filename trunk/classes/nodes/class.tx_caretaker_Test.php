@@ -42,6 +42,7 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_type);
 		
 		if (!$test_service) {
+			
 			$error = new tx_caretaker_TestResult(TX_CARETAKER_STATE_ERROR, 0, 'Test Service not found');
 			return $error;
 		}
