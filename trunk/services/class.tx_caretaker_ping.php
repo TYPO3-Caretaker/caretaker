@@ -30,7 +30,7 @@ class tx_caretaker_ping extends tx_caretaker_TestServiceBase {
 			$res = false;
 			$msg = system ($command, $res);
 			$endtime=microtime(true);
-			$time=$endtime-$starttime;
+			$time=(endtime-$starttime) * 1000;
 	
 			if ($res == 0){ 
 				if ($time_error && $time > $time_error) {
