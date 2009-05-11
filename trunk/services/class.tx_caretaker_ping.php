@@ -5,7 +5,7 @@ require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_T
 class tx_caretaker_ping extends tx_caretaker_TestServiceBase {
 	
 	function __construct(){
-		$this->valueDescription = "Seconds";
+		$this->valueDescription = "Micro seconds";
 	}
 	
 	function runTest() {
@@ -31,6 +31,7 @@ class tx_caretaker_ping extends tx_caretaker_TestServiceBase {
 			$msg = system ($command, $res);
 			$endtime=microtime(true);
 			$time=$endtime-$starttime;
+			$time *= 1000;
 	
 			if ($res == 0){ 
 				if ($time_error && $time > $time_error) {
