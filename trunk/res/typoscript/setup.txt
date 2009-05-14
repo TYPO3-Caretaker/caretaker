@@ -57,6 +57,12 @@ plugin.tx_caretaker_pi_singleview{
 		LAST_RUN.field = state_tstamp
 		LAST_RUN.strftime =  %x %X
 		
+		WARNING_TIME = TEXT
+		WARNING_TIME.field = warning_time
+		
+		ERROR_TIME = TEXT
+		ERROR_TIME.field = error_time
+		
 		VALUE = TEXT
 		VALUE.field = state_value
 		
@@ -77,18 +83,18 @@ plugin.tx_caretaker_pi_singleview{
 		CHART_LINKS.10.value = 24 Stunden
 		CHART_LINKS.10.typolink.parameter = {page:uid},0
 		CHART_LINKS.10.typolink.parameter.insertData = 1 
-		CHART_LINKS.10.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GPVar:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range] = 24
+		CHART_LINKS.10.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GPVar:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=24
 		CHART_LINKS.10.typolink.additionalParams.insertData = 1
 		CHART_LINKS.10.typolink.useCacheHash = 1
 		CHART_LINKS.10.wrap = <li>|</li>
 		
 		CHART_LINKS.20 < .CHART_LINKS.10
 		CHART_LINKS.20.value = 7 Tage
-		CHART_LINKS.20.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GPVar:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range] = 168
+		CHART_LINKS.20.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GPVar:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=168
 		
 		CHART_LINKS.30 < .CHART_LINKS.10
 		CHART_LINKS.30.value = 30 Tage
-		CHART_LINKS.30.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GPVar:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range] = 720
+		CHART_LINKS.30.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GPVar:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=720
 		
 		CHART = HTML
 		CHART.value.field = chart
@@ -144,22 +150,39 @@ plugin.tx_caretaker_pi_graphreport{
 		CHART_LINKS.10.value = 24 Stunden
 		CHART_LINKS.10.typolink.parameter = {page:uid},0
 		CHART_LINKS.10.typolink.parameter.insertData = 1 
-		CHART_LINKS.10.typolink.additionalParams = &tx_caretaker_pi_graphreport[range] = 24
+		CHART_LINKS.10.typolink.additionalParams = &tx_caretaker_pi_graphreport[range]=24
 		CHART_LINKS.10.typolink.additionalParams.insertData = 1
 		CHART_LINKS.10.typolink.useCacheHash = 1
 		CHART_LINKS.10.wrap = <li>|</li>
 		
 		CHART_LINKS.20 < .CHART_LINKS.10
 		CHART_LINKS.20.value = 7 Tage
-		CHART_LINKS.20.typolink.additionalParams = &tx_caretaker_pi_graphreport[range] = 168
+		CHART_LINKS.20.typolink.additionalParams = &tx_caretaker_pi_graphreport[range]=168
 		
 		CHART_LINKS.30 < .CHART_LINKS.10
 		CHART_LINKS.30.value = 30 Tage
-		CHART_LINKS.30.typolink.additionalParams = &tx_caretaker_pi_graphreport[range] = 720
+		CHART_LINKS.30.typolink.additionalParams = &tx_caretaker_pi_graphreport[range]=720
 		
 		CHART = HTML
 		CHART.value.field = chart
 	}	
 }
+
+[globalVar = GP:tx_caretaker_pi_graphreport|range = 720]
+plugin.tx_caretaker_pi_graphreport.markers.CHART_LINKS.30.wrap = <li class="active">|</li>
+[globalVar = GP:tx_caretaker_pi_graphreport|range = 168]
+plugin.tx_caretaker_pi_graphreport.markers.CHART_LINKS.20.wrap = <li class="active">|</li>
+[globalVar = GP:tx_caretaker_pi_graphreport|range < 168]
+plugin.tx_caretaker_pi_graphreport.markers.CHART_LINKS.10.wrap = <li class="active">|</li>
+[global]
+
+[globalVar = GP:tx_caretaker_pi_singleview|range = 720]
+plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.30.wrap = <li class="active">|</li>
+[globalVar = GP:tx_caretaker_pi_singleview|range = 168]
+plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.20.wrap = <li class="active">|</li>
+[globalVar = GP:tx_caretaker_pi_singleview|range < 168]
+plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.10.wrap = <li class="active">|</li>
+[global]
+		
 
 page.includeCSS.caretaker = EXT:caretaker/res/css/caretaker.css
