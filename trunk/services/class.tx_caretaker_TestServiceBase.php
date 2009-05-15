@@ -92,7 +92,7 @@ abstract class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_c
 	 * @param string $sheet
 	 * @return string
 	 */
-	public function getConfigurationValue($key, $default=false, $sheet=false){
+	public function getConfigValue($key, $default=false, $sheet=false){
 		
 		$result = false;
 		if ($this->flexform_configuration){
