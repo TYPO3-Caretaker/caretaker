@@ -3,7 +3,7 @@
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_Test.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_Instance.php');
 
-class tx_caretaker_http_testcase extends tx_phpunit_testcase  {
+class tx_caretaker_httpTestService_testcase extends tx_phpunit_testcase  {
 	var $http_test_ok;
 	var $http_test_error;
 	

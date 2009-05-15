@@ -76,8 +76,8 @@ class tx_caretaker_ServiceHelper {
 				'quality' => 50,
 				'os' => '',
 				'exec' => '',
-				'classFile' => t3lib_extMgm::extPath($extKey).$path.'/class.'.$key.'.php',
-				'className' => $key,
+				'classFile' => t3lib_extMgm::extPath($extKey).$path.'/class.'.$key.'TestService.php',
+				'className' => $key.'TestService',
 			)
 		);
 		
@@ -88,7 +88,7 @@ class tx_caretaker_ServiceHelper {
 		
 			// Add flexform to service-item
 		if (is_array($TCA['tx_caretaker_test']['columns']) && is_array($TCA['tx_caretaker_test']['columns']['test_conf']['config']['ds'])) {
-			$TCA['tx_caretaker_test']['columns']['test_conf']['config']['ds'][$key] = 'FILE:EXT:'.$extKey.'/'.$path.'/'.( $flexform ? $flexform:'ds.'.$key.'.xml');
+			$TCA['tx_caretaker_test']['columns']['test_conf']['config']['ds'][$key] = 'FILE:EXT:'.$extKey.'/'.$path.'/'.( $flexform ? $flexform:'ds.'.$key.'TestService.xml');
 		}
 		
 	}

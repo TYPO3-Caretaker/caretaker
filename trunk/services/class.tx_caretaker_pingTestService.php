@@ -37,7 +37,7 @@
 
 require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_TestServiceBase.php');
 
-class tx_caretaker_ping extends tx_caretaker_TestServiceBase {
+class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 	
 	/**
 	 * Constructor
