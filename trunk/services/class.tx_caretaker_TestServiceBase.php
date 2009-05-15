@@ -37,44 +37,77 @@ require_once(PATH_t3lib.'class.t3lib_svbase.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_caretaker_TestResult.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/interfaces/interface.tx_caretaker_TestService.php');
 
-class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_TestService{
-
+abstract class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_TestService{
+	
+	/**
+	 * The instance the test is run for
+	 * @var tx_caretaker_Instance
+	 */
 	protected $instance;
-	protected $configuration = false;
-	protected $ff_config = false;
+	
+	/**
+	 * Test Array Configuration
+	 * @var array
+	 */
+	protected $array_configuration = false;
+	
+	/**
+	 * Test Flexform Configuration
+	 * @var array
+	 */
+	protected $flexform_configuration = false;
+	
+	/**
+	 * Value Description
+	 * @var string
+	 */
 	protected $valueDescription = '';
-		
-	function setInstance($instance){
+
+	/**
+	 * (non-PHPdoc)
+	 * @see caretaker/trunk/interfaces/tx_caretaker_TestService#setInstance($instance)
+	 */
+	public function setInstance($instance){
 		$this->instance = $instance;
 	}
 	
-	function setConfiguration($configuration){
+	/**
+	 * (non-PHPdoc)
+	 * @see caretaker/trunk/interfaces/tx_caretaker_TestService#setConfiguration($configuration)
+	 */
+	public function setConfiguration($configuration){
 		
 		if (is_array( $configuration) ){
-			$this->ff_config = false;	
-			$this->configuration  = $configuration;
+			$this->array_configuration  = $configuration;
 		} else if ($configuration){
-			$this->ff_config = true;
-			$this->configuration = t3lib_div::xml2array($configuration);
+			$this->flexform_configuration = t3lib_div::xml2array($configuration);
 		}
 	}
 	
-	function getConfigValue($key, $default=false, $sheet=false){
-		if (!$this->configuration) return false;
-		  
+	/**
+	 * Get a single Value from the test configuration
+	 * 
+	 * @param string $key
+	 * @param string $default
+	 * @param string $sheet
+	 * @return string
+	 */
+	public function getConfigurationValue($key, $default=false, $sheet=false){
+		
 		$result = false;
-		if ($this->ff_config){
+		if ($this->flexform_configuration){
 			if (!$sheet) $sheet = 'sDEF';
 			if (isset($this->configuration['data'][$sheet]['lDEF'][$key]['vDEF']) ){
 				$result = $this->configuration['data'][$sheet]['lDEF'][$key]['vDEF'];
 			}
-		} else {
+		} else if ($this->array_configuration){
 			if ($sheet==false && isset($this->configuration[$key]) ){
 				$result = $this->configuration[$key];
 			} else if (isset($this->configuration[$sheet][$key]) ){
 				$result = $this->configuration[$sheet][$key];
 			}
-		} 
+		}
+		
 		if ($result){
 			return $result;
 		} else {
@@ -94,6 +127,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	}
 	
 	/**
+	 * Get the value description for the test
 	 * 
 	 * @return String Description what is stored in the Value field. 
 	 */
@@ -101,7 +135,5 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 		return $this->valueDescription;
 	}
 	
-
 }
-
 ?>

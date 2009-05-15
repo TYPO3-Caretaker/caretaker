@@ -35,7 +35,12 @@
 
 interface tx_caretaker_TestService {
 	
-	function init();
+	/**
+	 * Initialize the Service
+	 * @return unknown_type
+	 */
+	public function init();
+	
 	/**
 	 * Set the instance for the test execution
 	 * @param $instance
@@ -57,7 +62,8 @@ interface tx_caretaker_TestService {
 	public function runTest();
 	
 	/**
-	 * 
+	 * Get a short description for the meaning of the value in the current test
+	 *  
 	 * @return String Description what is stored in the Value field. 
 	 */
 	public function getValueDescription();
