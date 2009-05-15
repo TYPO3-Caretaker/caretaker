@@ -1,37 +1,112 @@
 <?php 
+/**
+ * This is a file of the caretaker project.
+ * Copyright 2008 by n@work Internet Informationssystem GmbH (www.work.de)
+ * 
+ * @Author	Thomas Hempel 		<thomas@work.de>
+ * @Author	Martin Ficzel		<martin@work.de>
+ * @Author	Patrick Kollodzik	<patrick@work.de> 
+ * @Author	Tobias Liebig   	<mail_typo3.org@etobi.de>
+ * @Author	Christopher Hlubek	<hlubek@networkteam.com>
+ * 
+ * $Id$
+ */
+
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2008 Martin Ficzel <ficzel@work.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_AggregatorNode.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx_caretaker_NodeRepository.php');
 
 class tx_caretaker_Instance extends tx_caretaker_AggregatorNode {
 
+	/**
+	 * URL to acces this instance
+	 * @var string
+	 */
 	private $url;
-	private $host;
-	private $ip;
-	private $groups;
 	
-	function __construct( $uid, $title, $parent, $url, $host='', $ip='', $hidden=0) {
+	/**
+	 * Hostname
+	 * @var string
+	 */
+	private $hostname;
+	
+	/**
+	 * IP Address
+	 * @var string
+	 */
+	private $ip;
+	
+	/**
+	 * Constructor 
+	 * 
+	 * @param integer $uid
+	 * @param string $title
+	 * @param tx_caretaker_Node $parent
+	 * @param string $url
+	 * @param string $host
+	 * @param string $ip
+	 * @param boolean $hidden
+	 */
+	public function __construct( $uid, $title, $parent, $url, $hostname='', $ip='', $hidden=0) {
 		parent::__construct($uid, $title, $parent, 'Instance', $hidden);
 		$this->url  = $url;
-		$this->host = $host;
+		$this->hostname = $hostname;
 		$this->ip   = $ip;
 	}
-		
-	function getUrl (){
+
+	/**
+	 * Get the url
+	 * @return string
+	 */
+	public function getUrl (){
 		return $this->url;
 	}
 	
-	function getHost (){
-		return $this->host;
+	/**
+	 * Get the hostname
+	 * @return unknown_type
+	 */
+	public function getHostname (){
+		return $this->hostname;
 	}
 	
-	function getIp (){
+	/**
+	 * Get the IP Address
+	 * @return unknown_type
+	 */
+	public function getIp (){
 		return $this->ip;
 	}
 	
-	function findChildren ($hidden=false){
+	/**
+	 * (non-PHPdoc)
+	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AggregatorNode#findChildren()
+	 */
+	public function findChildren ($hidden=false){
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		$children = $node_repository->getTestgroupByInstanceUid($this->uid, $this, $hidden);
+		$children = $node_repository->getTestgroupsByInstanceUid($this->uid, $this, $hidden);
 		return $children;
 	}
 	

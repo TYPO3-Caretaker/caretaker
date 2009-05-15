@@ -347,13 +347,24 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 				break;			
 		}
 		
-		$info = '<table>'.
-			'<tr><td>State</td><td><span style="color:'.$color.';" >'.$test_result->getStateInfo().'</span></td></tr>'.
-			'<tr><td>Value</td><td><span style="color:'.$color.';" >'.$test_result->getValue().'</span></td></tr>'.
-			'<tr><td>lastRun</td><td><span style="color:'.$color.';" >'.strftime('%x %X',$test_result->getTstamp()).'</span></td></tr>'.
-			'<tr><td>Comment</td><td><span style="color:'.$color.';" >'.$test_result->getMsg().'</span></td></tr>'.
-			'</table>';
 		
+		switch ( get_class($node) ){
+			case "tx_caretaker_Test": 
+				$info = '<table>'.
+					'<tr><td>State</td><td><span style="color:'.$color.';" >'.$test_result->getStateInfo().'</span></td></tr>'.
+					'<tr><td>Value</td><td><span style="color:'.$color.';" >'.$test_result->getValue().'</span></td></tr>'.
+					'<tr><td>lastRun</td><td><span style="color:'.$color.';" >'.strftime('%x %X',$test_result->getTstamp()).'</span></td></tr>'.
+					'<tr><td>Comment</td><td><span style="color:'.$color.';" >'.$test_result->getMsg().'</span></td></tr>'.
+					'</table>';
+				break;
+			default:
+				$info = '<table>'.
+					'<tr><td>State</td><td><span style="color:'.$color.';" >'.$test_result->getStateInfo().'</span></td></tr>'.
+					'<tr><td>lastRun</td><td><span style="color:'.$color.';" >'.strftime('%x %X',$test_result->getTstamp()).'</span></td></tr>'.
+					'<tr><td>Comment</td><td><span style="color:'.$color.';" >'.$test_result->getMsg().'</span></td></tr>'.
+					'</table>';
+				break; 
+		}		
 		return $info;
 			
 	}

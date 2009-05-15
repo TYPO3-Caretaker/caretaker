@@ -318,6 +318,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$rangesUndefined = array();
 		$rangesWarning   = array();
 		$rangesError     = array();
+		$max_value       = 0;
 		
 		$lastValue = false;
 		
@@ -326,7 +327,11 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			$undefined = $result->getNumUNDEFINED();  
 			$ok        = $result->getNumOK();  
 			$warning   = $result->getNumERROR();  
-			$error     = $result->getNumWARNING();  
+			$error     = $result->getNumWARNING();
+
+			if ( ($undefined + $ok + $warning + $error) > $max_value){
+				$max_value = $undefined + $ok + $warning + $error;
+			} 
 	
 			$DataSet->AddPoint($ok,"Values_OK");
 			$DataSet->AddPoint($ok+$warning,"Values_WARNING");  
@@ -374,7 +379,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 
 		$Graph->setFixedScale(
 			0,
-			$test_result_range->getMaxValue() + 1,
+			$max_value + 1,
 			$Divisions=5,
 			$test_result_range->getMinTstamp(),
 			$test_result_range->getMaxTstamp(),

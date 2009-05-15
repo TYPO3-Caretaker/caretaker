@@ -26,7 +26,7 @@ class tx_caretaker_ping extends tx_caretaker_TestServiceBase {
 		$command   = $confArray['ping.']['cli_command'];
 		if ($command ){
 			
-			$command = str_replace( '###' , $this->instance->getHost(), $command);
+			$command = str_replace( '###' , $this->instance->getHostname(), $command);
 			$res = false;
 			$msg = system ($command, $res);
 			$endtime=microtime(true);

@@ -1,4 +1,39 @@
 <?php
+/**
+ * This is a file of the caretaker project.
+ * Copyright 2008 by n@work Internet Informationssystem GmbH (www.work.de)
+ * 
+ * @Author	Thomas Hempel 		<thomas@work.de>
+ * @Author	Martin Ficzel		<martin@work.de>
+ * @Author	Patrick Kollodzik	<patrick@work.de> 
+ * @Author	Tobias Liebig   	<mail_typo3.org@etobi.de>
+ * @Author	Christopher Hlubek	<hlubek@networkteam.com>
+ * 
+ * $Id$
+ */
+
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2008 Martin Ficzel <ficzel@work.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_Node.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_caretaker_TestResult.php');
@@ -6,40 +41,93 @@ require_once (t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx
 
 class tx_caretaker_Test extends tx_caretaker_Node{
 	
-	private $test_type;
-	private $test_conf = false;
-	private $test_conf_mode = false;
-	private $test_interval  = false; 
+	/**
+	 * Test Service Type
+	 * @var string
+	 */
+	private $test_service_type;
+	
+	/**
+	 * Configuration of the test
+	 * @var unknown_type
+	 */
+	private $test_service_configuration = false;
+	
+	/**
+	 * Interval of Tests in Seconds
+	 * @var integer
+	 */
+	private $test_interval  = false;
+
+	/**
+	 * The test shall be executed only after this hour
+	 * @var integer
+	 */
 	private $start_hour = false;
+	
+	/**
+	 * The test shall be executed only before this hour
+	 * @var integer
+	 */
 	private $stop_hour  = false; 
 	
-	function __construct($uid, $title, $parent, $type, $conf, $interval = 86400, $start_hour=false, $stop_hour=false, $hidden=FALSE ){
+	/**
+	 * Constructor
+	 * 
+	 * @param integer $uid
+	 * @param string $title
+	 * @param tx_caretaker_Node $parent_node
+	 * @param string $service_type
+	 * @param string $service_configuration
+	 * @param integer $interval
+	 * @param integer $start_hour
+	 * @param integer $stop_hour
+	 * @param boolean $hidden
+	 * @return unknown_type
+	 */
+	public function __construct($uid, $title, $parent_node, $service_type, $service_configuration, $interval = 86400, $start_hour=false, $stop_hour=false, $hidden=FALSE ){
 		
-		parent::__construct($uid, $title, $parent, 'Test', $hidden);
+		parent::__construct($uid, $title, $parent_node, 'Test', $hidden);
 		
-		$this->test_type     = $type;
-		$this->test_conf     = $conf;
+		$this->test_service_type = $service_type;
+		$this->test_service_configuration = $service_configuration;
 		$this->test_interval = $interval;
 		$this->start_hour    = $start_hour;
 		$this->stop_hour     = $stop_hour;
 		
 	}
 	
-	function getInterval(){
+	/**
+	 * Get the Test Interval 
+	 * @return unknown_type
+	 */
+	public function getInterval(){
 		return $this->test_interval;
 	}
 	
-	function getStartHour(){
+	/**
+	 * Get the test start hour
+	 * @return unknown_type
+	 */
+	public function getStartHour(){
 		return $this->start_hour;
 	}
 	
-	function getStopHour(){
+	/**
+	 * Get the test stop hour
+	 * @return unknown_type
+	 */
+	public function getStopHour(){
 		return $this->stop_hour;
 	}
 	
-	function runTest(){
+	/**
+	 * Execute the test
+	 * @return tx_caretaker_TestResult
+	 */
+	public function runTest(){
 		
-		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_type);
+		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_service_type);
 		
 		if (!$test_service) {
 			
@@ -49,7 +137,7 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		
 			// execute test
 		$test_service->setInstance( $this->getInstance() );
-		$test_service->setConfiguration($this->test_conf);
+		$test_service->setConfiguration($this->test_service_configuration );
 		$test_result = $test_service->runTest();
 		
 			// return result
@@ -57,16 +145,15 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		
 	}
 	
-	/*
-	 * Update TestResult and store in DB. 
+	/**
+	 * Update TestResult and store in DB. If the Test is not due the result is fetched from the cache.
 	 * 
 	 * If force is not set the execution time and exclude hours are taken in account.
 	 * 
-	 * @param boolean Force update of children
+	 * @param boolean $force_update Force update of this test
 	 * @return tx_caretaker_NodeResult
 	 */
-	
-	function updateTestResult($force_update = false){
+	public function updateTestResult($force_update = false){
 		
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$instance = $this->getInstance();
@@ -102,7 +189,12 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		
 	}
 	
-	function getTestResult(){
+	/**
+	 * Get the current Test Result from Cache
+	 * 
+	 * @see caretaker/trunk/classes/nodes/tx_caretaker_Node#getTestResult()
+	 */
+	public function getTestResult(){
 		$instance  = $this->getInstance();
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$result    = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
@@ -112,14 +204,22 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 		return $result;
 	}
 	
-	function getTestResultRange($startdate, $stopdate, $distance = FALSE){
+	/**
+	 * Get the TestResultRange for the given Timerange
+	 * @see caretaker/trunk/classes/nodes/tx_caretaker_Node#getTestResultRange()
+	 */
+	public function getTestResultRange($start_timestamp, $stop_timestamp){
 		$instance  = $this->getInstance();
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$resultRange = $test_result_repository->getRangeByInstanceAndTest($instance, $this , $startdate, $stopdate, $distance);
+		$resultRange = $test_result_repository->getRangeByInstanceAndTest($instance, $this , $start_timestamp, $stop_timestamp);
 		return $resultRange;
 	}
 	
-	function getValueDescription(){
+	/**
+	 * Get the Value Description for this test
+	 * @see caretaker/trunk/classes/nodes/tx_caretaker_Node#getValueDescription()
+	 */
+	public function getValueDescription(){
 		
 		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_type);
 		if ($test_service){
@@ -128,7 +228,6 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 			return 'unknown service '.$this->test_type;
 		}
 	}
-		
 }
 
 ?>
