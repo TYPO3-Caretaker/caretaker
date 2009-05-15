@@ -37,7 +37,7 @@ require_once(PATH_t3lib.'class.t3lib_svbase.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_caretaker_TestResult.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/interfaces/interface.tx_caretaker_TestService.php');
 
-abstract class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_TestService{
+class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_TestService{
 	
 	/**
 	 * The instance the test is run for
@@ -76,7 +76,6 @@ abstract class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_c
 	 * @see caretaker/trunk/interfaces/tx_caretaker_TestService#setConfiguration($configuration)
 	 */
 	public function setConfiguration($configuration){
-		
 		if (is_array( $configuration) ){
 			$this->array_configuration  = $configuration;
 		} else if ($configuration){
@@ -97,14 +96,14 @@ abstract class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_c
 		$result = false;
 		if ($this->flexform_configuration){
 			if (!$sheet) $sheet = 'sDEF';
-			if (isset($this->configuration['data'][$sheet]['lDEF'][$key]['vDEF']) ){
-				$result = $this->configuration['data'][$sheet]['lDEF'][$key]['vDEF'];
+			if (isset($this->flexform_configuration['data'][$sheet]['lDEF'][$key]['vDEF']) ){
+				$result = $this->flexform_configuration['data'][$sheet]['lDEF'][$key]['vDEF'];
 			}
 		} else if ($this->array_configuration){
-			if ($sheet==false && isset($this->configuration[$key]) ){
-				$result = $this->configuration[$key];
-			} else if (isset($this->configuration[$sheet][$key]) ){
-				$result = $this->configuration[$sheet][$key];
+			if ($sheet==false && isset($this->array_configuration[$key]) ){
+				$result = $this->array_configuration[$key];
+			} else if (isset($this->array_configuration[$sheet][$key]) ){
+				$result = $this->array_configuration[$sheet][$key];
 			}
 		}
 		
