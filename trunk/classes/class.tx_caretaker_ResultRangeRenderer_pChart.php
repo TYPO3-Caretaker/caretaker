@@ -24,15 +24,11 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$this->height = $height;
 	} 
 	
-	function render ($test_result_range, $file, $value='', $description = '' ){
-		if( is_a($test_result_range,'tx_caretaker_TestResultRange') ){
-			return $this->render_TestResultRange($test_result_range, $file, $value, $description);
-		} else if (is_a($test_result_range,'tx_caretaker_AggregatorResultRange') ){
-			return $this->render_AggregatorResultRange($test_result_range, $file, $value, $description);
-		}
-	}
-	
-	function render_TestResultRange ($test_result_range, $file, $value='', $description = '' ){
+	/**
+	 * (non-PHPdoc)
+	 * @see caretaker/trunk/interfaces/tx_caretaker_ResultRangeRenderer#renderTestResultRange()
+	 */
+	public function renderTestResultRange ($filename, $test_result_range, $title , $value_description ){
 		
 		if ($test_result_range->getLength() < 2 )return false;
 		   
@@ -100,7 +96,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$DataSet->AddSerie("Times");  
 		$DataSet->AddSerie("Values");
 
-		$DataSet->SetYAxisName("Value".($value?' ['.$value.']':''));  
+		$DataSet->SetYAxisName("Value".($value_description?' ['.$value_description.']':''));  
 		$DataSet->SetXAxisName("Date");  
 
 		$DataSet->SetAbsciseLabelSerie("Values");  
@@ -186,7 +182,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		  // Finish the graph#
 		$info = $test_result_range->getInfos();
 		
-		$Graph->drawTitle(50,22, $description.' '.round(($info['PercentAVAILABLE']*100),2 )."% Verfügbar",50,50,50,585);  
+		$Graph->drawTitle(50,22, $title.' '.round(($info['PercentAVAILABLE']*100),2 )."% Verfügbar",50,50,50,585);  
 		
 		$DataSet->SetSerieName(
 			round(($info['PercentOK']*100),2 ).'% OK'
@@ -207,12 +203,16 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		);
 		
 		$Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);  
-		$Graph->Render($file);
+		$Graph->Render($filename);
 		
-		return ($file);
+		return ($filename);
 	}	 
 	
-	function render_MultiTestResultRanges ( $test_result_ranges, $file, $titles=false, $description = '' ){
+	/**
+	 * (non-PHPdoc)
+	 * @see caretaker/trunk/interfaces/tx_caretaker_ResultRangeRenderer#renderMultipleTestResultRanges()
+	 */
+	public function renderMultipleTestResultRanges ( $filename, $test_result_ranges, $titles){
 		  	
 			// Initialise the graph  
 		$width  = $this->width;
@@ -300,13 +300,17 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);  
 		
 			// $Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);  
-		$Graph->Render($file);
+		$Graph->Render($filename);
 		
-		return ($file);
+		return ($filename);
 		
 	}
 	
-	function render_AggregatorResultRange ($test_result_range, $file, $value='', $description = '' ){
+	/**
+	 * (non-PHPdoc)
+	 * @see caretaker/trunk/interfaces/tx_caretaker_ResultRangeRenderer#renderAggregatorResultRange()
+	 */
+	public function renderAggregatorResultRange ($filename, $test_result_range, $title ){
 
 		if ($test_result_range->getLength() <2 )return false;
 				   
@@ -404,7 +408,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		
 		  // Finish the graph#
 		$info = $test_result_range->getInfos();
-		$Graph->drawTitle(50,22, $description.' '.round(($info['PercentAVAILABLE']*100),2 )."% Verfügbar",50,50,50,585);  
+		$Graph->drawTitle(50,22, $title.' '.round(($info['PercentAVAILABLE']*100),2 )."% available",50,50,50,585);  
 		
 		$DataSet->SetSerieName(
 			round(($info['PercentOK']*100),2 ).'% OK'
@@ -426,9 +430,9 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 				
 		$Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);  
 		
-		$Graph->Render($file);
+		$Graph->Render($filename);
 		
-		return ($file);
+		return ($filename);
 	}	 
 }
 ?>

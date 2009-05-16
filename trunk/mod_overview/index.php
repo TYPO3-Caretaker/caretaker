@@ -400,19 +400,21 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_ResultRangeRenderer_pChart.php');
 
 		$result_range = $node->getTestResultRange(time()-3600*$range , time() );	
-	
+		
 		$filename = 'typo3temp/caretaker/charts/'.$this->id.'_'.$range.'.png';
 		$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
-		$result   = $renderer->render($result_range, PATH_site.$filename , $node->getValueDescription(), $node->getTitle()  );
-		$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		$base_url = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 		
-		if ($result){
-			return '<img src="'.$base.$filename.'" />';
-		} else {
-			return '<strong>Graph Error</strong>';
-		}
+		if (is_a($node, 'tx_caretaker_Test' ) ){
+			$renderer->renderTestResultRange(PATH_site.$filename, $result_range , $node->getTitle(), $node->getValueDescription() );
+			return '<img src="'.$base_url.$filename.'" />';
+		} else  if (is_a( $node, 'tx_caretaker_AggregatorNode')){
+			$renderer->renderAggregatorResultRange(PATH_site.$filename, $result_range , $node->getTitle());
+			return '<img src="'.$base_url.$filename.'" />';
+		}		
+		return '<strong>Graph Error</strong>';
+		
 	}
-    
 }
 
 

@@ -1,4 +1,39 @@
 <?php
+/**
+ * This is a file of the caretaker project.
+ * Copyright 2008 by n@work Internet Informationssystem GmbH (www.work.de)
+ * 
+ * @Author	Thomas Hempel 		<thomas@work.de>
+ * @Author	Martin Ficzel		<martin@work.de>
+ * @Author	Patrick Kollodzik	<patrick@work.de> 
+ * @Author	Tobias Liebig   	<mail_typo3.org@etobi.de>
+ * @Author	Christopher Hlubek	<hlubek@networkteam.com>
+ * 
+ * $Id$
+ */
+
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2008 Martin Ficzel <ficzel@work.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 if (!defined('TYPO3_cliMode'))  die('You cannot run this script directly!');
 
@@ -13,7 +48,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 	/**
 	 * Constructor
 	 */
-    function __construct () {
+    public function __construct () {
 
        		// Running parent class constructor
         parent::t3lib_cli();
@@ -41,15 +76,6 @@ class tx_caretaker_Cli extends t3lib_cli {
         $this->cli_options[]=array('-r', 'Return status code');
                 
     }
-
-    
-    function log($msg){
-    	$this->cli_echo($msg.chr(10));
-    }
-    
-    function get($instanceID, $groupID, $testID){
-    	$this->cli_echo('Get Instance '.$instanceID.' Group '.$groupID."\n");
-    }
     
     /**
      * CLI engine
@@ -57,7 +83,7 @@ class tx_caretaker_Cli extends t3lib_cli {
      * @param    array        Command line arguments
      * @return    string
      */
-    function cli_main($argv) {
+	public function cli_main($argv) {
     	
         $task = (string)$this->cli_args['_DEFAULT'][1];
 		
@@ -125,7 +151,14 @@ class tx_caretaker_Cli extends t3lib_cli {
         }
     }
     
-    function readArgument($name, $alt_name=false){
+    /**
+     * Get a spcific CLI Argument
+     * 
+     * @param string $name
+     * @param string $alt_name
+     * @return string
+     */
+    private function readArgument($name, $alt_name=false){
     	if ( $name &&  isset($this->cli_args[$name]) ){
     		if ($this->cli_args[$name][0]) {
     			return $this->cli_args[$name][0];

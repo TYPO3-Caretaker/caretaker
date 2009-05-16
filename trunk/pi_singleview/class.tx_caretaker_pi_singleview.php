@@ -74,8 +74,13 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		$filename = 'typo3temp/caretaker/charts/'.$id.'_'.$range.'.png';
 		
 		$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
-		$result   = $renderer->render($result_range, PATH_site.$filename, $node->getValueDescription() , $node->getTitle() );
-				
+		
+		if (is_a($node, 'tx_caretaker_Test' ) ){
+			$result = $renderer->renderTestResultRange(PATH_site.$filename, $result_range , $node->getTitle(), $node->getValueDescription() );
+		} else  if (is_a( $node, 'tx_caretaker_AggregatorNode')){
+			$result = $renderer->renderAggregatorResultRange(PATH_site.$filename, $result_range , $node->getTitle());
+		}	
+		
 		$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 		
 		if ($result){
