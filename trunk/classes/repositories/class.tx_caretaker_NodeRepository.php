@@ -238,7 +238,7 @@ class tx_caretaker_NodeRepository {
 	 * @return tx_caretaker_InstanceNode
 	 */
 	private function dbrow2instance($row, $parent = false){
-		$instance = new tx_caretaker_InstanceNode($row['uid'], $row['title'], $parent, $row['url'], $row['host'] , $row['ip'], $row['hidden']);
+		$instance = new tx_caretaker_InstanceNode($row['uid'], $row['title'], $parent, $row['url'], $row['host'] , $row['ip'], $row['public_key'], $row['hidden']);
 		if ($row['notifications'] ) $instance->setNotificationIds(explode(',', $row['notifications'] ) );
 		if ($row['description'] )   $instance->setDescription( $row['description'] );
 		return $instance; 
