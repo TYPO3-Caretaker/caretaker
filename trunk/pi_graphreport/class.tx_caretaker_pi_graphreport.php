@@ -72,7 +72,7 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 			$result_ranges = array();
 			$id = '';
 			foreach ($nodes as $node){
-				if (is_a($node,'tx_caretaker_Test')){
+				if (is_a($node,'tx_caretaker_TestNode')){
 					$result_ranges[] = $node->getTestResultRange(time()-(3600*$range), time());
 					$titles[] = $node->getTitle();
 					$id .= tx_caretaker_Helper::node2id($node);

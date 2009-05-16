@@ -41,7 +41,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	
 	/**
 	 * The instance the test is run for
-	 * @var tx_caretaker_Instance
+	 * @var tx_caretaker_InstanceNode
 	 */
 	protected $instance;
 	

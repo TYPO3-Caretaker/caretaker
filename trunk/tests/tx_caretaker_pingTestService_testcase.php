@@ -1,7 +1,7 @@
 <?php 
 
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_Test.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_Instance.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_TestNode.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_InstanceNode.php');
 
 class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase  {
 	
@@ -19,8 +19,8 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase  {
 	function test_ping_ok(){
 		$conf = $this->splitTestConf($this->ping_test_ok);
 		
-		$instance = new tx_caretaker_Instance(9996, 'instance' , false, '' , $conf['host'], $conf['ip']);
-		$test     = new tx_caretaker_Test(9996,'ping-test', $instance, 'tx_caretaker_ping', $conf );
+		$instance = new tx_caretaker_InstanceNode(9996, 'instance' , false, '' , $conf['host'], $conf['ip']);
+		$test     = new tx_caretaker_TestNode(9996,'ping-test', $instance, 'tx_caretaker_ping', $conf );
 		$result   = $test->runTest();
 		
 		$this->assertEquals( $result->getState(), TX_CARETAKER_STATE_OK, 'State was not OK' );		
@@ -30,8 +30,8 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase  {
 	function test_ping_warning(){
 		$conf = $this->splitTestConf($this->ping_test_warning);
 		
-		$instance = new tx_caretaker_Instance(9995,  'instance' , false, '', $conf['host'], $conf['ip']);
-		$test     = new tx_caretaker_Test(9995,'ping-test', $instance, 'tx_caretaker_ping', $conf );
+		$instance = new tx_caretaker_InstanceNode(9995,  'instance' , false, '', $conf['host'], $conf['ip']);
+		$test     = new tx_caretaker_TestNode(9995,'ping-test', $instance, 'tx_caretaker_ping', $conf );
 		$result   = $test->runTest();
 		
 		$this->assertEquals( $result->getState(), TX_CARETAKER_STATE_WARNING, 'State was not OK' );		
@@ -40,8 +40,8 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase  {
 	
 	function test_ping_error(){
 		$conf = $this->splitTestConf($this->ping_test_error);
-		$instance = new tx_caretaker_Instance(9994,  'instance' , false,'' ,$conf['host'], $conf['ip']);
-		$test     = new tx_caretaker_Test(9994,'ping-test',$instance, 'tx_caretaker_ping', $conf );
+		$instance = new tx_caretaker_InstanceNode(9994,  'instance' , false,'' ,$conf['host'], $conf['ip']);
+		$test     = new tx_caretaker_TestNode(9994,'ping-test',$instance, 'tx_caretaker_ping', $conf );
 		$result   = $test->runTest();
 		$this->assertEquals( $result->getState(), TX_CARETAKER_STATE_ERROR, 'State was not OK' );		
 		

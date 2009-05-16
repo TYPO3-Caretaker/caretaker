@@ -75,7 +75,7 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		
 		$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
 		
-		if (is_a($node, 'tx_caretaker_Test' ) ){
+		if (is_a($node, 'tx_caretaker_TestNode' ) ){
 			$result = $renderer->renderTestResultRange(PATH_site.$filename, $result_range , $node->getTitle(), $node->getValueDescription() );
 		} else  if (is_a( $node, 'tx_caretaker_AggregatorNode')){
 			$result = $renderer->renderAggregatorResultRange(PATH_site.$filename, $result_range , $node->getTitle());

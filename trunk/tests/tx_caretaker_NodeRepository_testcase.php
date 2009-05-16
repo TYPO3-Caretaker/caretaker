@@ -38,7 +38,7 @@ class tx_caretaker_NodeRepository_testcase extends tx_phpunit_testcase  {
 	function test_instancegroup_repository(){
 		$all_instancegroups = $this->repository->getAllInstancegroups();
 		$test_instancegroup = $all_instancegroups[0];
-		$this->assertEquals( get_class($test_instancegroup) , 'tx_caretaker_Instancegroup', 'instance found by id');
+		$this->assertEquals( get_class($test_instancegroup) , 'tx_caretaker_InstancegroupNode', 'instance found by id');
 	}	
 	
 

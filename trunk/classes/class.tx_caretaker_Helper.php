@@ -47,7 +47,7 @@ class tx_caretaker_Helper {
 	 * @param integer $testgroupId
 	 * @param integer $testId
 	 * @param boolean $show_hidden
-	 * @return tx_caretaker_Node
+	 * @return tx_caretaker_AbstractNode
 	 */
 	static function getNode($instancegroupId = false, $instanceId = false, $testgroupId = false, $testId = false, $show_hidden=false){
 		
@@ -81,23 +81,23 @@ class tx_caretaker_Helper {
 	/**
 	 * Get the Identifier String for a Node
 	 * 
-	 * @param tx_caretaker_Node $node
+	 * @param tx_caretaker_AbstractNode $node
 	 * @return string
 	 */
 	static function node2id ($node){
 		$id = false;	
 		switch (get_class ($node)){
-			case 'tx_caretaker_Instancegroup':
+			case 'tx_caretaker_InstancegroupNode':
 				$id = 'instancegroup_'.$node->getUid();
 				break;
-			case 'tx_caretaker_Instance':
+			case 'tx_caretaker_InstanceNode':
 				$id = 'instance_'.$node->getUid();
 				break;
-			case 'tx_caretaker_Testgroup':
+			case 'tx_caretaker_TestgroupNode':
 				$instance = $node->getInstance();
 				$id = 'instance_'.$instance->getUid().'_testgroup_'.$node->getUid();
 				break;
-			case 'tx_caretaker_Test':
+			case 'tx_caretaker_TestNode':
 				$instance = $node->getInstance();
 				$id = 'instance_'.$instance->getUid().'_test_'.$node->getUid();
 				break;	
@@ -111,7 +111,7 @@ class tx_caretaker_Helper {
 	 * 
 	 * @param string $id_string
 	 * @param boolean $show_hidden
-	 * @return tx_caretaker_Node
+	 * @return tx_caretaker_AbstractNode
 	 */
 	static function id2node ($id_string, $show_hidden=false){
 		$parts = explode('_', $id_string);

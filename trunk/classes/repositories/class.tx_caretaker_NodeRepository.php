@@ -35,10 +35,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_Instancegroup.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_Instance.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_Testgroup.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_Test.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_InstancegroupNode.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_InstanceNode.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_TestgroupNode.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_TestNode.php');
 
 class tx_caretaker_NodeRepository {
 
@@ -71,7 +71,7 @@ class tx_caretaker_NodeRepository {
 	/**
 	 * Get all Instancegroups
 	 * 
-	 * @param tx_caretaker_Node $parent 
+	 * @param tx_caretaker_AbstractNode $parent 
 	 * @param boolean $show_hidden
 	 * @return array
 	 */
@@ -137,7 +137,7 @@ class tx_caretaker_NodeRepository {
 	 * 
 	 * @param integer $child_group_uid
 	 * @param boolean $show_hidden
-	 * @return tx_caretaker_Instancegroup
+	 * @return tx_caretaker_InstancegroupNode
 	 */
 	public function getInstancegroupByChildGroupUid($child_group_uid,  $show_hidden = FALSE){
 		$hidden = '';
@@ -157,11 +157,11 @@ class tx_caretaker_NodeRepository {
 	 * Convert Instancegroup DB-Row to Instancegroup-Object
 	 * 
 	 * @param array $row
-	 * @param tx_caretaker_Node $parent
-	 * @return tx_caretaker_Instancegroup
+	 * @param tx_caretaker_AbstractNode $parent
+	 * @return tx_caretaker_InstancegroupNode
 	 */
 	private function dbrow2instancegroup($row, $parent){
-		$instance = new tx_caretaker_Instancegroup($row['uid'], $row['title'], $parent, $row['hidden']);
+		$instance = new tx_caretaker_InstancegroupNode($row['uid'], $row['title'], $parent, $row['hidden']);
 		if ($row['description'] )   $instance->setDescription( $row['description'] );
 		return $instance; 
 	}
@@ -173,7 +173,7 @@ class tx_caretaker_NodeRepository {
 	/**
 	 * Get all Instances in Repository
 	 * 
-	 * @param tx_caretaker_Node $parent
+	 * @param tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
 	 * @return array
 	 */
@@ -216,7 +216,7 @@ class tx_caretaker_NodeRepository {
 	 * Get all Instances wich are part of Group X
 	 * 
 	 * @param integer $uid
-	 * @param tx_caretaker_Node $parent
+	 * @param tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
 	 * @return array
 	 */
@@ -234,11 +234,11 @@ class tx_caretaker_NodeRepository {
 	 * Convert DB-Row to Instance-Object
 	 * 
 	 * @param array $row
-	 * @param tx_caretaker_Node $parent
-	 * @return tx_caretaker_Instance
+	 * @param tx_caretaker_AbstractNode $parent
+	 * @return tx_caretaker_InstanceNode
 	 */
 	private function dbrow2instance($row, $parent = false){
-		$instance = new tx_caretaker_Instance($row['uid'], $row['title'], $parent, $row['url'], $row['host'] , $row['ip'], $row['hidden']);
+		$instance = new tx_caretaker_InstanceNode($row['uid'], $row['title'], $parent, $row['url'], $row['host'] , $row['ip'], $row['hidden']);
 		if ($row['notifications'] ) $instance->setNotificationIds(explode(',', $row['notifications'] ) );
 		if ($row['description'] )   $instance->setDescription( $row['description'] );
 		return $instance; 
@@ -251,9 +251,9 @@ class tx_caretaker_NodeRepository {
 	/**
 	 * Get all Testgroups
 	 * 
-	 * @param tx_caretaker_Node $parent
+	 * @param tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
-	 * @return tx_caretaker_Testgroup
+	 * @return tx_caretaker_TestgroupNode
 	 */
 	public function getAllTestgroups($parent = false , $show_hidden = FALSE){
 		$hidden = '';
@@ -272,7 +272,7 @@ class tx_caretaker_NodeRepository {
 	 * Get all Testgroups of Instance X
 	 * 
 	 * @param integer $instanceId
-	 * @param tx_caretaker_Node $parent
+	 * @param tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
 	 * @return array
 	 */
@@ -296,9 +296,9 @@ class tx_caretaker_NodeRepository {
 	 * Get Testgroup of UID X
 	 * 
 	 * @param integer $uid
-	 * @param tx_caretaker_Node $parent
+	 * @param tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
-	 * @return tx_caretaker_Testgroup
+	 * @return tx_caretaker_TestgroupNode
 	 */
 	public function getTestgroupByUid($uid, $parent = false , $show_hidden = FALSE){
 		$hidden = '';
@@ -320,7 +320,7 @@ class tx_caretaker_NodeRepository {
 	 * Get all Testgroups wich are child of Testgroup X
 	 * 
 	 * @param integer $parent_group_uid
-	 * @param tx_caretaker_Node $parent
+	 * @param tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
 	 * @return array
 	 */
@@ -341,11 +341,11 @@ class tx_caretaker_NodeRepository {
 	 * Convert Testgroup DB-Record to Object 
 	 * 
 	 * @param array $row
-	 * @param tx_caretaker_Node $parent
-	 * @return tx_caretaker_Testgroup
+	 * @param tx_caretaker_AbstractNode $parent
+	 * @return tx_caretaker_TestgroupNode
 	 */
 	private function dbrow2testgroup($row, $parent){
-		$instance = new tx_caretaker_Testgroup($row['uid'], $row['title'], $parent, $row['hidden']);
+		$instance = new tx_caretaker_TestgroupNode($row['uid'], $row['title'], $parent, $row['hidden']);
 		if ($row['notifications'] ) $instance->setNotificationIds(explode(',', $row['notifications'] ) );
 		if ($row['description'] )   $instance->setDescription( $row['description'] );
 		return $instance; 
@@ -359,7 +359,7 @@ class tx_caretaker_NodeRepository {
 	 * Get Tests of Group X
 	 * 
 	 * @param integer $group_id
-	 * @param tx_caretaker_Node $parent
+	 * @param tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
 	 * @return array
 	 */
@@ -383,9 +383,9 @@ class tx_caretaker_NodeRepository {
 	 * Get Test of UID X
 	 * 
 	 * @param integer $uid
-	 * @param tx_caretaker_Node $parent
+	 * @param tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
-	 * @return tx_caretaker_Test
+	 * @return tx_caretaker_TestNode
 	 */
 	public function getTestByUid ($uid, $parent = false, $show_hidden = FALSE){
 		$hidden = '';
@@ -404,11 +404,11 @@ class tx_caretaker_NodeRepository {
 	 * Convert Test DB-Row to Object
 	 * 
 	 * @param array $row
-	 * @param tx_caretaker_Node $parent
-	 * @return tx_caretaker_Test
+	 * @param tx_caretaker_AbstractNode $parent
+	 * @return tx_caretaker_TestNode
 	 */
 	private function dbrow2test($row, $parent = false){
-		$instance = new tx_caretaker_Test( $row['uid'], $row['title'], $parent, $row['test_service'], $row['test_conf'], $row['test_interval'], $row['test_interval_start_hour'], $row['test_interval_stop_hour'] , $row['hidden']);
+		$instance = new tx_caretaker_TestNode( $row['uid'], $row['title'], $parent, $row['test_service'], $row['test_conf'], $row['test_interval'], $row['test_interval_start_hour'], $row['test_interval_stop_hour'] , $row['hidden']);
 		if ($row['notifications'] ) $instance->setNotificationIds(explode(',', $row['notifications'] ) );
 		if ($row['description'] )   $instance->setDescription( $row['description'] );
 		return $instance; 

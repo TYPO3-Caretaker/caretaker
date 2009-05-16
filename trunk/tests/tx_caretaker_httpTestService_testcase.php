@@ -1,7 +1,7 @@
 <?php 
 
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_Test.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_Instance.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_TestNode.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_InstanceNode.php');
 
 class tx_caretaker_httpTestService_testcase extends tx_phpunit_testcase  {
 	var $http_test_ok;
@@ -15,16 +15,16 @@ class tx_caretaker_httpTestService_testcase extends tx_phpunit_testcase  {
 	
 	function test_hhtp_test_ok(){
 		$conf = $this->splitTestConf($this->http_test_ok);
-		$instance = new tx_caretaker_Instance(9999, 'instance' ,false, $conf['host'], $conf['ip']);
-		$test     = new tx_caretaker_Test(9999, 'http-test', $instance, 'tx_caretaker_http', $conf );
+		$instance = new tx_caretaker_InstanceNode(9999, 'instance' ,false, $conf['host'], $conf['ip']);
+		$test     = new tx_caretaker_TestNode(9999, 'http-test', $instance, 'tx_caretaker_http', $conf );
 		$result   = $test->runTest();
 		$this->assertEquals( $result->getState(), TX_CARETAKER_STATE_OK, 'State was not OK' );
 	}
 	
 	function test_hhtp_test_error(){
 		$conf = $this->splitTestConf($this->http_test_error);
-		$instance = new tx_caretaker_Instance(9997, 'instance' ,false, $conf['host'], $conf['ip']);
-		$test     = new tx_caretaker_Test(9997, 'http-test' , $instance,'tx_caretaker_http', $conf );
+		$instance = new tx_caretaker_InstanceNode(9997, 'instance' ,false, $conf['host'], $conf['ip']);
+		$test     = new tx_caretaker_TestNode(9997, 'http-test' , $instance,'tx_caretaker_http', $conf );
 		$result   = $test->runTest();
 		$this->assertEquals( $result->getState(), TX_CARETAKER_STATE_ERROR, 'State was not OK' );
 	}

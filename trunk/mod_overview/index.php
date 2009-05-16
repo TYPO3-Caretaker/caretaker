@@ -241,7 +241,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		$local_hour = $local_time['tm_hour'];
 		
 		switch ( get_class($node) ){
-			case "tx_caretaker_Test":
+			case "tx_caretaker_TestNode":
 				
 				$interval_info = '';
 				$interval = $node->getInterval();
@@ -349,7 +349,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		
 		
 		switch ( get_class($node) ){
-			case "tx_caretaker_Test": 
+			case "tx_caretaker_TestNode": 
 				$info = '<table>'.
 					'<tr><td>State</td><td><span style="color:'.$color.';" >'.$test_result->getStateInfo().'</span></td></tr>'.
 					'<tr><td>Value</td><td><span style="color:'.$color.';" >'.$test_result->getValue().'</span></td></tr>'.
@@ -405,7 +405,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
 		$base_url = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 		
-		if (is_a($node, 'tx_caretaker_Test' ) ){
+		if (is_a($node, 'tx_caretaker_TestNode' ) ){
 			$renderer->renderTestResultRange(PATH_site.$filename, $result_range , $node->getTitle(), $node->getValueDescription() );
 			return '<img src="'.$base_url.$filename.'" />';
 		} else  if (is_a( $node, 'tx_caretaker_AggregatorNode')){

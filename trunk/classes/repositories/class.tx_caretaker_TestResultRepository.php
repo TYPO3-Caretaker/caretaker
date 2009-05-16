@@ -69,8 +69,8 @@ class tx_caretaker_TestResultRepository {
 	/**
 	 * Get the latest Testresult for the given Instance and Test 
 	 * 
-	 * @param tx_caretaker_Instance $instance 
-	 * @param tx_caretaker_Test $test
+	 * @param tx_caretaker_InstanceNode $instance 
+	 * @param tx_caretaker_TestNode $test
 	 * @return tx_caretaker_TestResult
 	 */
 	public function getLatestByInstanceAndTest($instance, $test){
@@ -89,8 +89,8 @@ class tx_caretaker_TestResultRepository {
 	/**
 	 * Get the ResultRange for the given Instance Test and the timerange 
 	 * 
-	 * @param tx_caretaker_Instance $instance 
-	 * @param tx_caretaker_Test $test 
+	 * @param tx_caretaker_InstanceNode $instance 
+	 * @param tx_caretaker_TestNode $test 
 	 * @param integer $start_timestamp
 	 * @param integer $stop_timestamp
 	 * @return tx_caretaker_testResultRange
@@ -145,8 +145,8 @@ class tx_caretaker_TestResultRepository {
 	/**
 	 * Prepare a db record for storing of test results
 	 * 
-	 * @param tx_caretaker_Instance $instance 
-	 * @param tx_caretaker_Test $test 
+	 * @param tx_caretaker_InstanceNode $instance 
+	 * @param tx_caretaker_TestNode $test 
 	 * @return integer uid of created result record
 	 */
 	function prepareTest($instance, $test){

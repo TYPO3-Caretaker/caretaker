@@ -88,7 +88,7 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		$data['state_tstamp']= $result->getTstamp();
 		
 			// instance data
-		if (is_a($node , 'tx_caretaker_Test' ) || is_a($node ,'tx_caretaker_Testgroup') ) {
+		if (is_a($node , 'tx_caretaker_TestNode' ) || is_a($node ,'tx_caretaker_TestgroupNode') ) {
 			$data['instance'] = $node->getInstance()->getTitle();
 		} 
 		

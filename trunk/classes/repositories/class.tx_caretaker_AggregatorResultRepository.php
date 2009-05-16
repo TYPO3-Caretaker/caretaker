@@ -69,7 +69,7 @@ class tx_caretaker_AggregatorResultRepository {
 	/**
 	 * Get the latest Testresults for the given Node Object
 	 * 
-	 * @param tx_caretaker_Node $node  
+	 * @param tx_caretaker_AbstractNode $node  
 	 * @returm tx_caretaker_AggreagtorResult
 	 */
 	public function getLatestByNode($node){
@@ -98,7 +98,7 @@ class tx_caretaker_AggregatorResultRepository {
 	/**
 	 * Get the ResultRange for the given Aggregator and the timerange 
 	 * 
-	 * @param tx_caretaker_Node $node
+	 * @param tx_caretaker_AbstractNode $node
 	 * @param integer $start_timestamp
 	 * @param integer $stop_timestamp
 	 * @return tx_caretaker_AggregatorResultRange

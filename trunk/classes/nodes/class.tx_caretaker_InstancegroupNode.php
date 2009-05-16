@@ -1,4 +1,4 @@
-<?php
+<?php 
 /**
  * This is a file of the caretaker project.
  * Copyright 2008 by n@work Internet Informationssystem GmbH (www.work.de)
@@ -35,40 +35,53 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_AggregatorNode.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx_caretaker_NodeRepository.php');
+require_once(t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_AggregatorNode.php');
+require_once(t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx_caretaker_NodeRepository.php');
 
-class tx_caretaker_Testgroup extends tx_caretaker_AggregatorNode {
-	
+class tx_caretaker_InstancegroupNode extends tx_caretaker_AggregatorNode {
+
+		
 	/**
 	 * Constructor 
 	 * 
 	 * @param integer $uid
 	 * @param string $title
-	 * @param tx_caretaker_Node $parent
+	 * @param tx_caretaker_AbstractNode $parent
 	 * @param boolean $hidden
 	 */
-	public function __construct($uid, $title, $parent, $hidden=0){
-		parent::__construct($uid, $title, $parent, 'Testgroup',$hidden );
+	public function __construct( $uid, $title, $parent, $hidden=0) {
+		parent::__construct($uid, $title, $parent, 'Instancegroup', $hidden);
 	}
-	
+
 	/**
-	 * (non-PHPdoc)
+	 * Find Childnodes of this Instancegroup
+	 * @param boolean $show_hidden
+	 * @return array
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AggregatorNode#findChildren()
 	 */
 	protected function findChildren ($show_hidden=false){
-		
-			// read subgroups
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		$subgroups = $node_repository->getTestgroupsByParentGroupUid($this->uid, $this , $show_hidden );
+			// read subgroups
+		$subgroups = $node_repository->getInstancegroupsByParentGroupUid($this->uid, $this, $show_hidden );
 			// read instances
-		$tests = $node_repository->getTestsByGroupId($this->uid, $this, $show_hidden);
+		$instances = $node_repository->getInstancesByInstancegroupUid($this->uid, $this, $show_hidden );
 			// save
-		$children = array_merge($subgroups, $tests);
+		$children = array_merge($subgroups, $instances);
+			// 
 		return $children;
+		
 	}
 	
-
+	/**
+	 * Find Parent Node
+	 * @return tx_caretaker_AbstractNode
+	 */
+	protected function findParent (){
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
+		$parent = $node_repository->getInstancegroupByChildGroupUid($this->uid, $this );
+		return $parent;
+	}
+	
 }
 
 ?>

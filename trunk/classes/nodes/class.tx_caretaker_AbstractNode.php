@@ -40,7 +40,7 @@ require_once (t3lib_extMgm::extPath('caretaker').'/interfaces/interface.tx_caret
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_caretaker_NodeResultRange.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Helper.php');
 
-abstract class tx_caretaker_Node {
+abstract class tx_caretaker_AbstractNode {
 
 	/**
 	 * UID
@@ -75,7 +75,7 @@ abstract class tx_caretaker_Node {
 	
 	/**
 	 * Parent Node
-	 * @var tx_caretaker_Node
+	 * @var tx_caretaker_AbstractNode
 	 */
 	protected $parent    = NULL;
 	
@@ -102,7 +102,7 @@ abstract class tx_caretaker_Node {
 	 * 
 	 * @param integer $uid
 	 * @param string $title
-	 * @param tx_caretaker_Node $parent
+	 * @param tx_caretaker_AbstractNode $parent
 	 * @param string $type
 	 * @param string $hidden
 	 */
@@ -179,11 +179,11 @@ abstract class tx_caretaker_Node {
 	
 	/**
 	 * Get the current Instance if 
-	 * @return tx_caretaker_Instance
+	 * @return tx_caretaker_InstanceNode
 	 */
 	public function getInstance(){
 		
-		if ( is_a($this, 'tx_caretaker_Instance') ){
+		if ( is_a($this, 'tx_caretaker_InstanceNode') ){
 			return $this;
 		} else if ($this->parent){
 			return $this->parent->getInstance();

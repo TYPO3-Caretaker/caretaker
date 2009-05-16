@@ -35,10 +35,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_Node.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_AbstractNode.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx_caretaker_AggregatorResultRepository.php');
 
-abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
+abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 
 	/**
 	 * Child Nodes
@@ -125,7 +125,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see caretaker/trunk/classes/nodes/tx_caretaker_Node#getTestResultRange()
+	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
 	 */
 	public function getTestResultRange($startdate, $stopdate , $distance=FALSE){
 		
@@ -189,7 +189,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_Node {
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see caretaker/trunk/classes/nodes/tx_caretaker_Node#getValueDescription()
+	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getValueDescription()
 	 */
 	public function getValueDescription(){
 		return 'Number of Tests';

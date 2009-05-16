@@ -35,11 +35,11 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_Node.php');
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_AbstractNode.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_caretaker_TestResult.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx_caretaker_TestResultRepository.php');
 
-class tx_caretaker_Test extends tx_caretaker_Node{
+class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	
 	/**
 	 * Test Service Type
@@ -76,7 +76,7 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 	 * 
 	 * @param integer $uid
 	 * @param string $title
-	 * @param tx_caretaker_Node $parent_node
+	 * @param tx_caretaker_AbstractNode $parent_node
 	 * @param string $service_type
 	 * @param string $service_configuration
 	 * @param integer $interval
@@ -192,7 +192,7 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 	/**
 	 * Get the current Test Result from Cache
 	 * 
-	 * @see caretaker/trunk/classes/nodes/tx_caretaker_Node#getTestResult()
+	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResult()
 	 */
 	public function getTestResult(){
 		$instance  = $this->getInstance();
@@ -206,7 +206,7 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 	
 	/**
 	 * Get the TestResultRange for the given Timerange
-	 * @see caretaker/trunk/classes/nodes/tx_caretaker_Node#getTestResultRange()
+	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
 	 */
 	public function getTestResultRange($start_timestamp, $stop_timestamp){
 		$instance  = $this->getInstance();
@@ -217,7 +217,7 @@ class tx_caretaker_Test extends tx_caretaker_Node{
 	
 	/**
 	 * Get the Value Description for this test
-	 * @see caretaker/trunk/classes/nodes/tx_caretaker_Node#getValueDescription()
+	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getValueDescription()
 	 */
 	public function getValueDescription(){
 		

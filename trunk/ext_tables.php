@@ -183,8 +183,8 @@ t3lib_extMgm::addService(
 		'quality' => 50,
 		'os' => '',
 		'exec' => '',
-		'classFile' => t3lib_extMgm::extPath('caretaker').'services/class.tx_caretaker_TestDummy.php',
-		'className' => 'tx_caretaker_TestDummy',
+		'classFile' => t3lib_extMgm::extPath('caretaker').'services/class.tx_caretaker_TestNodeDummy.php',
+		'className' => 'tx_caretaker_TestNodeDummy',
 	)
 );
 

@@ -1,6 +1,6 @@
 <?php
 
-class tx_caretaker_TestRunner_testcase extends tx_phpunit_testcase  {
+class tx_caretaker_TestNodeRunner_testcase extends tx_phpunit_testcase  {
 	
 	
 	protected function setUp() {
