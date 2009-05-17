@@ -42,44 +42,29 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 	/**
 	 * Constructor
 	 */
-	function __construct(){
-		$this->valueDescription = "Micro seconds";
+	public function getValueDescription(){
+		return "Micro seconds";
 	}
+	
 
 	/**
 	 * (non-PHPdoc)
 	 * @see caretaker/trunk/services/tx_caretaker_TestServiceBase#runTest()
 	 */
-	function runTest() {
+	public function runTest() {
+
+		$time_warning = $this->getTimeWarning();
+		$time_error   = $this->getTimeError();
+		$command      = $this->buildPingCommand();
 		
-		$port         = $this->getConfigValue('port');
-		$time_warning = $this->getConfigValue('max_time_warning');
-		$time_error   = $this->getConfigValue('max_time_error');
-		
-		if (!$port) {
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_UNKNOWN, 0 , 'Port was not defined' );
-		}
-		
-		
-		
-		$starttime=microtime(true);
-		
-		$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
-		$command   = $confArray['ping.']['cli_command'];
-		if ($command ){
+		if ($command){
+
+			list ($res, $msg, $time) = $this->executeSystemCommand( $command );
 			
-			$command = str_replace( '###' , $this->instance->getHostname(), $command);
-			$res = false;
-			$msg = system ($command, $res);
-			$endtime=microtime(true);
-			$time=$endtime-$starttime;
-			$time *= 1000; // convert to micro seconds
-	
 			if ($res == 0){ 
 				if ($time_error && $time > $time_error) {
 					return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Ping took '.$time.' micro seconds' );
-				} 
-		
+				}
 				if ($time_warning && $time > $time_warning) {
 					return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'Ping took '.$time.' micro seconds' );
 				} 
@@ -90,6 +75,55 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 		} else {
 			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, 0 , 'CLI Ping-Command must be configured in ExtConf' );
 		}
+	}
+	
+	/**
+	 * Get the maximal time befor WARNING 
+	 * @return unknown_type
+	 */
+	protected function getTimeWarning(){
+		return $this->getConfigValue('max_time_warning');
+	}
+	
+	/**
+	 * Get the maximal time before ERROR
+	 * @return integer
+	 */
+	protected function getTimeError(){
+		return $this->getConfigValue('max_time_error');
+	}
+	
+	/**
+	 * Bild the Build Ping Command for this System
+	 *  
+	 * @return string
+	 */
+	protected function buildPingCommand (){
+		
+		$hostname = $this->instance->getHostname();
+		$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+		$command_template = $confArray['ping.']['cli_command'];
+		$command = str_replace( '###' , $hostname, $command_template );
+		return $command;
+	}
+	
+	/**
+	 * Execute a system command 
+	 * 
+	 * @param string $command 
+	 * @return array Array of ReturnCode Message and $ime
+	 */
+	protected function executeSystemCommand($command){
+		
+		$starttime = microtime(true);
+		
+		$res = false;
+		$msg = system ($command, $res);
+			
+		$endtime = microtime(true);
+		$time =  1000 * ($endtime - $starttime);
+		
+		return array($res, $msg, $time);
 	}
 
 }

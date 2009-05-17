@@ -11,21 +11,3 @@ notification.mail_link = http://caretaker.example.org/index.php?id=123&tx_careta
 notification.mail_subject = caretaker
 # cat=caretaker/ping; type=string; label=CLI Command used for ping tests. ### is replaced by Hostname.
 ping.cli_command = /sbin/ping -c 1 ### >/dev/null
-
-# cat=caretaker/ping; type=string; label=Ping Unittest Config ERROR: host:port:ms_warning:ms_error
-unittest.ping_error = dasddlkallkjlaskjdals:80:1000,2000
-
-# cat=caretaker/http; type=string; label=http Unittest Config OK: host:path:status
-unittest.http_ok = localhost:/:200
-
-# cat=caretaker/http; type=string; label=http Unittest Config ERROR: host:path:status
-unittest.http_error = localhost:/this/path/does/not/exist:200
-
-# cat=caretaker/ping; type=string; label=Ping Unittest Config OK: host:port:ms_warning:ms_error
-unittest.ping_ok = localhost:80:1000:2000
-
-# cat=caretaker/ping; type=string; label=Ping Unittest Config WARNING: host:port:ms_warning:ms_error
-unittest.ping_warning = localhost:80:0.1:2000
-
-# cat=caretaker/ping; type=string; label=Ping Unittest Config ERROR: host:port:ms_warning:ms_error
-unittest.ping_error = dasddlkallkjlaskjdals:80:1000,2000

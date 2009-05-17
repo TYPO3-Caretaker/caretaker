@@ -40,10 +40,11 @@ require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_T
 class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 
 	/**
-	 * Constructor
+	 * (non-PHPdoc)
+	 * @see caretaker/trunk/services/tx_caretaker_TestServiceBase#getValueDescription()
 	 */
-	function __construct(){
-		$this->valueDescription = "Seconds";
+	public function getValueDescription(){
+		return "Seconds";
 	}	
 
 	/**
@@ -52,24 +53,85 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 */
 	function runTest() {
 		
-		$time_warning  = $this->getConfigValue('max_time_warning');
-		$time_error    = $this->getConfigValue('max_time_error');
-		$expected_code = $this->getConfigValue('expected_status');
-		$request_query = $this->getConfigValue('request_query');
+		$time_warning  = $this->getTimeWarning();
+		$time_error    = $this->getTimeError();
+		$expected_code = $this->getExpectedReturnCode();
+		$request_query = $this->getRequestQuery();
+		$url           = $this->getInstanceUrl();
 		
-		$request_url =$this->instance->getUrl().$request_query;
+		$request_url   = $url.$request_query;
 		
 		if ( !($expected_code && $request_url)) { 
-			
 	    	return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_UNDEFINED, 0 , 'No HTTP-Code or no query was set' );
 		}
 		
+		list ($http_status, $time) = $this->executeCurlRequest($request_url);
+		
+		if ($time_error && $time > $time_error ){
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'HTTP-Request took '.$time.' miliseconds. :: '.$request_url );
+		}
+		
+		if ($time_warning && $time > $time_warning ){
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'HTTP-Request took '.$time.' miliseconds. :: '.$request_url );
+		}
+		
+		if ($http_status == $expected_code){
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time , 'Status OK :: '.$request_url );
+		} else {
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Returned Status '.$info['http_code'].' does not match expeted state '.$expected_code.' :: '.$request_url );
+		}
+		
+	}
+	
+	/**
+	 * Get the maximal time befor WARNING 
+	 * @return integer
+	 */
+	protected function getTimeWarning(){
+		return $this->getConfigValue('max_time_warning');
+	}
+	
+	/**
+	 * Get the maximal time before ERROR
+	 * @return integer
+	 */
+	protected function getTimeError(){
+		return $this->getConfigValue('max_time_error');
+	}
+	
+	/**
+	 * 
+	 * @return integer
+	 */
+	protected function getExpectedReturnCode(){
+		return $this->getConfigValue('expected_status');
+	}
+	
+	/**
+	 * 
+	 * @return string
+	 */
+	protected function getRequestQuery(){
+		return $this->getConfigValue('request_query');
+	}
+	
+	/**
+	 * 
+	 * @return unknown_type
+	 */
+	protected function getInstanceUrl(){
+		return $this->instance->getUrl();
+	}
+	
+	/**
+	 * 
+	 * @param array $request_url
+	 * @return array http-Status and time in Seconds
+	 */
+	protected function executeCurlRequest($request_url){
 		$starttime=microtime(true);
 		
 		$curl = curl_init();
-        if (!$curl) {
-        	return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_UNDEFINED, 0 , 'CURL is not present, this test is skipped' );
-        }
         
 		curl_setopt($curl, CURLOPT_URL, $request_url);
 		curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -82,22 +144,8 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		$endtime=microtime(true);
 		$time = $endtime-$starttime;
 		
-		if ($time_error && $time > $time_error ){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'HTTP-Request took '.$time.' miliseconds. :: '.$request_url );
-		}
-		
-		if ($time_warning && $time > $time_warning ){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'HTTP-Request took '.$time.' miliseconds. :: '.$request_url );
-		}
-		
-		if ($info['http_code'] == $expected_code){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time , 'Status OK :: '.$request_url );
-		} else {
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Returned Status '.$info['http_code'].' does not match expeted state '.$expected_code.' :: '.$request_url );
-		}
-		
+		return array ( $info['http_code'], $time );
 	}
-	
 }
 
 ?>
