@@ -22,6 +22,10 @@ plugin.tx_caretaker_pi_overview{
 		DESCRIPTION = TEXT
 		DESCRIPTION.value = {field:type}: {field:state_msg}
 		DESCRIPTION.insertData = 1
+		
+		TYPE = TEXT
+		TYPE.field = type
+		TYPE.case = lower
 	} 
 	
 	childMarkers {
