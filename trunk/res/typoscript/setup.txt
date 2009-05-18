@@ -10,10 +10,10 @@ plugin.tx_caretaker_pi_overview{
 		
 		TITLE = TEXT
 		TITLE.field =  title
-		TITLE.append = TEXT 
-		TITLE.append.field = instance
-		TITLE.append.noTrimWrap = | [|]|
-		TITLE.append.required = 1
+		#TITLE.append = TEXT 
+		#TITLE.append.field = instance
+		#TITLE.append.noTrimWrap = | [|]|
+		#TITLE.append.required = 1
 		TITLE.insertData = 1
 		TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
 		TITLE.typolink.additionalParams.field = link_parameters
