@@ -110,7 +110,7 @@ CREATE TABLE tx_caretaker_test (
 	l18n_diffsource mediumblob NOT NULL,
 
 	title varchar(255) DEFAULT '' NOT NULL,
-	description varchar(255) DEFAULT '' NOT NULL,
+	description text DEFAULT '' NOT NULL,
 
 	test_interval int(11) DEFAULT '0' NOT NULL,
 	test_interval_start_hour tinyint(4) DEFAULT '0' NOT NULL,
