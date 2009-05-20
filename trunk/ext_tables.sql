@@ -191,7 +191,7 @@ CREATE TABLE tx_caretaker_testresult (
 	
 	result_status int(11) DEFAULT '0' NOT NULL,
 	result_value float DEFAULT '0' NOT NULL,
-	result_msg varchar(255) DEFAULT '' NOT NULL,
+	result_msg text DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY test_instance_uid (test_uid,instance_uid)
