@@ -44,7 +44,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @see caretaker/trunk/services/tx_caretaker_TestServiceBase#getValueDescription()
 	 */
 	public function getValueDescription(){
-		return "Seconds";
+		return "Micro seconds";
 	}	
 
 	/**
@@ -145,7 +145,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		$endtime=microtime(true);
 		$time = $endtime-$starttime;
 		
-		return array ( $info['http_code'], $time );
+		return array ( $info['http_code'], $time*1000 );
 	}
 }
 
