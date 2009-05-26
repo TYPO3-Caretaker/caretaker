@@ -136,6 +136,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		curl_setopt($curl, CURLOPT_URL, $request_url);
 		curl_setopt($curl, CURLOPT_HEADER, 0);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 		
 		$res     = curl_exec($curl);
 		$info    = curl_getinfo($curl);
