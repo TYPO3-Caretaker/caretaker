@@ -124,9 +124,9 @@ plugin.tx_caretaker_pi_singleview{
 		TITLE = TEXT
 		TITLE.value = {field:title}
 		TITLE.insertData = 1
-		TITLE.typolink.parameter = {$caretaker.singleLinkParameter}
+		TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
 		TITLE.typolink.additionalParams.field = link_parameters
-		TITLE.typolink.target = _blank
+		TITLE.typolink.target = _self
 		
 		DESCRIPTION = TEXT
 		DESCRIPTION.value = {field:type}: {field:state_msg}
