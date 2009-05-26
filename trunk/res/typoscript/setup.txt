@@ -41,7 +41,7 @@ plugin.tx_caretaker_pi_overview{
 		TITLE.typolink.target = _blank
 		
 		DESCRIPTION = TEXT
-		DESCRIPTION.value = {field:type}: {field:state_msg}
+		DESCRIPTION.value = {field:state_msg}
 		DESCRIPTION.insertData = 1
 	} 	
 }
@@ -105,10 +105,10 @@ plugin.tx_caretaker_pi_singleview{
 		
 		TITLE = TEXT
 		TITLE.field =  title
-		TITLE.append = TEXT 
-		TITLE.append.field = instance
-		TITLE.append.noTrimWrap = | [|]|
-		TITLE.append.required = 1
+		#TITLE.append = TEXT 
+		#TITLE.append.field = instance
+		#TITLE.append.noTrimWrap = | [|]|
+		#TITLE.append.required = 1
 		TITLE.insertData = 1
 		
 		DESCRIPTION = TEXT

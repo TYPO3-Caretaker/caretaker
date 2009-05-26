@@ -131,6 +131,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * @return String Description what is stored in the Value field. 
 	 */
 	public function getValueDescription(){
+		
 		return $this->valueDescription;
 	}
 	

@@ -39,11 +39,11 @@ require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_T
 
 class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 	
-	/**
-	 * Constructor
-	 */
-	public function getValueDescription(){
-		return "Micro seconds";
+	protected $valueDescription = 'Micro seconds';
+	
+	public function getValueDescription() {
+		
+		return $this->valueDescription;
 	}
 	
 

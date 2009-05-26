@@ -219,13 +219,14 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	 * Get the Value Description for this test
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getValueDescription()
 	 */
-	public function getValueDescription(){
+	public function getValueDescription() {
 		
-		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_type);
+		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_service_type);
+		
 		if ($test_service){
 			return $test_service->getValueDescription();
 		} else {
-			return 'unknown service '.$this->test_type;
+			return 'unknown service '.$this->test_service_type;
 		}
 	}
 }

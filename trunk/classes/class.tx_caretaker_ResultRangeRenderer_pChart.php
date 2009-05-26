@@ -7,7 +7,7 @@ require_once(t3lib_extMgm::extPath('caretaker').'/lib/pChart/class.pChart.php');
 class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRangeRenderer {
 	
 	private static $instance = null;
-	private $width  = 700;
+	private $width  = 800;
 	private $height = 400;
 	
 	private function __construct (){}
@@ -227,7 +227,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$Graph->drawFilledRoundedRectangle(7,7,$width-7,$height-7,5,240,240,240);     
 		$Graph->drawRoundedRectangle(5,5,$width-5,$height-5,5,230,230,230);     
 
-		$Graph->setGraphArea(70,30,$width-150,$height-100);  
+		$Graph->setGraphArea(70,30,$width-250,$height-100);  
 		$Graph->drawGraphArea(255,255,255,TRUE);  
 
 		$DataSets = array();
@@ -297,7 +297,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		}
 		
 		$Graph->drawTitle(50,22, $description,50,50,50,585);  		
-		$Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);  
+		$Graph->drawLegend($width-240,30,$DataSet->GetDataDescription(),255,255,255);  
 		
 			// $Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);  
 		$Graph->Render($filename);
