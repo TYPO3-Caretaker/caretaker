@@ -78,7 +78,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		if ($http_status == $expected_code){
 			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time , 'Status OK :: '.$request_url );
 		} else {
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Returned Status '.$info['http_code'].' does not match expeted state '.$expected_code.' :: '.$request_url );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Returned Status '.$http_status.' does not match expeted state '.$expected_code.' :: '.$request_url );
 		}
 		
 	}
