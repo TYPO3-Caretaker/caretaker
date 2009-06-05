@@ -449,8 +449,6 @@ class tx_caretaker_mod_log extends t3lib_SCbase {
 		$result_range = $node->getTestResultRange(strtotime($this->timeFrom) , strtotime($this->timeTo), false);
 		$result_range->reverse();
 		
-		t3lib_div::debug($result_range);
-		
 		$logForm = '<form action="" method="post">';
 		$logForm .= '<label for="tx_caretaker_mod_log_timeFrom">From: </label>';
 		$logForm .= '<input id="tx_caretaker_mod_log_timeFrom" type="text" name="tx_caretaker_mod_log[timeFrom]" value="'.$this->timeFrom.'" />';
