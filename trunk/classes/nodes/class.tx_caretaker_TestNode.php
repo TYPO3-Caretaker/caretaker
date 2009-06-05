@@ -207,11 +207,12 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	/**
 	 * Get the TestResultRange for the given Timerange
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
+	 * @param $graph True by default. Used in the resultrange repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
 	 */
-	public function getTestResultRange($start_timestamp, $stop_timestamp){
+	public function getTestResultRange($start_timestamp, $stop_timestamp, $graph = true){
 		$instance  = $this->getInstance();
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$resultRange = $test_result_repository->getRangeByInstanceAndTest($instance, $this , $start_timestamp, $stop_timestamp);
+		$resultRange = $test_result_repository->getRangeByInstanceAndTest($instance, $this , $start_timestamp, $stop_timestamp, $graph);
 		return $resultRange;
 	}
 	
