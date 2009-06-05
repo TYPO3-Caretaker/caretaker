@@ -208,7 +208,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 				break;			
 		}
 		
-		$result .=	t3lib_iconWorks::getIconImage($table,$row,$this->doc->backPath,'title="foo" align="top"').
+		$result .=	t3lib_iconWorks::getIconImage($table,$row,$this->doc->backPath,'title="'.$row['uid'].'" align="top"').
 				'&nbsp;'.htmlspecialchars($row['title']);
 		$result .= '</span>';		
 		$result .= '</a></li>';
