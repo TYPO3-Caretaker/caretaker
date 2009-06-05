@@ -6,9 +6,9 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="mlang_tabs_tab">Log</label>
-			<label index="mlang_labels_tabdescr">Caretaker System Log: Displays the result list of a test node.</label>
-			<label index="mlang_labels_tablabel">Log</label>
+			<label index="mlang_tabs_tab">Overview</label>
+			<label index="mlang_labels_tabdescr">Caretaker System Overview</label>
+			<label index="mlang_labels_tablabel">Overview</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -35,14 +35,14 @@ require ("conf.php");
 
 require ($BACK_PATH."init.php");
 require ($BACK_PATH."template.php");
-$LANG->includeLLFile("EXT:caretaker/mod_log/locallang.xml");
+$LANG->includeLLFile("EXT:caretaker/mod_overview/locallang.xml");
 require_once (PATH_t3lib."class.t3lib_scbase.php");
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Helper.php');
 
 $BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
 	// DEFAULT initialization of a module [END]
 
-class tx_caretaker_mod_log extends t3lib_SCbase {
+class tx_caretaker_mod_overview extends t3lib_SCbase {
 
 	var $info;
 	
@@ -56,31 +56,6 @@ class tx_caretaker_mod_log extends t3lib_SCbase {
 		parent::init();
 
 		$this->id = $_GET['id'];
-		
-		/*
-		 * reads the parameters
-		 * if the times are not set the default values are used
-		 */
-		$this->timeFrom = $_REQUEST['tx_caretaker_mod_log']['timeFrom'];
-		$this->timeTo = $_REQUEST['tx_caretaker_mod_log']['timeTo'];
-		
-		if(empty($this->timeFrom)) {
-			
-			$this->timeFrom = date('Y-m-d H:i', time()-3600*24); // by default set the range to the last 24 hours
-			
-		} else {
-			
-			$this->timeFrom = date('Y-m-d H:i', strtotime($this->timeFrom));
-		}
-		
-		if(empty($this->timeTo)) {
-			
-			$this->timeTo = date('Y-m-d H:i', time()); // by default set the range to the last 24 hours
-			
-		} else {
-			
-			$this->timeTo = date('Y-m-d H:i', strtotime($this->timeTo));
-		}
 		
 		/*
 		if (t3lib_div::_GP("clear_all_cache"))	{
@@ -127,7 +102,7 @@ class tx_caretaker_mod_log extends t3lib_SCbase {
 		if ( true /*($this->id && $access) || ($BE_USER->user["admin"] && !$this->id)*/ )	{
 
 				// Draw the header.
-			$this->doc = t3lib_div::makeInstance("bigDoc");
+			$this->doc = t3lib_div::makeInstance("mediumDoc");
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->form='<form action="" method="POST">';
 
@@ -166,7 +141,7 @@ class tx_caretaker_mod_log extends t3lib_SCbase {
 			$this->content.=$this->doc->startPage($LANG->getLL("title"));
 			$this->content.=$this->doc->header($LANG->getLL("title"));
 			$this->content.=$this->doc->spacer(5);
-			//$this->content.=$this->doc->section("",$this->doc->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->id,"SET[function]",$this->MOD_SETTINGS["function"],$this->MOD_MENU["function"])));
+			$this->content.=$this->doc->section("",$this->doc->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->id,"SET[function]",$this->MOD_SETTINGS["function"],$this->MOD_MENU["function"])));
 			$this->content.=$this->doc->divider(5);
 
 
@@ -175,15 +150,15 @@ class tx_caretaker_mod_log extends t3lib_SCbase {
 
 
 			// ShortCut
-			//if ($BE_USER->mayMakeShortcut())	{
-			//	$this->content.=$this->doc->spacer(20).$this->doc->section("",$this->doc->makeShortcutIcon("id",implode(",",array_keys($this->MOD_MENU)),$this->MCONF["name"]));
-			//}
+			if ($BE_USER->mayMakeShortcut())	{
+				$this->content.=$this->doc->spacer(20).$this->doc->section("",$this->doc->makeShortcutIcon("id",implode(",",array_keys($this->MOD_MENU)),$this->MCONF["name"]));
+			}
 
 			$this->content.=$this->doc->spacer(10);
 		} else {
 				// If no access or if ID == zero
 
-			$this->doc = t3lib_div::makeInstance("bigDoc");
+			$this->doc = t3lib_div::makeInstance("mediumDoc");
 			$this->doc->backPath = $BACK_PATH;
 
 			$this->content.=$this->doc->startPage($LANG->getLL("title"));
@@ -213,35 +188,38 @@ class tx_caretaker_mod_log extends t3lib_SCbase {
 	 */
 	function moduleContent()	{
 							
+		$range = (float)$this->MOD_SETTINGS["function"]; 
+		if (!$range) $range = 24;
+
 		$node = tx_caretaker_Helper::id2node( $this->id , true);
 
 		if ($node){
-			
-			$this->content.= ($this->showNodeInfo($node));
+			if ( isset ($_GET['SET']['action']) ){
+				if ($_GET['SET']['action'] == 'update'){
+					$node->updateTestResult();	
+				}
+				if ($_GET['SET']['action'] == 'update_forced'){
+					$node->updateTestResult(true);	
+				}
+			}
+			$this->content.= ($this->showNodeInfo($node, $range));
 		} else {
 			$this->content.= $this->doc->section( 'Error:','please select a node');
 		}
 	}
 		
-	function showNodeInfo($node){
+	function showNodeInfo($node, $range){
 
 		$content =  $this->getNodeIcon($node);
 		$content .= $this->doc->header( $this->getNodeHeader($node) );
 		$content .= $this->doc->section( 'info:',    $this->getNodeInfo($node));
-		//$content .= $this->doc->section( 'actions:', $this->getNodeActions($node) );
+		$content .= $this->doc->section( 'actions:', $this->getNodeActions($node) );
 		
-		if (is_a($node, 'tx_caretaker_AggregatorNode')) {
-			
+		if (is_a($node, 'tx_caretaker_AggregatorNode'))
 			$content .= $this->doc->section( 'children:',$this->getNodeChildren($node));
-			//$content .= $this->doc->section('info:','Aggregator nodes do not have a log. Please select a test node to shwo the log');
 			
-		} else {
-			
-			//$content .= $this->doc->section( 'status:',  $this->getNodeStatus($node));
-	 		//$content .= $this->doc->section( 'chart:',   $this->getNodeGraph($node, $range) );
-	 		$content .= $this->doc->section('Log:', $this->getNodeLog($node));
-			
-		}
+		$content .= $this->doc->section( 'status:',  $this->getNodeStatus($node));
+ 		$content .= $this->doc->section( 'chart:',   $this->getNodeGraph($node, $range) );
 		
 		return ($content);
 		
@@ -298,9 +276,8 @@ class tx_caretaker_mod_log extends t3lib_SCbase {
 				$info = '<table>'.
 					'<tr><td>Title</td><td>'.$node->getTitle().'</td></tr>'.
 					'<tr><td>Description</td><td>'.$node->getDescription().'</td></tr>'.
-					'<tr><td>Hidden</td><td>'.$node->getHidden().'</td></tr>'.
-					'</table><br />'.
-					'<span style="font-weight: bold;">Aggregator nodes do not have a log. Please select a test node to show the log.</span><br /><br />';
+					'<tr><td>Description</td><td>'.$node->getHidden().'</td></tr>'.
+					'</table>';
 				break;
 		}
 		
@@ -438,94 +415,19 @@ class tx_caretaker_mod_log extends t3lib_SCbase {
 		return '<strong>Graph Error</strong>';
 		
 	}
-	
-	/**
-	 * Creates the log for the node in the specified range
-	 * @param $node The node for which the log should be displayed
-	 * @return string The form and table for the node
-	 */
-	public function getNodeLog($node) {
-		
-		$result_range = $node->getTestResultRange(strtotime($this->timeFrom) , strtotime($this->timeTo), false);
-		$result_range->reverse();
-		
-		$logForm = '<form action="" method="post">';
-		$logForm .= '<label for="tx_caretaker_mod_log_timeFrom">From: </label>';
-		$logForm .= '<input id="tx_caretaker_mod_log_timeFrom" type="text" name="tx_caretaker_mod_log[timeFrom]" value="'.$this->timeFrom.'" />';
-		$logForm .= '<label for="tx_caretaker_mod_log_timeTo"> To: </label>';
-		$logForm .= '<input id="tx_caretaker_mod_log_timeTo" type="text" name="tx_caretaker_mod_log[timeTo]" value="'.$this->timeTo.'" />';
-		$logForm .= ' <input type="submit" value="Show log" />';
-		$logForm .= '</form>';
-		
-		if($result_range->getLength() > 0) {
-			
-			// first result must be left out
-			//$continue = true;
-			
-			$logTable = '<table><tbody>';
-			$logTable .= '<tr><th>State</th><th>Date</th><th>Message</th></tr>';
-			
-			foreach($result_range as $result) {
-				
-				// first result must be left out
-				/*if($continue) {
-					
-					$continue = false;
-					continue;
-				}*/
-				
-				if($result->getState() == TX_CARETAKER_STATE_OK) {
-					
-					$logTable .= '<tr><td style="background-color: #0d0; text-align: center;">'.$result->getStateInfo().'</td>';
-					$logTable .= '<td style="background-color: #0d0; text-align: center; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
-					$logTable .= '<td style="background-color: #0d0;">'.$result->getMessage().'</td>';
-					$logTable .= '</tr>';
-					
-				} elseif($result->getState() == TX_CARETAKER_STATE_WARNING) {
-					
-					$logTable .= '<tr><td style="background-color: #dd0; text-align: center;">'.$result->getStateInfo().'</td>';
-					$logTable .= '<td style="background-color: #dd0; text-align: center; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
-					$logTable .= '<td style="background-color: #dd0;">'.$result->getMessage().'</td>';
-					$logTable .= '</tr>';
-					
-				} elseif($result->getState() == TX_CARETAKER_STATE_ERROR) {
-					
-					$logTable .= '<tr><td style="background-color: #d00; text-align: center;">'.$result->getStateInfo().'</td>';
-					$logTable .= '<td style="background-color: #d00; text-align: center; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
-					$logTable .= '<td style="background-color: #d00;">'.$result->getMessage().'</td>';
-					$logTable .= '</tr>';
-					
-				} else {
-					
-					$logTable .= '<tr><td style="text-align: center;">'.$result->getStateInfo().'</td>';
-					$logTable .= '<td style="text-align: center; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
-					$logTable .= '<td>'.$result->getMessage().'</td>';
-					$logTable .= '</tr>';
-				}
-			}
-			
-			$logTable .= '</tbody></table>';
-			
-		} else {
-
-			$logTable = '<p>There are no results in the specified range.</p>';
-		}
-		
-		return $logForm.' '.$logTable;
-	}
 }
 
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/mod_log/index.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/mod_log/index.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/mod_overview/index.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/mod_overview/index.php']);
 }
 
 
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance('tx_caretaker_mod_log');
+$SOBE = t3lib_div::makeInstance('tx_caretaker_mod_overview');
 $SOBE->init();
 
 // Include files?
