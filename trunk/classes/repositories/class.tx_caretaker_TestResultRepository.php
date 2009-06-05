@@ -93,9 +93,10 @@ class tx_caretaker_TestResultRepository {
 	 * @param tx_caretaker_TestNode $test 
 	 * @param integer $start_timestamp
 	 * @param integer $stop_timestamp
+	 * @param boolean $graph By default the result range is created for the graph, so the last result is added again at the end
 	 * @return tx_caretaker_testResultRange
 	 */
-	public function getRangeByInstanceAndTest($instance, $test, $start_timestamp, $stop_timestamp ){
+	public function getRangeByInstanceAndTest($instance, $test, $start_timestamp, $stop_timestamp, $graph = true){
 		$result_range = new tx_caretaker_TestResultRange($start_timestamp, $stop_timestamp);
 		$base_condition = 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid().' ';
 		
@@ -122,10 +123,20 @@ class tx_caretaker_TestResultRepository {
 		}
 		
 			// add last value if needed
+			/*
+			 * modified by thorben <thorben@work.de>
+			 * if result range is generated for graphing the last result must be added again with the last timestamp
+			 * that the graph is drawn to the end
+			 */
 		$last = $result_range->getLast(); 
 		if ($last && $last->getTstamp() < $stop_timestamp){
-			$real_last = new tx_caretaker_TestResult($stop_timestamp, $last->getState() , $last->getValue(), $last->getMsg() );
-			$result_range->addResult($real_last);
+			
+			if($graph) {
+				
+				$real_last = new tx_caretaker_TestResult($stop_timestamp, $last->getState() , $last->getValue(), $last->getMsg() );
+				$result_range->addResult($real_last);
+				
+			}
 		}
 
 		return $result_range; 
