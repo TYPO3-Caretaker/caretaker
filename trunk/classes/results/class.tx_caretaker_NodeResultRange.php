@@ -264,6 +264,15 @@ class tx_caretaker_NodeResultRange implements Iterator {
 	public function valid() {
 		return isset( $this->array[key($this->array)] );
 	}
+	
+	/**
+	 * Reverses the array of results
+	 * @return void
+	 */
+	public function reverse() {
+		
+		$this->array = array_reverse($this->array);
+	}
 
 }
 
