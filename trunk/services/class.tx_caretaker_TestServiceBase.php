@@ -135,5 +135,14 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 		return $this->valueDescription;
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see interfaces/tx_caretaker_TestService#isExecutable()
+	 */
+	public function isExecutable() {
+		
+		return true;
+	}
+	
 }
 ?>

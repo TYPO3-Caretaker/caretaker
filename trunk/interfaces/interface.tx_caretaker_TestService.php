@@ -68,6 +68,13 @@ interface tx_caretaker_TestService {
 	 */
 	public function getValueDescription();
 	
+	/**
+	 * Get information if the test service is able to execute tests
+	 * 
+	 * @return boolean
+	 */
+	public function isExecutable();
+	
 }
 
 ?>

@@ -91,6 +91,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		
 		$this->test_service_type = $service_type;
 		$this->test_service_configuration = $service_configuration;
+		$this->test_service = null;
 		$this->test_interval = $interval;
 		$this->start_hour    = $start_hour;
 		$this->stop_hour     = $stop_hour;
@@ -127,7 +128,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	 */
 	public function runTest(){
 		
-		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_service_type);
+		$test_servive = $this->test_service;
 		
 		if (!$test_service) {
 			
@@ -136,8 +137,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		}
 		
 			// execute test
-		$test_service->setInstance( $this->getInstance() );
-		$test_service->setConfiguration($this->test_service_configuration );
+		
 		$test_result = $test_service->runTest();
 		
 			// return result
@@ -158,6 +158,12 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$instance = $this->getInstance();
 		
+		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_service_type);
+		$this->test_service = $test_service;
+		$this->test_service->setInstance( $this->getInstance() );
+		$this->test_service->setConfiguration($this->test_service_configuration );
+		
+		
 			// check cache and return
 		if (!$force_update ){
 			$result = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
@@ -173,17 +179,25 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 				}
 			}
 		}
-			
-			// prepare
-		$test_id = $test_result_repository->prepareTest($instance, $this);
-		$result = $this->runTest($instance);
-		$test_result_repository->saveTestResult($test_id, $result);
-				
-		if ($result->getState() > 0){
-			$this->sendNotification($result->getState(), $result->getMsg() );
-		} 
 		
-		$this->log('update '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMsg() );
+		if($this->test_service->isExecutable()) {
+			
+				// prepare
+			$test_id = $test_result_repository->prepareTest($instance, $this);
+			$result = $this->runTest($instance);
+			$test_result_repository->saveTestResult($test_id, $result);
+					
+			if ($result->getState() > 0){
+				$this->sendNotification($result->getState(), $result->getMsg() );
+			} 
+			
+			$this->log('update '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMsg() );
+			
+		} else {
+			
+			$result = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
+			$this->log('Selenium server is busy... skipping test.');
+		}
 		
 		return $result;
 		
