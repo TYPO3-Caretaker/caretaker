@@ -202,7 +202,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		} else {
 			
 			$result = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
-			$this->log('Selenium server is busy... skipping test.');
+			$this->log('Service is busy... skipping test.');
 		}
 		
 		return $result;
