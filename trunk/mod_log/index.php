@@ -476,30 +476,30 @@ class tx_caretaker_mod_log extends t3lib_SCbase {
 				
 				if($result->getState() == TX_CARETAKER_STATE_OK) {
 					
-					$logTable .= '<tr><td style="background-color: #0d0; text-align: center;">'.$result->getStateInfo().'</td>';
-					$logTable .= '<td style="background-color: #0d0; text-align: center; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
-					$logTable .= '<td style="background-color: #0d0;">'.$result->getMessage().'</td>';
+					$logTable .= '<tr><td style="background-color: #0d0; text-align: center; vertical-align: top;">'.$result->getStateInfo().'</td>';
+					$logTable .= '<td style="background-color: #0d0; text-align: center; vertical-align: top; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
+					$logTable .= '<td style="background-color: #0d0; vertical-align: top;">'.nl2br($result->getMessage()).'</td>';
 					$logTable .= '</tr>';
 					
 				} elseif($result->getState() == TX_CARETAKER_STATE_WARNING) {
 					
-					$logTable .= '<tr><td style="background-color: #dd0; text-align: center;">'.$result->getStateInfo().'</td>';
-					$logTable .= '<td style="background-color: #dd0; text-align: center; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
-					$logTable .= '<td style="background-color: #dd0;">'.$result->getMessage().'</td>';
+					$logTable .= '<tr><td style="background-color: #dd0; text-align: center; vertical-align: top;">'.$result->getStateInfo().'</td>';
+					$logTable .= '<td style="background-color: #dd0; text-align: center; vertical-align: top; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
+					$logTable .= '<td style="background-color: #dd0; vertical-align: top;">'.nl2br($result->getMessage()).'</td>';
 					$logTable .= '</tr>';
 					
 				} elseif($result->getState() == TX_CARETAKER_STATE_ERROR) {
 					
-					$logTable .= '<tr><td style="background-color: #d00; text-align: center;">'.$result->getStateInfo().'</td>';
-					$logTable .= '<td style="background-color: #d00; text-align: center; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
-					$logTable .= '<td style="background-color: #d00;">'.$result->getMessage().'</td>';
+					$logTable .= '<tr><td style="background-color: #d00; text-align: center; vertical-align: top;">'.$result->getStateInfo().'</td>';
+					$logTable .= '<td style="background-color: #d00; text-align: center; vertical-align: top; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
+					$logTable .= '<td style="background-color: #d00; vertical-align: top;">'.nl2br($result->getMessage()).'</td>';
 					$logTable .= '</tr>';
 					
 				} else {
 					
-					$logTable .= '<tr><td style="text-align: center;">'.$result->getStateInfo().'</td>';
-					$logTable .= '<td style="text-align: center; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
-					$logTable .= '<td>'.$result->getMessage().'</td>';
+					$logTable .= '<tr><td style="text-align: center; vertical-align: top;">'.$result->getStateInfo().'</td>';
+					$logTable .= '<td style="text-align: center; vertical-align: top; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
+					$logTable .= '<td style="vertical-align: top;">'.nl2br($result->getMessage()).'</td>';
 					$logTable .= '</tr>';
 				}
 			}
