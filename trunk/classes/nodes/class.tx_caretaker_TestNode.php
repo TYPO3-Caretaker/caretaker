@@ -54,6 +54,12 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	private $test_service_configuration = false;
 	
 	/**
+	 * Reference to the test service
+	 * @var tx_caretaker_TestServiceBase
+	 */
+	private $test_service = null;
+	
+	/**
 	 * Interval of Tests in Seconds
 	 * @var integer
 	 */
@@ -91,10 +97,13 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		
 		$this->test_service_type = $service_type;
 		$this->test_service_configuration = $service_configuration;
-		$this->test_service = null;
 		$this->test_interval = $interval;
 		$this->start_hour    = $start_hour;
 		$this->stop_hour     = $stop_hour;
+		
+		$this->test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_service_type);
+		$this->test_service->setInstance( $this->getInstance() );
+		$this->test_service->setConfiguration($this->test_service_configuration );
 		
 	}
 	
@@ -128,7 +137,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	 */
 	public function runTest(){
 		
-		$test_servive = $this->test_service;
+		$test_service = $this->test_service;
 		
 		if (!$test_service) {
 			
@@ -158,10 +167,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$instance = $this->getInstance();
 		
-		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_service_type);
-		$this->test_service = $test_service;
-		$this->test_service->setInstance( $this->getInstance() );
-		$this->test_service->setConfiguration($this->test_service_configuration );
+		
 		
 		
 			// check cache and return
