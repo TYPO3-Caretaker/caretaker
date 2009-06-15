@@ -95,15 +95,17 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		
 		parent::__construct($uid, $title, $parent_node, 'Test', $hidden);
 		
-		$this->test_service_type = $service_type;
-		$this->test_service_configuration = $service_configuration;
+		echo $service_configuration;
+		
+		//$this->test_service_type = $service_type;
+		//$this->test_service_configuration = $service_configuration;
 		$this->test_interval = $interval;
 		$this->start_hour    = $start_hour;
 		$this->stop_hour     = $stop_hour;
 		
-		$this->test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_service_type);
+		$this->test_service = t3lib_div::makeInstanceService('caretaker_test_service',$service_type);
 		$this->test_service->setInstance( $this->getInstance() );
-		$this->test_service->setConfiguration($this->test_service_configuration );
+		$this->test_service->setConfiguration($service_configuration);
 		
 	}
 	
