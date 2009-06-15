@@ -103,7 +103,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		
 		unset($this->test_service);
 		
-		print_r($service_configuration);
+		echo $service_configuration;
 		
 		$this->test_service = t3lib_div::makeInstanceService('caretaker_test_service',$service_type);
 		$this->test_service->setInstance( $this->getInstance() );
