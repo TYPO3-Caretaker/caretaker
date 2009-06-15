@@ -95,19 +95,19 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		
 		parent::__construct($uid, $title, $parent_node, 'Test', $hidden);
 		
-		//$this->test_service_type = $service_type;
-		//$this->test_service_configuration = $service_configuration;
+		$this->test_service_type = $service_type;
+		$this->test_service_configuration = $service_configuration;
 		$this->test_interval = $interval;
 		$this->start_hour    = $start_hour;
 		$this->stop_hour     = $stop_hour;
 		
-		unset($this->test_service);
+		//unset($this->test_service);
 		
 		//echo $service_configuration;
 		
-		$this->test_service = t3lib_div::makeInstanceService('caretaker_test_service',$service_type);
-		$this->test_service->setInstance( $this->getInstance() );
-		$this->test_service->setConfiguration($service_configuration);
+		//$this->test_service = t3lib_div::makeInstanceService('caretaker_test_service',$service_type);
+		//$this->test_service->setInstance( $this->getInstance() );
+		//$this->test_service->setConfiguration($service_configuration);
 	}
 	
 	/**
@@ -138,11 +138,9 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	 * Execute the test
 	 * @return tx_caretaker_TestResult
 	 */
-	public function runTest(){
+	public function runTest(tx_caretaker_TestServiceBase $testService){
 		
-		$test_service = $this->test_service;
-		
-		if (!$test_service) {
+		if (!$testService) {
 			
 			$error = new tx_caretaker_TestResult(TX_CARETAKER_STATE_ERROR, 0, 'Test Service not found');
 			return $error;
@@ -150,7 +148,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		
 			// execute test
 		
-		$test_result = $test_service->runTest();
+		$test_result = $testService->runTest();
 		
 			// return result
 		return $test_result;
@@ -170,8 +168,9 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$instance = $this->getInstance();
 		
-		
-		
+		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_service_type);
+		$test_service->setInstance( $this->getInstance() );
+		$test_service->setConfiguration($this->test_service_configuration);
 		
 			// check cache and return
 		if (!$force_update ){
@@ -189,11 +188,11 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 			}
 		}
 		
-		if($this->test_service->isExecutable()) {
+		if($test_service->isExecutable()) {
 			
 				// prepare
 			$test_id = $test_result_repository->prepareTest($instance, $this);
-			$result = $this->runTest($instance);
+			$result = $this->runTest($test_service);
 			$test_result_repository->saveTestResult($test_id, $result);
 					
 			if ($result->getState() > 0){
