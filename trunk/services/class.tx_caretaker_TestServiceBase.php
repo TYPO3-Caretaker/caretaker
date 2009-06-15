@@ -82,6 +82,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 			$this->flexform_configuration = t3lib_div::xml2array($configuration);
 		}
 		
+		echo 'Following configuration is set:'."\n";
 		print_r($this->flexform_configuration);
 		
 	}
