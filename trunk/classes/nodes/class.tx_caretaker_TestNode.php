@@ -10,6 +10,10 @@
  * @Author	Christopher Hlubek	<hlubek@networkteam.com>
  * 
  * $Id$
+ * 
+ * @todo Check proper setup of $this->testService, use $this->testService instead of
+ * local variable in tx_caretaker_TestNode::updateTestResult and tx_caretaker_TestNode::runTest
+ * Use of $this->testService currently executes several tests with the same setup.
  */
 
 /***************************************************************
@@ -136,6 +140,8 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	
 	/**
 	 * Execute the test
+	 * 
+	 * @param tx_caretaker_TestServiceBase $testService
 	 * @return tx_caretaker_TestResult
 	 */
 	public function runTest(tx_caretaker_TestServiceBase $testService){
