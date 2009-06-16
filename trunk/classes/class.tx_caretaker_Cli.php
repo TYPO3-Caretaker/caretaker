@@ -139,6 +139,9 @@ class tx_caretaker_Cli extends t3lib_cli {
 	        		exit;
 	        	}
         	} else {
+        		/**
+        		 * @todo tx_caretaker_cli::log doesnt exist, must be implemented
+        		 */
         		$this->log('Node not found or inactive');
         		exit;
         	}
