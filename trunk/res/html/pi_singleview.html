@@ -1,27 +1,13 @@
 <!-- ###CARETAKER-SINGLEVIEW begin -->
 <div class="caretaker_singleview caretaker_singleview_###STATE###" >
 	<h2> ###TITLE###</h2>
-	<p>###DESCRIPTION###</p>
 	<table class="status">
-		<tr class="first"><td class="first">State</td><td>###STATE###</td></tr>
-		<tr><td class="first">Last Run</td><td>###LAST_RUN###</td></tr>
-		<tr><td class="first">Value</td><td>###VALUE###</td></tr>
-		<tr><td class="first">Message</td><td>###MESSAGE###</td></tr>
+		<tr class="first"><td class="first">###LABEL_DESCRIPTION###</td><td>###DESCRIPTION###</td></tr>
+		<tr><td colspan="2">###LAST_RUN_HEADER###</td></tr>
+		<tr><td class="first">###LABEL_STATE###</td><td>###STATE_SHOW### :: ###MESSAGE###</td></tr>
+		<tr><td class="first">###LABEL_LAST_RUN###</td><td>###LAST_RUN###</td></tr>
+		<tr><td class="first">###LABEL_VALUE###</td><td>###VALUE###</td></tr>
 	</table>
-	<h3>Children</h3>
-	<ul class="caretaker_children">
-		<!-- ###CARETAKER-CHILDREN### begin -->
-			<!-- ###CARETAKER-CHILD### begin --><li class="state_###STATE###" title="###DESCRIPTION###">###TITLE###</li><!-- ###CARETAKER-CHILD### end -->
-			<li class="state_ok"></li>
-			<li class="state_warning"></li>
-			<li class="state_undefined"></li>
-			<li class="state_error"></li>
-			<li class="state_ok"></li>
-			<li class="state_ok"></li>
-			<li class="state_ok"></li>
-		<!-- ###CARETAKER-CHILDREN### end -->	
-	</ul>
-	<h3>###CHART_TITLE###</h3>
 	###CHART_LINKS###
 	<p class="last">
 	###CHART###

@@ -392,6 +392,54 @@ class tx_caretaker_mod_log extends t3lib_SCbase {
 			
 	}
 	
+	private function aggregateMessage($msgString) {
+		
+		$msgArray = unserialize($msgString);
+		if($msgArray) {
+		
+			$message = '';
+			
+			foreach($msgArray as $resultMessage) {
+				
+				if(substr($resultMessage[0], 0, 3) == 'LLL') {
+					
+					preg_match('/LLL:(EXT:.*):(.*)/', $resultMessage[0], $matches);
+					/* @var $LANG language */
+					$LANG = t3lib_div::makeInstance('language');
+					$LANG->init($BE_USER->uc['lang']);
+					$msg = $LANG->getLLL($matches[2], $LANG->readLLfile(t3lib_div::getFileAbsFileName($matches[1])),true);
+					$msg = str_replace('###BROWSER###', $resultMessage[2], $msg);
+					$msg = str_replace('###MESSAGE###', $resultMessage[3], $msg);
+					$msg = str_replace('###TIME###', round($resultMessage[4], 2), $msg);
+					preg_match('/LLL:(EXT:.*):(.*)/', $resultMessage[5], $matches);
+					$msg = str_replace('###TIME_UNIT###', substr($resultMessage[5], 0, 3) == 'LLL' ? $LANG->getLLL($matches[2], $LANG->readLLfile(t3lib_div::getFileAbsFileName($matches[1])), true) : $resultMessage[5], $msg);
+					
+					if(isset($resultMessage[6])) {
+						
+						$msg = str_replace('###TIME_LIMIT###', $resultMessage[6], $msg);
+					}
+					
+				} else {
+					
+					$msg = $resultMessage[0];
+				}
+				
+				for($i = 8; $i < count($resultMessage); $i++) {
+					
+					$msg = str_replace('###VALUE_'.$i.'###',$resultMessage[$i], $msg);
+				}
+				
+				$message .= $msg;
+			}
+			
+			return $message;
+			
+		} else {
+			
+			return $msgString;
+		}
+	}
+	
 	function getNodeIcon ($node){
 		$uid    = $node->getUid();
 		$title  = $node->getTitle();
@@ -478,28 +526,28 @@ class tx_caretaker_mod_log extends t3lib_SCbase {
 					
 					$logTable .= '<tr><td style="background-color: #0d0; text-align: center; vertical-align: top;">'.$result->getStateInfo().'</td>';
 					$logTable .= '<td style="background-color: #0d0; text-align: center; vertical-align: top; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
-					$logTable .= '<td style="background-color: #0d0; vertical-align: top;">'.nl2br($result->getMessage()).'</td>';
+					$logTable .= '<td style="background-color: #0d0; vertical-align: top;">'.nl2br($this->aggregateMessage($result->getMessage())).'</td>';
 					$logTable .= '</tr>';
 					
 				} elseif($result->getState() == TX_CARETAKER_STATE_WARNING) {
 					
 					$logTable .= '<tr><td style="background-color: #dd0; text-align: center; vertical-align: top;">'.$result->getStateInfo().'</td>';
 					$logTable .= '<td style="background-color: #dd0; text-align: center; vertical-align: top; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
-					$logTable .= '<td style="background-color: #dd0; vertical-align: top;">'.nl2br($result->getMessage()).'</td>';
+					$logTable .= '<td style="background-color: #dd0; vertical-align: top;">'.nl2br($this->aggregateMessage($result->getMessage())).'</td>';
 					$logTable .= '</tr>';
 					
 				} elseif($result->getState() == TX_CARETAKER_STATE_ERROR) {
 					
 					$logTable .= '<tr><td style="background-color: #d00; text-align: center; vertical-align: top;">'.$result->getStateInfo().'</td>';
 					$logTable .= '<td style="background-color: #d00; text-align: center; vertical-align: top; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
-					$logTable .= '<td style="background-color: #d00; vertical-align: top;">'.nl2br($result->getMessage()).'</td>';
+					$logTable .= '<td style="background-color: #d00; vertical-align: top;">'.nl2br($this->aggregateMessage($result->getMessage())).'</td>';
 					$logTable .= '</tr>';
 					
 				} else {
 					
 					$logTable .= '<tr><td style="text-align: center; vertical-align: top;">'.$result->getStateInfo().'</td>';
 					$logTable .= '<td style="text-align: center; vertical-align: top; width: 90px;">'.date('Y-m-d, H:s',$result->getTimestamp()).'</td>';
-					$logTable .= '<td style="vertical-align: top;">'.nl2br($result->getMessage()).'</td>';
+					$logTable .= '<td style="vertical-align: top;">'.nl2br($this->aggregateMessage($result->getMessage())).'</td>';
 					$logTable .= '</tr>';
 				}
 			}

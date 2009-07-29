@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for plugin caretaker single view</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="error">Error</label>
+			<label index="warning">Warning</label>
+			<label index="ok">OK</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="ok">OK</label>
+			<label index="warning">Warnung</label>
+			<label index="error">Fehler</label>
+		</languageKey>
+	</data>
+</T3locallang>

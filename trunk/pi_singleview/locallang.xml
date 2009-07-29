@@ -2,16 +2,46 @@
 <T3locallang>
 	<meta type="array">
 		<type>module</type>
-		<description>Language labels for plugin &quot;user_overview_pi1&quot;</description>
+		<description>Language labels for plugin caretaker single view</description>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="plugin_mode_instancegroup">Instancegroup</label>
-			<label index="plugin_mode_instance">Instance</label>
-			<label index="plugin_mode_instance_testgroup">Instance + Testgroup</label>
-			<label index="plugin_mode">Mode</label>
-			<label index="submit_button_label">Click here to submit value</label>
-			<label index="node_id">Node ID</label>
+			<label index="state">State</label>
+			<label index="lastRun">Date</label>
+			<label index="value">Value</label>
+			<label index="message">Message</label>
+			<label index="children">Children</label>
+			<label index="24hours">24 hours</label>
+			<label index="7days">7 days</label>
+			<label index="30days">30 days</label>
+			<label index="times">Times</label>
+			<label index="values">Values</label>
+			<label index="date">Date</label>
+			<label index="ok">OK</label>
+			<label index="warning">Warning</label>
+			<label index="error">Error</label>
+			<label index="available">available</label>
+			<label index="description">Description</label>
+			<label index="lastRunHeader">Last run:</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="state">Status</label>
+			<label index="lastRun">Datum</label>
+			<label index="value">Messwert</label>
+			<label index="message">Meldung</label>
+			<label index="children">Gruppenelemente</label>
+			<label index="24hours">24 Stunden</label>
+			<label index="7days">7 Tage</label>
+			<label index="30days">30 Tage</label>
+			<label index="times">Zeiten</label>
+			<label index="values">Werte</label>
+			<label index="date">Datum</label>
+			<label index="ok">OK</label>
+			<label index="warning">Warnung</label>
+			<label index="error">Fehler</label>
+			<label index="available">verfügbar</label>
+			<label index="description">Beschreibung</label>
+			<label index="lastRunHeader">Letzter Lauf:</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -73,7 +73,7 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		$result_range = $node->getTestResultRange(time()-3600*$range , time() );
 		$filename = 'typo3temp/caretaker/charts/'.$id.'_'.$range.'.png';
 		
-		$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
+		$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance($this->LOCAL_LANG, $this->LLkey);
 		
 		if (is_a($node, 'tx_caretaker_TestNode' ) ){
 			$result = $renderer->renderTestResultRange(PATH_site.$filename, $result_range , $node->getTitle(), $node->getValueDescription() );

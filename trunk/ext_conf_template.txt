@@ -11,3 +11,6 @@ notification.mail_link = http://caretaker.example.org/index.php?id=123&tx_careta
 notification.mail_subject = caretaker
 # cat=caretaker/ping; type=string; label=CLI Command used for ping tests. ### is replaced by Hostname.
 ping.cli_command = /sbin/ping -c 1 ### >/dev/null
+
+# cat=caretaker/testrunner; type=string; label=Language key for result messages.
+testrunner.lang = en

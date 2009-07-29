@@ -82,7 +82,7 @@
 
 			<label index="tt_content.list_type_pi_overview">Caretaker Tactical Overview</label>
 			<label index="pi_overview_title">Caretaker Tactical Overview</label>
-			<label index="pi_overview_plus_wiz_description">Show Tactical Overview of selcted Caretaker Records</label>
+			<label index="pi_overview_plus_wiz_description">Show Tactical Overview of selected Caretaker Records</label>
 			
 			<label index="tt_content.list_type_pi_singleview">Caretaker Details</label>
 			<label index="pi_singleview_title">Caretaker Details</label>

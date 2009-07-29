@@ -83,7 +83,7 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 				
 				$filename = 'typo3temp/caretaker/charts/report_'.$id.'_'.$range.'.png';
 				
-				$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
+				$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance($this->LOCAL_LANG, $this->LLkey);
 				$result   = $renderer->renderMultipleTestResultRanges(PATH_site.$filename, $result_ranges, $titles );
 				
 				$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');

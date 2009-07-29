@@ -28,11 +28,14 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 	
 	function showNodeInfo($node){
 		
-		$template = $this->cObj->cObjGetSingle($this->conf['template'], $this->conf['template.']);
+		$template; // = $this->cObj->cObjGetSingle($this->conf['template'], $this->conf['template.']);
 		
-			// render first level Children
+		// render first level Children
 		if  (is_a($node, 'tx_caretaker_AggregatorNode')){
-		$children  = $node->getChildren();
+			
+			$template = $this->cObj->cObjGetSingle($this->conf['template'], $this->conf['template.']);
+			
+			$children  = $node->getChildren();
 			$child_template  = $this->cObj->getSubpart($template, '###CARETAKER-CHILD###');
 			$child_infos = '';
 			foreach ($children as $child){
@@ -50,10 +53,17 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 					$child_infos .= $this->cObj->substituteMarkerArray($child_template,$node_markers);
 				}
 			}
+			
+			$template =  $this->cObj->substituteSubpart($template,'CARETAKER-CHILDREN',$child_infos);
+			
+			
 		} else {
+			
+			$template = $this->cObj->cObjGetSingle($this->conf['templateChild'], $this->conf['templateChild.']);
 			$child_infos = '';
 		}
-		$template =  $this->cObj->substituteSubpart($template,'CARETAKER-CHILDREN',$child_infos);
+		
+		$template = $this->cObj->substituteMarkerArray($template, $markers);
 		
 			// render Node Infos
 		$data  = $this->getNodeData($node);
@@ -67,6 +77,7 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 					$node_markers['###'.$key.'###'] = $mark;
 				}
 			}
+			
 			$template = $this->cObj->substituteMarkerArray($template,$node_markers);
 		}
 		return $template;
@@ -84,8 +95,38 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		$result = $node->getTestResult();
 		$data['state']       = $result->getState();
 		$data['state_info']  = $result->getStateInfo();
-		$data['state_msg']   = $result->getMsg();
+		
+		if(TYPO3_MODE=='FE') {
+			
+			/* @var $lcObj tslib_cObj */
+			$lcObj = t3lib_div::makeInstance('tslib_cObj');
+			$data['state_show'] = $lcObj->TEXT(array('data' => 'LLL:EXT:caretaker/pi_singleview/locallang.xml:'.strtolower($result->getStateInfo())));
+			
+		} else {
+			
+			/* @var $LANG language */
+			$LANG = t3lib_div.makeInstance('language');
+			$LANG->init($BE_USER->uc['lang']);
+			$data['state_show'] = $LANG->getLLL(strtolower($result->getStateInfo()), $LANG->readLLfile(t3lib_div::getFileAbsFileName('EXT:caretaker_/pi_singleview/locallang.xml')));
+		}
+		
+		$message = unserialize($result->getMsg());
+		
+		if($message) {
+			
+			$data['state_msg'] = $this->aggregateMessage($message);
+			
+		} else {
+		
+			$data['state_msg']   = $result->getMsg();
+		}
+		
 		$data['state_tstamp']= $result->getTstamp();
+		
+		if(is_a($result, 'tx_caretaker_TestResult')) {
+		
+			$data['state_value'] = $result->getValue();
+		}
 		
 			// instance data
 		if (is_a($node , 'tx_caretaker_TestNode' ) || is_a($node ,'tx_caretaker_TestgroupNode') ) {
@@ -94,6 +135,43 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		
 		$data['link_parameters'] = '&tx_caretaker_pi_singleview[id]='.tx_caretaker_Helper::node2id($node);
 		return $data;
+	}
+	
+	private function aggregateMessage($msgArray) {
+		
+		$message = '';
+		
+		foreach($msgArray as $resultMessage) {
+			
+			if(substr($resultMessage[0], 0, 3) == 'LLL') {
+				
+				/* @var $lcObj tslib_cObj */
+				$lcObj = t3lib_div::makeInstance('tslib_cObj');
+				$msg = $lcObj->TEXT(array('data' => $resultMessage[0]));
+				$msg = str_replace('###BROWSER###', $resultMessage[2], $msg);
+				$msg = str_replace('###MESSAGE###', $resultMessage[3], $msg);
+				$msg = str_replace('###TIME###', round($resultMessage[4], 2), $msg);
+				$msg = str_replace('###TIME_UNIT###', substr($resultMessage[5], 0, 3) == 'LLL' ? $lcObj->TEXT(array('data' => $resultMessage[5])) : $resultMessage[5], $msg);
+				
+				if(isset($resultMessage[6])) {
+					
+					$msg = str_replace('###TIME_LIMIT###', $resultMessage[6], $msg);
+				}
+				
+			} else {
+				
+				$msg = $resultMessage[0];
+			}
+			
+			for($i = 8; $i < count($resultMessage); $i++) {
+				
+				$msg = str_replace('###VALUE_'.$i.'###',$resultMessage[$i], $msg);
+			}
+			
+			$message .= $msg;
+		}
+		
+		return $message;
 	}
 	
 }

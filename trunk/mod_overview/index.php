@@ -354,19 +354,67 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 					'<tr><td>State</td><td><span style="color:'.$color.';" >'.$test_result->getStateInfo().'</span></td></tr>'.
 					'<tr><td>Value</td><td><span style="color:'.$color.';" >'.$test_result->getValue().'</span></td></tr>'.
 					'<tr><td>lastRun</td><td><span style="color:'.$color.';" >'.strftime('%x %X',$test_result->getTstamp()).'</span></td></tr>'.
-					'<tr><td>Comment</td><td><span style="color:'.$color.';" >'.$test_result->getMsg().'</span></td></tr>'.
+					'<tr><td>Comment</td><td><span style="color:'.$color.';" >'.$this->aggregateMessage($test_result->getMsg()).'</span></td></tr>'.
 					'</table>';
 				break;
 			default:
 				$info = '<table>'.
 					'<tr><td>State</td><td><span style="color:'.$color.';" >'.$test_result->getStateInfo().'</span></td></tr>'.
 					'<tr><td>lastRun</td><td><span style="color:'.$color.';" >'.strftime('%x %X',$test_result->getTstamp()).'</span></td></tr>'.
-					'<tr><td>Comment</td><td><span style="color:'.$color.';" >'.$test_result->getMsg().'</span></td></tr>'.
+					'<tr><td>Comment</td><td><span style="color:'.$color.';" >'.$this->aggregateMessage($test_result->getMsg()).'</span></td></tr>'.
 					'</table>';
 				break; 
 		}		
 		return $info;
 			
+	}
+	
+	private function aggregateMessage($msgString) {
+		
+		$msgArray = unserialize($msgString);
+		if($msgArray) {
+		
+			$message = '';
+			
+			foreach($msgArray as $resultMessage) {
+				
+				if(substr($resultMessage[0], 0, 3) == 'LLL') {
+					
+					preg_match('/LLL:(EXT:.*):(.*)/', $resultMessage[0], $matches);
+					/* @var $LANG language */
+					$LANG = t3lib_div::makeInstance('language');
+					$LANG->init($BE_USER->uc['lang']);
+					$msg = $LANG->getLLL($matches[2], $LANG->readLLfile(t3lib_div::getFileAbsFileName($matches[1])),true);
+					$msg = str_replace('###BROWSER###', $resultMessage[2], $msg);
+					$msg = str_replace('###MESSAGE###', $resultMessage[3], $msg);
+					$msg = str_replace('###TIME###', round($resultMessage[4], 2), $msg);
+					preg_match('/LLL:(EXT:.*):(.*)/', $resultMessage[5], $matches);
+					$msg = str_replace('###TIME_UNIT###', substr($resultMessage[5], 0, 3) == 'LLL' ? $LANG->getLLL($matches[2], $LANG->readLLfile(t3lib_div::getFileAbsFileName($matches[1])), true) : $resultMessage[5], $msg);
+					
+					if(isset($resultMessage[6])) {
+						
+						$msg = str_replace('###TIME_LIMIT###', $resultMessage[6], $msg);
+					}
+					
+				} else {
+					
+					$msg = $resultMessage[0];
+				}
+				
+				for($i = 8; $i < count($resultMessage); $i++) {
+					
+					$msg = str_replace('###VALUE_'.$i.'###',$resultMessage[$i], $msg);
+				}
+				
+				$message .= $msg;
+			}
+			
+			return $message;
+			
+		} else {
+			
+			return $msgString;
+		}
 	}
 	
 	function getNodeIcon ($node){
