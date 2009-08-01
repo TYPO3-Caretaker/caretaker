@@ -332,6 +332,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 	
 	function getNodeStatus($node){
 		$test_result = $node->getTestResult();
+		
 		switch( $test_result->getState() ){
 			case 0:
 				$color = 'green';
@@ -454,13 +455,16 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		$base_url = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 		
 		if (is_a($node, 'tx_caretaker_TestNode' ) ){
-			$renderer->renderTestResultRange(PATH_site.$filename, $result_range , $node->getTitle(), $node->getValueDescription() );
-			return '<img src="'.$base_url.$filename.'" />';
+			if ($renderer->renderTestResultRange(PATH_site.$filename, $result_range , $node->getTitle(), $node->getValueDescription()) !== false) {
+				return '<img src="'.$base_url.$filename.'" />';
+			}
 		} else  if (is_a( $node, 'tx_caretaker_AggregatorNode')){
-			$renderer->renderAggregatorResultRange(PATH_site.$filename, $result_range , $node->getTitle());
-			return '<img src="'.$base_url.$filename.'" />';
-		}		
-		return '<strong>Graph Error</strong>';
+			if ($renderer->renderAggregatorResultRange(PATH_site.$filename, $result_range , $node->getTitle()) !== false) {
+				return '<img src="'.$base_url.$filename.'" />';
+			}
+		}
+		
+		return '<strong>Graph not available</strong>';
 		
 	}
 }

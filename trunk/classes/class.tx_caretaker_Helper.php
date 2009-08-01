@@ -51,7 +51,7 @@ class tx_caretaker_Helper {
 	 */
 	static function getNode($instancegroupId = false, $instanceId = false, $testgroupId = false, $testId = false, $show_hidden=false){
 		
-		$node_repoistory    = tx_caretaker_NodeRepository::getInstance();
+		$node_repository    = tx_caretaker_NodeRepository::getInstance();
 
 		$instancegroupId = (int)$instancegroupId;
 		$instanceId      = (int)$instanceId;
@@ -59,16 +59,16 @@ class tx_caretaker_Helper {
 		$testId          = (int)$testId;
 		
 		if ($instancegroupId>0){
-			$instancegroup = $node_repoistory->getInstancegroupByUid($instancegroupId, false, $show_hidden);
+			$instancegroup = $node_repository->getInstancegroupByUid($instancegroupId, false, $show_hidden);
 			if ($instancegroup) return $instancegroup;
 		} else if ($instanceId>0){
-			$instance = $node_repoistory->getInstanceByUid($instanceId, false, $show_hidden);
+			$instance = $node_repository->getInstanceByUid($instanceId, false, $show_hidden);
 			if ($instance) {
 				if ($testgroupId>0){
-					$group = $node_repoistory->getTestgroupByUid($testgroupId, $instance, $show_hidden);
+					$group = $node_repository->getTestgroupByUid($testgroupId, $instance, $show_hidden);
 					if ($group) return $group;		
 	    		} else if ($testId>0) {
-					$test = $node_repoistory->getTestByUid($testId, $instance, $show_hidden);
+					$test = $node_repository->getTestByUid($testId, $instance, $show_hidden);
 					if ($test) return $test;		
 	    		} else {
 					return $instance;		
