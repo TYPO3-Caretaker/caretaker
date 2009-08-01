@@ -229,7 +229,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 	function getNodeHeader($node){
 		
 		$nodeinfo = $node->getType().':'.$node->getTitle().'['.$node->getUid().']';
-		if ($instance == $node->getInstance()){
+		if ( $node->getInstance() && $instance == $node->getInstance()){
 			$instanceinfo = $instance->getType().':'.$instance->getTitle().'['.$instance->getUid().']';
 		} else {
 			$instanceinfo = '';
