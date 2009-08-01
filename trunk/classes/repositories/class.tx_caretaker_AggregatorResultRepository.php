@@ -91,7 +91,7 @@ class tx_caretaker_AggregatorResultRepository {
 			$result = $this->dbrow2instance($row);
 			return $result;
 		} else {
-			return tx_caretaker_TestResult::undefined();
+			return new tx_caretaker_AggregatorResult();
 		} 		
 	}
 	

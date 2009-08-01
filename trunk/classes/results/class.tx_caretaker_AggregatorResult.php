@@ -75,7 +75,7 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 	 * @param integer $num_error
 	 * @param string  $message
 	 */
-	public function __construct ($timestamp, $state=TX_CARETAKER_STATE_UNDEFINED, $num_undefined=0, $num_ok=0, $num_warning=0, $num_error=0, $message=''){
+	public function __construct ($timestamp = 0, $state=TX_CARETAKER_STATE_UNDEFINED, $num_undefined=0, $num_ok=0, $num_warning=0, $num_error=0, $message=''){
 		parent::__construct($timestamp, $state, $message);
 		$this->num_UNDEFINED = $num_undefined;
 		$this->num_OK        = $num_ok; 

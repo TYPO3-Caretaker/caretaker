@@ -53,7 +53,7 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	 * @param float   $value
 	 * @param string  $message
 	 */
-	public function __construct ($timestamp, $state=TX_CARETAKER_STATE_UNDEFINED, $value=0, $message=''){
+	public function __construct ($timestamp = 0, $state=TX_CARETAKER_STATE_UNDEFINED, $value=0, $message=''){
 		parent::__construct($timestamp, $state, $message);
 		$this->value   = $value;
 	}
