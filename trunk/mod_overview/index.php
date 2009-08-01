@@ -211,6 +211,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 	function showNodeInfo($node, $range){
 
 		$content =  $this->getNodeIcon($node);
+		
 		$content .= $this->doc->header( $this->getNodeHeader($node) );
 		$content .= $this->doc->section( 'info:',    $this->getNodeInfo($node));
 		$content .= $this->doc->section( 'actions:', $this->getNodeActions($node) );
@@ -228,7 +229,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 	function getNodeHeader($node){
 		
 		$nodeinfo = $node->getType().':'.$node->getTitle().'['.$node->getUid().']';
-		if ($instance = $node->getInstance()){
+		if ($instance == $node->getInstance()){
 			$instanceinfo = $instance->getType().':'.$instance->getTitle().'['.$instance->getUid().']';
 		} else {
 			$instanceinfo = '';
@@ -276,7 +277,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 				$info = '<table>'.
 					'<tr><td>Title</td><td>'.$node->getTitle().'</td></tr>'.
 					'<tr><td>Description</td><td>'.$node->getDescription().'</td></tr>'.
-					'<tr><td>Description</td><td>'.$node->getHidden().'</td></tr>'.
+					'<tr><td>Hidden</td><td>'.$node->getHidden().'</td></tr>'.
 					'</table>';
 				break;
 		}
@@ -350,7 +351,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		
 		
 		switch ( get_class($node) ){
-			case "tx_caretaker_TestNode": 
+			case "tx_caretaker_TestNode":
 				$info = '<table>'.
 					'<tr><td>State</td><td><span style="color:'.$color.';" >'.$test_result->getStateInfo().'</span></td></tr>'.
 					'<tr><td>Value</td><td><span style="color:'.$color.';" >'.$test_result->getValue().'</span></td></tr>'.
