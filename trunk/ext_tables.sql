@@ -53,6 +53,7 @@ CREATE TABLE tx_caretaker_instance (
 	ip varchar(255) DEFAULT '' NOT NULL,
 
 	groups text NOT NULL,
+	tests text NOT NULL,
 	instancegroup int(11) DEFAULT '0' NOT NULL,
 	notifications varchar(255) DEFAULT '' NOT NULL,
 
@@ -121,6 +122,7 @@ CREATE TABLE tx_caretaker_test (
 	notifications varchar(255) DEFAULT '' NOT NULL,
 
 	groups int(11) DEFAULT '0' NOT NULL,
+	instances int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -165,6 +167,24 @@ CREATE TABLE tx_caretaker_instance_instancegroup_mm (
 # Table structure for table 'tx_caretaker_testgroup_test_mm'
 #
 CREATE TABLE tx_caretaker_testgroup_test_mm (
+
+	uid int(11) NOT NULL auto_increment,
+	uid_local int(11) DEFAULT '0' NOT NULL,
+	uid_foreign int(11) DEFAULT '0' NOT NULL,
+	
+	tablenames varchar(30) DEFAULT '' NOT NULL,
+	sorting int(11) DEFAULT '0' NOT NULL,
+	sorting_foreign int(11) DEFAULT '0' NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY uid_local (uid_local),
+	KEY uid_foreign (uid_foreign)
+);
+
+#
+# Table structure for table 'tx_caretaker_instance_test_mm'
+#
+CREATE TABLE tx_caretaker_instance_test_mm (
 
 	uid int(11) NOT NULL auto_increment,
 	uid_local int(11) DEFAULT '0' NOT NULL,

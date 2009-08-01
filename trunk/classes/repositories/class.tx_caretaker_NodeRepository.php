@@ -363,9 +363,33 @@ class tx_caretaker_NodeRepository {
 	 * @param boolean $show_hidden
 	 * @return array
 	 */
-	public function getTestsByGroupId ($group_id, $parent = false, $show_hidden = FALSE){
+	public function getTestsByGroupUid ($group_id, $parent = false, $show_hidden = FALSE){
 		$ids = array();
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local', 'tx_caretaker_testgroup_test_mm', 'uid_foreign='.(int)$group_id);
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
+			$ids[] = $row['uid_local'];
+		}
+		$tests = array();
+		foreach ($ids as $uid){
+			$item = $this->getTestByUid($uid,$parent,$show_hidden);
+			if ($item){
+				$tests[]=$item;
+			}
+		}
+		return $tests;
+	}
+	
+	/**
+	 * Get Tests of Instance X
+	 * 
+	 * @param integer $instance_id
+	 * @param tx_caretaker_AbstractNode $parent
+	 * @param boolean $show_hidden
+	 * @return array
+	 */
+	public function getTestsByInstanceUid ($instance_id, $parent = false, $show_hidden = FALSE){
+		$ids = array();
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local', 'tx_caretaker_instance_test_mm', 'uid_foreign='.(int)$instance_id);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
 			$ids[] = $row['uid_local'];
 		}

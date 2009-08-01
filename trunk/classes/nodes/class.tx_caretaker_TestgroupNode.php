@@ -62,7 +62,7 @@ class tx_caretaker_TestgroupNode extends tx_caretaker_AggregatorNode {
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
 		$subgroups = $node_repository->getTestgroupsByParentGroupUid($this->uid, $this , $show_hidden );
 			// read instances
-		$tests = $node_repository->getTestsByGroupId($this->uid, $this, $show_hidden);
+		$tests = $node_repository->getTestsByGroupUid($this->uid, $this, $show_hidden);
 			// save
 		$children = array_merge($subgroups, $tests);
 		return $children;
