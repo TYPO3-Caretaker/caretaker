@@ -230,6 +230,29 @@ class tx_caretaker_NodeRepository {
 		return $result;
 	}
 	
+	
+	/**
+	 * Get all Instances wich are not part of any Instancegroup and so belong to the root level
+	 * 
+	 * @param tx_caretaker_AbstractNode $parent
+	 * @param boolean $show_hidden
+	 * @return unknown_type
+	 */
+	public function getInstancesWithoutGroup($parent = false, $show_hidden = FALSE){
+		//$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local', 'tx_caretaker_instance_instancegroup_mm', 'uid_foreign = '.(int)$uid);
+		// SELECT * FROM tx_caretaker_instance LEFT OUTER JOIN tx_caretaker_instance_instancegroup_mm ON tx_caretaker_instance.uid = tx_caretaker_instance_instancegroup_mm.uid_local WHERE tx_caretaker_instance_instancegroup_mm.uid IS NULL
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'tx_caretaker_instance.uid AS uid', 
+			'tx_caretaker_instance LEFT OUTER JOIN tx_caretaker_instance_instancegroup_mm ON tx_caretaker_instance.uid = tx_caretaker_instance_instancegroup_mm.uid_local',
+			'tx_caretaker_instance_instancegroup_mm.uid IS NULL');
+		$result = array();
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
+			$item = $this->getInstanceByUid($row['uid'], $parent, $show_hidden);
+			if ($item) $result[] = $item;
+		}
+		return $result;
+	}
+	
 	/**
 	 * Convert DB-Row to Instance-Object
 	 * 
