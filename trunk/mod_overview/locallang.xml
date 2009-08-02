@@ -12,6 +12,16 @@
 			<label index="days">3 Days</label>
 			<label index="weeks">14 Days</label>
 			<label index="months">90 Days</label>
+			
+			<label index="no_result_available">No result available</label>
+			
+			<label index="no_hraph_available">No graph available</label>
+			
+			<label index="label_testnode_state">Status</label>
+			<label index="label_testnode_value">Value</label>
+			<label index="label_testnode_lastrun">Last run</label>
+			<label index="label_testnode_comment">Comment</label>
+			
 		</languageKey>
 	</data>
 </T3locallang>

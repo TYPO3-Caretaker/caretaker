@@ -331,7 +331,18 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		return $info;
 	}
 	
+	/**
+	 * Returns some HTML that shows the current status of the given node.
+	 * 
+	 * @author Martin Ficzel (ficzel@work.de)
+	 * @author Thomas Hempel (hempel@work.de)
+	 * 
+	 * @param $node
+	 * @return unknown_type
+	 */
 	function getNodeStatus($node){
+		global $LANG;
+		
 		$test_result = $node->getTestResult();
 		
 		switch( $test_result->getState() ){
@@ -350,23 +361,30 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		}
 		
 		
-		switch ( get_class($node) ){
-			case "tx_caretaker_TestNode":
-				$info = '<table>'.
-					'<tr><td>State</td><td><span style="color:'.$color.';" >'.$test_result->getStateInfo().'</span></td></tr>'.
-					'<tr><td>Value</td><td><span style="color:'.$color.';" >'.$test_result->getValue().'</span></td></tr>'.
-					'<tr><td>lastRun</td><td><span style="color:'.$color.';" >'.strftime('%x %X',$test_result->getTstamp()).'</span></td></tr>'.
-					'<tr><td>Comment</td><td><span style="color:'.$color.';" >'.$this->aggregateMessage($test_result->getMsg()).'</span></td></tr>'.
-					'</table>';
-				break;
-			default:
-				$info = '<table>'.
-					'<tr><td>State</td><td><span style="color:'.$color.';" >'.$test_result->getStateInfo().'</span></td></tr>'.
-					'<tr><td>lastRun</td><td><span style="color:'.$color.';" >'.strftime('%x %X',$test_result->getTstamp()).'</span></td></tr>'.
-					'<tr><td>Comment</td><td><span style="color:'.$color.';" >'.$this->aggregateMessage($test_result->getMsg()).'</span></td></tr>'.
-					'</table>';
-				break; 
-		}		
+		
+		$info = $LANG->getLL('no_result_available');
+		
+		if ($test_result->getState() != TX_CARETAKER_STATE_UNDEFINED) {
+			$infoArray = array(
+				array($LANG->getLL('label_testnode_state'), $test_result->getStateInfo())
+			);
+			
+			switch ( get_class($node) ){
+				case 'tx_caretaker_TestNode':
+					$infoArray[] = array($LANG->getLL('label_testnode_value'), $test_result->getValue());
+					break;
+			}
+			
+			$infoArray[] = array($LANG->getLL('label_testnode_lastrun'), strftime('%x %X',$test_result->getTstamp()));
+			$infoArray[] = array($LANG->getLL('label_testnode_comment'), $this->aggregateMessage($test_result->getMsg()));
+			
+			$info = '<table>';
+			foreach ($infoArray as $infoRow) {
+				$info .= '<tr><td>'.$infoRow[0].'</td><td>span style="color:'.$color.';">'.$infoRow[1].'</span></td></tr>';
+			}
+			$info .= '</table>';
+		}
+				
 		return $info;
 			
 	}
@@ -446,6 +464,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 	}
 	
 	function getNodeGraph($node, $range){
+		global $LANG;
 		
 		require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_ResultRangeRenderer_pChart.php');
 
@@ -465,7 +484,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 			}
 		}
 		
-		return '<strong>Graph not available</strong>';
+		return '<strong>'.$LANG->getLL('no_hraph_available').'</strong>';
 		
 	}
 }
