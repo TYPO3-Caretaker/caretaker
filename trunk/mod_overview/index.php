@@ -292,6 +292,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		$info = $LANG->getLL('no_children_found');
 		
 		if (count($children) > 0) {
+			$info = '';
 			foreach ($children as $child){
 	
 				$row    = array(
