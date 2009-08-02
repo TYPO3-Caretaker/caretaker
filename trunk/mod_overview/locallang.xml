@@ -14,8 +14,8 @@
 			<label index="months">90 Days</label>
 			
 			<label index="no_result_available">No result available</label>
-			
-			<label index="no_hraph_available">No graph available</label>
+			<label index="no_graph_available">No graph available</label>
+			<label index="no_children_found">No childnodes found</label>
 			
 			<label index="label_testnode_state">Status</label>
 			<label index="label_testnode_value">Value</label>

@@ -286,48 +286,54 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 	}
 	
 	function getNodeChildren($node){
-		$children = $node->getChildren(true);
-		$info = '';
-		foreach ($children as $child){
-
-			$row    = array(
-				'uid'=>$child->getUid(), 
-				'pid'=>0, 
-				'title'=>$child->getTitle(), 
-				'deleted'=>0, 
-				'hidden'=>$child->getHidden(), 
-				'starttime'=>0 ,
-				'endtime'=>0, 
-				'fe_group'=>0 
-			);
-			$table  = 'tx_caretaker_'.strToLower( $child->getType() );
-			$title  = $child->getTitle();
-			$icon   = t3lib_iconWorks::getIconImage($table,$row,$this->doc->backPath,'title="'.$title.'" align="top"').
-			
-			$params = false;
-			
-			switch ( $child->getType() ){
-				case 'Instancegroup':
-					$params = 'id=instancegroup_'.$child->getUid();
-					break;
-				case 'Instance':
-					$params = 'id=instance_'.$child->getUid();
-					break;
-				case 'Testgroup':
-					$instance = $child->getInstance();
-					$params = 'id=instance_'.$instance->getUid().'_testgroup_'.$child->getUid();
-					break;
-				case 'Test':
-					$instance = $child->getInstance();
-					$params = 'id=instance_'.$instance->getUid().'_test_'.$child->getUid();
-					break;		
-			}
+		global $LANG;
 		
-			$info .= '<a href="#" onclick="return jumpTo(\''.$params.'\',this,\''.$table.'_'.$uid.'\');">';
-			$info .= $icon.' : '.$title."<br/>";
-			$info .= '</a>';
+		$children = $node->getChildren(true);
+		$info = $LANG->getLL('no_children_found');
+		
+		if (count($children) > 0) {
+			foreach ($children as $child){
+	
+				$row    = array(
+					'uid'=>$child->getUid(), 
+					'pid'=>0, 
+					'title'=>$child->getTitle(), 
+					'deleted'=>0, 
+					'hidden'=>$child->getHidden(), 
+					'starttime'=>0 ,
+					'endtime'=>0, 
+					'fe_group'=>0 
+				);
+				$table  = 'tx_caretaker_'.strToLower( $child->getType() );
+				$title  = $child->getTitle();
+				$icon   = t3lib_iconWorks::getIconImage($table,$row,$this->doc->backPath,'title="'.$title.'" align="top"').
+				
+				$params = false;
+				
+				switch ( $child->getType() ){
+					case 'Instancegroup':
+						$params = 'id=instancegroup_'.$child->getUid();
+						break;
+					case 'Instance':
+						$params = 'id=instance_'.$child->getUid();
+						break;
+					case 'Testgroup':
+						$instance = $child->getInstance();
+						$params = 'id=instance_'.$instance->getUid().'_testgroup_'.$child->getUid();
+						break;
+					case 'Test':
+						$instance = $child->getInstance();
+						$params = 'id=instance_'.$instance->getUid().'_test_'.$child->getUid();
+						break;		
+				}
 			
+				$info .= '<a href="#" onclick="return jumpTo(\''.$params.'\',this,\''.$table.'_'.$uid.'\');">';
+				$info .= $icon.' : '.$title."<br/>";
+				$info .= '</a>';
+				
+			}
 		}
+		
 		return $info;
 	}
 	
@@ -458,8 +464,8 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 		if (!$hidden) $actions .= '<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update" ><img src="../res/icons/arrow_refresh_small.png" title="refresh"/></a>';
 		if (!$hidden) $actions .= '&nbsp;<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update_forced" ><img src="../res/icons/arrow_refresh.png" title="refresh forced"/></a>';
 	                  $actions .= '&nbsp;<a href="#" onclick="window.location.href=\''.$PATH_TYPO3.'alt_doc.php?edit[tx_caretaker_'.strtolower($node->getType() ).']['.$node->getUid().']=edit&returnUrl='.$BACK_URL.'\';return false;" ><img src="../res/icons/pencil.png" title="edit"/></a>';
-		if (!$hidden) $actions .= '&nbsp;<a href="#" onclick="window.location.href=\''.$PATH_TYPO3.'tce_db.php?&data[tx_caretaker_'.strtolower($node->getType() ).']['.$node->getUid().'][hidden]=1&redirect='.$BACK_URL.'\';return false;" ><img src="../res/icons/lightbulb_off.png" title="edit"/></a>';
-		if ($hidden)  $actions .= '&nbsp;<a href="#" onclick="window.location.href=\''.$PATH_TYPO3.'tce_db.php?&data[tx_caretaker_'.strtolower($node->getType() ).']['.$node->getUid().'][hidden]=0&redirect='.$BACK_URL.'\';return false;" ><img src="../res/icons/lightbulb.png" title="edit"/></a>';
+		if (!$hidden) $actions .= '&nbsp;<a href="#" onclick="window.location.href=\''.$PATH_TYPO3.'tce_db.php?&data[tx_caretaker_'.strtolower($node->getType() ).']['.$node->getUid().'][hidden]=1&redirect='.$BACK_URL.'\';return false;" ><img src="../res/icons/lightbulb_off.png" title="disable"/></a>';
+		if ($hidden)  $actions .= '&nbsp;<a href="#" onclick="window.location.href=\''.$PATH_TYPO3.'tce_db.php?&data[tx_caretaker_'.strtolower($node->getType() ).']['.$node->getUid().'][hidden]=0&redirect='.$BACK_URL.'\';return false;" ><img src="../res/icons/lightbulb.png" title="enable"/></a>';
 		return $actions;
 	}
 	
@@ -484,7 +490,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 			}
 		}
 		
-		return '<strong>'.$LANG->getLL('no_hraph_available').'</strong>';
+		return '<strong>'.$LANG->getLL('no_graph_available').'</strong>';
 		
 	}
 }
