@@ -48,11 +48,11 @@ class tx_caretaker_RootNode extends tx_caretaker_AggregatorNode {
 	 * (non-PHPdoc)
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AggregatorNode#findChildren()
 	 */#
-	protected function findChildren ($hidden=false){
+	protected function findChildren ($show_hidden=false){
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
 		
-		$root_instancegroups = $node_repository->getInstancegroupsByParentGroupUid(0, $this, true );
-		$root_instances = $node_repository->getInstancesByInstancegroupUid(0, $this, true );
+		$root_instancegroups = $node_repository->getInstancegroupsByParentGroupUid(0, $this, $show_hidden );
+		$root_instances = $node_repository->getInstancesByInstancegroupUid(0, $this, $show_hidden );
 		$children = array_merge($root_instancegroups, $root_instances);
 				
 		return $children;
