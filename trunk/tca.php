@@ -289,18 +289,17 @@ $TCA["tx_caretaker_instance"] = array (
 		),
 		'instancegroup'=> Array (
 	      'exclude' => 1,
-	      'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.groups',
+	      'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.instancegroup',
 	      'config' => Array (
 			'type'          => 'select',
-			'form_type'     => 'user',
-			'userFunc'      => 'tx_ttaddress_treeview->displayGroupTree',
-			'treeView'      => 1,
 			'foreign_table' => 'tx_caretaker_instancegroup',
-			'size'          => 5,
-			'autoSizeMax'   => 25,
+			'size'          => 1,
 			'minitems'      => 0,
-			'maxitems'      => 99,
-			'MM'            => 'tx_caretaker_instance_instancegroup_mm',
+			'maxitems'      => 1,
+			'items' => Array ( 
+				Array('', '0'), 
+			),
+		
 	      )
 	    ),
 	    'notifications' => Array(

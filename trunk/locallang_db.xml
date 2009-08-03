@@ -36,6 +36,7 @@
 			<label index="tx_caretaker_instance.tab.notifications">Notifications</label>
 			<label index="tx_caretaker_instance.title">Name</label>
 			<label index="tx_caretaker_instance.description">Description</label>
+			<label index="tx_caretaker_instance.instancegroup">Instancegroup</label>
 			<label index="tx_caretaker_instance.url">Instance URL</label>
 			<label index="tx_caretaker_instance.host">Hostname</label>
 			<label index="tx_caretaker_instance.ip">IP-Address</label>

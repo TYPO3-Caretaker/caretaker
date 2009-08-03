@@ -169,7 +169,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->content.= $this->show_node_recursive($instancegroup);
 		}
 		
-		$root_instances = $this->node_repository->getInstancesWithoutGroup( false );
+		$root_instances = $this->node_repository->getInstancesByInstancegroupUid(0, false, true );
 		foreach($root_instances as $instance){
 			$this->content.= $this->show_node_recursive($instance);
 		}
