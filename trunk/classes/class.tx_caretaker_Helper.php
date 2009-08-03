@@ -101,6 +101,10 @@ class tx_caretaker_Helper {
 				$instance = $node->getInstance();
 				$id = 'instance_'.$instance->getUid().'_test_'.$node->getUid();
 				break;	
+			case 'tx_caretaker_RootNode':
+				$instance = $node->getInstance();
+				$id = 'root';
+				break;	
 			
 		}
 		return $id;
@@ -114,6 +118,9 @@ class tx_caretaker_Helper {
 	 * @return tx_caretaker_AbstractNode
 	 */
 	static function id2node ($id_string, $show_hidden=false){
+				
+		if ($id_string == 'root') return tx_caretaker_Helper::getRootNode();
+		
 		$parts = explode('_', $id_string);
 		$info  = array();
 		for($i=0; $i<count($parts);$i +=2 ){
@@ -133,6 +140,11 @@ class tx_caretaker_Helper {
 			}
 		}
 		return tx_caretaker_Helper::getNode($info['instancegroup'],$info['instance'],$info['testgroup'],$info['test'], $show_hidden );
+	}
+	
+	static function getRootNode (){
+		$node_repository    = tx_caretaker_NodeRepository::getInstance();
+		return $node_repository->getRootNode();
 	}
 	
 }

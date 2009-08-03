@@ -35,6 +35,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_RootNode.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_InstancegroupNode.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_InstanceNode.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_TestgroupNode.php');
@@ -62,6 +63,16 @@ class tx_caretaker_NodeRepository {
 			self::$instance = new tx_caretaker_NodeRepository();
 		}
 		return self::$instance;
+	}
+	
+	/**
+	 * Get a Rootnode Object
+	 * 
+	 * @param $show_hidden
+	 * @return tx_caretaker_RootNode
+	 */
+	public function getRootNode(){
+		return new tx_caretaker_RootNode();
 	}
 	
 	/*

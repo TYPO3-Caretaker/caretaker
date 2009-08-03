@@ -387,7 +387,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 			
 			$info = '<table>';
 			foreach ($infoArray as $infoRow) {
-				$info .= '<tr><td>'.$infoRow[0].'</td><td>span style="color:'.$color.';">'.$infoRow[1].'</span></td></tr>';
+				$info .= '<tr><td>'.$infoRow[0].'</td><td><span style="color:'.$color.';">'.$infoRow[1].'</span></td></tr>';
 			}
 			$info .= '</table>';
 		}
@@ -445,28 +445,35 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 	}
 	
 	function getNodeIcon ($node){
-		$uid    = $node->getUid();
-		$title  = $node->getTitle();
-		$hidden = $node->getHidden();
-		$row    = array('uid'=>$uid, 'pid'=>0, 'title'=>$title, 'deleted'=>0, 'hidden'=>$hidden, 'starttime'=>0 ,'endtime'=>0, 'fe_group'=>0 );
-		$table  = 'tx_caretaker_'.strToLower($node->getType());
-		
-		$result =	t3lib_iconWorks::getIconImage($table,$row,$this->doc->backPath,'title="foo" align="top"');
+		if (is_a($node, 'tx_caretaker_RootNode') ){
+			$result = '<img width="16" height="16" title="id=0" alt="" src="'.$this->doc->backPath.'sysext/t3skin/icons/gfx/i/_icon_website.gif"/>'.'&nbsp;'.htmlspecialchars($row['title']);
+		} else {
+			$uid    = $node->getUid();
+			$title  = $node->getTitle();
+			$hidden = $node->getHidden();
+			$row    = array('uid'=>$uid, 'pid'=>0, 'title'=>$title, 'deleted'=>0, 'hidden'=>$hidden, 'starttime'=>0 ,'endtime'=>0, 'fe_group'=>0 );
+			$table  = 'tx_caretaker_'.strToLower($node->getType());
+			
+			$result =	t3lib_iconWorks::getIconImage($table,$row,$this->doc->backPath,'title="foo" align="top"');
+		}
 		return $result;
+		
 	}
 	
 	function getNodeActions($node) {
-		$hidden = $node->getHidden();
-		
+		$hidden  = $node->getHidden();
+		$is_root = is_a($node, 'tx_caretaker_RootNode' );
+		 
 		$BACK_URL   = urlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')); 
 		$PATH_TYPO3 = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'typo3/';
 		
 		$actions = ''; 
-		if (!$hidden) $actions .= '<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update" ><img src="../res/icons/arrow_refresh_small.png" title="refresh"/></a>';
-		if (!$hidden) $actions .= '&nbsp;<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update_forced" ><img src="../res/icons/arrow_refresh.png" title="refresh forced"/></a>';
-	                  $actions .= '&nbsp;<a href="#" onclick="window.location.href=\''.$PATH_TYPO3.'alt_doc.php?edit[tx_caretaker_'.strtolower($node->getType() ).']['.$node->getUid().']=edit&returnUrl='.$BACK_URL.'\';return false;" ><img src="../res/icons/pencil.png" title="edit"/></a>';
-		if (!$hidden) $actions .= '&nbsp;<a href="#" onclick="window.location.href=\''.$PATH_TYPO3.'tce_db.php?&data[tx_caretaker_'.strtolower($node->getType() ).']['.$node->getUid().'][hidden]=1&redirect='.$BACK_URL.'\';return false;" ><img src="../res/icons/lightbulb_off.png" title="disable"/></a>';
-		if ($hidden)  $actions .= '&nbsp;<a href="#" onclick="window.location.href=\''.$PATH_TYPO3.'tce_db.php?&data[tx_caretaker_'.strtolower($node->getType() ).']['.$node->getUid().'][hidden]=0&redirect='.$BACK_URL.'\';return false;" ><img src="../res/icons/lightbulb.png" title="enable"/></a>';
+		if (!$hidden)              $actions .= '<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update" ><img src="../res/icons/arrow_refresh_small.png" title="refresh"/></a>';
+		if (!$hidden)              $actions .= '&nbsp;<a href="index.php?&id='.$_GET['id'].'&SET[function]='.$this->MOD_SETTINGS["function"].';&SET[action]=update_forced" ><img src="../res/icons/arrow_refresh.png" title="refresh forced"/></a>';
+	    if (!$is_root)             $actions .= '&nbsp;<a href="#" onclick="window.location.href=\''.$PATH_TYPO3.'alt_doc.php?edit[tx_caretaker_'.strtolower($node->getType() ).']['.$node->getUid().']=edit&returnUrl='.$BACK_URL.'\';return false;" ><img src="../res/icons/pencil.png" title="edit"/></a>';
+		if (!$hidden && !$is_root) $actions .= '&nbsp;<a href="#" onclick="window.location.href=\''.$PATH_TYPO3.'tce_db.php?&data[tx_caretaker_'.strtolower($node->getType() ).']['.$node->getUid().'][hidden]=1&redirect='.$BACK_URL.'\';return false;" ><img src="../res/icons/lightbulb_off.png" title="disable"/></a>';
+		if ($hidden  && !$is_root) $actions .= '&nbsp;<a href="#" onclick="window.location.href=\''.$PATH_TYPO3.'tce_db.php?&data[tx_caretaker_'.strtolower($node->getType() ).']['.$node->getUid().'][hidden]=0&redirect='.$BACK_URL.'\';return false;" ><img src="../res/icons/lightbulb.png" title="enable"/></a>';
+
 		return $actions;
 	}
 	

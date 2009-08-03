@@ -163,7 +163,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function moduleContent() {
-		
+		/*
 		$root_instancegroups = $this->node_repository->getInstancegroupsByParentGroupUid(0, false, true );
 		foreach($root_instancegroups as $instancegroup){
 			$this->content.= $this->show_node_recursive($instancegroup);
@@ -173,7 +173,9 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 		foreach($root_instances as $instance){
 			$this->content.= $this->show_node_recursive($instance);
 		}
-		
+		*/
+		$rootnode = $this->node_repository->getRootNode(true);
+		$this->content.= $this->show_node_recursive($rootnode);
 		
 	}
 	
@@ -208,8 +210,13 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 				break;			
 		}
 		
-		$result .=	t3lib_iconWorks::getIconImage($table,$row,$this->doc->backPath,'title="'.$row['uid'].'" align="top"').
-				'&nbsp;'.htmlspecialchars($row['title']);
+		// add icons
+		if ($node->getType()!= 'Root'){
+			$result .=	t3lib_iconWorks::getIconImage($table,$row,$this->doc->backPath,'title="'.$row['uid'].'" align="top"').'&nbsp;'.htmlspecialchars($row['title']);
+		} else {
+			$result .= '<img width="16" height="16" title="id=0" alt="" src="'.$this->doc->backPath.'sysext/t3skin/icons/gfx/i/_icon_website.gif"/>'.'&nbsp;'.htmlspecialchars($row['title']);
+		}
+		
 		$result .= '</span>';		
 		$result .= '</a></li>';
 		$result .= '<br/>';		
