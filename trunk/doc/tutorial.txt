@@ -1,0 +1,32 @@
+Caretaker Installation Tutorial
+
+Setup Caretaker Base System
+
+- Get TYPO3 up and running
+- Install Extensions css_styled_content and tt_address
+- Install Extension Caretaker (currently from SVN)
+- Create a Sysfolder for the caretaker Records
+- Create some Instances (TYPO3-Installations)
+  - IP
+  - URL
+  - Hostname 
+- Create Tests (Create -> set Type -> set Configuration )
+  - Test Interval
+  - Test Type
+  - Test Configuration
+- Assign Tests to instances
+- Add php -f [your caretaker installation path]/typo3/cli_dispatch.phpsh caretaker update -A to the crontab
+
+Setup Caretaker Instance Monitoring
+
+- Server (Caretaker Main)
+  - install caretaker_instance
+  - create keypair (ExtMgm Update)
+- Client (Monitored System)
+  - install caretaker_instance
+  - create keypair (ExtMgm Update)
+- Enter Client Public Key in Instance Record on Server
+- Enter Server Public Key and IP in Client Extension Conf
+- Create Test on the Server and run
+
+Setup Caretaker Selenium
