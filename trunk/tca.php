@@ -697,8 +697,7 @@ $TCA['tx_caretaker_test'] = array (
 		
 	),
 	'types' => array (
-		'0' => array('showitem' => 'test_service;;;;1-1-1, title;;1;;2-2-2,test_interval;;2, description;;;;3-3-3,
-					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.configuration, test_conf,
+		'0' => array('showitem' => 'test_service;;;;1-1-1, title;;1;;2-2-2,test_interval;;2, description;;;;3-3-3, test_conf;;;;4-4-4,
 					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.relations, groups, instances,
 					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.notifications, notifications'
 					)

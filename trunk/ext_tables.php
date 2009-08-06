@@ -102,6 +102,7 @@ $TCA['tx_caretaker_test'] = array (
 		'cruser_id' => 'cruser_id',
 		'default_sortby' => 'ORDER BY title',
 		'delete' => 'deleted',
+		'requestUpdate' => 'test_service',
 		'dividers2tabs'=> 1,
 	    'enablecolumns' => array (        
 			'disabled' => 'hidden',
