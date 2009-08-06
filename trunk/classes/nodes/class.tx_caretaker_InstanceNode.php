@@ -51,12 +51,6 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	 * @var string
 	 */
 	private $hostname;
-	
-	/**
-	 * IP Address
-	 * @var string
-	 */
-	private $ip;
 
 	/**
 	 * Public key
@@ -75,11 +69,10 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	 * @param string $ip
 	 * @param boolean $hidden
 	 */
-	public function __construct( $uid, $title, $parent, $url, $hostname='', $ip='', $publicKey = '', $hidden=0) {
+	public function __construct( $uid, $title, $parent, $url, $hostname='', $publicKey = '', $hidden=0) {
 		parent::__construct($uid, $title, $parent, 'Instance', $hidden);
 		$this->url = $url;
 		$this->hostname = $hostname;
-		$this->ip = $ip;
 		$this->publicKey = $publicKey;
 	}
 
@@ -97,14 +90,6 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	 */
 	public function getHostname (){
 		return $this->hostname;
-	}
-	
-	/**
-	 * Get the IP Address
-	 * @return unknown_type
-	 */
-	public function getIp (){
-		return $this->ip;
 	}
 	
 	/**

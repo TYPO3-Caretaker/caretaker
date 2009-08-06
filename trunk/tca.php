@@ -212,15 +212,6 @@ $TCA["tx_caretaker_instance"] = array (
 				'eval' => 'trim',
 			)
 		),
-		'ip' => Array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.ip',
-			'config' => Array (
-				'type' => 'input',
-				'size' => '30',
-				'eval' => 'trim',
-			)
-		),
 		'groups' => Array (
 	      'exclude' => 1,
 	      'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.groups',
@@ -281,6 +272,7 @@ $TCA["tx_caretaker_instance"] = array (
 		'public_key' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.public_key',
+	    	'displayCond' => 'EXT:caretaker_instance:LOADED:true',
 			'config' => Array (
 				'type' => 'input',
 				'size' => '32',
@@ -317,7 +309,7 @@ $TCA["tx_caretaker_instance"] = array (
 		)
 	),
 	"types" => array (
-		"0" => array("showitem" => 'title;;1, description;;;;1-1-1, instancegroup, url;;;;-2-2-2, host, ip, public_key,
+		"0" => array("showitem" => 'title;;1, description;;;;1-1-1, instancegroup, url;;;;-2-2-2, host, public_key,
 									--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests,
 									--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, notifications
 					')

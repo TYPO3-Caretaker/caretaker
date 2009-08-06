@@ -50,7 +50,6 @@ CREATE TABLE tx_caretaker_instance (
 	public_key varchar(255) DEFAULT '' NOT NULL,
 	url varchar(255) DEFAULT '' NOT NULL,
 	host varchar(255) DEFAULT '' NOT NULL,
-	ip varchar(255) DEFAULT '' NOT NULL,
 
 	groups text NOT NULL,
 	tests text NOT NULL,

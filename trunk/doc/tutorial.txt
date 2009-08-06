@@ -2,20 +2,37 @@ Caretaker Installation Tutorial
 
 Setup Caretaker Base System
 
-- Get TYPO3 up and running
-- Install Extensions css_styled_content and tt_address
-- Install Extension Caretaker (currently from SVN)
-- Create a Sysfolder for the caretaker Records
-- Create some Instances (TYPO3-Installations)
-  - IP
-  - URL
-  - Hostname 
+Step 1 : Get TYPO3 up and running
+
+You are about to install a TYPO3 Monitoring System. I really hope you know how to setup TYPO3. The only thing you probably want to know is that caretaker does not run under php4. So go for php5.
+
+Step 2 : Install the Prerequisites (tt_address and css_styled_content)
+
+Before installing caretaker you have to install the TYPO3-Extensions css_styled_content (For content display) and tt_address for the management of notifications. 
+
+Step 3: Install Extension Caretaker (Checkout from SVN)
+
+Step 4: Create a Sysfolder for the caretaker Records
+
+Step 5: Create some Records to configure Caretaker
+
+- Instances 
+ 
+An Instance represents a monitored TYPO3-Installation. So you have to add an Instance Record for each Site you want to monitor. You have to fill in the url and the ip address or the hostname of the instance. Optionaly you can manage your instances by grouping (instancegroups).
+
+- Tests 
+
+- Testgroups (optional)
+- Instancegroups (optional)
+
 - Create Tests (Create -> set Type -> set Configuration )
   - Test Interval
   - Test Type
   - Test Configuration
+
 - Assign Tests to instances
 - Add php -f [your caretaker installation path]/typo3/cli_dispatch.phpsh caretaker update -A to the crontab
+- Use 
 
 Setup Caretaker Instance Monitoring
 
