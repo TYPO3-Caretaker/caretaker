@@ -175,8 +175,6 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		$instance = $this->getInstance();
 		
 		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_service_type);
-		debug( $this->getInstance() );
-		debug($test_service);
 		$test_service->setInstance( $this->getInstance() );
 		$test_service->setConfiguration($this->test_service_configuration);
 		
