@@ -42,6 +42,7 @@
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_AbstractNode.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_caretaker_TestResult.php');
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx_caretaker_TestResultRepository.php');
+require_once PATH_site.'typo3/sysext/lang/lang.php';
 
 class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	
@@ -200,12 +201,23 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 			$test_id = $test_result_repository->prepareTest($instance, $this);
 			$result = $this->runTest($test_service);
 			$test_result_repository->saveTestResult($test_id, $result);
+			
+			$message = unserialize($result->getMsg());
+			
+			if($message) {
+				
+				$msg = $this->aggregateMessage($message);
+				
+			} else {
+			
+				$msg = $result->getMsg();
+			}
 					
 			if ($result->getState() > 0){
-				$this->sendNotification($result->getState(), $result->getMsg() );
+				$this->sendNotification($result->getState(), $msg );
 			} 
 			
-			$this->log('update '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMsg() );
+			$this->log('update '.$result->getStateInfo().' '.$result->getValue().' '.$msg );
 			
 		} else {
 			
@@ -215,6 +227,50 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		
 		return $result;
 		
+	}
+	
+	private function aggregateMessage($msgArray) {
+		
+		global $TYPO3_CONF_VARS;
+		
+		$message = '';
+		
+		foreach($msgArray as $resultMessage) {
+			
+			if(substr($resultMessage[0], 0, 3) == 'LLL' && !empty($resultMessage[2])) {
+				
+				$conf = unserialize($TYPO3_CONF_VARS['EXT']['extConf']['caretaker']);
+				$langKey = $conf['testrunner.']['lang'];
+				/* @var $LANG language */
+				$LANG = t3lib_div::makeInstance('language');
+				$LANG->init($langKey);
+				preg_match('/LLL:(EXT:.*):(.*)/', $resultMessage[0], $matches);
+				$msg = $LANG->getLLL($matches[2], $LANG->readLLfile(t3lib_div::getFileAbsFileName($matches[1])),true);
+				$msg = str_replace('###BROWSER###', $resultMessage[2], $msg);
+				$msg = str_replace('###MESSAGE###', $resultMessage[3], $msg);
+				$msg = str_replace('###TIME###', round($resultMessage[4], 2), $msg);
+				preg_match('/LLL:(EXT:.*):(.*)/', $resultMessage[5], $matches);
+				$msg = str_replace('###TIME_UNIT###', substr($resultMessage[5], 0, 3) == 'LLL' ? $LANG->getLLL($matches[2], $LANG->readLLfile(t3lib_div::getFileAbsFileName($matches[1])), true) : $resultMessage[5], $msg);
+				
+				if(isset($resultMessage[6])) {
+					
+					$msg = str_replace('###TIME_LIMIT###', $resultMessage[6], $msg);
+				}
+				
+			} else {
+				
+				$msg = $resultMessage[0];
+			}
+			
+			for($i = 8; $i < count($resultMessage); $i++) {
+				
+				$msg = str_replace('###VALUE_'.$i.'###',$resultMessage[$i], $msg);
+			}
+			
+			$message .= $msg;
+		}
+		
+		return $message;
 	}
 	
 	/**
