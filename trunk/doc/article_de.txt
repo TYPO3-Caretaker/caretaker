@@ -1,57 +1,56 @@
-Caretaker. TYPO3-Webseiten-†berwachung
+Caretaker. TYPO3-Webseiten-Überwachung
 
 Abstract***
-Eine Webseite besteht aus einer komplexen Mischung aus Hardware, Betriebssystem, und Applikationen. Bei komplexen Systemen wie TYPO3 kommen noch die verwendeten Extensions dazu. Aus diesem Grund ist es mit bestehenden Lšsungen schwierig, eine solche Installation vollstŠndig zu Ÿberwachen, insbesondere wenn sich, wie im Falle von Sicherheitsupdates, externe Randbedingungen Šndern oder externe Services eingebunden sind.***
+Eine Webseite besteht aus einer komplexen Mischung aus Hardware, Betriebssystem, und Applikationen. Bei komplexen Systemen wie TYPO3 kommen noch die verwendeten Extensions dazu. Aus diesem Grund ist es mit bestehenden Lösungen schwierig, eine solche Installation vollständig zu überwachen, insbesondere wenn sich, wie im Falle von Sicherheitsupdates, externe Randbedingungen ändern oder externe Services eingebunden sind.***
 
-Im professionellen Webhosting wird eine mšglichst kontinuierliche und lŸckenlose †berwachung der IT-Infrastuktur benštigt. Dies gestaltet sich jedoch bei komplexen Systemen wie gro§en TYPO3-Installationen, die aus vielen abhŠngigen Komponenten bestehen, schwierig. Zur †berwachung der Hard- und Software wird aktuell in der Regel auf Programme wie Nagios zurŸckgegriffen. Welche Funktionen Ÿberwacht werden, hŠngt hierbei oft von den Mšglichkeiten der eingesetzten †berwachungssoftware ab, nicht aber von den BedŸrfnissen des jeweiligen GeschŠftsmodells.
+Im professionellen Webhosting wird eine möglichst kontinuierliche und lückenlose Überwachung der IT-Infrastuktur benötigt. Dies gestaltet sich jedoch bei komplexen Systemen wie großen TYPO3-Installationen, die aus vielen abhängigen Komponenten bestehen, schwierig. Zur Überwachung der Hard- und Software wird aktuell in der Regel auf Programme wie Nagios zurückgegriffen. Welche Funktionen überwacht werden, hängt hierbei oft von den Möglichkeiten der eingesetzten Überwachungssoftware ab, nicht aber von den Bedürfnissen des jeweiligen Geschäftsmodells.
 
-Zur †berwachung der VerfŸgbarkeit der Webseite kommuniziert heute in der Regel ein †berwachungssystem auf einem zentralen Server mit Sensoren auf der Ÿberwachten Maschine. Somit kann der Zustand der Hardware sowie das Laufen bestimmter Prozesse verifiziert werden. ZusŠtzlich werden in der Regel noch ping- und http-Anfragen von au§en an den Server gesendet und die Antworten ausgewertet. 
+Zur Überwachung der Verfügbarkeit der Webseite kommuniziert heute in der Regel ein Überwachungssystem auf einem zentralen Server mit Sensoren auf der überwachten Maschine. Somit kann der Zustand der Hardware sowie das Laufen bestimmter Prozesse verifiziert werden. Zusätzlich werden in der Regel noch ping- und http-Anfragen von außen an den Server gesendet und die Antworten ausgewertet. 
 
-Art und Umfang der ServerŸberwachung von den FŠhigkeiten der verfŸgbaren Werkzeuge abhŠngig zu machen, ist allerdings ein gefŠhrliches Vorgehen, da so leicht wichtige geschŠftskritische Aspekte au§er acht gelassen werden. Aus unserer Sicht sollte an erster Stelle die Analyse des jeweiligen Auftrittes und eine Identifikation der geschŠftskritischen Services stehen. Darauf folgt die Festlegung, welche dieser Services Ÿberwacht werden sollen, gefolgt von der Anpassung der †berwachungssoftware. Die folgenden Punkte dienen bei der Analyse als Anhaltspunkte.
+Art und Umfang der Serverüberwachung von den Fähigkeiten der verfügbaren Werkzeuge abhängig zu machen, ist allerdings ein gefährliches Vorgehen, da so leicht wichtige geschäftskritische Aspekte außer acht gelassen werden. Aus unserer Sicht sollte an erster Stelle die Analyse des jeweiligen Auftrittes und eine Identifikation der geschäftskritischen Services stehen. Darauf folgt die Festlegung, welche dieser Services überwacht werden sollen, gefolgt von der Anpassung der Überwachungssoftware. Die folgenden Punkte dienen bei der Analyse als Anhaltspunkte.
 
-1. VerfŸgbarkeit: Funktioniert der Webauftritt?
+1. Verfügbarkeit: Funktioniert der Webauftritt?
 
-Basis des VerfŸgbarkeitsmonitorings muss immer die †berwachung der Infrastruktur sein. Hierzu zŠhlt neben der Hardware und Software des Webservers auch die Netzwerkanbindung und das DNS. ZusŠtzlich empfehlen wir fŸr geschŠftskritische VorgŠnge automatisierte Integrationstests. Dabei wird eine Browsersitzung automatisiert durchlaufen, in der ein Besucher eine abgegrenzte FunktionalitŠt der Webseite verwendet (siehe SCRUM Userstories). Hierbei ist besonders auf die thematische Abgrenzung der Tests zu achten, um im Fehlerfall schnell das Problem lokalisieren zu kšnnen.
+Basis des Verfügbarkeitsmonitorings muss immer die Überwachung der Infrastruktur sein. Hierzu zählt neben der Hardware und Software des Webservers auch die Netzwerkanbindung und das DNS. Zusätzlich empfehlen wir für geschäftskritische Vorgänge automatisierte Integrationstests. Dabei wird eine Browsersitzung automatisiert durchlaufen, in der ein Besucher eine abgegrenzte Funktionalität der Webseite verwendet (siehe SCRUM Userstories). Hierbei ist besonders auf die thematische Abgrenzung der Tests zu achten, um im Fehlerfall schnell das Problem lokalisieren zu können.
 
 2. Security: Ist mein Webauftritt sicher? 
 
-Die †berwachung der Systemsicherheit beschrŠnkt sich Ÿblicherweise auf das PrŸfen vorliegender Sicherheitsupdates auf Betriebssystemebene. Aber auch die jeweils eingesetzte CMS-Software muss einbezogen werden, wobei die jeweiligen Ma§nahmen hier softwarespezifisch sind. Beispielsweise muss bei einer TYPO3-Installation die Sicherheit der installierten Extensions und des TYPO3-Cores berŸcksichtigt werden. 
+Die Überwachung der Systemsicherheit beschränkt sich üblicherweise auf das Prüfen vorliegender Sicherheitsupdates auf Betriebssystemebene. Aber auch die jeweils eingesetzte CMS-Software muss einbezogen werden, wobei die jeweiligen Maßnahmen hier softwarespezifisch sind. Beispielsweise muss bei einer TYPO3-Installation die Sicherheit der installierten Extensions und des TYPO3-Cores berücksichtigt werden. 
 
-3. Performance: Gibt es EngpŠsse?
+3. Performance: Gibt es Engpässe?
 
-Das Performance-Monitoring dient dazu, bestimmte Leistungsindikatoren kontinuierlich zu erfassen um rechtzeitig auf €nderungen reagieren zu kšnnen. Interessanter als der einzelne Wert ist hierbei die zeitliche Entwicklung. Eine grafische Darstellung ist hier unabdingbar um sinnvolle Schlussfolgerungen zu ziehen.
+Das Performance-Monitoring dient dazu, bestimmte Leistungsindikatoren kontinuierlich zu erfassen um rechtzeitig auf Änderungen reagieren zu können. Interessanter als der einzelne Wert ist hierbei die zeitliche Entwicklung. Eine grafische Darstellung ist hier unabdingbar um sinnvolle Schlussfolgerungen zu ziehen.
 
 
-Diesen 3 Aspekten ist eine hohe Dynamik zu eigen, weshalb eine einfache und flexible Verwaltung der †berwachung eine weitere Grundvoraussetzung ist. Des weiteren wird eine hierarchische Strukturierung und thematische Clusterung der einzelnen †berwachungen benštigt, um in gro§en Webauftritten den †berblick zu behalten. Leider sind die bestehenden †berwachungssysteme in dieser Hinsicht nicht sehr flexibel, weshalb die TYPO3-Agenturen n@work/Hamburg und networkteam/Hamburg+Kiel ihre Ressourcen zusammenfassten um ein spezifisches System zur †berwachung von TYPO3-Installationen zu entwickeln.  
+Diesen 3 Aspekten ist eine hohe Dynamik zu eigen, weshalb eine einfache und flexible Verwaltung der Überwachung eine weitere Grundvoraussetzung ist. Des weiteren wird eine hierarchische Strukturierung und thematische Clusterung der einzelnen Überwachungen benötigt, um in großen Webauftritten den Überblick zu behalten. Leider sind die bestehenden Überwachungssysteme in dieser Hinsicht nicht sehr flexibel, weshalb die TYPO3-Agenturen n@work/Hamburg und networkteam/Hamburg+Kiel ihre Ressourcen zusammenfassten um ein spezifisches System zur Überwachung von TYPO3-Installationen zu entwickeln.  
 
-Entwicklungsziele fŸr Caretaker:
-1. Einfache Verwaltung der Tests (†berwachung einer Funktion) mit dem TYPO3-Backend
-2. Sichere †berwachung der Interna rŠumlich entfernter TYPO3-Systeme
+Entwicklungsziele für Caretaker:
+1. Einfache Verwaltung der Tests (Überwachung einer Funktion) mit dem TYPO3-Backend
+2. Sichere Überwachung der Interna räumlich entfernter TYPO3-Systeme
 3. Einbeziehen von Integrationstests
 4. Einfache Erweiterbarkeit um weitere Testmethoden
  
-Entstanden ist die TYPO3-Extension Caretaker (Hausmeister), die den Kern des Testsystems bildet und fŸr die zentrale Verwaltung, die AusfŸhrung der Tests sowie die Aggregation und Speicherung der Ergebnisse zustŠndig ist. FŸr das AusfŸhren der Tests und das Anzeigen der Ergebnisse stehen ein Backend-Modul sowie ein Kommandozeilenwerkzeug zur VerfŸgung. In der Regel werden die Tests von einem Cronjob Ÿber die CLI-Schnittstelle ausgefŸhrt und das Backend-Modul dient zur Pflege und †bersicht sowie zum erneuten Ansto§en von Tests, nachdem der Fehler behoben wurde. 
+Entstanden ist die TYPO3-Extension Caretaker (Hausmeister), die den Kern des Testsystems bildet und für die zentrale Verwaltung, die Ausführung der Tests sowie die Aggregation und Speicherung der Ergebnisse zuständig ist. Für das Ausführen der Tests und das Anzeigen der Ergebnisse stehen ein Backend-Modul sowie ein Kommandozeilenwerkzeug zur Verfügung. In der Regel werden die Tests von einem Cronjob über die CLI-Schnittstelle ausgeführt und das Backend-Modul dient zur Pflege und Übersicht sowie zum erneuten Anstoßen von Tests, nachdem der Fehler behoben wurde. 
 
 {Architekturgrafik}
 {SCREENSHOT/DEMO CARETAKER Backend add a HTTP-Test} 
 {SCREENSHOT/DEMO CARETAKER Frontend}
 {Demo CLI}
 
-Die Basis der †berwachung bildet auch bei Caretaker das PrŸfen der Infrastruktur mittels SNMP (Simple Network Management Protocol), Ping und HTTP. Derzeit wird zusŠtzlich noch das Abfragen von Nagios Sensoren Ÿber NRPE (Nagios Remote Plugin Executor) implementiert.
+Die Basis der Überwachung bildet auch bei Caretaker das Prüfen der Infrastruktur mittels SNMP (Simple Network Management Protocol), Ping und HTTP. Derzeit wird zusätzlich noch das Abfragen von Nagios Sensoren über NRPE (Nagios Remote Plugin Executor) implementiert.
 
-Die erste Besonderheit der †berwachung einer TYPO3-basierten Webseite bildet das PrŸfen der Sicherheit und Funktion der TYPO3-Installation. Die auf dem entfernten Zielsystem installierte TYPO3 Extension caretaker_instance bietet die Mšglichkeit, per Fernabfrage Informationen zum TYPO3-Core, zu installierten Extensions und zur TYPO3 Konfiguration zu prŸfen. Wichtig ist hierbei die sichere VerschlŸsselung der Kommunikation, um unautorisiertes Abfragen von Installationsinterna zu verhindern. Als weitere Sicherheitsma§nahme ist die Schnittstelle auf wenige atomare gut abgesicherte und ausschlie§lich lesende Methoden beschrŠnkt. 
+Die erste Besonderheit der Überwachung einer TYPO3-basierten Webseite bildet das Prüfen der Sicherheit und Funktion der TYPO3-Installation. Die auf dem entfernten Zielsystem installierte TYPO3 Extension caretaker_instance bietet die Möglichkeit, per Fernabfrage Informationen zum TYPO3-Core, zur TYPO3 Konfiguration und zu den installierten Extensions und zu prüfen. Die Extension Tests können dabei auch automatisiert Extensions, die nicht aus dem TER stammen oder im TER als unsicher markiert sind, erkennen und mit Warnungen bzw. Fehlermeldungen reagieren. Tests zum Prüfen der Passwortqualität und für das finden unerwünschter bzw. inaktiver Benutzeraccounts sind in Vorbereitung. 
+
+Wichtig ist dabei das die Pflege der Sicherheitstests lediglich einmalig auf dem Server erfolgt und anschließend alle Instanzen die Bedingungen prüfen. Um unautorisiertes Abfragen von Installationsinterna zu verhindern wird die Kommunikation mittels RSA und einen öffentlichen und privaten Schlüsselpaar abgesichert. Als weitere Sicherheitsmaßnahme ist die Schnittstelle auf wenige gut abgesicherte und ausschließlich lesende Methoden beschränkt.
 
 {SCREENSHOT/DEMO Extension Test Konfiguration}
 
-Zur UnterstŸtzung von Integrationstests wurde auf das OpenSource-Projekt Selenium zurŸckgegriffen. Selenium ist eine JAVA-Applikation, die einen Browser startet und beim Aufruf einer Webseite zusŠtzlichen Javascript Code injiziert Ÿber den die Useraktionen simuliert werden kšnnen. Durch die Java Basis kann Selenium mit vielen Zielsystemen und unterschiedlichen Browsern verwendet werden. Die Extension caretaker_selenium integriert das Selenium-Testsystem in Caretaker und stellt ein Interface zur Pflege der Tests zur VerfŸgung. Zur einfachen Verwaltung wurde fŸr die Selenium IDE (Firefox Extension) ein zusŠtzliches Speicherformat geschaffen um die Testkonfiguration in einer leicht lesbaren Form speichern und pflegen zu kšnnen. Ihre Grenzen finden Selenium-Tests bei Layout- und CSS-Fehlern, da die Auswertung auf dem DOM und Javascript basiert. 
+Zur Unterstützung von Integrationstests wurde auf das OpenSource-Projekt Selenium zurückgegriffen. Selenium ist eine JAVA-Applikation, die einen Browser startet und beim Aufruf einer Webseite zusätzlichen Javascript Code injiziert über den die Useraktionen simuliert werden können. Durch die Java Basis kann Selenium mit vielen Zielsystemen und unterschiedlichen Browsern verwendet werden. Die Extension caretaker_selenium integriert das Selenium-Testsystem in Caretaker und stellt ein Interface zur Pflege der Tests zur Verfügung. Ihre Grenzen finden Selenium-Tests bei Layout- und CSS-Fehlern, da die Auswertung auf dem DOM und Javascript basiert. 
 
-{SCREENSHOT/DEMO SELENIUM-IDE}
 {SCREENSHOT/DEMO SELENIUM-Config}
 
-Die verfŸgbaren Testmethoden sind als TYPO3-Services ausgefŸhrt. Diese Liste kann durch weitere Extensions beliebig erweitert werden. Konsequenterweise bringt das Basissystem daher auch nur einfache Ping- und HTTP-Tests mit. Eine StŠrke des Caretaker-Sytstems ist seine einfache Erweiterbarkeit. Um einen neuen Testservice hinzuzufŸgen muss lediglich das Konfigurations-Interface definiert werden (Flexform) und in einer PHP-Klasse eine einzelne Methode runTest implementiert werden. FŸr erfahrene TYPO3-Entwickler sollte eine Erweiterung des Systems daher keine HŸrde darstellen.
+Die verfügbaren Testmethoden sind als TYPO3-Services ausgeführt. Diese Liste kann durch weitere Extensions beliebig erweitert werden. Konsequenterweise bringt das Basissystem daher auch nur einfache Ping- und HTTP-Tests mit. Eine Stärke des Caretaker-Sytstems ist seine einfache Erweiterbarkeit. Um einen neuen Testservice hinzuzufügen muss lediglich das Konfigurations-Interface definiert werden (Flexform) und in einer PHP-Klasse eine einzelne Methode runTest implementiert werden. Für erfahrene TYPO3-Entwickler sollte eine Erweiterung des Systems daher keine Hürde darstellen.
 
-??? abstimmen mit Klaus und HHT ???
+===============
 
-Die Extension hat sich bereits au§erhalb unseres Hauses bewŠhrt. Als erster Kunde hat die Hamburg-Tourismus GmBh von n@work ein auf dem Caretaker System basierendes †berwachungswerkzeug fŸr ihr Intranet in Betrieb genommen. FŸr weitere Kunden sind entsprechende Projekte in Vorbereitung. Insbesondere die statistische Auswertung der Messprotokolle ist fŸr viele Kunden ein interessantes Feature da sie so oft erstmals objektive Informationen Ÿber die VerfŸgbarkeit ihrer Webseite erhalten.
-
-Hinweis zum Schluss (fŸr den Vortrag, nicht fŸr einen Artikel): Funktioniert nur bei konstruktiven Kunde-Dienstleister-Beziehungen. Fehler wie bei UnitTests als Feature betrachten und die Tests und Timeouts so auslegen dass Fehler und Warnungen auftreten. 
+Hinweis zum Schluss (für den Vortrag, nicht für einen Artikel): Funktioniert nur bei konstruktiven Kunde-Dienstleister-Beziehungen. Fehler wie bei UnitTests als Feature betrachten und die Tests und Timeouts so auslegen dass Fehler und Warnungen auftreten. 
