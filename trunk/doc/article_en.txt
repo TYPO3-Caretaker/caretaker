@@ -1,10 +1,10 @@
 Caretaker. TYPO3-Website-Monitoring
 
 Abstract ***
-A Website is a complex mix of Hardware, operating system and application. In case of complex extendable solutions like TYPO3 also the installed extensions have to be monitored. Because of that it is difficult to completely monitor such a system especially when new security concerns arise or different systems, extensions or partners are interacting. Currently available system-monitoring software, like nagios, can check the hardware state and much more but not the proper setup of TYPO3 and the correct function of the whole website.
+A website is a complex mix of hardware, operating system and applications. In case of complex extendable solutions like TYPO3 also the installed extensions have to be monitored. Because of that it is difficult to completely monitor such a system especially when new security concerns arise or different systems, extensions or partners are interacting. Currently available system-monitoring software, like nagios, can check the hardware state and much more but not the proper setup of TYPO3 and the correct function of the whole website.
 ***
 
-For professional web hosting a continuously and complete monitoring of the it-infrastructure is needed. In complex system setups like TYPO3-Installation which consist of many interdependent parts this is getting very complicated. Usually software like nagios is used to monitor hard- and software. But often the monitored  services depend more on the abilities of the monitoring software than on the needs of the website.
+For professional web hosting a continuously and complete monitoring of the IT-infrastructure is needed. In complex system setups like TYPO3-Installation which consist of many interdependent parts this is getting very complicated. Usually software like nagios is used to monitor hard- and software. But often the monitored  services depend more on the abilities of the monitoring software than on the needs of the website.
 
 Usually a central monitoring server is communicating with sensors on the monitored system. The state of the hardware and informations about running processes can be easily verified. Sometimes also ping and http reqests are sent to the target machine and the response is checked.
 
