@@ -3,7 +3,7 @@ Caretaker. TYPO3-Webseiten-Überwachung
 Abstract***
 Eine Webseite besteht aus einer komplexen Mischung aus Hardware, Betriebssystem, und Applikationen. Bei komplexen Systemen wie TYPO3 kommen noch die verwendeten Extensions dazu. Aus diesem Grund ist es mit bestehenden Lösungen schwierig, eine solche Installation vollständig zu überwachen, insbesondere wenn sich, wie im Falle von Sicherheitsupdates, externe Randbedingungen ändern oder externe Services eingebunden sind.***
 
-Im professionellen Webhosting wird eine möglichst kontinuierliche und lückenlose Überwachung der IT-Infrastuktur benötigt. Dies gestaltet sich jedoch bei komplexen Systemen wie großen TYPO3-Installationen, die aus vielen abhängigen Komponenten bestehen, schwierig. Zur Überwachung der Hard- und Software wird aktuell in der Regel auf Programme wie Nagios zurückgegriffen. Welche Funktionen überwacht werden, hängt hierbei oft von den Möglichkeiten der eingesetzten Überwachungssoftware ab, nicht aber von den Bedürfnissen des jeweiligen Geschäftsmodells.
+Im professionellen Webhosting wird eine möglichst kontinuierliche und lückenlose Überwachung der IT-Infrastuktur benötigt. Dies gestaltet sich jedoch bei komplexen Systemen wie großen TYPO3-Installationen, die aus vielen abhängigen Komponenten bestehen, schwierig. Zur Überwachung der Hard- und Software wird aktuell in der Regel auf Programme wie Nagios zurückgegriffen. Welche Funktionen überwacht werden, hängt hierbei oft von den Möglichkeiten der eingesetzten Überwachungssoftware ab, nicht aber von den Bedürfnissen der jeweiligen Website.
 
 Zur Überwachung der Verfügbarkeit der Webseite kommuniziert heute in der Regel ein Überwachungssystem auf einem zentralen Server mit Sensoren auf der überwachten Maschine. Somit kann der Zustand der Hardware sowie das Laufen bestimmter Prozesse verifiziert werden. Zusätzlich werden in der Regel noch ping- und http-Anfragen von außen an den Server gesendet und die Antworten ausgewertet. 
 
@@ -30,7 +30,7 @@ Entwicklungsziele für Caretaker:
 3. Einbeziehen von Integrationstests
 4. Einfache Erweiterbarkeit um weitere Testmethoden
  
-Entstanden ist die TYPO3-Extension Caretaker (Hausmeister), die den Kern des Testsystems bildet und für die zentrale Verwaltung, die Ausführung der Tests sowie die Aggregation und Speicherung der Ergebnisse zuständig ist. Für das Ausführen der Tests und das Anzeigen der Ergebnisse stehen ein Backend-Modul sowie ein Kommandozeilenwerkzeug zur Verfügung. In der Regel werden die Tests von einem Cronjob über die CLI-Schnittstelle ausgeführt und das Backend-Modul dient zur Pflege und Übersicht sowie zum erneuten Anstoßen von Tests, nachdem der Fehler behoben wurde. 
+Entstanden ist die TYPO3-Extension Caretaker (Hausmeister), die den Kern des Testsystems bildet und für die zentrale Verwaltung, die Ausführung der Tests sowie die Aggregation und Speicherung der Ergebnisse zuständig ist. Für das Ausführen der Tests und das Anzeigen der Ergebnisse stehen ein Backend-Modul sowie ein Kommandozeilenwerkzeug zur Verfügung. In der Regel werden die Tests von einem Cronjob über die CLI-Schnittstelle ausgeführt und das Backend-Modul dient zur Pflege und Übersicht sowie zum erneuten Anstoßen von Tests, nachdem der Fehler behoben wurde. Für jeden Test kann das Ausführungsintervall sowie die im Fehlerfall zu benachrichtigenden Addressen hinterlegt werden.
 
 {Architekturgrafik}
 {SCREENSHOT/DEMO CARETAKER Backend add a HTTP-Test} 
@@ -41,7 +41,7 @@ Die Basis der Überwachung bildet auch bei Caretaker das Prüfen der Infrastruktur
 
 Die erste Besonderheit der Überwachung einer TYPO3-basierten Webseite bildet das Prüfen der Sicherheit und Funktion der TYPO3-Installation. Die auf dem entfernten Zielsystem installierte TYPO3 Extension caretaker_instance bietet die Möglichkeit, per Fernabfrage Informationen zum TYPO3-Core, zur TYPO3 Konfiguration und zu den installierten Extensions und zu prüfen. Die Extension Tests können dabei auch automatisiert Extensions, die nicht aus dem TER stammen oder im TER als unsicher markiert sind, erkennen und mit Warnungen bzw. Fehlermeldungen reagieren. Tests zum Prüfen der Passwortqualität und für das finden unerwünschter bzw. inaktiver Benutzeraccounts sind in Vorbereitung. 
 
-Wichtig ist dabei das die Pflege der Sicherheitstests lediglich einmalig auf dem Server erfolgt und anschließend alle Instanzen die Bedingungen prüfen. Um unautorisiertes Abfragen von Installationsinterna zu verhindern wird die Kommunikation mittels RSA und einen öffentlichen und privaten Schlüsselpaar abgesichert. Als weitere Sicherheitsmaßnahme ist die Schnittstelle auf wenige gut abgesicherte und ausschließlich lesende Methoden beschränkt.
+Wichtig ist dabei das die Pflege der Sicherheitstests lediglich einmalig auf dem Server erfolgt und anschließend alle Instanzen die Bedingungen prüfen. Um unautorisiertes Abfragen von Installationsinterna zu verhindern wird die Kommunikation mittels RSA und einen öffentlichen und privaten Schlüsselpaar für jedes System abgesichert. Als weitere Sicherheitsmaßnahme ist die Schnittstelle auf wenige gut abgesicherte und ausschließlich lesende Methoden beschränkt.
 
 {SCREENSHOT/DEMO Extension Test Konfiguration}
 
