@@ -52,28 +52,26 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 	 * @see caretaker/trunk/services/tx_caretaker_TestServiceBase#runTest()
 	 */
 	public function runTest() {
-
 		$time_warning = $this->getTimeWarning();
-		$time_error   = $this->getTimeError();
-		$command      = $this->buildPingCommand();
-		
-		if ($command){
+		$time_error = $this->getTimeError();
+		$command = $this->buildPingCommand();
 
-			list ($res, $msg, $time) = $this->executeSystemCommand( $command );
+		if ($command) {
+			list ($returnCode, $message, $time) = $this->executeSystemCommand($command);
 			
-			if ($res == 0){ 
+			if ($returnCode === 0) { 
 				if ($time_error && $time > $time_error) {
-					return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Ping took '.$time.' micro seconds' );
+					return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, $time , 'Ping took '.$time.' micro seconds');
 				}
 				if ($time_warning && $time > $time_warning) {
-					return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'Ping took '.$time.' micro seconds' );
+					return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_WARNING, $time , 'Ping took '.$time.' micro seconds');
 				} 
-				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time , 'Ping took '.$time.' micro seconds' );
+				return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_OK, $time , 'Ping took '.$time.' micro seconds');
 			} else {
-				return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Ping failed. '.$msg );
+				return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, $time , 'Ping (' . $command . ') failed: ' . $message);
 			}
 		} else {
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, 0 , 'CLI Ping-Command must be configured in ExtConf' );
+			return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, 0 , 'CLI Ping-Command must be configured in ExtConf');
 		}
 	}
 	
@@ -81,7 +79,7 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 	 * Get the maximal time befor WARNING 
 	 * @return unknown_type
 	 */
-	protected function getTimeWarning(){
+	protected function getTimeWarning() {
 		return $this->getConfigValue('max_time_warning');
 	}
 	
@@ -89,7 +87,7 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 	 * Get the maximal time before ERROR
 	 * @return integer
 	 */
-	protected function getTimeError(){
+	protected function getTimeError() {
 		return $this->getConfigValue('max_time_error');
 	}
 	
@@ -98,12 +96,11 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 	 *  
 	 * @return string
 	 */
-	protected function buildPingCommand (){
-		
+	protected function buildPingCommand() {
 		$hostname = $this->instance->getHostname();
 		$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
-		$command_template = $confArray['ping.']['cli_command'];
-		$command = str_replace( '###' , $hostname, $command_template );
+		$commandTemplate = $confArray['ping.']['cli_command'];
+		$command = str_replace('###' , $hostname, $commandTemplate);
 		return $command;
 	}
 	
@@ -114,16 +111,15 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 	 * @return array Array of ReturnCode Message and $ime
 	 */
 	protected function executeSystemCommand($command){
+		$starttime = microtime(TRUE);
 		
-		$starttime = microtime(true);
+		$returnCode = FALSE;
+		$message = system($command, $returnCode);
 		
-		$res = false;
-		$msg = system ($command, $res);
-		
-		$endtime = microtime(true);
+		$endtime = microtime(TRUE);
 		$time =  1000 * ($endtime - $starttime);
 		
-		return array($res, $msg, $time);
+		return array($returnCode, $message, $time);
 	}
 
 }
