@@ -275,8 +275,7 @@ $TCA["tx_caretaker_instance"] = array (
 	    	'displayCond' => 'EXT:caretaker_instance:LOADED:true',
 			'config' => Array (
 				'type' => 'input',
-				'size' => '32',
-				'eval' => 'trim,nospace',
+				'eval' => 'trim',
 			)
 		),
 		'instancegroup'=> Array (
