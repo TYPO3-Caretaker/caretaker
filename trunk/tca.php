@@ -276,6 +276,7 @@ $TCA["tx_caretaker_instance"] = array (
 			'config' => Array (
 				'type' => 'input',
 				'eval' => 'trim',
+	    		'max' => '1024'
 			)
 		),
 		'instancegroup'=> Array (
