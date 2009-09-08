@@ -39,9 +39,10 @@ if (!defined('TYPO3_cliMode'))  die('You cannot run this script directly!');
 
 require_once(PATH_t3lib.'class.t3lib_cli.php');
 
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Helper.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_CliLogger.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_CliNotifier.php');
+require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_Helper.php');
+require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_CliLogger.php');
+require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_CliNotifier.php');
+require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_ExtensionManagerHelper.php');
 
 class tx_caretaker_Cli extends t3lib_cli {
 	
@@ -91,18 +92,18 @@ class tx_caretaker_Cli extends t3lib_cli {
     	
         $task = (string)$this->cli_args['_DEFAULT'][1];
 		
-         if (!$task){
+         if (!$task) {
             $this->cli_validateArgs();
             $this->cli_help();
             exit;
         } 
         
-        if ($task == 'update' || $task == 'get' ){
+        if ($task == 'update' || $task == 'get' ) {
         	
         	$force           = (boolean)$this->readArgument('--force','-f');
         	$return_status   = (boolean)$this->readArgument('-r');
         	
-        	if ((boolean)$this->readArgument('--root','-A')  ){
+        	if ((boolean)$this->readArgument('--root', '-A')) {
         		$node = tx_caretaker_Helper::getRootNode();
         	} else {
         		$instancegroupID = (int)$this->readArgument('--instancegroup', '-I');
@@ -120,11 +121,10 @@ class tx_caretaker_Cli extends t3lib_cli {
         	}
         	
         	if ($node) {
-        		
         		$notifier = new tx_caretaker_CliNotifier();
         		$logger   = new tx_caretaker_CliLogger();
         		
-        		if (isset($this->cli_args['-ss']) || isset($this->cli_args['-s']) || isset($this->cli_args['--silent'])){
+        		if (isset($this->cli_args['-ss']) || isset($this->cli_args['-s']) || isset($this->cli_args['--silent'])) {
         		  	$logger->setSilentMode(true);
         		}
         		  
@@ -132,17 +132,17 @@ class tx_caretaker_Cli extends t3lib_cli {
         		$node->setLogger   ($logger);
         	
         		$res = FALSE;
-	        	if ($task == 'update'){
+	        	if ($task == 'update') {
 		        	 $res = $node->updateTestResult($force);
 	        	}
 	        	
-	        	if ($task == 'get'){
+	        	if ($task == 'get') {
 		        	 $res = $node->getTestResult();
 	        	}
 	        	
 	        	$notifier->sendNotifications();
 	        	
-	        	if ($return_status){
+	        	if ($return_status) {
 	        		$this->log('State: '.$res->getState().':'.$res->getStateInfo() );
 	        		exit ( (int)$res->getState() );
 	        	} else {
@@ -155,9 +155,13 @@ class tx_caretaker_Cli extends t3lib_cli {
         		$this->log('Node not found or inactive');
         		exit;
         	}
+        } elseif ($task == 'update-extension-list') {
+        	$result = tx_caretaker_ExtensionManagerHelper::updateExtensionList();
+        	$this->log('Extension list update result: ' . $result);
+        	exit;
         }
         
-        if ($task = 'help'){
+        if ($task = 'help') {
         	$this->cli_validateArgs();
 			$this->cli_help();
 			exit;
@@ -171,8 +175,8 @@ class tx_caretaker_Cli extends t3lib_cli {
      * @param string $alt_name
      * @return string
      */
-    private function readArgument($name, $alt_name=false){
-    	if ( $name &&  isset($this->cli_args[$name]) ){
+    private function readArgument($name, $alt_name = false) {
+    	if ( $name &&  isset($this->cli_args[$name]) ) {
     		if ($this->cli_args[$name][0]) {
     			return $this->cli_args[$name][0];
     		} else {
