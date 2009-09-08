@@ -32,6 +32,7 @@ class tx_caretaker_ExtensionManagerHelper {
 	 * @return SC_mod_tools_em_index An extension manager instance
 	 */
 	protected static function createInstance() {
+		require_once(PATH_typo3 . 'template.php');
 		require_once(PATH_typo3 . '/mod/tools/em/class.em_index.php');
 
 		$extensionManager = t3lib_div::makeInstance('SC_mod_tools_em_index');

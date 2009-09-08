@@ -56,7 +56,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 
        		// Setting help texts:
         $this->cli_help['name'] = 'Caretaker CLI-Testrunner';        
-        $this->cli_help['synopsis'] = 'update|get|help ###OPTIONS###';
+        $this->cli_help['synopsis'] = 'update|get|update-extension-list|help ###OPTIONS###';
         $this->cli_help['description'] = 'Class with basic functionality for CLI scripts';
         $this->cli_help['examples'] = '/.../cli_dispatch.phpsh caretaker update -i 6 -g 4';
         $this->cli_help['author'] = 'Martin Ficzel, (c) 2008';
