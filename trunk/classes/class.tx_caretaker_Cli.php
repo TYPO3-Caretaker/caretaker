@@ -79,7 +79,8 @@ class tx_caretaker_Cli extends t3lib_cli {
         $this->cli_options[]=array('-f', 'force Refresh of testResults');        
         $this->cli_options[]=array('-r', 'Return status code');
 
-
+        $this->cli_options[]=array('--silent', 'Be silent, no ouput');
+        $this->cli_options[]=array('-s', 'Same as --silent');
     }
     
     /**
@@ -99,7 +100,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 
         $logger = new tx_caretaker_CliLogger();        		
         if (isset($this->cli_args['-ss']) || isset($this->cli_args['-s']) || isset($this->cli_args['--silent'])) {
-          	$logger->setSilentMode(true);
+          	$logger->setSilentMode(TRUE);
         }
         
         if ($task == 'update' || $task == 'get' ) {
@@ -173,17 +174,17 @@ class tx_caretaker_Cli extends t3lib_cli {
      * @param string $alt_name
      * @return string
      */
-    private function readArgument($name, $alt_name = false) {
+    private function readArgument($name, $alt_name = FALSE) {
     	if ( $name &&  isset($this->cli_args[$name]) ) {
     		if ($this->cli_args[$name][0]) {
     			return $this->cli_args[$name][0];
     		} else {
-    			return true;
+    			return TRUE;
     		}
     	} else if  ($alt_name) {
     		return $this->readArgument($alt_name);
     	} else {
-    		return false;
+    		return FALSE;
     	}
     }
 }
