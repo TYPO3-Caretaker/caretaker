@@ -89,7 +89,6 @@ class tx_caretaker_Cli extends t3lib_cli {
      * @return    string
      */
 	public function cli_main($argv) {
-    	
         $task = (string)$this->cli_args['_DEFAULT'][1];
 		
          if (!$task) {
@@ -97,9 +96,13 @@ class tx_caretaker_Cli extends t3lib_cli {
             $this->cli_help();
             exit;
         } 
+
+        $logger = new tx_caretaker_CliLogger();        		
+        if (isset($this->cli_args['-ss']) || isset($this->cli_args['-s']) || isset($this->cli_args['--silent'])) {
+          	$logger->setSilentMode(true);
+        }
         
         if ($task == 'update' || $task == 'get' ) {
-        	
         	$force           = (boolean)$this->readArgument('--force','-f');
         	$return_status   = (boolean)$this->readArgument('-r');
         	
@@ -112,9 +115,9 @@ class tx_caretaker_Cli extends t3lib_cli {
 	        	$testID          = (int)$this->readArgument('--test','-t');
 
 	        	if (!($instancegroupID || $instanceID)) {
-	        		$this->log('Instance or Instancegroup must be specified');
+	        		$logger->log('Instance or Instancegroup must be specified');
 	        	} else if ( $instancegroupID && $instanceID ) {
-	        		$this->log('Instance or Instancegroup must be specified');
+	        		$logger->log('Instance or Instancegroup must be specified');
 	        	}
         	
         		$node = tx_caretaker_Helper::getNode($instancegroupID, $instanceID, $groupID, $testID);
@@ -122,14 +125,9 @@ class tx_caretaker_Cli extends t3lib_cli {
         	
         	if ($node) {
         		$notifier = new tx_caretaker_CliNotifier();
-        		$logger   = new tx_caretaker_CliLogger();
-        		
-        		if (isset($this->cli_args['-ss']) || isset($this->cli_args['-s']) || isset($this->cli_args['--silent'])) {
-        		  	$logger->setSilentMode(true);
-        		}
-        		  
-        		$node->setNotifier ($notifier);
-        		$node->setLogger   ($logger);
+
+        		$node->setNotifier($notifier);
+        		$node->setLogger($logger);
         	
         		$res = FALSE;
 	        	if ($task == 'update') {
@@ -143,8 +141,8 @@ class tx_caretaker_Cli extends t3lib_cli {
 	        	$notifier->sendNotifications();
 	        	
 	        	if ($return_status) {
-	        		$this->log('State: '.$res->getState().':'.$res->getStateInfo() );
-	        		exit ( (int)$res->getState() );
+	        		$logger->log('State: ' . $res->getState() . ':' . $res->getStateInfo());
+	        		exit ((int)$res->getState());
 	        	} else {
 	        		exit;
 	        	}
@@ -152,12 +150,12 @@ class tx_caretaker_Cli extends t3lib_cli {
         		/**
         		 * @todo tx_caretaker_cli::log doesnt exist, must be implemented
         		 */
-        		$this->log('Node not found or inactive');
+        		$logger->log('Node not found or inactive');
         		exit;
         	}
         } elseif ($task == 'update-extension-list') {
         	$result = tx_caretaker_ExtensionManagerHelper::updateExtensionList();
-        	$this->log('Extension list update result: ' . $result);
+        	$logger->log('Extension list update result: ' . $result);
         	exit;
         }
         
