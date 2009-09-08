@@ -1,0 +1,38 @@
+config {
+
+   # doctype
+   doctype = xhtml_strict
+
+   # setup languages
+   language = en
+   sys_language_uid = 0
+   htmlTag_langKey = en-UK
+
+   #disable comments (ie-bugfix)
+   disablePrefixComment = 1
+
+}
+
+[browser = msie]
+	config.doctypeSwitch = 1
+[end]
+
+page = PAGE
+page {
+
+	includeCSS.page = EXT:caretaker/res/css/page.css
+	includeCSS.plugin = EXT:caretaker/res/css/plugin.css 
+
+	10 = TEMPLATE
+	10 {
+		template = FILE
+		template.file = EXT:caretaker/res/html/page_template.html
+		workOnSubpart = DOCUMENT-BODY
+		
+		subparts {
+			MAIN-CONTENT < styles.content.get
+		}
+	}	
+}
+
+ 

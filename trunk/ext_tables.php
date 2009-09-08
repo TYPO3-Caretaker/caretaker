@@ -142,8 +142,9 @@ if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]
 
 
 	// register Extension TS templates
-t3lib_extMgm::addStaticFile($_EXTKEY,'res/typoscript','Caretaker Frontend Template');
-
+t3lib_extMgm::addStaticFile($_EXTKEY,'res/typoscript/plugin','Caretaker Plugin Template');
+	// register Extension TS templates
+t3lib_extMgm::addStaticFile($_EXTKEY,'res/typoscript/page','Caretaker Page Template');
 
 	// Register Backend Modules
 if (TYPO3_MODE=="BE")	{
