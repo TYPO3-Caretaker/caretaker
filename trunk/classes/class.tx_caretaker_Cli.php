@@ -78,9 +78,6 @@ class tx_caretaker_Cli extends t3lib_cli {
         
         $this->cli_options[]=array('-f', 'force Refresh of testResults');        
         $this->cli_options[]=array('-r', 'Return status code');
-
-        $this->cli_options[]=array('--silent', 'Be silent, no ouput');
-        $this->cli_options[]=array('-s', 'Same as --silent');
     }
     
     /**
