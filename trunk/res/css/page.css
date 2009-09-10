@@ -30,13 +30,12 @@ h2 {
 /*--------- header---------*/
 
 #header {
-	background-color: #ccc;
-	background-image:url(../img/caretaker-header.jpg);
+	background-color: #aaa;
+	background-image:url(../img/caretaker-header-02.jpg);
 	background-repeat:no-repeat;
-	background-image:url(../img/caretaker-header.jpg);
 	background-position:center bottom;
-	border-bottom:1px dotted #999999;
-	height: 100px;
+	border-bottom:1px dotted #666;
+	height: 95px;
 	padding: 0 60px 0 0;
 	position: relative;
 }
