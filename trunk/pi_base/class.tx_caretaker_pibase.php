@@ -63,7 +63,7 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 			$child_infos = '';
 		}
 		
-		$template = $this->cObj->substituteMarkerArray($template, $markers);
+		// $template = $this->cObj->substituteMarkerArray($template, $markers);
 		
 			// render Node Infos
 		$data  = $this->getNodeData($node);
