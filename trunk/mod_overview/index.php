@@ -383,7 +383,7 @@ class tx_caretaker_mod_overview extends t3lib_SCbase {
 			}
 			
 			$infoArray[] = array($LANG->getLL('label_testnode_lastrun'), strftime('%x %X',$test_result->getTstamp()));
-			$infoArray[] = array($LANG->getLL('label_testnode_comment'), $this->aggregateMessage($test_result->getMsg()));
+			$infoArray[] = array($LANG->getLL('label_testnode_comment'), nl2br($this->aggregateMessage($test_result->getMsg())) );
 			
 			$info = '<table>';
 			foreach ($infoArray as $infoRow) {
