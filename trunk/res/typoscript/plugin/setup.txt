@@ -62,8 +62,8 @@ plugin.tx_caretaker_pi_singleview {
 		STATE.field = state_info
 		STATE.case = lower
 		
-		STATE_SHOW = TEXT
-		STATE_SHOW.field = state_show
+		STATE_INFO = TEXT
+		STATE_INFO.field = state_show
 		
 		LAST_RUN = TEXT
 		LAST_RUN.field = state_tstamp
@@ -80,6 +80,7 @@ plugin.tx_caretaker_pi_singleview {
 		
 		MESSAGE = TEXT
 		MESSAGE.field = state_msg
+		MESSAGE.br = 1
 		
 		CHART_TITLE = TEXT
 		CHART_TITLE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:chart
@@ -128,6 +129,9 @@ plugin.tx_caretaker_pi_singleview {
 		
 		LABEL_STATE = TEXT
 		LABEL_STATE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:state
+		
+		LABEL_MESSAGE = TEXT
+		LABEL_MESSAGE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:message
 		
 		LAST_RUN_HEADER = TEXT
 		LAST_RUN_HEADER.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:lastRunHeader
