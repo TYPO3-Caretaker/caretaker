@@ -1,0 +1,25 @@
+.icon-caretaker-type-test { background-image: url(../icons/test.png) !important; }
+.icon-caretaker-type-test-hidden { background-image: url(../icons/test__h.png) !important; }
+.icon-caretaker-type-testgroup { background-image: url(../icons/group.png) !important; }
+.icon-caretaker-type-testgroup-hidden { background-image: url(../icons/group__h.png) !important; }
+.icon-caretaker-type-instance { background-image: url(../icons/instance.png) !important; }
+.icon-caretaker-type-instance-hidden { background-image: url(../icons/instance__h.png) !important; }
+.icon-caretaker-type-instancegroup { background-image: url(../icons/instancegroup.png) !important; }
+.icon-caretaker-type-instancegroup-hidden { background-image: url(../icons/instancegroup__h.png) !important; }
+
+.caretaker-type-instance span {
+	font-weight: bold;
+}
+
+.caretaker-state-0 .x-tree-node-anchor span {
+	color: green;
+}
+.caretaker-state-1 .x-tree-node-anchor span {
+	color: orange;
+}
+.caretaker-state-2 .x-tree-node-anchor span {
+	color: red;
+}
+.caretaker-state-3 .x-tree-node-anchor span {
+	color: gray;
+}
