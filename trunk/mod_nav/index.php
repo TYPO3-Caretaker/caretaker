@@ -34,13 +34,13 @@ unset($MCONF);
 require ("conf.php");
 require ($BACK_PATH."init.php");
 require ($BACK_PATH."template.php");
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx_caretaker_NodeRepository.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Helper.php');
+require_once (t3lib_extMgm::extPath('caretaker') . '/classes/repositories/class.tx_caretaker_NodeRepository.php');
+require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_Helper.php');
 
 $LANG->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
 require_once (PATH_t3lib."class.t3lib_scbase.php");
-$BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
-	// DEFAULT initialization of a module [END]
+$BE_USER->modAccess($MCONF, 1);
+
 
 class tx_caretaker_mod_nav extends t3lib_SCbase {
 	var $pageinfo;
@@ -54,16 +54,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
-		parent::init();
-
-		/*
-		if (t3lib_div::_GP("clear_all_cache"))	{
-			$this->include_once[]=PATH_t3lib."class.t3lib_tcemain.php";
-		}
-		*/
-		
-		$this->node_repository = tx_caretaker_NodeRepository::getInstance();
-		
+		parent::init();				
 	}
 
 
@@ -75,66 +66,56 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	 * @return	[type]		...
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 
-		// Access check!
-		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
-		$access = is_array($this->pageinfo) ? 1 : 0;
-
-		if (($this->id && $access) || ($BE_USER->user["admin"] && !$this->id))	{
-
+		if ($BE_USER->user["admin"]) {
 				// Draw the header.
 			$this->doc = t3lib_div::makeInstance("template");
 			$this->doc->backPath = $BACK_PATH;
-			$this->doc->form='<form action="" method="POST">';
 
-				// Setting JavaScript for menu.
-			$this->doHighlight = 1;	
-			$this->doc->JScode=$this->doc->wrapScriptTags(
-			($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
-
-			function jumpTo(params,linkObj,highLightID)	{ //
-				var theUrl = top.TS.PATH_typo3+top.currentSubScript+"?"+params;
-				if (top.condensedMode)	{
-					top.content.document.location=theUrl;
-				} else {
-					parent.list_frame.document.location=theUrl;
-				}
-				'.($this->doHighlight?'hilight_row("row"+top.fsMod.recentIds["txdirectmailM1"],highLightID);':'').'
-				'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) {linkObj.blur();}').'
-				return false;
+				// Include Ext JS
+			$this->jsFiles = array(
+				'/contrib/extjs/adapter/ext/ext-base.js',
+				'/contrib/extjs/ext-all-debug.js',
+				'../res/js/tx.caretaker.js',
+				'../res/js/tx.caretaker.NodeTree.js'
+			);
+			$this->cssFiles = array(
+				'extJS' => '/contrib/extjs/resources/css/ext-all.css',
+				'extJS-gray' => '/contrib/extjs/resources/css/xtheme-gray.css',
+				'caretaker-nodetree' => '../res/css/tx.caretaker.nodetree.css'
+			);
+			foreach($this->jsFiles as $jsFile) {
+				$this->doc->JScode .= '
+				<script type="text/javascript" src="' . (strpos($jsFile, '/') === 0 ? $this->doc->backPath : '') . $jsFile . '"></script>';
 			}
+			foreach($this->cssFiles as $cssFileName => $cssFile) {
+				$this->doc->JScode .= '
+				<link rel="stylesheet" type="text/css" href="' . (strpos($cssFile, '/') === 0 ? $this->doc->backPath : '') . $cssFile . '" />
+				';
+			}			
 			
-			// Highlighting rows in the page tree:
-			function hilight_row(frameSetModule,highLightID) { //
-					// Remove old:
-				theObj = document.getElementById(top.fsMod.navFrameHighlightedID[frameSetModule]);
-				if (theObj)	{
-					theObj.style.backgroundColor="";
-				}
-
-					// Set new:
-				top.fsMod.navFrameHighlightedID[frameSetModule] = highLightID;
-				theObj = document.getElementById(highLightID);
-				if (theObj)	{
-					theObj.style.backgroundColor="'.t3lib_div::modifyHTMLColorAll($this->doc->bgColor,-5).'";
-				}
-			}
-			
+			$this->doc->JScode .= $this->doc->wrapScriptTags(
+			'
+			Ext.QuickTips.init();
+			Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+			Ext.onReady(function() {
+				tx.caretaker.view = new Ext.Viewport({
+					layout: "fit",
+					items: {
+						id: "cartaker-tree",
+						xtype: "caretaker-nodetree",
+	    				autoScroll: true,
+						dataUrl: "' . $this->doc->backPath . '../index.php?eID=tx_caretaker_treeloader"
+					}
+				});
+			});
 			');
 
-			$headerSection = $this->doc->getHeader("pages",$this->pageinfo,$this->pageinfo["_thePath"])."<br />".$LANG->sL("LLL:EXT:lang/locallang_core.xml:labels.path").": ".t3lib_div::fixed_lgd_pre($this->pageinfo["_thePath"],50);
-
-			$this->content.=$this->doc->startPage($LANG->getLL("title"));
-			$this->content.=$this->doc->header($LANG->getLL("title"));
-
-			// Render content:
-			$this->moduleContent();
-
-			$this->content.=$this->doc->spacer(10);
+			$this->content .= $this->doc->startPage($LANG->getLL("title"));
+			$this->doc->form = '';
 		} else {
-				// If no access or if ID == zero
+				// If no access or if not admin
 
 			$this->doc = t3lib_div::makeInstance("mediumDoc");
 			$this->doc->backPath = $BACK_PATH;
@@ -152,97 +133,14 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function printContent()	{
-
-		$this->content.=$this->doc->endPage();
+		$this->content .= $this->doc->endPage();
 		echo $this->content;
 	}
-
-	/**
-	 * Generates the module content
-	 *
-	 * @return	void
-	 */
-	function moduleContent() {
-		/*
-		$root_instancegroups = $this->node_repository->getInstancegroupsByParentGroupUid(0, false, true );
-		foreach($root_instancegroups as $instancegroup){
-			$this->content.= $this->show_node_recursive($instancegroup);
-		}
-		
-		$root_instances = $this->node_repository->getInstancesByInstancegroupUid(0, false, true );
-		foreach($root_instances as $instance){
-			$this->content.= $this->show_node_recursive($instance);
-		}
-		*/
-		$rootnode = $this->node_repository->getRootNode(true);
-		$this->content.= $this->show_node_recursive($rootnode);
-		
-	}
-	
-	function show_node_recursive($node, $level=0 ){
-		
-			// show node and icon
-		$result = '';
-		$uid    = $node->getUid();
-		$title  = $node->getTitle();
-		$hidden = $node->getHidden();
-		$row    = array('uid'=>$uid, 'pid'=>0, 'title'=>$title, 'deleted'=>0, 'hidden'=>$hidden, 'starttime'=>0 ,'endtime'=>0, 'fe_group'=>0 );
-		$table  = 'tx_caretaker_'.strToLower($node->getType());
-		
-		$params =  'id='.tx_caretaker_Helper::node2id($node);
-			
-		$result .= str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;',$level);
-		$result .= '<a href="#" onclick="return jumpTo(\''.$params.'\',this,\''.$table.'_'.$uid.'\');">&nbsp;&nbsp;';
-		
-		$test_result = $node->getTestResult();
-		switch( $test_result->getState() ){
-			case 0:
-				$result .= '<span style="color:green;">';
-				break;
-			case 1:
-				$result .= '<span style="color:orange;">';
-				break;
-			case 2:
-				$result .= '<span style="color:red;">';
-				break;
-			default:
-				$result .= '<span style="color:grey;">';
-				break;			
-		}
-		
-		// add icons
-		if ($node->getType()!= 'Root'){
-			$result .=	t3lib_iconWorks::getIconImage($table,$row,$this->doc->backPath,'title="'.$row['uid'].'" align="top"').'&nbsp;'.htmlspecialchars($row['title']);
-		} else {
-			$result .= '<img width="16" height="16" title="id=0" alt="" src="'.$this->doc->backPath.'sysext/t3skin/icons/gfx/i/_icon_website.gif"/>'.'&nbsp;'.htmlspecialchars($row['title']);
-		}
-		
-		$result .= '</span>';		
-		$result .= '</a></li>';
-		$result .= '<br/>';		
-		
-			// show subitems of tx_caretaker_AggregatorNodes
-		if (is_a($node, 'tx_caretaker_AggregatorNode') ){
-			$children = $node->getChildren(true);
-			if (count($children)>0){
-				foreach($children as $child){
-					$result.= $this->show_node_recursive($child, $level + 1) ;
-				}
-			}
-		}
-		
-		return $result;
-	}
 }
-
-
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/mod_nav/index.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/mod_nav/index.php']);
 }
-
-
-
 
 // Make instance:
 $SOBE = t3lib_div::makeInstance('tx_caretaker_mod_nav');

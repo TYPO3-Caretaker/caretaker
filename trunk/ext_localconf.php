@@ -14,5 +14,7 @@ include_once(t3lib_extMgm::extPath('caretaker').'classes/class.tx_caretaker_Serv
 tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_ping',  'Ping' , 'Retrieves System Informations' );
 tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_http',  'HTTP' , 'Call an URI and check the HTTP-Status' );
 
+// Add eID script for caretaker tree loader
+$TYPO3_CONF_VARS['FE']['eID_include']['tx_caretaker_treeloader'] = 'EXT:caretaker/mod_nav/eid.tx_caretaker_treeloader.php';
 
 ?> 
