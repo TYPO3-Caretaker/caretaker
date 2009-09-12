@@ -288,7 +288,7 @@ class tx_caretaker_NodeRepository {
 	 * @return array
 	 */
 	public function getTestgroupsByInstanceUid($instanceId, $parent = false , $show_hidden = FALSE){
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_foreign', 'tx_caretaker_instance_testgroup_mm', 'uid_local='.(int)$instanceId);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_foreign', 'tx_caretaker_instance_testgroup_mm', 'uid_local='.(int)$instanceId , '' , 'sorting' );
 		$instance_group_ids = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
 			$instance_group_ids[] = $row['uid_foreign'];
@@ -376,7 +376,7 @@ class tx_caretaker_NodeRepository {
 	 */
 	public function getTestsByGroupUid ($group_id, $parent = false, $show_hidden = FALSE){
 		$ids = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local', 'tx_caretaker_testgroup_test_mm', 'uid_foreign='.(int)$group_id);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local', 'tx_caretaker_testgroup_test_mm', 'uid_foreign='.(int)$group_id , '' , 'sorting_foreign');
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
 			$ids[] = $row['uid_local'];
 		}
@@ -400,7 +400,7 @@ class tx_caretaker_NodeRepository {
 	 */
 	public function getTestsByInstanceUid ($instance_id, $parent = false, $show_hidden = FALSE){
 		$ids = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local', 'tx_caretaker_instance_test_mm', 'uid_foreign='.(int)$instance_id);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local', 'tx_caretaker_instance_test_mm', 'uid_foreign='.(int)$instance_id, '' , 'sorting_foreign');
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
 			$ids[] = $row['uid_local'];
 		}
