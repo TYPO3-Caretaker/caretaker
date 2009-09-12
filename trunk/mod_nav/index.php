@@ -27,20 +27,17 @@
  * @author	 <>
  */
 
-
-
-	// DEFAULT initialization of a module [BEGIN]
 unset($MCONF);
-require ("conf.php");
-require ($BACK_PATH."init.php");
-require ($BACK_PATH."template.php");
+require('conf.php');
+require_once($BACK_PATH . 'init.php');
+require_once($BACK_PATH . 'template.php');
+
+$GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
+require_once (PATH_t3lib."class.t3lib_scbase.php");
+$GLOBALS['BE_USER']->modAccess($MCONF, 1);
+
 require_once (t3lib_extMgm::extPath('caretaker') . '/classes/repositories/class.tx_caretaker_NodeRepository.php');
 require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_Helper.php');
-
-$LANG->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
-require_once (PATH_t3lib."class.t3lib_scbase.php");
-$BE_USER->modAccess($MCONF, 1);
-
 
 class tx_caretaker_mod_nav extends t3lib_SCbase {
 	var $pageinfo;
@@ -106,7 +103,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 						id: "cartaker-tree",
 						xtype: "caretaker-nodetree",
 	    				autoScroll: true,
-						dataUrl: "' . $this->doc->backPath . '../index.php?eID=tx_caretaker_treeloader"
+						dataUrl: "' . $this->doc->backPath . 'ajax.php?ajaxID=tx_caretaker::treeloader"
 					}
 				});
 			});
@@ -126,7 +123,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->content.=$this->doc->spacer(10);
 		}
 	}
-
+	
 	/**
 	 * Prints out the module HTML
 	 *
@@ -151,5 +148,4 @@ foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
 
 $SOBE->main();
 $SOBE->printContent();
-
 ?>
