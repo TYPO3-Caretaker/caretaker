@@ -57,6 +57,9 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		$time_error    = $this->getTimeError();
 		$expected_code = $this->getExpectedReturnCode();
 		$request_query = $this->getRequestQuery();
+		$request_method = $this->getRequestMethod();
+		$request_data = $this->getRequestData();
+		
 		$url           = $this->getInstanceUrl();
 		
 		$request_url   = $url.$request_query;
@@ -65,7 +68,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	    	return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_UNDEFINED, 0 , 'No HTTP-Code or no query was set' );
 		}
 		
-		list ($http_status, $time) = $this->executeCurlRequest($request_url);
+		list ($http_status, $time, $response) = $this->executeCurlRequest($request_url, $time_error, $request_method, $request_data);
 		
 		if ($time_error && $time > $time_error ){
 			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'HTTP-Request took '.$time.' miliseconds. :: '.$request_url );
@@ -117,6 +120,22 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	
 	/**
 	 * 
+	 * @return string
+	 */
+	protected function getRequestMethod(){
+		return $this->getConfigValue('request_method');
+	}
+	
+	/**
+	 * 
+	 * @return string
+	 */
+	protected function getRequestData(){
+		return $this->getConfigValue('request_data');
+	}
+			
+	/**
+	 * 
 	 * @return unknown_type
 	 */
 	protected function getInstanceUrl(){
@@ -125,27 +144,49 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	
 	/**
 	 * 
-	 * @param array $request_url
+	 * @param string $request_url
+	 * @param string $request_method
+	 * @param string $request_data
 	 * @return array http-Status and time in Seconds
 	 */
-	protected function executeCurlRequest($request_url){
+	protected function executeCurlRequest($request_url , $timeout=0, $request_method="GET" , $request_data="" ){
 		$starttime=microtime(true);
 		
 		$curl = curl_init();
-        
+		
+			// url & timeout
 		curl_setopt($curl, CURLOPT_URL, $request_url);
+        if ( $timeout > 0 ) { 
+        	curl_setopt($curl, CURLOPT_TIMEOUT, (int)ceil( $timeout / 1000) );
+        }
+			// handle request method
+		switch ($request_method){
+			case 'POST':
+				curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
+				curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Length: '.strlen($$request_data) ) );
+				curl_setopt($curl, CURLOPT_POSTFIELDS, $request_data);
+				break;
+			case 'PUT':
+				curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+				curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Length: '.strlen($$request_data) ) );
+				curl_setopt($curl, CURLOPT_POSTFIELDS, $request_data);
+				break;
+			case 'DELETE':
+				curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+				break;				
+		}
+		
 		curl_setopt($curl, CURLOPT_HEADER, 0);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		//curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 		
-		$res     = curl_exec($curl);
-		$info    = curl_getinfo($curl);
+		$response = curl_exec($curl);
+		$info     = curl_getinfo($curl);
 		curl_close($curl);
 			
 		$endtime=microtime(true);
 		$time = $endtime-$starttime;
 		
-		return array ( $info['http_code'], $time*1000 );
+		return array ( $info['http_code'], $time*1000 ,$response);
 	}
 }
 

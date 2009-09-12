@@ -29,9 +29,47 @@
 					</config>
 				</TCEforms>
 			</request_query>	
+			<request_method>
+				<TCEforms>
+					<label>Request Method</label>
+					<config>
+						<type>select</type>
+					    <items>
+					    	<numIndex index="0">
+					    		<numIndex index="0">GET</numIndex>
+								<numIndex index="1">GET</numIndex>
+					    	</numIndex>
+					    	<numIndex index="1">
+					    		<numIndex index="0">PUT</numIndex>
+								<numIndex index="1">PUT</numIndex>
+					    	</numIndex>
+					    	<numIndex index="2">
+					    		<numIndex index="0">POST</numIndex>
+								<numIndex index="1">POST</numIndex>
+					    	</numIndex>
+					    	<numIndex index="3">
+					    		<numIndex index="0">DELETE</numIndex>
+								<numIndex index="1">DELETE</numIndex>
+					    	</numIndex>
+					  	</items>
+					  	<default>GET</default>
+					</config>
+				</TCEforms>
+			</request_method>
+			<request_data>
+				<TCEforms>
+					<label>Request Data</label>
+					<displayCond>FIELD:request_method:IN:PUT,POST</displayCond>
+					<config>
+						<type>text</type>
+						<cols>50</cols>
+						<rows>5</rows>
+					</config>
+				</TCEforms>
+			</request_data>
 			<expected_status>
 				<TCEforms>
-					<label>expected HTTP Status</label>
+					<label>expected HTTP status code</label>
 					<config>
 						<type>input</type>
 						<size>10</size>
@@ -42,7 +80,7 @@
 			</expected_status>
 			<max_time_warning>
 				<TCEforms>
-					<label>Milliseconds for Warning</label>
+					<label>Milliseconds for warning</label>
 					<config>
 						<type>input</type>
 						<size>10</size>
@@ -53,7 +91,7 @@
 			</max_time_warning>>
 			<max_time_error>
 				<TCEforms>
-					<label>Milliseconds for Error</label>
+					<label>Milliseconds for error</label>
 					<config>
 						<type>input</type>
 						<size>10</size>
