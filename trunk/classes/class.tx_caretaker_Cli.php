@@ -100,7 +100,7 @@ class tx_caretaker_Cli extends t3lib_cli {
           	$logger->setSilentMode(TRUE);
         }
         
-        if ($task == 'update' || $task == 'get' ) {
+        if ($task == 'update' || $task == 'get') {
         	$force           = (boolean)$this->readArgument('--force','-f');
         	$return_status   = (boolean)$this->readArgument('-r');
         	
