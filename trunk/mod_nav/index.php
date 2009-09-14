@@ -86,16 +86,17 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			);
 			foreach($this->jsFiles as $jsFile) {
 				$this->doc->JScode .= '
-				<script type="text/javascript" src="' . (strpos($jsFile, '/') === 0 ? $this->doc->backPath : '') . $jsFile . '"></script>';
+				<script type="text/javascript" src="' . (strpos($jsFile, '/') === 0 ? $this->doc->backPath . substr($jsFile, 1) : $jsFile) . '"></script>';
 			}
 			foreach($this->cssFiles as $cssFileName => $cssFile) {
 				$this->doc->JScode .= '
-				<link rel="stylesheet" type="text/css" href="' . (strpos($cssFile, '/') === 0 ? $this->doc->backPath : '') . $cssFile . '" />
+				<link rel="stylesheet" type="text/css" href="' . (strpos($cssFile, '/') === 0 ? $this->doc->backPath . substr($cssFile, 1) : $cssFile) . '" />
 				';
 			}			
 			
 			$this->doc->JScode .= $this->doc->wrapScriptTags(
 			'
+			Ext.BLANK_IMAGE_URL = "' . $this->doc->backPath . 'contrib/extjs/resources/images/default/s.gif";
 			Ext.QuickTips.init();
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 			Ext.onReady(function() {
