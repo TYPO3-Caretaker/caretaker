@@ -30,10 +30,13 @@ class tx_caretaker_treeloader {
 		$resultClass = 'caretaker-state-' . $testResult->getState();
 		$typeClass = 'caretaker-type-' . strtolower($node->getType());
 	
+		$result['type'] = strtolower($node->getType());
 		$result['id'] = $id;
+		$result['uid'] = $uid;
+		$result['hidden'] = $hidden;
 		$result['text'] = $title;
 		$result['cls'] = $resultClass . ' ' . $typeClass;
-		$result['iconCls'] = 'icon-' . $typeClass;
+		$result['iconCls'] = 'icon-' . $typeClass . ($hidden ? '-hidden' : '');
 		
 			// show subitems of tx_caretaker_AggregatorNodes
 		if (is_a($node, 'tx_caretaker_AggregatorNode')) {

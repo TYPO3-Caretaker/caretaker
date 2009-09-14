@@ -12,10 +12,23 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 	            cls: 'global'
 	        },
 	        listeners: {
-	            click: this.navigateToNode
+	            click: this.navigateToNodeDetails,
+	            contextmenu: this.showContextMenu
 	        },
 	        title: 'Navigation',
 	        tools:[{
+                id: 'minus',
+                qtip: 'Collapse All',
+                handler: function(event, toolEl, panel) {
+            		panel.root.collapse(true);
+            	}
+            }, {
+	        	id: 'plus',
+				qtip: 'Expand All',
+                handler: function(event, toolEl, panel) {
+	        		panel.root.expand(true);
+	        	}
+            }, {
 	            id:'refresh',
 	            qtip: 'Refresh tree',
 	            handler: function(event, toolEl, panel) {
@@ -53,18 +66,117 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 	
 	    tx.caretaker.NodeTree.superclass.constructor.call(this, config);
 	
-	//  Your postprocessing here
-	
+	    this.editUrl = config.editUrl;
 	},
-	
-	navigateToNode: function(node) {
-		var params = 'id=' + node.attributes.id;
-		var theUrl = top.TS.PATH_typo3 + top.currentSubScript + '?' + params;
+	showContextMenu: function(node, eventObj) {
+		node.select(); 
+		eventObj.stopEvent();
+
+        if (!this.contextMenu) {
+            this.contextMenu = new Ext.menu.Menu({
+            	id: 'tree-contextmenu',
+	            items: [{
+                    id: 'tree-contextmenu-edit',
+                    // itemId: 'edit',
+                    text: 'Edit',
+                    handler: function() {
+	            		var node = this.getSelectionModel().getSelectedNode();
+	            		this.editNode(node);
+	            	}, 
+                    scope: this
+                }, {
+                	id: 'tree-contextmenu-hide',
+                	// itemId: 'hide',
+                	text: 'Hide',
+                    handler: function() {
+	            		var node = this.getSelectionModel().getSelectedNode();
+	            		this.hideNode(node);
+	            	},
+                    scope: this
+                }, {
+                	id: 'tree-contextmenu-unhide',
+                	// itemId: 'unhide',
+                	text: 'Unhide',
+                    handler: function() {
+	            		var node = this.getSelectionModel().getSelectedNode();
+	            		this.unhideNode(node);
+	            	},
+                    scope: this
+                }]
+            }); 
+        }
+
+        if (node.attributes.type) {
+        	var editItem = Ext.getCmp('tree-contextmenu-edit');
+        	var hideItem = Ext.getCmp('tree-contextmenu-hide');
+        	var unhideItem = Ext.getCmp('tree-contextmenu-unhide');
+        	if (node.attributes.hidden) {
+        		hideItem.disable();
+        		unhideItem.enable();
+        	} else {
+        		hideItem.enable();
+        		unhideItem.disable();
+        	}
+        	this.contextMenu.showAt(eventObj.getXY());
+        }
+	},
+	openUrlInContent: function(url) {
 		if (top.condensedMode)	{
-			top.content.document.location = theUrl;
+			top.content.document.location = url;
 		} else {
-			parent.list_frame.document.location = theUrl;
-		}	
+			parent.list_frame.document.location = url;
+		}
+	},
+	navigateToNodeDetails: function(node) {
+		var params = 'id=' + node.attributes.id;
+		var url = top.TS.PATH_typo3 + top.currentSubScript + '?' + params;
+		this.openUrlInContent(url);
+	},
+	editNode: function(node) {
+		var url = this.editUrl.
+			replace('###NODE_TYPE###', node.attributes.type).
+			replace('###NODE_UID###', node.attributes.uid);
+		url += "&returnUrl=" + encodeURIComponent(parent.list_frame.document.location);
+		this.openUrlInContent(url);
+	},
+	hideNode: function(node) {
+		var url = this.hideUrl.
+			replace('###NODE_TYPE###', node.attributes.type).
+			replace('###NODE_UID###', node.attributes.uid);
+		Ext.Ajax.request({
+			url: url,
+			success: function() {
+				tx.caretaker.fireEvent('nodeChanged', node);
+				this.reloadTree();
+			},
+			failure: function() {
+				Ext.Msg.show({
+					title: 'Failure',
+					text: 'Could not hide node',
+					icon: Ext.MessageBox.WARNING
+				});
+			},
+			scope: this
+		});
+	},
+	unhideNode: function(node) {
+		var url = this.unhideUrl.
+			replace('###NODE_TYPE###', node.attributes.type).
+			replace('###NODE_UID###', node.attributes.uid);
+		Ext.Ajax.request({
+			url: url,
+			success: function() {
+				this.reloadTree();
+			},
+			failure: function() {
+				Ext.Msg.show({
+					title: 'Failure',
+					text: 'Could not unhide node',
+					icon: Ext.MessageBox.WARNING
+				});
+			},
+			scope: this
+		});
 	},
 	reloadTree: function() {
 		var state = this.getState();
