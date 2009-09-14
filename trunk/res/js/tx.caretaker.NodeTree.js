@@ -79,6 +79,7 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
                     id: 'tree-contextmenu-edit',
                     // itemId: 'edit',
                     text: 'Edit',
+                    iconCls: 'icon-edit',
                     handler: function() {
 	            		var node = this.getSelectionModel().getSelectedNode();
 	            		this.editNode(node);
@@ -88,6 +89,7 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
                 	id: 'tree-contextmenu-hide',
                 	// itemId: 'hide',
                 	text: 'Hide',
+                	iconCls: 'icon-hide',
                     handler: function() {
 	            		var node = this.getSelectionModel().getSelectedNode();
 	            		this.hideNode(node);
@@ -97,6 +99,7 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
                 	id: 'tree-contextmenu-unhide',
                 	// itemId: 'unhide',
                 	text: 'Unhide',
+                	iconCls: 'icon-unhide',
                     handler: function() {
 	            		var node = this.getSelectionModel().getSelectedNode();
 	            		this.unhideNode(node);
