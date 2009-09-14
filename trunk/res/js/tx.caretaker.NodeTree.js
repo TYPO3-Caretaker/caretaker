@@ -9,7 +9,8 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 	            text: 'Caretaker',
 	            draggable: false,
 	            id: 'root',
-	            cls: 'global'
+	            cls: 'global',
+	            iconCls: 'icon-caretaker-root'
 	        },
 	        listeners: {
 	            click: this.navigateToNodeDetails,
