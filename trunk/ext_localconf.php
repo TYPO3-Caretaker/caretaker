@@ -15,6 +15,9 @@ tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 't
 tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_http',  'HTTP' , 'Call an URI and check the HTTP-Status' );
 
 // Add eID script for caretaker tree loader
-$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::treeloader'] = 'EXT:caretaker/mod_nav/class.tx_caretaker_treeloader.php:tx_caretaker_treeloader->ajaxLoadTree';
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::treeloader']  = 'EXT:caretaker/mod_nav/class.tx_caretaker_treeloader.php:tx_caretaker_treeloader->ajaxLoadTree';
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodeinfo']    = 'EXT:caretaker/classes/ajax/class.tx_caretaker_nodeinfo.php:tx_caretaker_nodeinfo->ajaxGetNodeInfo';
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::noderefresh'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_nodeinfo.php:tx_caretaker_nodeinfo->ajaxRefreshNode';
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodegraph'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_nodeinfo.php:tx_caretaker_nodeinfo->ajaxGetNodeGraph';
 
 ?> 

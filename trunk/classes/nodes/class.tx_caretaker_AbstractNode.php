@@ -176,7 +176,7 @@ abstract class tx_caretaker_AbstractNode {
 	 * @return string
 	 */
 	abstract public function getValueDescription();
-	
+
 	/**
 	 * Get the current Instance if 
 	 * @return tx_caretaker_InstanceNode

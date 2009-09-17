@@ -274,6 +274,13 @@ class tx_caretaker_NodeResultRange implements Iterator {
 		$this->array = array_reverse($this->array);
 	}
 
+	/**
+	 * 
+	 * @return integer
+	 */
+	public function count(){
+		return count($this->array);
+	}
 }
 
 ?>

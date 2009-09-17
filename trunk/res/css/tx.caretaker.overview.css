@@ -1,0 +1,17 @@
+
+.icon-caretaker-root { background-image: url(../icons/caretaker.gif) !important; }
+.icon-caretaker-type-test { background-image: url(../icons/test.png) !important; }
+.icon-caretaker-type-test-hidden { background-image: url(../icons/test__h.png) !important; }
+.icon-caretaker-type-testgroup { background-image: url(../icons/group.png) !important; }
+.icon-caretaker-type-testgroup-hidden { background-image: url(../icons/group__h.png) !important; }
+.icon-caretaker-type-instance { background-image: url(../icons/instance.png) !important; }
+.icon-caretaker-type-instance-hidden { background-image: url(../icons/instance__h.png) !important; }
+.icon-caretaker-type-instancegroup { background-image: url(../icons/instancegroup.png) !important; }
+.icon-caretaker-type-instancegroup-hidden { background-image: url(../icons/instancegroup__h.png) !important; }
+
+
+.tx_caretaker_node_info {padding:5px;}
+.tx_caretaker_node_info_state_OK        { color:#0f0; }
+.tx_caretaker_node_info_state_WARNING   { color:#ff0; }
+.tx_caretaker_node_info_state_ERROR     { color:#f00; }
+.tx_caretaker_node_info_state_UNDEFINED { color:#999; }
