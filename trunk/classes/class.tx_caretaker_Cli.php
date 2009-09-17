@@ -157,7 +157,7 @@ class tx_caretaker_Cli extends t3lib_cli {
         	exit;
         }
         
-        if ($task = 'help') {
+        if ($task == 'help') {
         	$this->cli_validateArgs();
 			$this->cli_help();
 			exit;
