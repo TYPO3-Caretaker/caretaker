@@ -7,18 +7,11 @@ Ext.namespace('tx','tx.caretaker');
 
 tx.caretaker.overview_application = function() {
 
-    var node_info = tx.caretaker.node_info;
-    var back_path = tx.caretaker.back_path;
-
-    Ext.MessageBox.maxWidth = 700;
-    Ext.MessageBox.minWidth = 500;
-
-
-    tx.caretaker.node_info = new Ext.Panel({
+    tx.caretaker.node_information = new Ext.Panel({
         id              : "node-info",
         html            : "node info",
         autoHeight      : true,
-        autoLoad        : back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + node_info.id
+        autoLoad        : tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + tx.caretaker.node_info.id
     });
 
     tx.caretaker.node_children = new Ext.Panel ({
@@ -32,32 +25,30 @@ tx.caretaker.overview_application = function() {
         activeTab       : 0,
         id              : "node-charts",
         enableTabScroll : true,
-        height          : 400,
+        height          : 430,
         title           : "Chart",
         items:[
            {
                 title:'12 h',
-                autoLoad  : back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + node_info.id + '&duration= ' +  (60*60*12)
+                autoLoad  : tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + tx.caretaker.node_info.id + '&duration= ' +  (60*60*12)
             },{
                 title:'24 h',
-                autoLoad  : back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + node_info.id + '&duration= ' +  (60*60*24)
+                autoLoad  : tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + tx.caretaker.node_info.id + '&duration= ' +  (60*60*24)
             },{
                 title:'48 h',
-                autoLoad  : back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + node_info.id + '&duration= ' +  (60*60*48)
+                autoLoad  : tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + tx.caretaker.node_info.id + '&duration= ' +  (60*60*48)
             },{
                 title:'7 Days',
-                autoLoad  : back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + node_info.id + '&duration= ' +  (60*60*24*7)
+                autoLoad  : tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + tx.caretaker.node_info.id + '&duration= ' +  (60*60*24*7)
             },{
                 title:'1 Month',
-                autoLoad  : back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + node_info.id + '&duration= ' +  (60*60*24*31)
+                autoLoad  : tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + tx.caretaker.node_info.id + '&duration= ' +  (60*60*24*31)
             },{
                 title:'3 Month',
-                autoLoad  : back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + node_info.id + '&duration= ' +  (60*60*34*93)
+                autoLoad  : tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + tx.caretaker.node_info.id + '&duration= ' +  (60*60*34*93)
             }
         ]
     });
-
-
 
     tx.caretaker.node_log = new Ext.Panel ({
             id              : "node-log",
@@ -91,21 +82,48 @@ tx.caretaker.overview_application = function() {
                force:  1
             }
         });
+        // Ext.Ajax.on('requestcomplete',  this.refreschSuccessMessage, this);
+        // Ext.Ajax.on('requestexception', this.refreschSuccessMessage, tx.caretaker);
     };
 
     tx.caretaker.refreschSuccessMessage = function (response, opts){
-        var node_info = Ext.getCmp('node-info');
-        node_info.load( tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + tx.caretaker.node_info.id);
-        Ext.MessageBox.alert(response.responseText);
+        tx.caretaker.showUpdateLog(response.responseText);
+        var node_info_panel = Ext.getCmp('node-info');
+        node_info_panel.load( tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + tx.caretaker.node_info.id);
     }
     
     tx.caretaker.refreschFailureMessage = function (response, opts){
-        var node_info = Ext.getCmp('node-info');
-        node_info.load( tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + tx.caretaker.node_info.id);
+        tx.caretaker.showUpdateLog(response.responseText)
+        var node_info_panel = Ext.getCmp('node-info');
+        node_info_panel.load( tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + tx.caretaker.node_info.id);
+    }
 
+    tx.caretaker.showUpdateLog = function(log){
 
-        Ext.MessageBox.alert(response.responseText);
-
+        var win = new Ext.Window({
+            autoHeight  : true,
+            width       : 600,
+            modal       : true,                                                  // 1
+            title       : 'Refresh Node Log',
+            plain       : true,
+            border      : false,
+            resizable   : false,                                                 // 2
+            draggable   : false,                                                 // 3
+            closable    : false,                                                 // 4
+            buttonAlign : 'center',
+            items       : {
+                    xtype: "panel",
+                    autoHeight  : true,
+                    html : log
+                },
+            buttons     : [{
+                    text    : 'OK',
+                    handler : function() {
+                       win.close();
+                    }
+                }]
+        });
+        win.show();
     }
 
     tx.caretaker.editNode = function (){
@@ -177,11 +195,11 @@ tx.caretaker.overview_application = function() {
             items: {
                     xtype    : "panel",
                     id       : "node",
-                    title    : '' +  node_info.title + ' (' + node_info.type + ')' ,
-                    iconCls  : "icon-caretaker-type-" + node_info.type_lower,
+                    title    : '' +  tx.caretaker.node_info.title + ' (' + tx.caretaker.node_info.type + ')' ,
+                    iconCls  : "icon-caretaker-type-" + tx.caretaker.node_info.type_lower,
                     tbar     : tx.caretaker.node_toolbar,
                     items    : [
-                        tx.caretaker.node_info,
+                        tx.caretaker.node_information,
                         tx.caretaker.node_charts,
                         //tx.caretaker.node_children,
                         //tx.caretaker.node_log
