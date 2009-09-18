@@ -103,9 +103,10 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 				Ext.BLANK_IMAGE_URL = "' . $this->doc->backPath . 'contrib/extjs/resources/images/default/s.gif";
 				Ext.QuickTips.init();
 				Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+				Ext.namespace("tx","tx.caretaker");
 
-				tx_caretaker_back_path = "'.$this->doc->backPath.'";
-				tx_caretaker_node_info = {
+				tx.caretaker.back_path = "'.$this->doc->backPath.'";
+				tx.caretaker.node_info = {
 					id:"'.tx_caretaker_Helper::node2id($node).'",
 					uid:'.$node->getUid().',
 					type:"'.$node->getType().'",
@@ -115,11 +116,11 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 					hidden:"'.$node->getHidden().'"
 				};
 
-				tx_caretaker_back_url   = "'.urlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')).'";
-				tx_caretaker_path_typo3 = "'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'typo3/";
+				tx.caretaker.back_url   = "'.urlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')).'";
+				tx.caretaker.path_typo3 = "'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'typo3/";
 
 				Ext.onReady( function(){
-					tx_caretaker_Overview();
+					tx.caretaker.overview_application();
 				});
 
 			');

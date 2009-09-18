@@ -3,10 +3,12 @@
  * and open the template in the editor.
  */
 
-tx_caretaker_Overview = function() {
+Ext.namespace('tx','tx.caretaker');
 
-    var node_info = tx_caretaker_node_info;
-    var back_path = tx_caretaker_back_path;
+tx.caretaker.overview_application = function() {
+
+    var node_info = tx.caretaker.node_info;
+    var back_path = tx.caretaker.back_path;
 
     Ext.MessageBox.maxWidth = 700;
     Ext.MessageBox.minWidth = 500;
@@ -67,12 +69,12 @@ tx_caretaker_Overview = function() {
 
     tx.caretaker.refreschNode = function (){
         Ext.Ajax.request({
-           url: tx_caretaker_back_path + 'ajax.php',
+           url: tx.caretaker.back_path + 'ajax.php',
            success: tx.caretaker.refreschSuccessMessage,
            failure: tx.caretaker.refreschFailureMessage,
            params: { 
                ajaxID: 'tx_caretaker::noderefresh',
-               node:   tx_caretaker_node_info.id,
+               node:   tx.caretaker.node_info.id,
                force:  0
             }
         });
@@ -80,12 +82,12 @@ tx_caretaker_Overview = function() {
 
     tx.caretaker.refreschNodeForced = function (){
          Ext.Ajax.request({
-           url: tx_caretaker_back_path + 'ajax.php',
+           url: tx.caretaker.back_path + 'ajax.php',
            success: tx.caretaker.refreschSuccessMessage,
            failure: tx.caretaker.refreschFailureMessage,
            params: {
                ajaxID: 'tx_caretaker::noderefresh',
-               node:   tx_caretaker_node_info.id,
+               node:   tx.caretaker.node_info.id,
                force:  1
             }
         });
@@ -93,13 +95,13 @@ tx_caretaker_Overview = function() {
 
     tx.caretaker.refreschSuccessMessage = function (response, opts){
         var node_info = Ext.getCmp('node-info');
-        node_info.load( tx_caretaker_back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + tx_caretaker_node_info.id);
+        node_info.load( tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + tx.caretaker.node_info.id);
         Ext.MessageBox.alert(response.responseText);
     }
     
     tx.caretaker.refreschFailureMessage = function (response, opts){
         var node_info = Ext.getCmp('node-info');
-        node_info.load( tx_caretaker_back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + tx_caretaker_node_info.id);
+        node_info.load( tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + tx.caretaker.node_info.id);
 
 
         Ext.MessageBox.alert(response.responseText);
@@ -107,8 +109,8 @@ tx_caretaker_Overview = function() {
     }
 
     tx.caretaker.editNode = function (){
-        if (tx_caretaker_node_info.type_lower != 'root'){
-            var url = tx_caretaker_path_typo3 + 'alt_doc.php?edit[tx_caretaker_' + tx_caretaker_node_info.type_lower + '][' + tx_caretaker_node_info.uid + ']=edit&returnUrl=' + tx_caretaker_back_url;
+        if (tx.caretaker.node_info.type_lower != 'root'){
+            var url = tx.caretaker.path_typo3 + 'alt_doc.php?edit[tx.caretaker.' + tx.caretaker.node_info.type_lower + '][' + tx.caretaker.node_info.uid + ']=edit&returnUrl=' + tx.caretaker.back_url;
             window.location.href = url;
         } else {
             Ext.MessageBox.alert('Sorry', 'The root node cannot be edited!');
@@ -116,8 +118,8 @@ tx_caretaker_Overview = function() {
     };
 
     tx.caretaker.enableNode = function() {
-        if (tx_caretaker_node_info.hidden == 1 && tx_caretaker_node_info.type_lower != 'root'){
-            var url = tx_caretaker_path_typo3 + 'tce_db.php?&data[tx_caretaker_' + tx_caretaker_node_info.type_lower + '][' + tx_caretaker_node_info.uid + '][hidden]=0&redirect=' + tx_caretaker_back_url;
+        if (tx.caretaker.node_info.hidden == 1 && tx.caretaker.node_info.type_lower != 'root'){
+            var url = tx.caretaker.path_typo3 + 'tce_db.php?&data[tx.caretaker.' + tx.caretaker.node_info.type_lower + '][' + tx.caretaker.node_info.uid + '][hidden]=0&redirect=' + tx.caretaker.back_url;
             window.location.href = url;
         } else {
             Ext.MessageBox.alert('Sorry', 'The node is already enabled');
@@ -125,8 +127,8 @@ tx_caretaker_Overview = function() {
     };
 
     tx.caretaker.disableNode = function() {
-        if (tx_caretaker_node_info.hidden == 0 && tx_caretaker_node_info.type_lower != 'root'){
-            var url = tx_caretaker_path_typo3 + 'tce_db.php?&data[tx_caretaker_' + tx_caretaker_node_info.type_lower + '][' + tx_caretaker_node_info.uid + '][hidden]=1&redirect=' + tx_caretaker_back_url;
+        if (tx.caretaker.node_info.hidden == 0 && tx.caretaker.node_info.type_lower != 'root'){
+            var url = tx.caretaker.path_typo3 + 'tce_db.php?&data[tx.caretaker.' + tx.caretaker.node_info.type_lower + '][' + tx.caretaker.node_info.uid + '][hidden]=1&redirect=' + tx.caretaker.back_url;
             window.location.href = url;
         } else {
             Ext.MessageBox.alert('Sorry', 'The node is already hidden');
@@ -150,20 +152,20 @@ tx_caretaker_Overview = function() {
                     {
                             text    : "Edit",
                             icon    : "../res/icons/pencil.png",
-                            disabled: (tx_caretaker_node_info.type_lower=='root')?true:false,
+                            disabled: (tx.caretaker.node_info.type_lower=='root')?true:false,
                             handler :  tx.caretaker.editNode
                     },
                     "->",
                     {
                             text    : "Enable",
-                            disabled: (tx_caretaker_node_info.hidden==0 || tx_caretaker_node_info.type_lower=='root')?true:false,
+                            disabled: (tx.caretaker.node_info.hidden==0 || tx.caretaker.node_info.type_lower=='root')?true:false,
                             icon    : "../res/icons/lightbulb.png",
                             handler : tx.caretaker.enableNode
                     },
                     {
                             text    : "Disable",
                             icon    : "../res/icons/lightbulb_off.png",
-                            disabled: (tx_caretaker_node_info.hidden==1 || tx_caretaker_node_info.type_lower=='root')?true:false,
+                            disabled: (tx.caretaker.node_info.hidden==1 || tx.caretaker.node_info.type_lower=='root')?true:false,
                             handler : tx.caretaker.disableNode
                     }
 
