@@ -38,14 +38,12 @@
 require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_TestServiceBase.php');
 
 class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
-	
-	protected $valueDescription = 'Micro seconds';
-	
-	public function getValueDescription() {
-		
-		return $this->valueDescription;
-	}
-	
+
+	/**
+	 * Value Description
+	 * @var string
+	 */
+	protected $valueDescription = 'Milliseconds';
 
 	/**
 	 * (non-PHPdoc)
@@ -61,12 +59,12 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 			
 			if ($returnCode === 0) { 
 				if ($time_error && $time > $time_error) {
-					return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, $time , 'Ping took '.$time.' micro seconds');
+					return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, $time , 'Ping took '.$time.' '.$this->valueDescription);
 				}
 				if ($time_warning && $time > $time_warning) {
-					return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_WARNING, $time , 'Ping took '.$time.' micro seconds');
+					return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_WARNING, $time , 'Ping took '.$time.' '.$this->valueDescription);
 				} 
-				return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_OK, $time , 'Ping took '.$time.' micro seconds');
+				return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_OK, $time , 'Ping took '.$time.' '.$this->valueDescription);
 			} else {
 				return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, $time , 'Ping (' . $command . ') failed: ' . $message);
 			}

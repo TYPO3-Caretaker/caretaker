@@ -40,12 +40,10 @@ require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_T
 class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 
 	/**
-	 * (non-PHPdoc)
-	 * @see caretaker/trunk/services/tx_caretaker_TestServiceBase#getValueDescription()
+	 * Value Description
+	 * @var string
 	 */
-	public function getValueDescription(){
-		return "Micro seconds";
-	}	
+	protected $valueDescription = 'Milliseconds';
 
 	/**
 	 * (non-PHPdoc)
@@ -71,11 +69,11 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		list ($http_status, $time, $response) = $this->executeCurlRequest($request_url, $time_error, $request_method, $request_data);
 		
 		if ($time_error && $time > $time_error ){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'HTTP-Request took '.$time.' miliseconds. :: '.$request_url );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'HTTP-Request took '.$time.' '.$this->valueDescription.'. :: '.$request_url );
 		}
 		
 		if ($time_warning && $time > $time_warning ){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'HTTP-Request took '.$time.' miliseconds. :: '.$request_url );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'HTTP-Request took '.$time.' '.$this->valueDescription.'. :: '.$request_url );
 		}
 		
 		if ($http_status == $expected_code){
