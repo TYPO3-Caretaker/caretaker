@@ -11,7 +11,7 @@
 
 
 .tx_caretaker_node_info {padding:5px;}
-.tx_caretaker_node_info_state_OK        { color:#0f0; }
-.tx_caretaker_node_info_state_WARNING   { color:#ff0; }
-.tx_caretaker_node_info_state_ERROR     { color:#f00; }
-.tx_caretaker_node_info_state_UNDEFINED { color:#999; }
+.tx_caretaker_node_info_state_OK        { color:green; }
+.tx_caretaker_node_info_state_WARNING   { color:orange; }
+.tx_caretaker_node_info_state_ERROR     { color:red; }
+.tx_caretaker_node_info_state_UNDEFINED { color:gray; }
