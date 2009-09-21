@@ -13,7 +13,7 @@ class tx_caretaker_treeloader {
 		
 		$ajaxObj->setContent($result['children']);
 
-		$ajaxObj->setContentFormat('json');
+		$ajaxObj->setContentFormat('jsonbody');
 	}
 	
 	protected function nodeToArray($node, $level = 0) {
