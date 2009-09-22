@@ -37,8 +37,8 @@
 			<label index="tx_caretaker_instance.title">Name</label>
 			<label index="tx_caretaker_instance.description">Description</label>
 			<label index="tx_caretaker_instance.instancegroup">Instancegroup</label>
-			<label index="tx_caretaker_instance.url">Instance URL</label>
-			<label index="tx_caretaker_instance.host">Hostname</label>
+			<label index="tx_caretaker_instance.url">Instance URL (http://www.domain.com/)</label>
+			<label index="tx_caretaker_instance.host">Hostname (www.domain.com)</label>
 			<label index="tx_caretaker_instance.groups">Testgroups assigned to this instance</label>
 			<label index="tx_caretaker_instance.tests">Tests assigned to this instance</label>
 			<label index="tx_caretaker_instance.public_key">Public Key of Instance</label>
