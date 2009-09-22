@@ -128,7 +128,7 @@ tx.caretaker.overview_application = function() {
 
     tx.caretaker.editNode = function (){
         if (tx.caretaker.node_info.type_lower != 'root'){
-            var url = tx.caretaker.path_typo3 + 'alt_doc.php?edit[tx.caretaker.' + tx.caretaker.node_info.type_lower + '][' + tx.caretaker.node_info.uid + ']=edit&returnUrl=' + tx.caretaker.back_url;
+            var url = tx.caretaker.path_typo3 + 'alt_doc.php?edit[tx_caretaker_' + tx.caretaker.node_info.type_lower + '][' + tx.caretaker.node_info.uid + ']=edit&returnUrl=' + tx.caretaker.back_url;
             window.location.href = url;
         } else {
             Ext.MessageBox.alert('Sorry', 'The root node cannot be edited!');
@@ -137,7 +137,7 @@ tx.caretaker.overview_application = function() {
 
     tx.caretaker.enableNode = function() {
         if (tx.caretaker.node_info.hidden == 1 && tx.caretaker.node_info.type_lower != 'root'){
-            var url = tx.caretaker.path_typo3 + 'tce_db.php?&data[tx.caretaker.' + tx.caretaker.node_info.type_lower + '][' + tx.caretaker.node_info.uid + '][hidden]=0&redirect=' + tx.caretaker.back_url;
+            var url = tx.caretaker.path_typo3 + 'tce_db.php?&data[tx_caretaker_' + tx.caretaker.node_info.type_lower + '][' + tx.caretaker.node_info.uid + '][hidden]=0&redirect=' + tx.caretaker.back_url;
             window.location.href = url;
         } else {
             Ext.MessageBox.alert('Sorry', 'The node is already enabled');
@@ -146,7 +146,7 @@ tx.caretaker.overview_application = function() {
 
     tx.caretaker.disableNode = function() {
         if (tx.caretaker.node_info.hidden == 0 && tx.caretaker.node_info.type_lower != 'root'){
-            var url = tx.caretaker.path_typo3 + 'tce_db.php?&data[tx.caretaker.' + tx.caretaker.node_info.type_lower + '][' + tx.caretaker.node_info.uid + '][hidden]=1&redirect=' + tx.caretaker.back_url;
+            var url = tx.caretaker.path_typo3 + 'tce_db.php?&data[tx_caretaker_' + tx.caretaker.node_info.type_lower + '][' + tx.caretaker.node_info.uid + '][hidden]=1&redirect=' + tx.caretaker.back_url;
             window.location.href = url;
         } else {
             Ext.MessageBox.alert('Sorry', 'The node is already hidden');
