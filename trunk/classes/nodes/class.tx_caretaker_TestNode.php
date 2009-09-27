@@ -314,6 +314,32 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 			return 'unknown service '.$this->test_service_type;
 		}
 	}
+
+        /**
+         * Get the number of available Test Results
+         *
+         * @return integer
+         */
+        public function getTestResultNumber(){
+            $instance  = $this->getInstance();
+            $test_result_repository = tx_caretaker_TestResultRepository::getInstance();
+            $resultNumber = $test_result_repository->getResultNumberByInstanceAndTest($instance, $this);
+            return $resultNumber;
+        }
+
+        /**
+	 * Get the TestResultRange for the Offset and Limit
+         *
+	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
+	 * @param $graph True by default. Used in the resultrange repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
+	 */
+	public function getTestResultRangeByOffset($offset=0, $limit=10){
+		$instance  = $this->getInstance();
+		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
+		$resultRange = $test_result_repository->getResultRangeByInstanceAndTestAndOffset($instance, $this , $offset, $limit);
+		return $resultRange;
+	}
 }
+
 
 ?>

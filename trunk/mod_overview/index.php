@@ -120,7 +120,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 				tx.caretaker.path_typo3 = "'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'typo3/";
 
 				Ext.onReady( function(){
-					tx.caretaker.overview_application();
+					tx.caretaker.overview();
 				});
 
 			');

@@ -5,23 +5,25 @@
 
 Ext.namespace('tx','tx.caretaker');
 
-tx.caretaker.overview_application = function() {
+tx.caretaker.overview = function() {
 
-    tx.caretaker.node_information = new Ext.Panel({
+
+
+   var node_information = new Ext.Panel({
         id              : "node-info",
         html            : "node info",
         autoHeight      : true,
         autoLoad        : tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + tx.caretaker.node_info.id
     });
 
-    tx.caretaker.node_children = new Ext.Panel ({
+   var node_children = new Ext.Panel ({
         id              : "node-children",
         title           : "Node Children",
         html            : "foo",
         autoHeight      : true
     });
 
-    tx.caretaker.node_charts = new Ext.TabPanel ({
+    var node_charts = new Ext.TabPanel ({
         activeTab       : 0,
         id              : "node-charts",
         enableTabScroll : true,
@@ -50,19 +52,85 @@ tx.caretaker.overview_application = function() {
         ]
     });
 
-    tx.caretaker.node_log = new Ext.Panel ({
+    // create the Data Store
+    var nodelog_store = new Ext.data.JsonStore({
+        root: 'logItems',
+        totalProperty: 'totalCount',
+        idProperty: 'timestamp',
+        remoteSort: false,
+        fields: [
+            'num',
+            'title',
+            {name: 'timestamp', mapping: 'timestamp', type: 'date', dateFormat: 'timestamp'},
+            'stateinfo',
+            'message',
+            'state'
+        ],
+        proxy: new Ext.data.HttpProxy({
+            url: tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodelog&node=' + tx.caretaker.node_info.id
+        })
+    });
+    
+    // nodelog_store.setDefaultSort('lastpost', 'desc');
+
+    var node_log = new Ext.grid.GridPanel({
+        collapsed: true,
+        collapsible: true,
+        title:'Log',
+        store: nodelog_store,
+        trackMouseOver:false,
+        disableSelection:true,
+        loadMask: true,
+
+        // grid columns
+        columns:[{
+            header: "timestamp",
+            dataIndex: 'timestamp'
+        },{
+            header: "stateinfo",
+            dataIndex: 'stateinfo'
+        },{
+            header:'message',
+            dataIndex: 'message'
+        }],
+        
+        // customize view config
+        viewConfig: {
+            forceFit:true,
+            enableRowBody:true,
+            showPreview:true
+        },
+
+        // paging bar on the bottom
+        bbar: new Ext.PagingToolbar({
+            pageSize: 10,
+            store: nodelog_store,
+            displayInfo: true,
+            displayMsg: 'Displaying topics {0} - {1} of {2}',
+            emptyMsg: "No topics to display"
+        })
+    });
+
+
+    // trigger the data store load
+    nodelog_store.load({params:{start:0, limit:10}}); 
+
+/*
+
+    var node_log = new Ext.Panel ({
             id              : "node-log",
             title           : "Log",
             html            : "soon to come with a fancy ExtJS GridPanel",
             autoHeight      : true,
             collapsible     : true
     });
+*/
 
-    tx.caretaker.refreschNode = function (){
+    var refreschNode = function (){
         Ext.Ajax.request({
            url: tx.caretaker.back_path + 'ajax.php',
-           success: tx.caretaker.refreschSuccessMessage,
-           failure: tx.caretaker.refreschFailureMessage,
+           success: refreschSuccessMessage,
+           failure: refreschFailureMessage,
            params: { 
                ajaxID: 'tx_caretaker::noderefresh',
                node:   tx.caretaker.node_info.id,
@@ -71,11 +139,11 @@ tx.caretaker.overview_application = function() {
         });
     };
 
-    tx.caretaker.refreschNodeForced = function (){
+    var refreschNodeForced = function (){
          Ext.Ajax.request({
            url: tx.caretaker.back_path + 'ajax.php',
-           success: tx.caretaker.refreschSuccessMessage,
-           failure: tx.caretaker.refreschFailureMessage,
+           success: refreschSuccessMessage,
+           failure: refreschFailureMessage,
            params: {
                ajaxID: 'tx_caretaker::noderefresh',
                node:   tx.caretaker.node_info.id,
@@ -86,19 +154,19 @@ tx.caretaker.overview_application = function() {
         // Ext.Ajax.on('requestexception', this.refreschSuccessMessage, tx.caretaker);
     };
 
-    tx.caretaker.refreschSuccessMessage = function (response, opts){
-        tx.caretaker.showUpdateLog(response.responseText);
+    var refreschSuccessMessage = function (response, opts){
         var node_info_panel = Ext.getCmp('node-info');
         node_info_panel.load( tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + tx.caretaker.node_info.id);
+        showUpdateLog(response.responseText);
     }
     
-    tx.caretaker.refreschFailureMessage = function (response, opts){
-        tx.caretaker.showUpdateLog(response.responseText)
+    var refreschFailureMessage = function (response, opts){
         var node_info_panel = Ext.getCmp('node-info');
         node_info_panel.load( tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + tx.caretaker.node_info.id);
+        showUpdateLog(response.responseText);
     }
 
-    tx.caretaker.showUpdateLog = function(log){
+    var showUpdateLog = function(log){
 
         var win = new Ext.Window({
             autoHeight  : true,
@@ -126,7 +194,7 @@ tx.caretaker.overview_application = function() {
         win.show();
     }
 
-    tx.caretaker.editNode = function (){
+    var editNode = function (){
         if (tx.caretaker.node_info.type_lower != 'root'){
             var url = tx.caretaker.path_typo3 + 'alt_doc.php?edit[tx_caretaker_' + tx.caretaker.node_info.type_lower + '][' + tx.caretaker.node_info.uid + ']=edit&returnUrl=' + tx.caretaker.back_url;
             window.location.href = url;
@@ -135,7 +203,7 @@ tx.caretaker.overview_application = function() {
         }
     };
 
-    tx.caretaker.enableNode = function() {
+    var enableNode = function() {
         if (tx.caretaker.node_info.hidden == 1 && tx.caretaker.node_info.type_lower != 'root'){
             var url = tx.caretaker.path_typo3 + 'tce_db.php?&data[tx_caretaker_' + tx.caretaker.node_info.type_lower + '][' + tx.caretaker.node_info.uid + '][hidden]=0&redirect=' + tx.caretaker.back_url;
             window.location.href = url;
@@ -144,7 +212,7 @@ tx.caretaker.overview_application = function() {
         }
     };
 
-    tx.caretaker.disableNode = function() {
+    var disableNode = function() {
         if (tx.caretaker.node_info.hidden == 0 && tx.caretaker.node_info.type_lower != 'root'){
             var url = tx.caretaker.path_typo3 + 'tce_db.php?&data[tx_caretaker_' + tx.caretaker.node_info.type_lower + '][' + tx.caretaker.node_info.uid + '][hidden]=1&redirect=' + tx.caretaker.back_url;
             window.location.href = url;
@@ -159,50 +227,53 @@ tx.caretaker.overview_application = function() {
                     {
                             text    : "Refresh",
                             icon    : "../res/icons/arrow_refresh_small.png",
-                            handler : tx.caretaker.refreschNode
+                            handler : refreschNode
                     },
                     {
                             text    : "Refresh forced",
                             icon    : "../res/icons/arrow_refresh.png",
-                            handler : tx.caretaker.refreschNodeForced
+                            handler : refreschNodeForced
                     },
                     "-",
                     {
                             text    : "Edit",
                             icon    : "../res/icons/pencil.png",
                             disabled: (tx.caretaker.node_info.type_lower=='root')?true:false,
-                            handler :  tx.caretaker.editNode
+                            handler : editNode
                     },
                     "->",
                     {
                             text    : "Enable",
                             disabled: (tx.caretaker.node_info.hidden==0 || tx.caretaker.node_info.type_lower=='root')?true:false,
                             icon    : "../res/icons/lightbulb.png",
-                            handler : tx.caretaker.enableNode
+                            handler : enableNode
                     },
                     {
                             text    : "Disable",
                             icon    : "../res/icons/lightbulb_off.png",
                             disabled: (tx.caretaker.node_info.hidden==1 || tx.caretaker.node_info.type_lower=='root')?true:false,
-                            handler : tx.caretaker.disableNode
+                            handler : disableNode
                     }
 
             ]
     });
 
-    tx.caretaker.view = new Ext.Viewport({
+    var view = new Ext.Viewport({
             layout: "fit",
             items: {
                     xtype    : "panel",
                     id       : "node",
+                    autoScroll: true,
                     title    : '' +  tx.caretaker.node_info.title + ' (' + tx.caretaker.node_info.type + ')' ,
                     iconCls  : "icon-caretaker-type-" + tx.caretaker.node_info.type_lower,
                     tbar     : tx.caretaker.node_toolbar,
                     items    : [
-                        tx.caretaker.node_information,
-                        tx.caretaker.node_charts,
-                        //tx.caretaker.node_children,
-                        //tx.caretaker.node_log
+                        node_information ,
+                        node_charts,
+                        node_log
+                        
+                        // node_children,
+                        // node_log
                     ]
             }
     });

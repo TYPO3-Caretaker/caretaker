@@ -85,7 +85,52 @@ class tx_caretaker_TestResultRepository {
 			return new tx_caretaker_TestResult();
 		} 		
 	}
-	
+
+        /**
+         * Return the Number of available TestResults
+         * 
+         * @param tx_caretaker_Instance $instance
+         * @param tx_caretaker_Test $test
+         * @return integer
+         */
+        public function getResultNumberByInstanceAndTest($instance, $test){
+        	$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 'COUNT(*) AS number', 'tx_caretaker_testresult', 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid(), '', '', '1'  );
+                $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+                
+                if ($row) {
+                    return ( (int) $row['number'] );
+                } else {
+                    return 0;
+                }
+        }
+
+        /**
+         * Get a List of Testresults defined by Offset and Limit
+         *
+         * @param tx_caretaker_Instance $instance
+         * @param tx_caretaker_Test $test
+         * @param integer $offset
+         * @param integer $limit
+         * @return tx_caretaker_TestResultRange
+         */
+        public function getResultRangeByInstanceAndTestAndOffset($instance, $test, $offset=0, $limit=10){
+		$result_range = new tx_caretaker_TestResultRange(NULL, NULL);
+		$base_condition = 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid().' ';
+
+		$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', $base_condition, '', 'tstamp DESC' , (int)$offset.','.(int)$limit);
+
+		$last = 0;
+
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
+			$result = $this->dbrow2instance($row);
+			$result_range->addResult($result);
+		}
+
+		return $result_range;
+            
+        }
+
 	/**
 	 * Get the ResultRange for the given Instance Test and the timerange 
 	 * 

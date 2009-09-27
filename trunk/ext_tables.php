@@ -151,7 +151,6 @@ if (TYPO3_MODE=="BE")	{
 
 	t3lib_extMgm::addModule("txcaretakerNav","","",t3lib_extMgm::extPath($_EXTKEY)."mod_nav/");
 	t3lib_extMgm::addModule("txcaretakerNav","txcaretakerOverview","",t3lib_extMgm::extPath($_EXTKEY)."mod_overview/");
-	t3lib_extMgm::addModule("txcaretakerNav","txcaretakerLog","",t3lib_extMgm::extPath($_EXTKEY)."mod_log/");
 	
 	if (isset($TBE_MODULES['file']) ){
 		$caretaker_modconf = $TBE_MODULES['txcaretakerNav'];

@@ -16,10 +16,10 @@ tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 't
 
 // Add eID script for caretaker tree loader
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::treeloader']  = 'EXT:caretaker/mod_nav/class.tx_caretaker_treeloader.php:tx_caretaker_treeloader->ajaxLoadTree';
-$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodeinfo']    = 'EXT:caretaker/classes/ajax/class.tx_caretaker_nodeinfo.php:tx_caretaker_nodeinfo->ajaxGetNodeInfo';
-$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::noderefresh'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_nodeinfo.php:tx_caretaker_nodeinfo->ajaxRefreshNode';
-$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodegraph'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_nodeinfo.php:tx_caretaker_nodeinfo->ajaxGetNodeGraph';
-
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodeinfo']    = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeInfo';
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::noderefresh'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxRefreshNode';
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodegraph']   = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeGraph';
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodelog']     = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeLog';
 
 	// Register scheduler tasks for caretaker
 $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TestrunnerTask'] = array(

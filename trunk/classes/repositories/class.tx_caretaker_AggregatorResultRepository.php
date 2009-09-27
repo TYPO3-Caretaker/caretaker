@@ -146,7 +146,60 @@ class tx_caretaker_AggregatorResultRepository {
 		
 		return $result_range; 
 	}
-	
+
+        /**
+         *
+         * @param tx_caretaker_AggregatorNode $node
+         * @return integer
+         */
+        public function getResultNumberByNode ($node){
+          	$instance = $node->getInstance();
+		if ($instance) {
+			$instanceUid = $instance->getUid();
+		}else {
+			$instanceUid = 0;
+		}
+
+		$nodeType = $node->getType();
+		$nodeUid  = $node->getUid();
+
+		$base_condition = 'aggregator_uid='.$nodeUid.' AND aggregator_type="'.$nodeType.'" AND instance_uid='.$instanceUid;
+
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 'COUNT(*) AS number', 'tx_caretaker_aggregatorresult', $base_condition, '', '', 1  );
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+                
+                if ($row){
+                    return $row['number'];
+                } else {
+                    return 0;
+		}
+
+        }
+
+        public function getResultRangeByNodeAndOffset($node, $offset=0, $limit=10 ){
+		$result_range = new tx_caretaker_AggregatorResultRange(NULL, NULL);
+
+		$instance = $node->getInstance();
+		if ($instance) {
+			$instanceUid = $instance->getUid();
+		}else {
+			$instanceUid = 0;
+		}
+
+		$nodeType = $node->getType();
+		$nodeUid  = $node->getUid();
+
+		$base_condition = 'aggregator_uid='.$nodeUid.' AND aggregator_type="'.$nodeType.'" AND instance_uid='.$instanceUid;
+
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_aggregatorresult', $base_condition, '', 'tstamp ASC', (int)$offset.','.(int)$limit  );
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
+			$result = $this->dbrow2instance($row);
+			$result_range->addResult($result);
+                }
+
+
+		return $result_range;
+	}
 
 	/**
 	 * Save Aggregator Result to the DB

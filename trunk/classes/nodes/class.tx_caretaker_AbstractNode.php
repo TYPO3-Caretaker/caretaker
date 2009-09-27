@@ -221,6 +221,20 @@ abstract class tx_caretaker_AbstractNode {
 	 */
 	abstract public function getTestResultRange($startdate, $stopdate);
 	
+        /**
+         * @return interger Number of available Testresults
+         */
+        abstract public function getTestResultNumber();
+
+
+        /**
+         * Get Test Result Objects
+         *
+         * @param integer $offset
+         * @param integer $limit
+         */
+        abstract public function getTestResultRangeByOffset($offset=0, $limit=10);
+
 	
 	/*
 	 * Logging Methods
