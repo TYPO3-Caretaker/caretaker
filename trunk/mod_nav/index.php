@@ -82,6 +82,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->cssFiles = array(
 				'extJS' => '/contrib/extjs/resources/css/ext-all.css',
 				'extJS-gray' => '/contrib/extjs/resources/css/xtheme-gray.css',
+				'extJS-typo3' => '/sysext/t3skin/extjs/xtheme-t3skin.css',
 				'caretaker-nodetree' => '../res/css/tx.caretaker.nodetree.css'
 			);
 			foreach($this->jsFiles as $jsFile) {
