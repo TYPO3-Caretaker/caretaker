@@ -15,3 +15,11 @@
 .tx_caretaker_node_info_state_WARNING   { color:orange; }
 .tx_caretaker_node_info_state_ERROR     { color:red; }
 .tx_caretaker_node_info_state_UNDEFINED { color:gray; }
+
+
+.tx_caretaker_node_logrow {}
+.tx_caretaker_node_logrow_OK        .x-grid3-cell-inner{color:green;}
+.tx_caretaker_node_logrow_WARNING   .x-grid3-cell-inner{color:orange;}
+.tx_caretaker_node_logrow_ERROR     .x-grid3-cell-inner{color:red;}
+.tx_caretaker_node_logrow_UNDEFINED .x-grid3-cell-inner{color:grey;}
+

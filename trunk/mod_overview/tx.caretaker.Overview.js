@@ -27,8 +27,10 @@ tx.caretaker.overview = function() {
         activeTab       : 0,
         id              : "node-charts",
         enableTabScroll : true,
+		collapsible     : true,
         height          : 430,
         title           : "Chart",
+
         items:[
            {
                 title:'12 h',
@@ -81,7 +83,7 @@ tx.caretaker.overview = function() {
         trackMouseOver:false,
         disableSelection:true,
         loadMask: true,
-
+	
         // grid columns
         columns:[{
             header: "timestamp",
@@ -98,8 +100,23 @@ tx.caretaker.overview = function() {
         viewConfig: {
             forceFit:true,
             enableRowBody:true,
-            showPreview:true
+            showPreview:true,
+			getRowClass: function(record, index) {
+				var state = record.get('state');
+				switch (state) {
+					case 0:
+						return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_OK';
+					case 1:
+						return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_WARNING';
+					case 2:
+						return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_ERROR';
+					default:
+						return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_UNDEFINED';					
+				}
+			}
         },
+		
+  
 
         // paging bar on the bottom
         bbar: new Ext.PagingToolbar({
