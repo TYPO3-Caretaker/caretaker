@@ -33,19 +33,21 @@ class tx_caretaker_treeloader {
 		$result['type'] = strtolower($node->getType());
 		$result['id'] = $id;
 		$result['uid'] = $uid;
-		$result['hidden'] = $hidden;
+		$result['disabled'] = $hidden;
 		$result['text'] = $title;
 		$result['cls'] = $resultClass . ' ' . $typeClass;
 		$result['iconCls'] = 'icon-' . $typeClass . ($hidden ? '-hidden' : '');
 		
 			// show subitems of tx_caretaker_AggregatorNodes
 		if (is_a($node, 'tx_caretaker_AggregatorNode')) {
-			$result['children'] = array();
 			$children = $node->getChildren(true);
 			if (count($children) > 0) {
+				$result['children'] = array();
 				foreach($children as $child){
 					$result['children'][] = $this->nodeToArray($child, $level + 1) ;
 				}
+			} else {
+				$result['leaf'] = TRUE;
 			}
 		} else {
 			$result['leaf'] = TRUE;

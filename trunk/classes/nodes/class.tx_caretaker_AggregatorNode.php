@@ -64,7 +64,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 	 * @param $hidden
 	 * @return unknown_type
 	 */
-	abstract protected function findChildren($hidden=false);
+	abstract protected function findChildren($show_hidden=false);
 	
 	/**
 	 * Update Node Result and store in DB. 

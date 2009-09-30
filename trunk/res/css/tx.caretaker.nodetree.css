@@ -16,6 +16,9 @@
 	font-weight: bold;
 }
 
+.caretaker-state--1 .x-tree-node-anchor span {
+	color: gray;
+}
 .caretaker-state-0 .x-tree-node-anchor span {
 	color: green;
 }

@@ -209,7 +209,7 @@ class tx_caretaker_NodeRepository {
 	 * @param $show_hidden
 	 * @return unknown_type
 	 */
-	public function getInstanceByUid($uid, $parent = false, $show_hidden = FALSE){
+	public function getInstanceByUid($uid, $parent = FALSE, $show_hidden = FALSE){
 		$hidden = '';
 		if (!$show_hidden) {
 			$hidden = ' AND hidden=0 ';
@@ -231,7 +231,7 @@ class tx_caretaker_NodeRepository {
 	 * @param boolean $show_hidden
 	 * @return array
 	 */
-	public function getInstancesByInstancegroupUid($uid, $parent = false, $show_hidden = FALSE){
+	public function getInstancesByInstancegroupUid($uid, $parent = FALSE, $show_hidden = FALSE){
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tx_caretaker_instance', 'instancegroup = '.(int)$uid);
 		$result = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){

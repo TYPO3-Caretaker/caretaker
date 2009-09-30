@@ -40,7 +40,7 @@ require_once (t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx
 
 class tx_caretaker_RootNode extends tx_caretaker_AggregatorNode {
 
-	public function __construct( $hidden=0) {
+	public function __construct( $hidden=false) {
 		parent::__construct(0, 'Caretaker Root', false, 'Root', $hidden);
 	}
 	

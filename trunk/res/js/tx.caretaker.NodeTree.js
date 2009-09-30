@@ -89,7 +89,7 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
                 }, {
                 	id: 'tree-contextmenu-hide',
                 	// itemId: 'hide',
-                	text: 'Hide',
+                	text: 'Disable',
                 	iconCls: 'icon-hide',
                     handler: function() {
 	            		var node = this.getSelectionModel().getSelectedNode();
@@ -99,7 +99,7 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
                 }, {
                 	id: 'tree-contextmenu-unhide',
                 	// itemId: 'unhide',
-                	text: 'Unhide',
+                	text: 'Enable',
                 	iconCls: 'icon-unhide',
                     handler: function() {
 	            		var node = this.getSelectionModel().getSelectedNode();
@@ -114,7 +114,7 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
         	var editItem = Ext.getCmp('tree-contextmenu-edit');
         	var hideItem = Ext.getCmp('tree-contextmenu-hide');
         	var unhideItem = Ext.getCmp('tree-contextmenu-unhide');
-        	if (node.attributes.hidden) {
+        	if (node.attributes.disabled) {
         		hideItem.disable();
         		unhideItem.enable();
         	} else {
