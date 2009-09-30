@@ -186,6 +186,13 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 		var state = this.getState();
 		this.root.reload();
 		this.applyState(state);
+	},
+	reloadTreeDeferred: function(defer){
+		if (defer){
+			this.reloadTree.defer(defer, this);
+		}else{
+			this.reloadTree();
+		}
 	}
 });
 

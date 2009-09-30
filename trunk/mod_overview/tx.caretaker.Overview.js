@@ -5,6 +5,7 @@
 
 Ext.namespace('tx','tx.caretaker');
 
+
 tx.caretaker.overview = function() {
 
 
@@ -146,8 +147,8 @@ tx.caretaker.overview = function() {
     var refreschNode = function (){
         Ext.Ajax.request({
            url: tx.caretaker.back_path + 'ajax.php',
-           success: refreschSuccessMessage,
-           failure: refreschFailureMessage,
+           success: refreschSuccess,
+           failure: refreschFailure,
            params: { 
                ajaxID: 'tx_caretaker::noderefresh',
                node:   tx.caretaker.node_info.id,
@@ -159,8 +160,8 @@ tx.caretaker.overview = function() {
     var refreschNodeForced = function (){
          Ext.Ajax.request({
            url: tx.caretaker.back_path + 'ajax.php',
-           success: refreschSuccessMessage,
-           failure: refreschFailureMessage,
+           success: refreschSuccess,
+           failure: refreschFailure,
            params: {
                ajaxID: 'tx_caretaker::noderefresh',
                node:   tx.caretaker.node_info.id,
@@ -171,72 +172,89 @@ tx.caretaker.overview = function() {
         // Ext.Ajax.on('requestexception', this.refreschSuccessMessage, tx.caretaker);
     };
 
-    var refreschSuccessMessage = function (response, opts){
+    var refreschSuccess= function (response, opts){
         var node_info_panel = Ext.getCmp('node-info');
         node_info_panel.load( tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + tx.caretaker.node_info.id);
         showUpdateLog(response.responseText);
+		refreshTree();
     }
     
-    var refreschFailureMessage = function (response, opts){
+    var refreschFailure = function (response, opts){
         var node_info_panel = Ext.getCmp('node-info');
         node_info_panel.load( tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + tx.caretaker.node_info.id);
         showUpdateLog(response.responseText);
+		refreshTree();
     }
 
-    var showUpdateLog = function(log){
+	var showUpdateLog = function(log){
 
-        var win = new Ext.Window({
-            autoHeight  : true,
-            width       : 600,
-            modal       : true,                                                  // 1
-            title       : 'Refresh Node Log',
-            plain       : true,
-            border      : false,
-            resizable   : false,                                                 // 2
-            draggable   : false,                                                 // 3
-            closable    : false,                                                 // 4
-            buttonAlign : 'center',
-            items       : {
-                    xtype: "panel",
-                    autoHeight  : true,
-                    html : log
-                },
-            buttons     : [{
-                    text    : 'OK',
-                    handler : function() {
-                       win.close();
-                    }
-                }]
-        });
-        win.show();
-    }
+		var win = new Ext.Window({
+			autoHeight  : true,
+			width       : 600,
+			modal       : true,                                                  // 1
+			title       : 'Refresh Node Log',
+			plain       : true,
+			border      : false,
+			resizable   : false,                                                 // 2
+			draggable   : false,                                                 // 3
+			closable    : false,                                                 // 4
+			buttonAlign : 'center',
+			items       : {
+					xtype: "panel",
+					autoHeight  : true,
+					html : log
+				},
+			buttons     : [{
+					text    : 'OK',
+					handler : function() {
+					   win.close();
+					}
+				}]
+		});
+		win.show();
 
+	}
+	
+	var showUpdateLogTop = showUpdateLog.createDelegate(top);
+
+	
     var editNode = function (){
         if (tx.caretaker.node_info.type_lower != 'root'){
+			refreshTree(1000);
             var url = tx.caretaker.path_typo3 + 'alt_doc.php?edit[tx_caretaker_' + tx.caretaker.node_info.type_lower + '][' + tx.caretaker.node_info.uid + ']=edit&returnUrl=' + tx.caretaker.back_url;
             window.location.href = url;
         } else {
-            Ext.MessageBox.alert('Sorry', 'The root node cannot be edited!');
+             top.Ext.MessageBox.alert('Sorry', 'The root node cannot be edited!');
         }
     };
 
     var enableNode = function() {
         if (tx.caretaker.node_info.hidden == 1 && tx.caretaker.node_info.type_lower != 'root'){
+			refreshTree(1000);
             var url = tx.caretaker.path_typo3 + 'tce_db.php?&data[tx_caretaker_' + tx.caretaker.node_info.type_lower + '][' + tx.caretaker.node_info.uid + '][hidden]=0&redirect=' + tx.caretaker.back_url;
             window.location.href = url;
         } else {
-            Ext.MessageBox.alert('Sorry', 'The node is already enabled');
+            top.Ext.MessageBox.alert('Sorry', 'The node is already enabled');
         }
     };
 
     var disableNode = function() {
         if (tx.caretaker.node_info.hidden == 0 && tx.caretaker.node_info.type_lower != 'root'){
+			refreshTree(1000);
             var url = tx.caretaker.path_typo3 + 'tce_db.php?&data[tx_caretaker_' + tx.caretaker.node_info.type_lower + '][' + tx.caretaker.node_info.uid + '][hidden]=1&redirect=' + tx.caretaker.back_url;
             window.location.href = url;
         } else {
-            Ext.MessageBox.alert('Sorry', 'The node is already hidden');
+            top.Ext.MessageBox.alert('Sorry', 'The node is already hidden');
         }
     };
+
+	var refreshTree = function (defer){
+		if (top.content.nav_frame && top.content.nav_frame.tx.caretaker.view){
+			var cartaker_tree = top.content.nav_frame.tx.caretaker.view.get('cartaker-tree');
+			if (!defer) defer = false;
+			cartaker_tree.reloadTreeDeferred(defer);
+		}
+	}
 
     tx.caretaker.node_toolbar = new Ext.Toolbar ({
             layout : "toolbar",
