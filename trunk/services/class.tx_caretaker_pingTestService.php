@@ -56,8 +56,8 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 
 		if ($command) {
 			list ($returnCode, $message, $time) = $this->executeSystemCommand($command);
-			
-			if ($returnCode === 0) { 
+
+			if ($returnCode === 0) {
 				if ($time_error && $time > $time_error) {
 					return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, $time , 'Ping took '.$time.' '.$this->valueDescription);
 				}
@@ -112,12 +112,16 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 		$starttime = microtime(TRUE);
 		
 		$returnCode = FALSE;
-		$message = system($command, $returnCode);
+		$messages   = array();
+		$message    = '';
+
+		exec( $command , $messages , $returnCode );
+		$message = implode( chr(10) , $messages );
 		
 		$endtime = microtime(TRUE);
 		$time =  1000 * ($endtime - $starttime);
-		
-		return array($returnCode, $message, $time);
+
+		return array( $returnCode , $message , $time );
 	}
 
 }
