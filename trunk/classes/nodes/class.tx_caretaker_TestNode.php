@@ -315,17 +315,17 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		}
 	}
 
-        /**
-         * Get the number of available Test Results
-         *
-         * @return integer
-         */
-        public function getTestResultNumber(){
-            $instance  = $this->getInstance();
-            $test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-            $resultNumber = $test_result_repository->getResultNumberByInstanceAndTest($instance, $this);
-            return $resultNumber;
-        }
+	/**
+	 * Get the number of available Test Results
+	 *
+	 * @return integer
+	 */
+	public function getTestResultNumber(){
+		$instance  = $this->getInstance();
+		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
+		$resultNumber = $test_result_repository->getResultNumberByInstanceAndTest($instance, $this);
+		return $resultNumber;
+	}
 
         /**
 	 * Get the TestResultRange for the Offset and Limit
@@ -340,6 +340,4 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		return $resultRange;
 	}
 }
-
-
 ?>

@@ -113,16 +113,7 @@ abstract class tx_caretaker_AbstractNode {
 		$this->type   = $type;
 		$this->hidden = (boolean)$hidden;
 	}
-	
-	/**
-	 * Add a list of tt_address UIDs for Notification
-	 * @param $id_array
-	 * @return unknown_type
-	 */
-	public function setNotificationIds($notification_address_ids){
-		$this->notification_address_ids = $notification_address_ids;
-	}
-	
+
 	/**
 	 * Set the description
 	 * @param string $decription
@@ -130,7 +121,7 @@ abstract class tx_caretaker_AbstractNode {
 	public function setDescription($decription){
 		$this->description = $decription;
 	}
-
+	
 	/**
 	 * Get the uid
 	 * @return integer 
@@ -220,20 +211,20 @@ abstract class tx_caretaker_AbstractNode {
 	 * @return tx_caretaker_NodeResultRange
 	 */
 	abstract public function getTestResultRange($startdate, $stopdate);
-	
-        /**
-         * @return interger Number of available Testresults
-         */
-        abstract public function getTestResultNumber();
+
+	/**
+	 * @return interger Number of available Testresults
+	 */
+	abstract public function getTestResultNumber();
 
 
-        /**
-         * Get Test Result Objects
-         *
-         * @param integer $offset
-         * @param integer $limit
-         */
-        abstract public function getTestResultRangeByOffset($offset=0, $limit=10);
+	/**
+	 * Get Test Result Objects
+	 *
+	 * @param integer $offset
+	 * @param integer $limit
+	 */
+	abstract public function getTestResultRangeByOffset($offset=0, $limit=10);
 
 	
 	/*
@@ -267,35 +258,47 @@ abstract class tx_caretaker_AbstractNode {
 	}
 	
 	/*
-	 * Notification Methods
+	 * ###########################
+	 * ### Notification Methods ##
+	 * ###########################
 	 */
 
 	/**
+	 * Add a list of tt_address UIDs for Notification
+	 *
+	 * @param $id_array
+	 * @return unknown_type
+	 */
+	public function setNotificationIds($notification_address_ids){
+		$this->notification_address_ids = $notification_address_ids;
+	}
+
+	/**
+	 * Get the list of notifications
+	 *
+	 * @return array Array of tt_address uids
+	 */
+	public function getNotificationIds ($include_parent_notification_ids = false){
+		$notification_address_ids = $this->notification_address_ids;
+		if ($include_parent_notification_ids && $this->parent) {
+			$notification_address_ids = array_merge($notification_address_ids,  $this->parent->getNotificationIds($include_parent_notification_ids) );
+			$notification_address_ids = array_unique($notification_address_ids);
+		}
+		return $notification_address_ids;
+	}
+
+	/**
 	 * Set the current Notifier
-	 * 
+	 *
 	 * @param tx_caretaker_NotifierInterface $notifier
 	 */
 	public function setNotifier (tx_caretaker_NotifierInterface $notifier){
 		$this->notifier = $notifier;
 	}
-
-	/**
-	 * Add a Nofitcation 
-	 *  
-	 * @param integer $state
-	 * @param string $msg
-	 */
-	public function sendNotification( $state, $msg){
-		if ( count($this->notification_address_ids) > 0 ){ 
-			foreach($this->notification_address_ids as $notfificationId){
-				$this->notify( $notfificationId, $state, $this->type.' '.$this->title.'['.$this->uid.'] '.$msg, $this->description, tx_caretaker_Helper::node2id($this) );
-			}
-		}
-	}
 	
 	/**
 	 * Pass Notification to Notifier or Parent
-	 * 
+	 *
 	 * @param array $recipients
 	 * @param integer $state
 	 * @param string $msg
@@ -310,7 +313,20 @@ abstract class tx_caretaker_AbstractNode {
 		}
 	}
 
-
+	/**
+	 * Add a Nofitcation
+	 *
+	 * @param integer $state
+	 * @param string $msg
+	 */
+	public function sendNotification( $state, $msg){
+		$notification_address_ids = $this->getNotificationIds(true);
+		if ( count($notification_address_ids) > 0 ){
+			foreach($notification_address_ids as $notfificationId){
+				$this->notify( $notfificationId, $state, $this->type.' '.$this->title.'['.$this->uid.'] '.$msg, $this->description, tx_caretaker_Helper::node2id($this) );
+			}
+		}
+	}
 	
 }
 ?>
