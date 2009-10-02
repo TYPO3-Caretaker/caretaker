@@ -133,16 +133,6 @@ tx.caretaker.overview = function() {
     // trigger the data store load
     nodelog_store.load({params:{start:0, limit:10}}); 
 
-/*
-
-    var node_log = new Ext.Panel ({
-            id              : "node-log",
-            title           : "Log",
-            html            : "soon to come with a fancy ExtJS GridPanel",
-            autoHeight      : true,
-            collapsible     : true
-    });
-*/
 
     var refreschNode = function (){
         Ext.Ajax.request({
@@ -201,7 +191,8 @@ tx.caretaker.overview = function() {
 			buttonAlign : 'center',
 			items       : {
 					xtype: "panel",
-					autoHeight  : true,
+					maxHeight:400,
+					minHeight:60,
 					html : log
 				},
 			buttons     : [{
