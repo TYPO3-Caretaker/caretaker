@@ -148,7 +148,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @return array http-Status and time in Seconds
 	 */
 	protected function executeCurlRequest($request_url , $timeout=0, $request_method="GET" , $request_data="" ){
-		$starttime=microtime(true);
+		$starttime=microtime(TRUE);
 		
 		$curl = curl_init();
 		
@@ -181,10 +181,10 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		$info     = curl_getinfo($curl);
 		curl_close($curl);
 			
-		$endtime=microtime(true);
-		$time = $endtime-$starttime;
+		$endtime=microtime(TRUE);
+		$time = ($endtime-$starttime)*1000;
 		
-		return array ( $info['http_code'], $time*1000 ,$response);
+		return array ( $info['http_code'], $time ,$response);
 	}
 }
 

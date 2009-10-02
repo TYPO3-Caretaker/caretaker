@@ -119,7 +119,7 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 		$message = implode( chr(10) , $messages );
 		
 		$endtime = microtime(TRUE);
-		$time =  1000 * ($endtime - $starttime);
+		$time =  ($endtime - $starttime)*1000;
 
 		return array( $returnCode , $message , $time );
 	}
