@@ -179,8 +179,9 @@ tx.caretaker.overview = function() {
 	var showUpdateLog = function(log){
 
 		var win = new Ext.Window({
-			autoHeight  : true,
+			autoScroll  : true,
 			width       : 600,
+			height      : 200,
 			modal       : true,                                                  // 1
 			title       : 'Refresh Node Log',
 			plain       : true,
@@ -190,10 +191,8 @@ tx.caretaker.overview = function() {
 			closable    : false,                                                 // 4
 			buttonAlign : 'center',
 			items       : {
-					xtype: "panel",
-					maxHeight:400,
-					minHeight:60,
-					html : log
+					xtype : "panel",
+					html  : log
 				},
 			buttons     : [{
 					text    : 'OK',
