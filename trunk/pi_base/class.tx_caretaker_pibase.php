@@ -95,32 +95,8 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		$result = $node->getTestResult();
 		$data['state']       = $result->getState();
 		$data['state_info']  = $result->getStateInfo();
-		
-		if(TYPO3_MODE=='FE') {
-			
-			/* @var $lcObj tslib_cObj */
-			$lcObj = t3lib_div::makeInstance('tslib_cObj');
-			$data['state_show'] = $lcObj->TEXT(array('data' => 'LLL:EXT:caretaker/pi_singleview/locallang.xml:'.strtolower($result->getStateInfo())));
-			
-		} else {
-			
-			/* @var $LANG language */
-			$LANG = t3lib_div.makeInstance('language');
-			$LANG->init($BE_USER->uc['lang']);
-			$data['state_show'] = $LANG->getLLL(strtolower($result->getStateInfo()), $LANG->readLLfile(t3lib_div::getFileAbsFileName('EXT:caretaker_/pi_singleview/locallang.xml')));
-		}
-		
-		$message = unserialize($result->getMsg());
-		
-		if($message) {
-			
-			$data['state_msg'] = $this->aggregateMessage($message);
-			
-		} else {
-		
-			$data['state_msg']   = $result->getMsg();
-		}
-		
+		$data['state_show']  = $result->getLocallizedStateInfo();
+		$data['state_msg']   = $result->getLocallizedMessage();
 		$data['state_tstamp']= $result->getTstamp();
 		
 		if(is_a($result, 'tx_caretaker_TestResult')) {
@@ -135,43 +111,6 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		
 		$data['link_parameters'] = '&tx_caretaker_pi_singleview[id]='.tx_caretaker_Helper::node2id($node);
 		return $data;
-	}
-	
-	private function aggregateMessage($msgArray) {
-		
-		$message = '';
-		
-		foreach($msgArray as $resultMessage) {
-			
-			if(substr($resultMessage[0], 0, 3) == 'LLL') {
-				
-				/* @var $lcObj tslib_cObj */
-				$lcObj = t3lib_div::makeInstance('tslib_cObj');
-				$msg = $lcObj->TEXT(array('data' => $resultMessage[0]));
-				$msg = str_replace('###BROWSER###', $resultMessage[2], $msg);
-				$msg = str_replace('###MESSAGE###', $resultMessage[3], $msg);
-				$msg = str_replace('###TIME###', round($resultMessage[4], 2), $msg);
-				$msg = str_replace('###TIME_UNIT###', substr($resultMessage[5], 0, 3) == 'LLL' ? $lcObj->TEXT(array('data' => $resultMessage[5])) : $resultMessage[5], $msg);
-				
-				if(isset($resultMessage[6])) {
-					
-					$msg = str_replace('###TIME_LIMIT###', $resultMessage[6], $msg);
-				}
-				
-			} else {
-				
-				$msg = $resultMessage[0];
-			}
-			
-			for($i = 8; $i < count($resultMessage); $i++) {
-				
-				$msg = str_replace('###VALUE_'.$i.'###',$resultMessage[$i], $msg);
-			}
-			
-			$message .= $msg;
-		}
-		
-		return $message;
 	}
 	
 }
