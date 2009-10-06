@@ -59,17 +59,17 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 
 			if ($returnCode === 0) {
 				if ($time_error && $time > $time_error) {
-					return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, $time , 'Ping took '.$time.' '.$this->valueDescription);
+					return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' );
 				}
 				if ($time_warning && $time > $time_warning) {
-					return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_WARNING, $time , 'Ping took '.$time.' '.$this->valueDescription);
+					return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_WARNING, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' );
 				} 
-				return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_OK, $time , 'Ping took '.$time.' '.$this->valueDescription);
+				return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_OK, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' ) ;
 			} else {
-				return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, $time , 'Ping (' . $command . ') failed: ' . $message);
+				return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_error', array('value'=>array('command'=>$command, 'message'=>$message) )  );
 			}
 		} else {
-			return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, 0 , 'CLI Ping-Command must be configured in ExtConf');
+			return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, 0 , 'LLL:EXT:caretaker/locallang_fe.xml:ping_no_command_template');
 		}
 	}
 	

@@ -194,7 +194,7 @@ class tx_caretaker_TestResultRepository {
 	 * @return tx_caretaker_TestResult
 	 */
 	private function dbrow2instance($row){
-		$instance = new tx_caretaker_TestResult($row['tstamp'], $row['result_status'], $row['result_value'], $row['result_msg']);
+		$instance = new tx_caretaker_TestResult($row['tstamp'], $row['result_status'], $row['result_value'], $row['result_msg'], unserialize( $row['result_infos'] ));
 		return $instance; 
 	}
 	
@@ -229,6 +229,7 @@ class tx_caretaker_TestResultRepository {
 			'result_status' => $test_result->getState(),
 			'result_value'  => $test_result->getValue(),
 			'result_msg'    => $test_result->getMsg(),
+			'result_infos'  => serialize( $test_result->getInfoArray() )
 		);
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_caretaker_testresult', 'uid='.$uid, $values);
 	}

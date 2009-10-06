@@ -44,6 +44,12 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	 * @var float
 	 */
 	protected $value=0;
+	
+	/**
+	 * Info array [values=>[foo=>123,bar=>baz],details[[message=>foo,values=[bar=baz] ] ] ]
+	 * @var Array;
+	 */
+	protected $info_array=false;
 
 	/**
 	 * Constructor 
@@ -52,10 +58,12 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	 * @param integer $state
 	 * @param float   $value
 	 * @param string  $message
+	 * @param array   $info
 	 */
-	public function __construct ($timestamp = 0, $state=TX_CARETAKER_STATE_UNDEFINED, $value=0, $message=''){
+	public function __construct ($timestamp = 0, $state=TX_CARETAKER_STATE_UNDEFINED, $value=0, $message='', $info_array=false){
 		parent::__construct($timestamp, $state, $message);
 		$this->value   = $value;
+		$this->info_array   = $info_array;
 	}
 	
 	/**
@@ -73,12 +81,12 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	 * 
 	 * @param integer $status
 	 * @param float   $value
-	 * @param string  $comment
+	 * @param string  $message
 	 * @return tx_caretaker_TestResult
 	 */
-	static public function create($status=TX_CARETAKER_STATE_UNDEFINED, $value=0, $comment=''){
+	static public function create($status=TX_CARETAKER_STATE_UNDEFINED, $value=0, $message='' , $info_array=false ){
 		$ts = time();
-		return new tx_caretaker_TestResult($ts, $status, $value, $comment);
+		return new tx_caretaker_TestResult($ts, $status, $value, $message, $info_array) ;
 	}
 	
 	/**
@@ -89,8 +97,62 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	public function getValue(){
 		return $this->value;
 	}
-	
 
+	/**
+	 * Return the Info Array if any is found
+	 *
+	 * @return array
+	 */
+	public function getInfoArray(){
+		return $this->info_array;
+	}
+
+	
+	/**
+	 *
+	 */
+	public function getLocallizedMessage(){
+
+		$message = parent::getLocallizedMessage();
+
+			// add value to marker ###VALUE###
+		if (strpos($message,'###VALUE###')!== false )
+			$message = str_replace( '###VALUE###' , $this->value , $message );
+
+			// add values to ###VALUE_XXX### markers
+		$info_array = $this->getInfoArray();
+		if ($info_array && $info_array['values'] ){
+			foreach ($info_array['values'] as $key=>$value){
+				$marker = '###VALUE_'.strtoupper($key).'###';
+				if (strpos($message,$marker)!== false ) $message = str_replace($marker, $value, $message);
+			}
+		}
+
+			// add details
+		if ($info_array && $info_array['details'] ){
+			foreach ($info_array['details'] as $detail){
+				if (is_array($detail)){
+					$detail_line = $detail['message'];
+					$detail_line = $this->locallizeString($detail_line);
+					foreach ($detail['values'] as $key=>$value){
+						$marker = '###VALUE_'.strtoupper($key).'###';
+						if (strpos($detail_line,$marker)!== false ) $detail_line = str_replace($marker, $value, $detail_line);
+					}
+				} else {
+					$detail_line = $detail;
+				}
+				$detail_array[] = $detail_line;
+			}
+			
+			if (count($detail_array)){
+				$message .= chr(10).'  '.implode( chr(10).'  ' , $detail_array);
+			}
+		}
+
+		
+		return $message;
+
+	}
 
 }
 

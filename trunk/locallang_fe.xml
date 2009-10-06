@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for plugin caretaker single view</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="state">State</label>
+			<label index="lastRun">Date</label>
+			<label index="value">Value</label>
+			<label index="message">Message</label>
+			<label index="children">Children</label>
+			<label index="24hours">24 hours</label>
+			<label index="7days">7 days</label>
+			<label index="30days">30 days</label>
+			<label index="times">Times</label>
+			<label index="values">Values</label>
+			<label index="date">Date</label>
+			<label index="state_ok">OK</label>
+			<label index="state_warning">Warning</label>
+			<label index="state_error">Error</label>
+			<label index="state_undefined">Undefined</label>
+			<label index="available">available</label>
+			<label index="description">Description</label>
+			<label index="lastRunHeader">Last run:</label>
+
+			<label index="ping_info">Ping command took ###VALUE### milliseconds</label>
+			<label index="ping_error">Ping command (###VALUE_COMMAND###) failed with Message: ###VALUE_RESULT### </label>
+			<label index="ping_no_command_template">Ping command template must be configured in tx_caretaker extension configuration.</label>
+
+			<label index="http_no_query">No HTTP-Code or no query was set</label>
+			<label index="http_info">HTTP-Request of URL ###VALUE_URL### took ###VALUE### milliseconds and returned State ###VALUE_STATUS###</label>
+			<label index="http_error">Returned Status ###VALUE_STATUS### does not match expected state ###VALUE_EXPECTED### ###VALUE_URL###</label>
+			
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="state">Status</label>
+			<label index="lastRun">Datum</label>
+			<label index="value">Messwert</label>
+			<label index="message">Meldung</label>
+			<label index="children">Gruppenelemente</label>
+			<label index="24hours">24 Stunden</label>
+			<label index="7days">7 Tage</label>
+			<label index="30days">30 Tage</label>
+			<label index="times">Zeiten</label>
+			<label index="values">Werte</label>
+			<label index="date">Datum</label>
+			<label index="state_ok">OK</label>
+			<label index="state_warning">Warnung</label>
+			<label index="state_error">Fehler</label>
+			<label index="state_undefined">Undefiniert</label>
+			<label index="available">verfügbar</label>
+			<label index="description">Beschreibung</label>
+			<label index="lastRunHeader">Letzter Lauf:</label>
+
+			<label index="ping_info">Ping dauerte ###VALUE### Millisekunden</label>
+			<label index="ping_error">Das Ping Kommando (###VALUE_COMMAND###) konnte nicht ausgeführt werden. Fehler: ###VALUE_RESULT### </label>
+			<label index="ping_no_command_template">Das Ping Kommandotemplate muss in der Extension Konfiguration definiert werden.</label>
+
+			<label index="http_no_query">Kein HTTP-Status-Code oder kein Query wurde eingegeben</label>
+			<label index="http_info">Der HTTP-Request der URL ###VALUE_URL### dauerte ###VALUE### Millisekunden und gab Status-Code ###VALUE_STATUS### zurück</label>
+			<label index="http_error">Der zurückgebene Status ###VALUE_STATUS### entspricht nicht dem erwarteten Wert ###VALUE_EXPECTED### ###VALUE_URL###</label>
+			
+		</languageKey>
+	</data>
+</T3locallang>

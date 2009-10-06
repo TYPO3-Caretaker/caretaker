@@ -51,36 +51,43 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 */
 	function runTest() {
 		
-		$time_warning  = $this->getTimeWarning();
-		$time_error    = $this->getTimeError();
-		$expected_code = $this->getExpectedReturnCode();
-		$request_query = $this->getRequestQuery();
-		$request_method = $this->getRequestMethod();
-		$request_data = $this->getRequestData();
+		$time_warning    = $this->getTimeWarning();
+		$time_error      = $this->getTimeError();
+		$expected_status = $this->getExpectedReturnCode();
+		$request_query   = $this->getRequestQuery();
+		$request_method  = $this->getRequestMethod();
+		$request_data    = $this->getRequestData();
 		
 		$url           = $this->getInstanceUrl();
-		
 		$request_url   = $url.$request_query;
-		
-		if ( !($expected_code && $request_url)) { 
-	    	return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_UNDEFINED, 0 , 'No HTTP-Code or no query was set' );
+
+			// no query
+		if ( !($expected_status && $request_url)) {
+	    	return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_UNDEFINED, 0 , 'LLL:EXT:caretaker/locallang_fe.xml:http_no_query' );
 		}
-		
+
+			// execute query
 		list ($http_status, $time, $response) = $this->executeCurlRequest($request_url, $time_error, $request_method, $request_data);
-		
+		$info_array = array('values'=>array('url'=>$request_url, 'status'=>$http_status, 'expected' => $expected_status ) );
+
+
+			// ERROR
 		if ($time_error && $time > $time_error ){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'HTTP-Request took '.$time.' '.$this->valueDescription.'. :: '.$request_url );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'LLL:EXT:caretaker/locallang_fe.xml:http_info', $info_array  );
 		}
-		
+
+			// WARNING
 		if ($time_warning && $time > $time_warning ){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time , 'HTTP-Request took '.$time.' '.$this->valueDescription.'. :: '.$request_url );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time ,  'LLL:EXT:caretaker/locallang_fe.xml:http_info', $info_array );
 		}
-		
-		if ($http_status == $expected_code){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time , 'Status OK :: '.$request_url );
-		} else {
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'Returned Status '.$http_status.' does not match expected state '.$expected_code.' :: '.$request_url );
+
+			// OK
+		if ($http_status != $expected_status){
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'LLL:EXT:caretaker/locallang_fe.xml:http_error', $info_array  );
 		}
+
+			// ERROR wrong status code
+		return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time ,  'LLL:EXT:caretaker/locallang_fe.xml:http_info', $info_array );
 		
 	}
 	

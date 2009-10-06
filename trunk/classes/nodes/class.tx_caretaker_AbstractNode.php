@@ -243,17 +243,29 @@ abstract class tx_caretaker_AbstractNode {
 	/**
 	 * Add Message to Log
 	 * 
-	 * @param string $msg
+	 * @param string $message
 	 * @param boolean $add_node_info
 	 */
-	public function log($msg, $add_node_info=true){
+	public function log($message, $add_node_info=true){
 		if ($add_node_info){
-				$msg = ' +- '.$this->type.' '.$this->title.'['.$this->uid.'] '.$msg;
+			$indented_message = array();
+			foreach ( explode(chr(10), $message) as $number => $line ){
+				if ($number == 0){
+					$indented_message[] = ' +- '.$this->type.' '.$this->title.'['.$this->uid.'] '.$line;
+				} else {
+					$indented_message[] = '    '.$line;
+				}
+			}
+		} else {
+			$indented_message = Array($message);
 		}
-		if ($this->logger){
-			$this->logger->log($msg);
-		} else if ($this->parent) {
-			$this->parent->log(' | '.$msg , false);
+
+		foreach ($indented_message as $message){
+			if ($this->logger){
+				$this->logger->log($message);
+			} else if ($this->parent) {
+				$this->parent->log(' | '.$message , false);
+			}
 		}
 	}
 	
