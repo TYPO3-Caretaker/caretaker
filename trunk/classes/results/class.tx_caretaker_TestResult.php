@@ -139,7 +139,7 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 						if (strpos($detail_line,$marker)!== false ) $detail_line = str_replace($marker, $value, $detail_line);
 					}
 				} else {
-					$detail_line = $detail;
+					$detail_line = $this->locallizeString($detail);;
 				}
 				$detail_array[] = $detail_line;
 			}
