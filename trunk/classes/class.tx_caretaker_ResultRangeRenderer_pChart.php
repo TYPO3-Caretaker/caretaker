@@ -400,8 +400,8 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			
 			$undefined = $result->getNumUNDEFINED();  
 			$ok        = $result->getNumOK();  
-			$warning   = $result->getNumERROR();  
-			$error     = $result->getNumWARNING();
+			$warning   = $result->getNumWARNING();
+			$error     = $result->getNumERROR(); 
 
 			if ( ($undefined + $ok + $warning + $error) > $max_value){
 				$max_value = $undefined + $ok + $warning + $error;
