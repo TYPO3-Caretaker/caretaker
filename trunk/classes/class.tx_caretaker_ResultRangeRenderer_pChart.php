@@ -382,20 +382,11 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 	 */
 	public function renderAggregatorResultRange ($filename, $test_result_range, $title ){
 
-		if ($test_result_range->getLength() <2 )return false;
+		if ($test_result_range->getLength() <2 ) return false;
 				   
 			// Dataset definition
 		$DataSet   = new pData;
-		
-		$lastState = TX_CARETAKER_STATE_OK;
 
-		$rangesUndefined = array();
-		$rangesWarning   = array();
-		$rangesError     = array();
-		$max_value       = 0;
-		
-		$lastValue = false;
-		
 		foreach ($test_result_range as $result){
 			
 			$undefined = $result->getNumUNDEFINED();  
@@ -403,25 +394,22 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			$warning   = $result->getNumWARNING();
 			$error     = $result->getNumERROR(); 
 
-			if ( ($undefined + $ok + $warning + $error) > $max_value){
-				$max_value = $undefined + $ok + $warning + $error;
+			if ( $max_value < ( $max = ($undefined + $ok + $warning + $error) ) ){
+				$max_value = $max;
 			} 
-	
+				// save Datasets
 			$DataSet->AddPoint($ok,"Values_OK");
 			$DataSet->AddPoint($ok+$warning,"Values_WARNING");  
 			$DataSet->AddPoint($ok+$warning+$error,"Values_ERROR");  
-			$DataSet->AddPoint($ok+$warning+$error+$undefined,"Values_UNDEFINED");  
 						
 		    $DataSet->AddPoint($result->getTstamp(),"Times");
 		    
-
 		}
 
 		$DataSet->AddSerie("Times");  
 		$DataSet->AddSerie("Values_OK");
 		$DataSet->AddSerie("Values_WARNING");
 		$DataSet->AddSerie("Values_ERROR");
-		$DataSet->AddSerie("Values_UNDEFINED");
 
 		$DataSet->SetYAxisName($this->getLL('value').($value?' ['.$value.']':''));  
 		$DataSet->SetXAxisName($this->getLL('date'));  
@@ -462,7 +450,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 
 			// plot value line
 		$Graph->setLineStyle(0,0);
-		$Graph->drawXYScale($DataSet->GetData(),$DataSet->GetDataDescription(),"Times","Values",0,0,0,TRUE,45);  
+		$Graph->drawXYScale($DataSet->GetData(),$DataSet->GetDataDescription(),"Times","Values",0,0,0,TRUE,45);
 		
 		$DataSet->removeAllSeries();
 		$DataSet->AddSerie("Times");
@@ -470,13 +458,14 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		
 		$Graph->setLineStyle(0,0);
 		
-		// $Graph->drawXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Times","Values",13);
-		//$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_UNDEFINED","Times",3,70, FALSE);  
-		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_ERROR","Times",2,70, FALSE);  
-		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_WARNING","Times",1,70, FALSE);  
-		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_OK","Times",0,70, FALSE);  
+		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_ERROR",   "Times" ,2,70, FALSE);
+		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_WARNING", "Times" ,1,70, FALSE);
+		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_OK",      "Times" ,0,70, FALSE);
+
 		
-		  // Finish the graph#
+
+		
+			// Finish the graph
 		$info = $test_result_range->getInfos();
 		$Graph->drawTitle(50,22, $title.' '.round(($info['PercentAVAILABLE']*100),2 )."% ".$this->getLL('available'),50,50,50,585);  
 		
@@ -492,13 +481,6 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			round(($info['PercentERROR']*100),2 ).'% '.$this->getLL('error')
 			,"Values_ERROR"
 		);
-		
-		/*
-		$DataSet->SetSerieName(
-			round(($info['PercentUNDEFINED']*100),2 ).'% Undefined'
-			,"Values_UNDEFINED"
-		);
-		*/
 				
 		$Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);  
 		
