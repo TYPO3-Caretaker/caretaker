@@ -25,7 +25,7 @@ tx.caretaker.overview = function() {
     });
 
     var node_charts = new Ext.TabPanel ({
-        activeTab       : 0,
+        activeTab       : 3,
         id              : "node-charts",
         enableTabScroll : true,
 		collapsible     : true,
@@ -33,7 +33,13 @@ tx.caretaker.overview = function() {
         title           : "Chart",
 
         items:[
-           {
+			{
+                title:'1 h',
+                autoLoad  : tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + tx.caretaker.node_info.id + '&duration= ' +  (60*60)
+            },{
+                title:'3 h',
+                autoLoad  : tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + tx.caretaker.node_info.id + '&duration= ' +  (60*60*3)
+            },{
                 title:'12 h',
                 autoLoad  : tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + tx.caretaker.node_info.id + '&duration= ' +  (60*60*12)
             },{
