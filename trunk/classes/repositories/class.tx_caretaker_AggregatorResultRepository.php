@@ -226,8 +226,8 @@ class tx_caretaker_AggregatorResultRepository {
 			'result_status'        => $aggregator_result->getState(),
 			'result_num_undefined' => $aggregator_result->getNumUNDEFINED(),
 			'result_num_ok'        => $aggregator_result->getNumOK(),
-			'result_num_warnig'    => $aggregator_result->getNumERROR(),
-			'result_num_error'     => $aggregator_result->getNumWARNING(),
+			'result_num_warnig'    => $aggregator_result->getNumWARNING(),
+			'result_num_error'     => $aggregator_result->getNumERROR(),
 			'result_msg'           => $aggregator_result->getMsg(),
 			'tstamp'               => $aggregator_result->getTstamp()
 		);

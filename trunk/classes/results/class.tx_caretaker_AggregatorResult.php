@@ -102,12 +102,12 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 	 * @param integer $num_ok
 	 * @param integer $num_warning
 	 * @param integer $num_error
-	 * @param string  $comment
+	 * @param string  $message
 	 * @return tx_caretaker_AggregatorResult
 	 */
-	static public function create($state=TX_CARETAKER_STATE_UNDEFINED, $num_undefined=0, $num_ok=0, $num_warning=0, $num_error=0, $comment=''){
+	static public function create($state=TX_CARETAKER_STATE_UNDEFINED, $num_undefined=0, $num_ok=0, $num_warning=0, $num_error=0, $message=''){
 		$timestamp = time();
-		return new tx_caretaker_AggregatorResult($timestamp, $state, $num_undefined, $num_ok, $num_warning, $num_error, $comment);
+		return new tx_caretaker_AggregatorResult($timestamp, $state, $num_undefined, $num_ok, $num_warning, $num_error, $message);
 	}
 
 	/**
