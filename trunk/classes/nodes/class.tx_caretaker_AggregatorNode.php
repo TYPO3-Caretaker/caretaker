@@ -84,7 +84,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 			$test_results = array(); 
 			foreach($children as $child){
 				$test_result = $child->updateTestResult($force_update);
-				$test_results[] = $test_result;
+				$test_results[] = array('node'=>$child, 'result'=>$test_result);
 			}
 			$group_result = $this->getAggregatedResult($test_results);
 		} else {
@@ -135,47 +135,62 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 	private function getAggregatedResult($test_results){
 		
 		$num_tests = count($test_results);
-		$num_undefined = 0;
-		$num_errors	= 0;
-		$num_ok	= 0;
-		$num_warnings  = 0;
 		
-		for($i= 0 ; $i < $num_tests; $i++ ){
-			switch ( $test_results[$i]->getState() ){
+		$num_undefined = 0;
+		$num_ok        = 0;
+		$num_warnings  = 0;
+		$num_errors	   = 0;
+
+		$childnode_titles_undefined = array();
+		$childnode_titles_ok        = array();
+		$childnode_titles_warning   = array();
+		$childnode_titles_error     = array();
+
+		foreach($test_results as $test_result){
+			switch ( $test_result['result']->getState() ){
+				default:
+				case TX_CARETAKER_STATE_UNDEFINED:
+					$num_undefined ++;
+					$childnode_titles_undefined[] = $test_result['node']->getTitle();
+					break;
 				case TX_CARETAKER_STATE_OK:
 					$num_ok ++;
-					break;
-				case TX_CARETAKER_STATE_ERROR:
-					$num_errors ++;
+					$childnode_titles_ok[] = $test_result['node']->getTitle();
 					break;
 				case TX_CARETAKER_STATE_WARNING:
 					$num_warnings ++;
+					$childnode_titles_warning[] = $test_result['node']->getTitle();
 					break;
-				case TX_CARETAKER_STATE_UNDEFINED:
-					$num_undefined ++;
-					break;
+				case TX_CARETAKER_STATE_ERROR:
+					$num_errors ++;
+					$childnode_titles_error[] = $test_result['node']->getTitle();
+					break;				
 			}
 		}
-		
-		$undefined_info = '';
-		if ($num_undefined > 0){
-			$undefined_info = ' ['.$num_undefined.' results are in undefined state ]';
-		} 
-		
-		$ts = time();
-		if  ($num_errors > 0){
-			$state = TX_CARETAKER_STATE_ERROR;
-			$msg   = $num_errors.' errors and '.$num_warnings.' warnings in '.$num_tests.' results.'.$undefined_info;
-		} else if ($num_warnings > 0){
-			$state = TX_CARETAKER_STATE_WARNING;
-			$msg   = $num_warnings.' warnings in '.$num_tests.' results.'.$undefined_info;
-		} else {
-			$state = TX_CARETAKER_STATE_OK;
-			$msg   = $num_tests.' results are OK'.$undefined_info;
+
+		$info = $num_ok.' of '.$num_tests.' subnodes passed the tests. ';
+
+		if ($num_errors > 0){
+			$info .= chr(10).'  '.$num_errors.' errors in subnodes: '.implode(', ',$childnode_titles_error).'. ';
 		}
-		$aggregated_state = tx_caretaker_AggregatorResult::create($state,$num_undefined,$num_ok,$num_warnings,$num_errors,$msg);
-		
-		return $aggregated_state;
+
+		if ($num_warnings > 0){
+			$info .= chr(10).'  '.$num_warnings.' warnings in subnodes: '.implode(', ',$childnode_titles_warning).'. ';
+		}
+
+		if ($num_undefined > 0){
+			$info .= chr(10).'  '.$num_undefined.' undefined subnodes: '.implode(', ',$childnode_titles_undefined).'. ';
+		}
+
+
+		if  ($num_errors > 0){
+			return tx_caretaker_AggregatorResult::create(TX_CARETAKER_STATE_ERROR,$num_undefined,$num_ok,$num_warnings,$num_errors, $info);
+		} else if ($num_warnings > 0){
+			return tx_caretaker_AggregatorResult::create(TX_CARETAKER_STATE_WARNING,$num_undefined,$num_ok,$num_warnings,$num_errors, $info);
+		} else {
+			return tx_caretaker_AggregatorResult::create(TX_CARETAKER_STATE_OK,$num_undefined,$num_ok,$num_warnings,$num_errors, $info);
+		}
+
 	}
 
         

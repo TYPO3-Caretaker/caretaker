@@ -191,7 +191,7 @@ class tx_caretaker_AggregatorResultRepository {
 
 		$base_condition = 'aggregator_uid='.$nodeUid.' AND aggregator_type="'.$nodeType.'" AND instance_uid='.$instanceUid;
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_aggregatorresult', $base_condition, '', 'tstamp ASC', (int)$offset.','.(int)$limit  );
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_aggregatorresult', $base_condition, '', 'tstamp DESC', (int)$offset.','.(int)$limit  );
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
 			$result = $this->dbrow2instance($row);
 			$result_range->addResult($result);
