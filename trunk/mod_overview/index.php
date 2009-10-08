@@ -44,6 +44,11 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	var $node_repository;
 	var $instance_repository;
 	var $node_id;
+        
+        /**
+	 * @var t3lib_PageRenderer
+	 */
+        var $pageRenderer;
 	
 	/**
 	 * Initializes the Module
@@ -72,36 +77,25 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 				// Draw the header.
 			$this->doc = t3lib_div::makeInstance("template");
 			$this->doc->backPath = $BACK_PATH;
+                        $this->pageRenderer = $this->doc->getPageRenderer();
+                        
+                        // Include Ext JS
+                        $this->pageRenderer->loadExtJS();
+                        $this->pageRenderer->enableExtJSQuickTips();
+                        $this->pageRenderer->addJsFile('../res/js/tx.caretaker.js');
+                        $this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeTree.js');
+                        $this->pageRenderer->addJsFile('tx.caretaker.Overview.js');
 
-				// Include Ext JS
-			$this->jsFiles = array(
-				'/contrib/extjs/adapter/ext/ext-base.js',
-				'/contrib/extjs/ext-all-debug.js',
-				'../res/js/tx.caretaker.js',
-				'../res/js/tx.caretaker.NodeTree.js',
-				'tx.caretaker.Overview.js'
-			);
-			$this->cssFiles = array(
-				'extJS' => '/contrib/extjs/resources/css/ext-all.css',
-				'extJS-typo3' => '/sysext/t3skin/extjs/xtheme-t3skin.css',
-				'caretaker-nodetree' => '../res/css/tx.caretaker.overview.css'
-			);
-			foreach($this->jsFiles as $jsFile) {
-				$this->doc->JScode .= '
-				<script type="text/javascript" src="' . (strpos($jsFile, '/') === 0 ? $this->doc->backPath . substr($jsFile, 1) : $jsFile) . '"></script>';
-			}
-			foreach($this->cssFiles as $cssFileName => $cssFile) {
-				$this->doc->JScode .= '
-				<link rel="stylesheet" type="text/css" href="' . (strpos($cssFile, '/') === 0 ? $this->doc->backPath . substr($cssFile, 1) : $cssFile) . '" />
-				';
-			}
-			
+                        // Enable debug mode for Ext JS
+                        $this->pageRenderer->enableExtJsDebug();
+
+                        //Add caretaker css
+                        $this->pageRenderer->addCssFile('../res/css/tx.caretaker.overview.css');
+	
 			$node = tx_caretaker_Helper::id2node( $this->node_id , true);
 			if (!$node) $node = tx_caretaker_Helper::getRootNode();
 
-			$this->doc->JScode .= $this->doc->wrapScriptTags('
-				Ext.BLANK_IMAGE_URL = "' . $this->doc->backPath . 'contrib/extjs/resources/images/default/s.gif";
-				Ext.QuickTips.init();
+                        $this->pageRenderer->addJsInlineCode('Caretaker_Overview','
 				Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 				Ext.namespace("tx","tx.caretaker");
 
@@ -122,7 +116,6 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 				Ext.onReady( function(){
 					tx.caretaker.overview();
 				});
-
 			');
 	
 

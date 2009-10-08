@@ -43,7 +43,12 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	var $pageinfo;
 	var $node_repository;
 	var $instance_repository;
-	
+
+        /**
+	 * @var t3lib_PageRenderer
+	 */
+        var $pageRenderer;
+
 	/**
 	 * Initializes the Module
 	 * @return	void
@@ -72,33 +77,23 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->doc = t3lib_div::makeInstance("template");
 			$this->doc->backPath = $BACK_PATH;
 
-				// Include Ext JS
-			$this->jsFiles = array(
-				'/contrib/extjs/adapter/ext/ext-base.js',
-				'/contrib/extjs/ext-all-debug.js',
-				'../res/js/tx.caretaker.js',
-				'../res/js/tx.caretaker.NodeTree.js'
-			);
-			$this->cssFiles = array(
-				'extJS' => '/contrib/extjs/resources/css/ext-all.css',
-				'extJS-gray' => '/contrib/extjs/resources/css/xtheme-gray.css',
-				'extJS-typo3' => '/sysext/t3skin/extjs/xtheme-t3skin.css',
-				'caretaker-nodetree' => '../res/css/tx.caretaker.nodetree.css'
-			);
-			foreach($this->jsFiles as $jsFile) {
-				$this->doc->JScode .= '
-				<script type="text/javascript" src="' . (strpos($jsFile, '/') === 0 ? $this->doc->backPath . substr($jsFile, 1) : $jsFile) . '"></script>';
-			}
-			foreach($this->cssFiles as $cssFileName => $cssFile) {
-				$this->doc->JScode .= '
-				<link rel="stylesheet" type="text/css" href="' . (strpos($cssFile, '/') === 0 ? $this->doc->backPath . substr($cssFile, 1) : $cssFile) . '" />
-				';
-			}			
+                        $this->pageRenderer = $this->doc->getPageRenderer();
+
+                        // Include Ext JS
+                        $this->pageRenderer->loadExtJS();
+                        $this->pageRenderer->enableExtJSQuickTips();
+                        $this->pageRenderer->addJsFile('../res/js/tx.caretaker.js');
+                        $this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeTree.js');
+
+                        // Enable debug mode for Ext JS
+                        $this->pageRenderer->enableExtJsDebug();
+
+                        //Add caretaker css
+                        $this->pageRenderer->addCssFile('../res/css/tx.caretaker.nodetree.css');
 			
-			$this->doc->JScode .= $this->doc->wrapScriptTags(
+			
+			$this->pageRenderer->addJsInlineCode('Caretaker_Nodetree',
 			'
-			Ext.BLANK_IMAGE_URL = "' . $this->doc->backPath . 'contrib/extjs/resources/images/default/s.gif";
-			Ext.QuickTips.init();
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 			Ext.onReady(function() {
 				tx.caretaker.view = new Ext.Viewport({
@@ -106,7 +101,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 					items: {
 						id: "cartaker-tree",
 						xtype: "caretaker-nodetree",
-	    				autoScroll: true,
+                                                autoScroll: true,
 						dataUrl: "' . $this->doc->backPath . 'ajax.php?ajaxID=tx_caretaker::treeloader",
 						editUrl: "' . $PATH_TYPO3 . 'alt_doc.php?edit[tx_caretaker_###NODE_TYPE###][###NODE_UID###]=edit",
 						hideUrl: "' . $PATH_TYPO3 . 'tce_db.php?&data[tx_caretaker_###NODE_TYPE###][###NODE_UID###][hidden]=1",
