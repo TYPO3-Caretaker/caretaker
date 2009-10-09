@@ -77,20 +77,20 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 				// Draw the header.
 			$this->doc = t3lib_div::makeInstance("template");
 			$this->doc->backPath = $BACK_PATH;
-                        $this->pageRenderer = $this->doc->getPageRenderer();
+			$this->pageRenderer = $this->doc->getPageRenderer();
                         
-                        // Include Ext JS
-                        $this->pageRenderer->loadExtJS();
-                        $this->pageRenderer->enableExtJSQuickTips();
-                        $this->pageRenderer->addJsFile('../res/js/tx.caretaker.js');
-                        $this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeTree.js');
-                        $this->pageRenderer->addJsFile('tx.caretaker.Overview.js');
+			// Include Ext JS
+			$this->pageRenderer->loadExtJS();
+			$this->pageRenderer->enableExtJSQuickTips();
+			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.js');
+			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeTree.js');
+			$this->pageRenderer->addJsFile('tx.caretaker.Overview.js');
 
-                        // Enable debug mode for Ext JS
-                        $this->pageRenderer->enableExtJsDebug();
+			// Enable debug mode for Ext JS
+			$this->pageRenderer->enableExtJsDebug();
 
-                        //Add caretaker css
-                        $this->pageRenderer->addCssFile('../res/css/tx.caretaker.overview.css');
+			//Add caretaker css
+			$this->pageRenderer->addCssFile('../res/css/tx.caretaker.overview.css');
 	
 			$node = tx_caretaker_Helper::id2node( $this->node_id , true);
 			if (!$node) $node = tx_caretaker_Helper::getRootNode();
@@ -104,6 +104,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 					id:"'.tx_caretaker_Helper::node2id($node).'",
 					uid:'.$node->getUid().',
 					type:"'.$node->getType().'",
+					type_description:"'.$node->getTypeDescription().'",
 					type_lower:"'.strtolower($node->getType()).'",
 					state:"'.$node->getTestResult()->getStateInfo().'",
 					title:"'.$node->getTitle().'",

@@ -46,6 +46,19 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	protected $valueDescription = 'Milliseconds';
 
 	/**
+	 * Service type description in human readble form.
+	 * @var string
+	 */
+	protected $typeDescription = 'LLL:EXT:caretaker/locallang_fe.xml:http_service_description';
+
+	/**
+	 * Template to display the test Configuration in human readable form.
+	 * @var string
+	 */
+	protected $configurationInfoTemplate = 'LLL:EXT:caretaker/locallang_fe.xml:http_service_configuration';
+
+
+	/**
 	 * (non-PHPdoc)
 	 * @see caretaker/trunk/services/tx_caretaker_TestServiceBase#runTest()
 	 */

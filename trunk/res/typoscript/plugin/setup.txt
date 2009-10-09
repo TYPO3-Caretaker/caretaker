@@ -68,16 +68,16 @@ plugin.tx_caretaker_pi_singleview {
 		LAST_RUN = TEXT
 		LAST_RUN.field = state_tstamp
 		LAST_RUN.strftime =  %x %X
-		
-		WARNING_TIME = TEXT
-		WARNING_TIME.field = warning_time
-		
-		ERROR_TIME = TEXT
-		ERROR_TIME.field = error_time
-		
+				
 		VALUE = TEXT
 		VALUE.field = state_value
-		
+
+		TYPE = TEXT
+		TYPE.field = type
+
+		CONFIGURATION = TEXT
+		CONFIGURATION.field = configuration
+
 		MESSAGE = TEXT
 		MESSAGE.field = state_msg
 		MESSAGE.br = 1
@@ -115,10 +115,6 @@ plugin.tx_caretaker_pi_singleview {
 		
 		TITLE = TEXT
 		TITLE.field =  title
-		#TITLE.append = TEXT 
-		#TITLE.append.field = instance
-		#TITLE.append.noTrimWrap = | [|]|
-		#TITLE.append.required = 1
 		TITLE.insertData = 1
 		
 		DESCRIPTION = TEXT
@@ -141,13 +137,15 @@ plugin.tx_caretaker_pi_singleview {
 		
 		LABEL_VALUE = TEXT
 		LABEL_VALUE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:value
-		
-		#LABEL_MESSAGE = TEXT
-		#LABEL_MESSAGE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:message
-		
+				
 		LABEL_CHILDREN = TEXT
 		LABEL_CHILDREN.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:children
-		 
+
+		LABEL_TYPE = TEXT
+		LABEL_TYPE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:type
+
+		LABEL_CONFIGURATION = TEXT
+		LABEL_CONFIGURATION.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:configuration
 	} 
 	
 	childMarkers {

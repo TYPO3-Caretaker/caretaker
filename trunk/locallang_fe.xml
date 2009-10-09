@@ -25,14 +25,21 @@
 			<label index="description">Description</label>
 			<label index="lastRunHeader">Last run:</label>
 
+			<label index="ping_service_description">Ping Test</label>
+			<label index="ping_service_configuration">Warning: ###MAX_TIME_WARNING### Ms Error: ###MAX_TIME_ERROR### Ms</label>
+
 			<label index="ping_info">Ping command took ###VALUE### milliseconds</label>
 			<label index="ping_error">Ping command (###VALUE_COMMAND###) failed with Message: ###VALUE_RESULT### </label>
 			<label index="ping_no_command_template">Ping command template must be configured in tx_caretaker extension configuration.</label>
 
+			<label index="http_service_description">Ping Test</label>
+			<label index="http_service_configuration">Warning: ###MAX_TIME_WARNING### Ms Error: ###MAX_TIME_ERROR### Ms</label>
+
 			<label index="http_no_query">No HTTP-Code or no query was set</label>
 			<label index="http_info">HTTP-Request of URL ###VALUE_URL### took ###VALUE### milliseconds and returned State ###VALUE_STATUS###</label>
 			<label index="http_error">Returned Status ###VALUE_STATUS### does not match expected state ###VALUE_EXPECTED### ###VALUE_URL###</label>
-			
+
+
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="state">Status</label>

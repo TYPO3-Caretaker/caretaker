@@ -87,10 +87,12 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 	function getNodeData($node){
 		$date = array();
 			// node data
-		$data['uid']         = $node->getUid();
-		$data['type']        = $node->getType();
-		$data['title']       = $node->getTitle();
-		$data['description'] = $node->getDescription();
+		$data['uid']           = $node->getUid();
+		$data['type']          = $node->getTypeDescription();
+		$data['configuration'] = $node->getConfigurationInfo();
+		$data['title']         = $node->getTitle();
+		$data['description']   = $node->getDescription();
+
 			// add state Infos		
 		$result = $node->getTestResult();
 		$data['state']       = $result->getState();

@@ -15,6 +15,7 @@ class tx_caretaker_NodeInfo {
 			$local_hour = $local_time['tm_hour'];
 
 			switch ( get_class($node) ){
+				// test Node
 				case "tx_caretaker_TestNode":
 
 					$interval_info = '';
@@ -40,17 +41,20 @@ class tx_caretaker_NodeInfo {
 
 					$result = $node->getTestResult();
 					$info = '<div class="tx_caretaker_node_info tx_caretaker_node_info_state_'.$result->getStateInfo().'">'.
-						'Title:'.$node->getTitle().'<br/>'.
-						'Description: '.$node->getDescription().'<br/>'.
-						'Interval: '.$interval_info.'<br/>'.
-						'Hidden: '.$node->getHidden().'<br/>'.
-						'last Execution: '.strftime('%x %X',$result->getTimestamp()).'<br/>'.
-						'State: '.$result->getLocallizedStateInfo().'<br/>'.
-						'Value: '.$result->getValue().'<br/>'.
+						'Title: '.           $node->getTitle().'<br/>'.
+						'Type: '.            $node->getTypeDescription().'<br/>'.
+						'Interval: '.        $interval_info.'<br/>'.
+						'Description: '.     $node->getDescription().'<br/>'.
+						'Configuration: '.   $node->getConfigurationInfo().'<br/>'.
+						'Hidden: '.          $node->getHidden().'<br/>'.
+						'last Execution: '.  strftime('%x %X',$result->getTimestamp()).'<br/>'.
+						'State: '.           $result->getLocallizedStateInfo().'<br/>'.
+						'Value: '.           $result->getValue().'<br/>'.
 						'Message: <br/>'.nl2br( str_replace( ' ' , '&nbsp;', $result->getLocallizedMessage() ) ) .'<br/>'.
 						'</div>';
 					break;
 				default:
+					// aggregator Node
 					$result = $node->getTestResult();
 					$info = '<div class="tx_caretaker_node_info tx_caretaker_node_info_state_'.$result->getStateInfo().'">'.
 						'Title: '.$node->getTitle().'<br/>'.
@@ -153,8 +157,10 @@ class tx_caretaker_NodeInfo {
                     'num'=> ($i+1) ,
                     'title'=>'title_'.rand(),
                     'timestamp' => $result->getTimestamp(),
-                    'stateinfo' => $result->getStateInfo(),
-                    'message'   => $result->getMessage(),
+					'stateinfo' => $result->getStateInfo(),
+                    'stateinfo_ll' => $result->getLocallizedStateInfo(),
+					'message'   => $result->getMessage(),
+                    'message_ll'   => $result->getLocallizedMessage(),
                     'state'     => $result->getState(),
                 );
             }

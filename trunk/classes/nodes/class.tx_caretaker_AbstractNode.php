@@ -162,6 +162,18 @@ abstract class tx_caretaker_AbstractNode {
 		return $this->type;
 	}	
 
+	/**
+	 * Get the description of the Testsevice
+	 * @return string
+	 */
+	public function getTypeDescription(){
+		return '';
+	}
+
+	public function getConfigurationInfo(){
+		return '';
+	}
+	
 	/** 
 	 * Get a Description for the Node Value
 	 * @return string

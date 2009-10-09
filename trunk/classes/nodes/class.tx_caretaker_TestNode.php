@@ -114,7 +114,28 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		//$this->test_service->setInstance( $this->getInstance() );
 		//$this->test_service->setConfiguration($service_configuration);
 	}
-	
+
+	/**
+	 * Get the description of the Testsevice
+	 * @return string
+	 */
+	public function getTypeDescription(){
+		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_service_type);
+		return $test_service->getTypeDescription();
+	}
+
+	/**
+	 * Get the description of the Testsevice
+	 * @return string
+	 */
+	public function getConfigurationInfo(){
+		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_service_type);
+		$test_service->setInstance( $this->getInstance() );
+		$test_service->setConfiguration($this->test_service_configuration);
+		return  $test_service->getConfigurationInfo();
+	}
+
+
 	/**
 	 * Get the Test Interval 
 	 * @return unknown_type

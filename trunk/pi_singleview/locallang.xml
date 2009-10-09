@@ -23,6 +23,10 @@
 			<label index="available">available</label>
 			<label index="description">Description</label>
 			<label index="lastRunHeader">Last run:</label>
+			<label index="configuration">Configuration</label>
+			<label index="type">Type</label>
+
+
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="state">Status</label>
@@ -42,6 +46,8 @@
 			<label index="available">verfügbar</label>
 			<label index="description">Beschreibung</label>
 			<label index="lastRunHeader">Letzter Lauf:</label>
+			<label index="configuration">Konfiguration:</label>
+			<label index="type">Typ:</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -72,7 +72,9 @@ tx.caretaker.overview = function() {
             'title',
             {name: 'timestamp', mapping: 'timestamp', type: 'date', dateFormat: 'timestamp'},
             'stateinfo',
+			'stateinfo_ll',
             'message',
+			'message_ll',
             'state'
         ],
         proxy: new Ext.data.HttpProxy({
@@ -93,14 +95,14 @@ tx.caretaker.overview = function() {
 	
         // grid columns
         columns:[{
-            header: "timestamp",
+            header: "Time",
             dataIndex: 'timestamp'
         },{
-            header: "stateinfo",
-            dataIndex: 'stateinfo'
+            header: "State",
+            dataIndex: 'stateinfo_ll'
         },{
-            header:'message',
-            dataIndex: 'message'
+            header:'Message',
+            dataIndex: 'message_ll'
         }],
         
         // customize view config
@@ -295,7 +297,7 @@ tx.caretaker.overview = function() {
                     xtype    : "panel",
                     id       : "node",
                     autoScroll: true,
-                    title    : '' +  tx.caretaker.node_info.title + ' (' + tx.caretaker.node_info.type + ')' ,
+                    title    : '' +  tx.caretaker.node_info.title + ' (' + (tx.caretaker.node_info.type_description ?  tx.caretaker.node_info.type_description : tx.caretaker.node_info.type ) + ')' ,
                     iconCls  : "icon-caretaker-type-" + tx.caretaker.node_info.type_lower,
                     tbar     : tx.caretaker.node_toolbar,
                     items    : [

@@ -56,12 +56,26 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * @var array
 	 */
 	protected $flexform_configuration = false;
+
 	
 	/**
-	 * Value Description
+	 * Value Description. Can be a LLL Label.
 	 * @var string
 	 */
 	protected $valueDescription = '';
+
+
+	/**
+	 * Testtype in human readable form. Can be a LLL Label.
+	 * @var sring
+	 */
+	protected $typeDescription  = '';
+
+	/**
+	 * Template to display the test Configuration in human readable form. Can be a LLL Label.
+	 * @var string
+	 */
+	protected $configurationInfoTemplate = '';
 
 	/**
 	 * (non-PHPdoc)
@@ -117,7 +131,35 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 			return $default;
 		}
 	}
-		
+	
+	
+	/**
+	 * Return the type Description of this test Service
+	 * @return string
+	 */
+	public function getTypeDescription(){
+		return $this->locallizeString( $this->typeDescription );
+	}
+	
+	/**
+	 * Return the type ConfigurationInfoTemplate of this test Service
+	 * @return string
+	 */
+	public function getConfigurationInfo(){
+		$markers = array();
+		if ($this->flexform_configuration){
+			foreach( $this->flexform_configuration['data']['sDEF']['lDEF'] as $key => $value ){
+				$markers['###'.strtoupper($key).'###'] = $value['vDEF'];
+			}
+		}
+
+		$result = $this->locallizeString(  $this->configurationInfoTemplate );
+		foreach ($markers as $marker=>$content){
+			$result = str_replace( $marker, $content , $result);
+		}
+		return $result;
+	}
+
 	/**
 	 * Run the Test defined in TestConf and return a Testresult Object 
 	 * 
@@ -146,6 +188,46 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	public function isExecutable() {
 		
 		return true;
+	}
+
+		/**
+	 * Translate a given string in the current language
+	 *
+	 * @param string $string
+	 * @return string
+	 */
+	protected function locallizeString( $locallang_string ){
+
+		$locallang_parts = explode (':',$locallang_string);
+
+		if( array_shift($locallang_parts) != 'LLL') {
+			return $locallang_string;
+		}
+
+		switch (TYPO3_MODE){
+			case 'FE':
+
+				$lcObj  = t3lib_div::makeInstance('tslib_cObj');
+				return( $lcObj->TEXT(array('data' => $locallang_string )) );
+
+			case 'BE':
+
+				$locallang_key   = array_pop($locallang_parts);
+				$locallang_file  = implode(':',$locallang_parts);
+
+				$language_key  = $GLOBALS['BE_USER']->uc['lang'];
+				$LANG = t3lib_div::makeInstance('language');
+				$LANG->init($language_key);
+
+				return $LANG->getLLL($locallang_key, $LANG->readLLfile(t3lib_div::getFileAbsFileName( $locallang_file )));
+
+			default :
+
+				return $locallang_string;
+
+
+		}
+
 	}
 	
 }
