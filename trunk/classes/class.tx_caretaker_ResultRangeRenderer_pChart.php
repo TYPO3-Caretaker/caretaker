@@ -494,7 +494,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			$times_minor = $this->getDayTimestamps($min_timestamp,$max_timstamp );
 		}
 		// 1 day
-		else if ( $timerange >= 24*60*60 ){
+		else if ( $timerange > 24*60*60 ){
 			$format = '%x %H:%M';
 			$times_super = $this->getDayTimestamps($min_timestamp,$max_timstamp );
 			$times_major = $this->getHalfdayTimestamps($min_timestamp,$max_timstamp );
@@ -571,13 +571,11 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			$TextWidth  = abs($Position[2])+abs($Position[0]);
 			$TextHeight = abs($Position[1])+abs($Position[3]);
 
-			if ( $angle == 0 )
-			{
+			if ( $angle == 0 ) {
 				$YPos = $Graph->GArea_Y2+18;
 				imagettftext($Graph->Picture,$size,$angle,floor($XPos)-floor($TextWidth/2),$YPos,$color,$font,$info);
 			}
-			else
-			{
+			else {
 				$YPos = $Graph->GArea_Y2+10+$TextHeight;
 				if ( $angle <= 90 )
 					imagettftext($Graph->Picture,$size,$angle,floor($XPos)-$TextWidth+5,$YPos,$color,$font,$info);
