@@ -2,6 +2,7 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
     constructor: function(config) {	
 	    config = Ext.apply({
 	    	stateful: true,
+			useArrows: false,
 	    	stateEvents: ['collapsenode', 'expandnode'],
 	        root: {
 	            nodeType: 'async',

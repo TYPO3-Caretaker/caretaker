@@ -4,12 +4,19 @@ require_once (t3lib_extMgm::extPath('caretaker') . '/classes/repositories/class.
 require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_Helper.php');
 
 class tx_caretaker_treeloader {
+	
 	public function ajaxLoadTree($params, &$ajaxObj) {
-		$node_repository = tx_caretaker_NodeRepository::getInstance();
 		
-		$rootnode = $node_repository->getRootNode(true);
-
-		$result = $this->nodeToArray($rootnode);
+		$node_id = t3lib_div::_GP('node');
+		
+		if ( $node_id == 'root'){
+			$node_repository = tx_caretaker_NodeRepository::getInstance();
+			$node = $node_repository->getRootNode(true);
+		} else {
+			$node =  tx_caretaker_Helper::id2node($node_id);
+		}
+		
+		$result = $this->nodeToArray($node);
 		
 		$ajaxObj->setContent($result['children']);
 
@@ -42,9 +49,12 @@ class tx_caretaker_treeloader {
 		if (is_a($node, 'tx_caretaker_AggregatorNode')) {
 			$children = $node->getChildren(true);
 			if (count($children) > 0) {
-				$result['children'] = array();
-				foreach($children as $child){
-					$result['children'][] = $this->nodeToArray($child, $level + 1) ;
+				$result['leaf'] = FALSE;
+				if ($level == 0){
+					$result['children'] = array();
+					foreach($children as $child){
+						$result['children'][] = $this->nodeToArray($child, $level + 1) ;
+					}
 				}
 			} else {
 				$result['leaf'] = TRUE;
