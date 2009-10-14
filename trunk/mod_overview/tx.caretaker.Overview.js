@@ -57,6 +57,12 @@ tx.caretaker.overview = function() {
             },{
                 title:'3 Month',
                 autoLoad  : tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + tx.caretaker.node_info.id + '&duration= ' +  (60*60*34*93)
+            },{
+                title:'6 Month',
+                autoLoad  : tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + tx.caretaker.node_info.id + '&duration= ' +  (60*60*34*182)
+            },{
+                title:'12 Month',
+                autoLoad  : tx.caretaker.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + tx.caretaker.node_info.id + '&duration= ' +  (60*60*34*365)
             }
         ]
     });

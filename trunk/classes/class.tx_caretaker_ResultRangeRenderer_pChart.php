@@ -31,9 +31,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 	}
 	
 	private function getLL($key) {
-		
 		$lang = $this->llKey;
-		
 		return (!empty($this->llArray[$lang][$key])) ? $this->llArray[$lang][$key] : ((!empty($this->llArray['default'][$key])) ? $this->llArray['default'][$key] : ''); 
 	}
 	
@@ -119,29 +117,9 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		    		break;		
 	    	}
 		}
-		
-		if(TYPO3_MODE=='FE') {
-			
-			/* @var $lcObj tslib_cObj */
-			$lcObj = t3lib_div::makeInstance('tslib_cObj');
-			if(substr($value_description, 0, 3) == 'LLL') {
-				
-				$value_description = $lcObj->TEXT(array('data' => substr($value_description, 4)));
-			}
-			
-		} else {
-			
-			/* @var $LANG language */
-			$LANG = t3lib_div::makeInstance('language');
-			$LANG->init($BE_USER->uc['lang']);
-			if(substr($value_description, 0, 3) == 'LLL') {
-				
-				preg_match('/LLL:(EXT:.*):(.*)/', $value_description, $matches);
-				
-				$value_description = $LANG->getLLL($matches[2], $LANG->readLLfile(t3lib_div::getFileAbsFileName($matches[1])));
-			}
-		}
-		
+
+		$value_description = tx_caretaker_Helper::locallizeString($value_description);
+	
 		$DataSet->AddSerie($this->getLL('times'));  
 		$DataSet->AddSerie($this->getLL('values'));
 
@@ -150,7 +128,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 
 		$DataSet->SetAbsciseLabelSerie($this->getLL('values'));  
 		$DataSet->SetYAxisFormat("number");  
-		$DataSet->SetXAxisFormat("date");  
+		$DataSet->SetXAxisFormat("none");
 		
 			// Initialise the graph  
 		$width  = $this->width;
@@ -193,26 +171,17 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$DataSet->AddSerie("Values");
 		
 		$Graph->setLineStyle(0,0);
-		
+
+			// draw background lines
+		$this->drawXAxis($Graph, $test_result_range->getMinTstamp(),  $test_result_range->getMaxTstamp() );
+
+
 		// $Graph->drawXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Times","Values",13);  
 		// $Graph->drawOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values","Times",998,50, FALSE);
 		$Graph->drawOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values","Times",998);  
 		
-			// mark ranges of values wich are not ok
-		/*
-		foreach($rangesUndefined as $range){
-			if (isset($range[0]) && isset($range[1]) ) {
-				$X1 = $Graph->GArea_X1 + (($range[0]-$Graph->VXMin) * $Graph->XDivisionRatio);
-				$X2 = $Graph->GArea_X1 + (($range[1]-$Graph->VXMin) * $Graph->XDivisionRatio);
-				$Y1 = $Graph->GArea_Y1;
-				$Y2 = $Graph->GArea_Y2;
-				$Graph->drawFilledRectangle($X1,$Y1,$X2,$Y2,0,0,255,$DrawBorder=FALSE,$Alpha=30,$NoFallBack=FALSE);
-			}
-		}
-		*/
+			// show state as background-color
 		foreach($rangesOk as $range){
-			
-			//print_r($range);
 			if (isset($range[0]) && isset($range[1]) ) {
 				$X1 = $Graph->GArea_X1 + (($range[0]-$Graph->VXMin) * $Graph->XDivisionRatio);
 				$X2 = $Graph->GArea_X1 + (($range[1]-$Graph->VXMin) * $Graph->XDivisionRatio);
@@ -223,8 +192,6 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		}
 		
 		foreach($rangesWarning as $range){
-			
-			//print_r($range);
 			if (isset($range[0]) && isset($range[1]) ) {
 				$X1 = $Graph->GArea_X1 + (($range[0]-$Graph->VXMin) * $Graph->XDivisionRatio);
 				$X2 = $Graph->GArea_X1 + (($range[1]-$Graph->VXMin) * $Graph->XDivisionRatio);
@@ -235,8 +202,6 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		}
 		
 		foreach($rangesError as $range){
-			
-			//print_r($range);
 			if (isset($range[0]) && isset($range[1]) ) {
 				$X1 = $Graph->GArea_X1 + (($range[0]-$Graph->VXMin) * $Graph->XDivisionRatio);
 				$X2 = $Graph->GArea_X1 + (($range[1]-$Graph->VXMin) * $Graph->XDivisionRatio);
@@ -246,38 +211,36 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			}
 		}
 				
-		  // Finish the graph#
+			// Finish the graph
 		$info = $test_result_range->getInfos();
-		
+
+			// Title
 		$Graph->drawTitle(50,22, $title.' '.round(($info['PercentAVAILABLE']*100),2 )."% ".$this->getLL('available'),50,50,50,585);  
-		
+
+			// Legend
 		$DataSet->SetSerieName(
-			round(($info['PercentOK']*100),2 ).'% '.$this->getLL('ok')
+			round(($info['PercentOK']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_ok')
 			,"Values_OK"
 		);
 		
 		$DataSet->SetSerieName(
-			round(($info['PercentWARNING']*100),2 ).'% '.$this->getLL('warning')
+			round(($info['PercentWARNING']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_warning')
 			,"Values_WARNING"
 		);
+		
 		$DataSet->SetSerieName(
-			round(($info['PercentERROR']*100),2 ).'% '.$this->getLL('error')
+			round(($info['PercentERROR']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_error')
 			,"Values_ERROR"
 		);
 		
-		$DataSet->SetSerieName($this->getLL('value').($value_description?' ['.$value_description.']':''), 'GRAPH');
-		/*
-		$DataSet->SetSerieName(
-			round(($info['PercentUNDEFINED']*100),2 ).'% Undefined'
-			,"Values_UNDEFINED"
-		);
-		*/
-		$Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);  
+		$Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);
 		$Graph->Render($filename);
 		
 		return ($filename);
 	}	 
-	
+
+
+
 	/**
 	 * (non-PHPdoc)
 	 * @see caretaker/trunk/interfaces/tx_caretaker_ResultRangeRenderer#renderMultipleTestResultRanges()
@@ -307,7 +270,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$DataSet->SetXAxisName("Date");  
 		$DataSet->SetAbsciseLabelSerie("Values");  
 		$DataSet->SetYAxisFormat("number");  
-		$DataSet->SetXAxisFormat("date");  
+		$DataSet->SetXAxisFormat("none");
 
 		
 		$min_ts  = NULL;
@@ -326,7 +289,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			$DataSets[$key]->SetXAxisName($this->getLL('date'));  
 			$DataSets[$key]->SetAbsciseLabelSerie("Values");  
 			$DataSets[$key]->SetYAxisFormat("number");  
-			$DataSets[$key]->SetXAxisFormat("date");  
+			$DataSets[$key]->SetXAxisFormat("none");
 			$DataSets[$key]->AddSerie("Values");
 			$DataSets[$key]->AddSerie("Times");
 
@@ -351,6 +314,10 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			$max_ts,
 			5
 		);
+
+			// draw background lines
+		$this->drawXAxis($Graph, $min_ts,  $max_ts);
+		
 		
 		$scale_is_plotted = false;
 		foreach ( $DataSets as $key=>$LocalDataSet ){
@@ -365,6 +332,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			$Graph->setLineStyle(0,0);
 			$Graph->drawOrthoXYGraph($LocalDataSet->GetData(),$LocalDataSet->GetDataDescription(),"Values","Times",$key);  
 		}
+
 		
 		$Graph->drawTitle(50,22, $description,50,50,50,585);  		
 		$Graph->drawLegend($width-240,30,$DataSet->GetDataDescription(),255,255,255);  
@@ -416,7 +384,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 
 		$DataSet->SetAbsciseLabelSerie("Times");  
 		$DataSet->SetYAxisFormat("number");  
-		$DataSet->SetXAxisFormat("date");  
+		$DataSet->SetXAxisFormat("none");
 		
 			// Initialise the graph  
 		$width  = $this->width;
@@ -457,12 +425,13 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$DataSet->AddSerie("Values");
 		
 		$Graph->setLineStyle(0,0);
-		
+
+			// draw background lines
+		$this->drawXAxis($Graph, $test_result_range->getMinTstamp(),  $test_result_range->getMaxTstamp() );
+
 		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_ERROR",   "Times" ,2,70, FALSE);
 		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_WARNING", "Times" ,1,70, FALSE);
 		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_OK",      "Times" ,0,70, FALSE);
-
-		
 
 		
 			// Finish the graph
@@ -487,6 +456,231 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$Graph->Render($filename);
 		
 		return ($filename);
-	}	 
+	}
+
+
+	/**
+	 *
+	 * @param <type> $Graph
+	 * @param <type> $max_timstamp
+	 * @param <type> $min_timestamp
+	 */
+	private function drawXAxis(&$Graph, $min_timestamp, $max_timstamp){
+		$timerange = $max_timstamp - $min_timestamp;
+
+		$times_super = array();
+		$times_major = array();
+		$times_minor = array();
+
+		$format = '%x';
+
+		if  ( $timerange >= 24*60*60*30*6 ){
+
+			$times_super = $this->getYearTimestamps($min_timestamp,$max_timstamp );
+			$times_major = $this->getMonthTimestamps($min_timestamp,$max_timstamp );
+			//$times_minor = $this->getWeekTimestamps($min_timestamp,$max_timstamp );
+		}
+		// 1 Month
+		else if  ( $timerange >= 24*60*60*33 ){
+			$times_super = $this->getYearTimestamps($min_timestamp,$max_timstamp );
+			$times_major = $this->getMonthTimestamps($min_timestamp,$max_timstamp );
+			$times_minor = $this->getWeekTimestamps($min_timestamp,$max_timstamp );
+		}
+		// 7 days
+		else if  ( $timerange >= 24*60*60*7 ){
+			$format = '%x';
+			$times_super = $this->getMonthTimestamps($min_timestamp,$max_timstamp );
+			$times_major = $this->getWeekTimestamps($min_timestamp,$max_timstamp );
+			$times_minor = $this->getDayTimestamps($min_timestamp,$max_timstamp );
+		}
+		// 1 day
+		else if ( $timerange >= 24*60*60 ){
+			$format = '%x %H:%M';
+			$times_super = $this->getDayTimestamps($min_timestamp,$max_timstamp );
+			$times_major = $this->getHalfdayTimestamps($min_timestamp,$max_timstamp );
+			$times_minor = $this->getHourTimestamps($min_timestamp,$max_timstamp );
+		}
+		// < 1 day
+		else {
+			$format = '%H:%M';
+			$times_super = $this->getHalfdayTimestamps($min_timestamp,$max_timstamp );
+			$times_major = $this->getHourTimestamps($min_timestamp,$max_timstamp );
+			$times_minor = $this->getQuarterTimestamps($min_timestamp,$max_timstamp );
+		}
+
+			// draw lines
+		foreach ($times_super as $timestamp){
+			if ($timestamp > $min_timestamp && $timestamp < $max_timstamp){
+				$X = $Graph->GArea_X1 + (($timestamp-$Graph->VXMin) * $Graph->XDivisionRatio);
+				$Graph->drawFilledRectangle(
+					$X-1,
+					$Graph->GArea_Y1,
+					$X+1,
+					$Graph->GArea_Y2,
+					0,0,0,$DrawBorder=FALSE,$Alpha=100,$NoFallBack=FALSE
+				);
+			}
+		}
+
+		foreach ($times_major as $timestamp){
+			if ($timestamp > $min_timestamp && $timestamp < $max_timstamp){
+				$X = $Graph->GArea_X1 + (($timestamp-$Graph->VXMin) * $Graph->XDivisionRatio);
+				$Graph->drawFilledRectangle(
+					$X,
+					$Graph->GArea_Y1,
+					$X,
+					$Graph->GArea_Y2,
+					0,0,0,$DrawBorder=FALSE,$Alpha=60,$NoFallBack=FALSE
+				);
+			}
+		}
+
+		foreach ($times_minor as $timestamp){
+			if ($timestamp > $min_timestamp && $timestamp < $max_timstamp){
+				$X = $Graph->GArea_X1 + (($timestamp-$Graph->VXMin) * $Graph->XDivisionRatio);
+				$Graph->drawFilledRectangle(
+					$X,
+					$Graph->GArea_Y1,
+					$X,
+					$Graph->GArea_Y2,
+					0,0,0,$DrawBorder=FALSE,$Alpha=30,$NoFallBack=FALSE
+				);
+			}
+		}
+
+			// draw x - axis informations
+		if (count($times_super)>3){
+			$x_axis = $times_super;
+		} else if (count($times_major)>3){
+			$x_axis = $times_major;
+		} else {
+			$x_axis = $times_minor;
+		}
+
+		foreach ($x_axis as $timestamp){
+			$XPos = $Graph->GArea_X1 + (($timestamp-$Graph->VXMin) * $Graph->XDivisionRatio);
+			$d = 100;
+
+			$font  = t3lib_extMgm::extPath('caretaker').'/lib/Fonts/tahoma.ttf';
+			$size  = 9;
+			$angle = 45;
+			$info  = strftime($format,$timestamp);
+			$color = imagecolorallocate  ( $Graph->Picture  , 0  ,0  ,0  );
+
+			$Position   = imageftbbox($size,$angle,$font,$info);
+			$TextWidth  = abs($Position[2])+abs($Position[0]);
+			$TextHeight = abs($Position[1])+abs($Position[3]);
+
+			if ( $angle == 0 )
+			{
+				$YPos = $Graph->GArea_Y2+18;
+				imagettftext($Graph->Picture,$size,$angle,floor($XPos)-floor($TextWidth/2),$YPos,$color,$font,$info);
+			}
+			else
+			{
+				$YPos = $Graph->GArea_Y2+10+$TextHeight;
+				if ( $angle <= 90 )
+					imagettftext($Graph->Picture,$size,$angle,floor($XPos)-$TextWidth+5,$YPos,$color,$font,$info);
+				else
+					imagettftext($Graph->Picture,$size,$angle,floor($XPos)+$TextWidth+5,$YPos,$color,$font,$info);
+			}
+		}
+	}
+
+	private function getYearTimestamps($min_timestamp, $max_timstamp){
+		$result = array();
+		$startdate_info = getdate($min_timestamp);
+		$year  = $startdate_info['year'];
+		while ( $max_timstamp > $ts = mktime( 0, 0 , 0 , 1, 1, $year ) ){
+			if ($ts > $min_timestamp) $result[] = $ts;
+			$year ++;
+		}
+		return $result;
+	}
+
+	private function getMonthTimestamps($min_timestamp, $max_timstamp){
+		$result = array();
+		$startdate_info = getdate($min_timestamp);
+		$year  = $startdate_info['year'];
+		$month = $startdate_info['mon'];
+		while ( $max_timstamp > $ts = mktime( 0, 0 , 0 , $month, 1, $year ) ){
+			if ($ts > $min_timestamp) $result[] = $ts;
+			$month ++;
+		}
+		return $result;
+	}
+
+	private function getWeekTimestamps($min_timestamp, $max_timstamp){
+		$result = array();
+		$startdate_info = getdate($min_timestamp);
+		$year  = $startdate_info['year'];
+		$month = $startdate_info['mon'];
+		$day   = $startdate_info['mday'];
+		$wday  = $startdate_info['wday'] - 1;
+		while ( $max_timstamp > $ts = mktime( 0, 0 , 0 , $month, $day-$wday, $year ) ){
+			if ($ts > $min_timestamp) $result[] = $ts;
+			$day += 7;
+		}
+		return $result;
+	}
+
+	private function getHalfdayTimestamps($min_timestamp, $max_timstamp){
+		$result = array();
+		$startdate_info = getdate($min_timestamp);
+		$year  = $startdate_info['year'];
+		$month = $startdate_info['mon'];
+		$day   = $startdate_info['mday'];
+		$hour  = 0;
+		while ( $max_timstamp > $ts = mktime( $hour, 0 , 0 , $month, $day, $year ) ){
+			if ($ts > $min_timestamp) $result[] = $ts;
+			$hour += 12;
+		}
+		return $result;
+	}
+
+	private function getDayTimestamps($min_timestamp, $max_timstamp){
+		$result = array();
+		$startdate_info = getdate($min_timestamp);
+		$year  = $startdate_info['year'];
+		$month = $startdate_info['mon'];
+		$day   = $startdate_info['mday'];
+		while ( $max_timstamp > $ts = mktime( 0, 0 , 0 , $month, $day, $year ) ){
+			if ($ts > $min_timestamp) $result[] = $ts;
+			$day ++;
+		}
+		return $result;
+	}
+
+	private function getQuarterTimestamps($min_timestamp, $max_timstamp){
+		$result = array();
+		$startdate_info = getdate($min_timestamp);
+		$year  = $startdate_info['year'];
+		$month = $startdate_info['mon'];
+		$day   = $startdate_info['mday'];
+		$hour  = $startdate_info['hours'];
+		$minute = 0;
+		while ( $max_timstamp > $ts = mktime( $hour, $minute , 0 , $month, $day, $year ) ){
+			if ($ts > $min_timestamp) $result[] = $ts;
+			$minute += 15;
+		}
+		return $result;
+	}
+
+
+
+	private function getHourTimestamps($min_timestamp, $max_timstamp){
+		$result = array();
+		$startdate_info = getdate($min_timestamp);
+		$year  = $startdate_info['year'];
+		$month = $startdate_info['mon'];
+		$day   = $startdate_info['mday'];
+		$hour  = $startdate_info['hours'];
+		while ( $max_timstamp > $ts = mktime( $hour, 0 , 0 , $month, $day, $year ) ){
+			if ($ts > $min_timestamp)
+				$result[] = $ts;
+			$hour ++;
+		}
+		return $result;
+	}
 }
 ?>

@@ -744,7 +744,9 @@
        if ( $DataDescription["Format"]["Y"] == "metric" )
         $Value = $this->ToMetric($Value);        
        if ( $DataDescription["Format"]["Y"] == "currency" )
-        $Value = $this->ToCurrency($Value);        
+        $Value = $this->ToCurrency($Value);
+	   if ( $DataDescription["Format"]["Y"] == "none" )
+        $Value = "";
 
        $Position  = imageftbbox($this->FontSize,0,$this->FontName,$Value);
        $TextWidth = $Position[2]-$Position[0];
@@ -853,7 +855,9 @@
        if ( $DataDescription["Format"]["X"] == "metric" )
         $Value = $this->ToMetric($Value);        
        if ( $DataDescription["Format"]["X"] == "currency" )
-        $Value = $this->ToCurrency($Value);        
+        $Value = $this->ToCurrency($Value);
+	   if ( $DataDescription["Format"]["X"] == "none" )
+        $Value = "";
 
        $Position   = imageftbbox($this->FontSize,$Angle,$this->FontName,$Value);
        $TextWidth  = abs($Position[2])+abs($Position[0]);
@@ -1100,6 +1104,7 @@
    function drawTextBox($X1,$Y1,$X2,$Y2,$Text,$Angle=0,$R=255,$G=255,$B=255,$Align=ALIGN_LEFT,$Shadow=TRUE,$BgR=-1,$BgG=-1,$BgB=-1,$Alpha=100)
     {
      $Position   = imageftbbox($this->FontSize,$Angle,$this->FontName,$Text);
+	 debug($Position);
      $TextWidth  = $Position[2]-$Position[0];
      $TextHeight = $Position[5]-$Position[3];
      $AreaWidth  = $X2 - $X1;
@@ -1117,6 +1122,11 @@
      if ( $Align == ALIGN_BOTTOM_LEFT )   { $X = $X1+1; $Y = $Y2-1; }
      if ( $Align == ALIGN_BOTTOM_CENTER ) { $X = $X1+($AreaWidth/2)-($TextWidth/2); $Y = $Y2-1; }
      if ( $Align == ALIGN_BOTTOM_RIGHT )  { $X = $X2-$TextWidth-1; $Y = $Y2-1; }
+     if ( $Align == 666 )     {
+		 debug( array($Y1, $Y2, $TextHeight) ) ;
+		 $X = $X2-$TextWidth-1; $Y = $Y1 - $TextHeight ;
+
+		 }
 
      $C_TextColor   =$this->AllocateColor($this->Picture,$R,$G,$B);
      $C_ShadowColor =$this->AllocateColor($this->Picture,0,0,0);

@@ -50,32 +50,8 @@ class tx_caretaker_Helper {
 	 * @return tx_caretaker_AbstractNode
 	 */
 	static function getNode($instancegroupId = false, $instanceId = false, $testgroupId = false, $testId = false, $show_hidden=false){
-		
 		$node_repository    = tx_caretaker_NodeRepository::getInstance();
-
-		$instancegroupId = (int)$instancegroupId;
-		$instanceId      = (int)$instanceId;
-		$testgroupId     = (int)$testgroupId;
-		$testId          = (int)$testId;
-		
-		if ($instancegroupId>0){
-			$instancegroup = $node_repository->getInstancegroupByUid($instancegroupId, false, $show_hidden);
-			if ($instancegroup) return $instancegroup;
-		} else if ($instanceId>0){
-			$instance = $node_repository->getInstanceByUid($instanceId, false, $show_hidden);
-			if ($instance) {
-				if ($testgroupId>0){
-					$group = $node_repository->getTestgroupByUid($testgroupId, $instance, $show_hidden);
-					if ($group) return $group;		
-	    		} else if ($testId>0) {
-					$test = $node_repository->getTestByUid($testId, $instance, $show_hidden);
-					if ($test) return $test;		
-	    		} else {
-					return $instance;		
-				}
-			}
-		} 
-		return false;
+		return $node_repository->getNode($instancegroupId, $instanceId, $testgroupId, $testId, $show_hidden);
 	}
 	
 	/**
@@ -85,31 +61,10 @@ class tx_caretaker_Helper {
 	 * @return string
 	 */
 	static function node2id ($node){
-		$id = false;	
-		switch (get_class ($node)){
-			case 'tx_caretaker_InstancegroupNode':
-				$id = 'instancegroup_'.$node->getUid();
-				break;
-			case 'tx_caretaker_InstanceNode':
-				$id = 'instance_'.$node->getUid();
-				break;
-			case 'tx_caretaker_TestgroupNode':
-				$instance = $node->getInstance();
-				$id = 'instance_'.$instance->getUid().'_testgroup_'.$node->getUid();
-				break;
-			case 'tx_caretaker_TestNode':
-				$instance = $node->getInstance();
-				$id = 'instance_'.$instance->getUid().'_test_'.$node->getUid();
-				break;	
-			case 'tx_caretaker_RootNode':
-				$instance = $node->getInstance();
-				$id = 'root';
-				break;	
-			
-		}
-		return $id;
+		$node_repository    = tx_caretaker_NodeRepository::getInstance();
+		return $node_repository->node2id ($node);
 	}
-	
+
 	/**
 	 * Get the Node Object for a given Identifier String
 	 * 
@@ -118,33 +73,53 @@ class tx_caretaker_Helper {
 	 * @return tx_caretaker_AbstractNode
 	 */
 	static function id2node ($id_string, $show_hidden=false){
-				
-		if ($id_string == 'root') return tx_caretaker_Helper::getRootNode();
-		
-		$parts = explode('_', $id_string);
-		$info  = array();
-		for($i=0; $i<count($parts);$i +=2 ){
-			switch ($parts[$i]){
-				case 'instancegroup':
-					$info['instancegroup']=(int)$parts[$i+1];
-					break;
-				case 'instance':
-					$info['instance']=(int)$parts[$i+1];
-					break;
-				case 'testgroup':
-					$info['testgroup']=(int)$parts[$i+1];
-					break;
-				case 'test':
-					$info['test']=(int)$parts[$i+1];
-					break;
-			}
-		}
-		return tx_caretaker_Helper::getNode($info['instancegroup'],$info['instance'],$info['testgroup'],$info['test'], $show_hidden );
+		$node_repository    = tx_caretaker_NodeRepository::getInstance();
+		return $node_repository->id2node ($id_string, $show_hidden);
 	}
 	
 	static function getRootNode (){
 		$node_repository    = tx_caretaker_NodeRepository::getInstance();
 		return $node_repository->getRootNode();
+	}
+
+	/**
+	 * Translate a given string in the current language
+	 *
+	 * @param string $string
+	 * @return string
+	 */
+	static function locallizeString( $locallang_string ){
+
+		$locallang_parts = explode (':',$locallang_string);
+
+		if( array_shift($locallang_parts) != 'LLL') {
+			return $locallang_string;
+		}
+
+		switch (TYPO3_MODE){
+			case 'FE':
+
+				$lcObj  = t3lib_div::makeInstance('tslib_cObj');
+				return( $lcObj->TEXT(array('data' => $locallang_string )) );
+
+			case 'BE':
+
+				$locallang_key   = array_pop($locallang_parts);
+				$locallang_file  = implode(':',$locallang_parts);
+
+				$language_key  = $GLOBALS['BE_USER']->uc['lang'];
+				$LANG = t3lib_div::makeInstance('language');
+				$LANG->init($language_key);
+
+				return $LANG->getLLL($locallang_key, $LANG->readLLfile(t3lib_div::getFileAbsFileName( $locallang_file )));
+
+			default :
+
+				return $locallang_string;
+
+
+		}
+
 	}
 	
 }

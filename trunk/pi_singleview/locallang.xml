@@ -11,9 +11,16 @@
 			<label index="value">Value</label>
 			<label index="message">Message</label>
 			<label index="children">Children</label>
+			<label index="1hour">1 hour</label>
+			<label index="3hours">3 hours</label>
+			<label index="12hours">12 hours</label>
 			<label index="24hours">24 hours</label>
+			<label index="3days">3 days</label>
 			<label index="7days">7 days</label>
 			<label index="30days">30 days</label>
+			<label index="3month">3 month</label>
+			<label index="6month">6 month</label>
+			<label index="12month">12 month</label>
 			<label index="times">Times</label>
 			<label index="values">Values</label>
 			<label index="date">Date</label>

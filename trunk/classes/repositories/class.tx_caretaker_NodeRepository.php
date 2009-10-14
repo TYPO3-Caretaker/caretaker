@@ -44,6 +44,107 @@ require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_careta
 class tx_caretaker_NodeRepository {
 
 	/**
+	 * Retrieve a specific Node
+	 *
+	 * @param integer $instancegroupId
+	 * @param integer $instanceId
+	 * @param integer $testgroupId
+	 * @param integer $testId
+	 * @param boolean $show_hidden
+	 * @return tx_caretaker_AbstractNode
+	 */
+	public function getNode($instancegroupId = false, $instanceId = false, $testgroupId = false, $testId = false, $show_hidden=false){
+
+		$instancegroupId = (int)$instancegroupId;
+		$instanceId      = (int)$instanceId;
+		$testgroupId     = (int)$testgroupId;
+		$testId          = (int)$testId;
+
+		if ($instancegroupId>0){
+			$instancegroup = $this->getInstancegroupByUid($instancegroupId, false, $show_hidden);
+			if ($instancegroup) return $instancegroup;
+		} else if ($instanceId>0){
+			$instance = $this->getInstanceByUid($instanceId, false, $show_hidden);
+			if ($instance) {
+				if ($testgroupId>0){
+					$group = $this->getTestgroupByUid($testgroupId, $instance, $show_hidden);
+					if ($group) return $group;
+	    		} else if ($testId>0) {
+					$test = $this->getTestByUid($testId, $instance, $show_hidden);
+					if ($test) return $test;
+	    		} else {
+					return $instance;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Get the Identifier String for a Node
+	 *
+	 * @param tx_caretaker_AbstractNode $node
+	 * @return string
+	 */
+	public function node2id ($node){
+		$id = false;
+		switch (get_class ($node)){
+			case 'tx_caretaker_InstancegroupNode':
+				$id = 'instancegroup_'.$node->getUid();
+				break;
+			case 'tx_caretaker_InstanceNode':
+				$id = 'instance_'.$node->getUid();
+				break;
+			case 'tx_caretaker_TestgroupNode':
+				$instance = $node->getInstance();
+				$id = 'instance_'.$instance->getUid().'_testgroup_'.$node->getUid();
+				break;
+			case 'tx_caretaker_TestNode':
+				$instance = $node->getInstance();
+				$id = 'instance_'.$instance->getUid().'_test_'.$node->getUid();
+				break;
+			case 'tx_caretaker_RootNode':
+				$instance = $node->getInstance();
+				$id = 'root';
+				break;
+
+		}
+		return $id;
+	}
+
+	/**
+	 * Get the Node Object for a given Identifier String
+	 *
+	 * @param string $id_string
+	 * @param boolean $show_hidden
+	 * @return tx_caretaker_AbstractNode
+	 */
+	public function id2node ($id_string, $show_hidden=false){
+
+		if ($id_string == 'root') return $this->getRootNode();
+
+		$parts = explode('_', $id_string);
+		$info  = array();
+		for($i=0; $i<count($parts);$i +=2 ){
+			switch ($parts[$i]){
+				case 'instancegroup':
+					$info['instancegroup']=(int)$parts[$i+1];
+					break;
+				case 'instance':
+					$info['instance']=(int)$parts[$i+1];
+					break;
+				case 'testgroup':
+					$info['testgroup']=(int)$parts[$i+1];
+					break;
+				case 'test':
+					$info['test']=(int)$parts[$i+1];
+					break;
+			}
+		}
+		return $this->getNode($info['instancegroup'],$info['instance'],$info['testgroup'],$info['test'], $show_hidden );
+	}
+
+	/**
 	 * Singleton Instance
 	 * @var tx_caretaker_NodeRepository
 	 */
