@@ -12,18 +12,20 @@ class tx_caretaker_treeloader {
 		if ( $node_id == 'root'){
 			$node_repository = tx_caretaker_NodeRepository::getInstance();
 			$node = $node_repository->getRootNode(true);
+			$result = $this->nodeToArray($node, 2);
 		} else {
-			$node =  tx_caretaker_Helper::id2node($node_id);
+			$node =  tx_caretaker_Helper::id2node($node_id, 1);
+			$result = $this->nodeToArray($node);
 		}
 		
-		$result = $this->nodeToArray($node);
+		
 		
 		$ajaxObj->setContent($result['children']);
 
 		$ajaxObj->setContentFormat('jsonbody');
 	}
 	
-	protected function nodeToArray($node, $level = 0) {
+	protected function nodeToArray($node, $depth = 1) {
 			// show node and icon
 		$result = array();
 		$uid    = $node->getUid();
@@ -47,17 +49,13 @@ class tx_caretaker_treeloader {
 		
 			// show subitems of tx_caretaker_AggregatorNodes
 		if (is_a($node, 'tx_caretaker_AggregatorNode')) {
-			$children = $node->getChildren(true);
-			if (count($children) > 0) {
-				$result['leaf'] = FALSE;
-				if ($level == 0){
-					$result['children'] = array();
-					foreach($children as $child){
-						$result['children'][] = $this->nodeToArray($child, $level + 1) ;
-					}
+			$result['leaf'] = FALSE;
+			if ($depth > 0){
+				$children = $node->getChildren(true);
+				$result['children'] = array();
+				foreach($children as $child){
+					$result['children'][] = $this->nodeToArray($child, $depth - 1 ) ;
 				}
-			} else {
-				$result['leaf'] = TRUE;
 			}
 		} else {
 			$result['leaf'] = TRUE;
