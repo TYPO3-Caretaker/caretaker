@@ -421,7 +421,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		);
 
 		$Graph->DivisionRatio  = ( $Graph->GArea_Y2 - $Graph->GArea_Y1 ) / ( $max_value + 1 ) ;
-		$Graph->XDivisionRatio = ( $Graph->GArea_X2 - $Graph->GArea_X1 ) / ( $test_result_range->getMinTstamp() - $test_result_range->getMaxTstamp() ) ;
+		$Graph->XDivisionRatio = ( $Graph->GArea_X2 - $Graph->GArea_X1 ) / ( $test_result_range->getMaxTstamp()  - $test_result_range->getMinTstamp() ) ;
 
 			// plot value line
 		$Graph->setLineStyle(0,0);
