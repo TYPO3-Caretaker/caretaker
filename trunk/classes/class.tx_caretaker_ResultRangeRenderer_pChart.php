@@ -123,11 +123,13 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$DataSet->AddSerie($this->getLL('times'));  
 		$DataSet->AddSerie($this->getLL('values'));
 
-		$DataSet->SetYAxisName($this->getLL('value').( $value_description ?' ['.$value_description.']':''));  
-		$DataSet->SetXAxisName($this->getLL('date'));  
+		// $DataSet->SetYAxisName($this->getLL('value').( $value_description ?' ['.$value_description.']':''));
+		$DataSet->SetYAxisName("");
+		// $DataSet->SetXAxisName($this->getLL('date'));
+		$DataSet->SetXAxisName("");
 
 		$DataSet->SetAbsciseLabelSerie($this->getLL('values'));  
-		$DataSet->SetYAxisFormat("number");  
+		$DataSet->SetYAxisFormat("none");
 		$DataSet->SetXAxisFormat("none");
 		
 			// Initialise the graph  
@@ -174,6 +176,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 
 			// draw background lines
 		$this->drawXAxis($Graph, $test_result_range->getMinTstamp(),  $test_result_range->getMaxTstamp() );
+		$this->drawYAxis($Graph, 0,  $test_result_range->getMaxValue() );
 
 
 		// $Graph->drawXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Times","Values",13);  
@@ -266,10 +269,10 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$DataSets = array();
 		
 		$DataSet  = new pData;
-		$DataSet->SetYAxisName("Value");  
-		$DataSet->SetXAxisName("Date");  
+		$DataSet->SetYAxisName("");  
+		$DataSet->SetXAxisName("");  
 		$DataSet->SetAbsciseLabelSerie("Values");  
-		$DataSet->SetYAxisFormat("number");  
+		$DataSet->SetYAxisFormat("none");
 		$DataSet->SetXAxisFormat("none");
 
 		
@@ -288,7 +291,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			$DataSets[$key]->SetYAxisName($this->getLL('value'));  
 			$DataSets[$key]->SetXAxisName($this->getLL('date'));  
 			$DataSets[$key]->SetAbsciseLabelSerie("Values");  
-			$DataSets[$key]->SetYAxisFormat("number");  
+			$DataSets[$key]->SetYAxisFormat("none");
 			$DataSets[$key]->SetXAxisFormat("none");
 			$DataSets[$key]->AddSerie("Values");
 			$DataSets[$key]->AddSerie("Times");
@@ -315,19 +318,16 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			5
 		);
 
+		$Graph->drawXYScale($DataSet->GetData(),$DataSet->GetDataDescription(),"Values","Times",0,0,0,TRUE,45, 0);
+
 			// draw background lines
 		$this->drawXAxis($Graph, $min_ts,  $max_ts);
-		
+		$this->drawYAxis($Graph, 0,  $max_val);
 		
 		$scale_is_plotted = false;
 		foreach ( $DataSets as $key=>$LocalDataSet ){
 				// generate color
 			$Graph->setColorPalette($key, (($key*100)+0)%255 ,(($key*100)+85)%255, (($key*100)+170)%255);  //OK
-				// plot scale once
-			if (!$scale_is_plotted){
-				$Graph->drawXYScale($LocalDataSet->GetData(),$LocalDataSet->GetDataDescription(),"Times","Values",0,0,0,TRUE,45);
-				$scale_is_plotted = true;  
-			}
 				// plot value line
 			$Graph->setLineStyle(0,0);
 			$Graph->drawOrthoXYGraph($LocalDataSet->GetData(),$LocalDataSet->GetDataDescription(),"Values","Times",$key);  
@@ -379,11 +379,13 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$DataSet->AddSerie("Values_WARNING");
 		$DataSet->AddSerie("Values_ERROR");
 
-		$DataSet->SetYAxisName($this->getLL('value').($value?' ['.$value.']':''));  
-		$DataSet->SetXAxisName($this->getLL('date'));  
+		//$DataSet->SetYAxisName($this->getLL('value').($value?' ['.$value.']':''));
+		//$DataSet->SetXAxisName($this->getLL('date'));
+		$DataSet->SetYAxisName("");
+		$DataSet->SetXAxisName("");
 
 		$DataSet->SetAbsciseLabelSerie("Times");  
-		$DataSet->SetYAxisFormat("number");  
+		$DataSet->SetYAxisFormat("none");
 		$DataSet->SetXAxisFormat("none");
 		
 			// Initialise the graph  
@@ -428,6 +430,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 
 			// draw background lines
 		$this->drawXAxis($Graph, $test_result_range->getMinTstamp(),  $test_result_range->getMaxTstamp() );
+		$this->drawYAxis($Graph, 0, $max_value );
 
 		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_ERROR",   "Times" ,2,70, FALSE);
 		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_WARNING", "Times" ,1,70, FALSE);
@@ -460,6 +463,74 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 
 
 	/**
+	 * Draw the X-Axis Visualisation and Value Information
+	 * 
+	 * @param <type> $Graph
+	 * @param <type> $min_value
+	 * @param <type> $max_value 
+	 */
+	private function drawYAxis(&$Graph, $min_value, $max_value){
+		$rounded_value = $this->ceilDecimal($max_value);
+		$value_step        = $rounded_value/10;
+
+		for ($value = 0; $value <= $max_value; $value += $value_step){
+				// line
+			$YPos = $Graph->GArea_Y2 - (($value-$Graph->VMin) * $Graph->DivisionRatio);
+			$Graph->drawFilledRectangle(
+				$Graph->GArea_X1,
+				$YPos,
+				$Graph->GArea_X2,
+				$YPos,
+				0,0,0,$DrawBorder=FALSE,$Alpha=20,$NoFallBack=FALSE
+			);
+
+				// text
+			$font  = t3lib_extMgm::extPath('caretaker').'/lib/Fonts/tahoma.ttf';
+			$size  = 9;
+			$angle = 0;
+			$color = imagecolorallocate  ( $Graph->Picture  , 0  ,0  ,0  );
+
+			$Position   = imageftbbox($size,$angle,$font,$value);
+			$TextWidth  = abs($Position[2])+abs($Position[0]);
+			$TextHeight = abs($Position[1])+abs($Position[3]);
+
+			$XPos = $Graph->GArea_X1 - $TextWidth;
+			imagettftext($Graph->Picture,$size,$angle,floor($XPos)-floor($TextWidth/2),$YPos + 6,$color,$font,$value);
+			
+		}
+		
+		
+	}
+
+	
+	private function ceilDecimal($value){
+
+		$number  = (float)$value;
+		
+		if ($number >1 || $number < -1){
+			$abs_str = (string)round(abs($number));
+			$significance = pow(10 , (int)strlen( $abs_str ) );
+			
+		} else {
+			$abs_str = (string)abs($number);
+			$pos = 0;
+			while ( substr($abs_str,$pos,1) == "0" || substr($abs_str,$pos,1) == "." ){
+				$pos ++;
+			}
+			$significance = pow(10 , 1+$pos*-1);
+		}
+
+		if ($number > 0){
+			$result = ceil($number/$significance)*$significance;
+		} else {
+			$result = -1 * ceil(abs($number)/$significance)*$significance;
+		}
+
+		return ( $result );
+	}
+
+	/**
+	 * Draw the X-Axis Visualisation and Value Information
 	 *
 	 * @param <type> $Graph
 	 * @param <type> $max_timstamp
@@ -513,11 +584,11 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			if ($timestamp > $min_timestamp && $timestamp < $max_timstamp){
 				$X = $Graph->GArea_X1 + (($timestamp-$Graph->VXMin) * $Graph->XDivisionRatio);
 				$Graph->drawFilledRectangle(
-					$X-1,
+					$X,
 					$Graph->GArea_Y1,
 					$X+1,
 					$Graph->GArea_Y2,
-					0,0,0,$DrawBorder=FALSE,$Alpha=100,$NoFallBack=FALSE
+					0,0,0,$DrawBorder=FALSE,$Alpha=40,$NoFallBack=FALSE
 				);
 			}
 		}
@@ -530,7 +601,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 					$Graph->GArea_Y1,
 					$X,
 					$Graph->GArea_Y2,
-					0,0,0,$DrawBorder=FALSE,$Alpha=60,$NoFallBack=FALSE
+					0,0,0,$DrawBorder=FALSE,$Alpha=40,$NoFallBack=FALSE
 				);
 			}
 		}
@@ -543,7 +614,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 					$Graph->GArea_Y1,
 					$X,
 					$Graph->GArea_Y2,
-					0,0,0,$DrawBorder=FALSE,$Alpha=30,$NoFallBack=FALSE
+					0,0,0,$DrawBorder=FALSE,$Alpha=20,$NoFallBack=FALSE
 				);
 			}
 		}
