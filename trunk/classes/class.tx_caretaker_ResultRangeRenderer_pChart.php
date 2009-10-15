@@ -157,17 +157,18 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$Graph->setFixedScale(
 			0,
 			$test_result_range->getMaxValue()*1.05,
-			$Divisions=5,
+			5,
 			$test_result_range->getMinTstamp(),
 			$test_result_range->getMaxTstamp(),
-			$XDivisions=5
+			5
 		);
+
+		$Graph->DivisionRatio  = ( $Graph->GArea_Y2 - $Graph->GArea_Y1 ) / ( $test_result_range->getMaxValue()*1.05) ;
+		$Graph->XDivisionRatio = ( $Graph->GArea_X2 - $Graph->GArea_X1 ) / ( $test_result_range->getMaxTstamp() - $test_result_range->getMinTstamp() ) ;
 
 			// plot value line
 		$Graph->setLineStyle(0,0);
-		
-		$Graph->drawXYScale($DataSet->GetData(),$DataSet->GetDataDescription(),"Values","Times",0,0,0,TRUE,45, 0);
-		
+	
 		$DataSet->removeAllSeries();
 		$DataSet->AddSerie("Times");
 		$DataSet->AddSerie("Values");
@@ -318,8 +319,9 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			5
 		);
 
-		$Graph->drawXYScale($DataSet->GetData(),$DataSet->GetDataDescription(),"Values","Times",0,0,0,TRUE,45, 0);
-
+		$Graph->DivisionRatio  = ( $Graph->GArea_Y2 - $Graph->GArea_Y1 ) / ( $max_val*1.05 ) ;
+		$Graph->XDivisionRatio = ( $Graph->GArea_X2 - $Graph->GArea_X1 ) / ( $max_ts - $min_ts ) ;
+		
 			// draw background lines
 		$this->drawXAxis($Graph, $min_ts,  $max_ts);
 		$this->drawYAxis($Graph, 0,  $max_val);
@@ -418,9 +420,11 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			$XDivisions=5
 		);
 
+		$Graph->DivisionRatio  = ( $Graph->GArea_Y2 - $Graph->GArea_Y1 ) / ( $max_value + 1 ) ;
+		$Graph->XDivisionRatio = ( $Graph->GArea_X2 - $Graph->GArea_X1 ) / ( $test_result_range->getMinTstamp() - $test_result_range->getMaxTstamp() ) ;
+
 			// plot value line
 		$Graph->setLineStyle(0,0);
-		$Graph->drawXYScale($DataSet->GetData(),$DataSet->GetDataDescription(),"Times","Values",0,0,0,TRUE,45);
 		
 		$DataSet->removeAllSeries();
 		$DataSet->AddSerie("Times");
@@ -478,11 +482,13 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		} else {
 			$value_step        = $rounded_value/10;
 		}
+
+
 		for ($value = 0; $value <= $max_value; $value += $value_step){
 				// line
 			$YPos = $Graph->GArea_Y2 - (($value-$Graph->VMin) * $Graph->DivisionRatio);
 			$Graph->drawFilledRectangle(
-				$Graph->GArea_X1,
+				$Graph->GArea_X1 - 3,
 				$YPos,
 				$Graph->GArea_X2,
 				$YPos,
@@ -503,7 +509,16 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			imagettftext($Graph->Picture,$size,$angle,floor($XPos)-floor($TextWidth/2),$YPos + 6,$color,$font,$value);
 			
 		}
-		
+
+		$Graph->drawFilledRectangle(
+			$Graph->GArea_X1,
+			$Graph->GArea_Y1,
+			$Graph->GArea_X1,
+			$Graph->GArea_Y2,
+			0,0,0,$DrawBorder=FALSE,$Alpha=100,$NoFallBack=FALSE
+		);
+
+
 		
 	}
 
@@ -592,7 +607,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 					$X,
 					$Graph->GArea_Y1,
 					$X+1,
-					$Graph->GArea_Y2,
+					$Graph->GArea_Y2 + 3,
 					0,0,0,$DrawBorder=FALSE,$Alpha=40,$NoFallBack=FALSE
 				);
 			}
@@ -605,7 +620,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 					$X,
 					$Graph->GArea_Y1,
 					$X,
-					$Graph->GArea_Y2,
+					$Graph->GArea_Y2 + 3,
 					0,0,0,$DrawBorder=FALSE,$Alpha=40,$NoFallBack=FALSE
 				);
 			}
@@ -618,11 +633,19 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 					$X,
 					$Graph->GArea_Y1,
 					$X,
-					$Graph->GArea_Y2,
+					$Graph->GArea_Y2 ,
 					0,0,0,$DrawBorder=FALSE,$Alpha=20,$NoFallBack=FALSE
 				);
 			}
 		}
+
+		$Graph->drawFilledRectangle(
+			$Graph->GArea_X1,
+			$Graph->GArea_Y2,
+			$Graph->GArea_X2,
+			$Graph->GArea_Y2,
+			0,0,0,$DrawBorder=FALSE,$Alpha=100,$NoFallBack=FALSE
+		);
 
 			// draw x - axis informations
 		if (count($times_super)>3){
