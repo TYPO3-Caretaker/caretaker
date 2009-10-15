@@ -175,15 +175,12 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		
 		$Graph->setLineStyle(0,0);
 
-			// draw background lines
-		$this->drawXAxis($Graph, $test_result_range->getMinTstamp(),  $test_result_range->getMaxTstamp() );
-		$this->drawYAxis($Graph, 0,  $test_result_range->getMaxValue() );
-
-
+		
 		// $Graph->drawXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Times","Values",13);  
 		// $Graph->drawOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values","Times",998,50, FALSE);
 		$Graph->drawOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values","Times",998);  
-		
+
+
 			// show state as background-color
 		foreach($rangesOk as $range){
 			if (isset($range[0]) && isset($range[1]) ) {
@@ -214,7 +211,12 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 				$Graph->drawFilledRectangle($X1,$Y1,$X2,$Y2,255,0,0,$DrawBorder=FALSE,$Alpha=30,$NoFallBack=FALSE);
 			}
 		}
-				
+
+			// draw background lines
+		$this->drawXAxis($Graph, $test_result_range->getMinTstamp(),  $test_result_range->getMaxTstamp() );
+		$this->drawYAxis($Graph, 0,  $test_result_range->getMaxValue() );
+
+
 			// Finish the graph
 		$info = $test_result_range->getInfos();
 
@@ -322,9 +324,6 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$Graph->DivisionRatio  = ( $Graph->GArea_Y2 - $Graph->GArea_Y1 ) / ( $max_val*1.05 ) ;
 		$Graph->XDivisionRatio = ( $Graph->GArea_X2 - $Graph->GArea_X1 ) / ( $max_ts - $min_ts ) ;
 		
-			// draw background lines
-		$this->drawXAxis($Graph, $min_ts,  $max_ts);
-		$this->drawYAxis($Graph, 0,  $max_val);
 		
 		$scale_is_plotted = false;
 		foreach ( $DataSets as $key=>$LocalDataSet ){
@@ -334,6 +333,10 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			$Graph->setLineStyle(0,0);
 			$Graph->drawOrthoXYGraph($LocalDataSet->GetData(),$LocalDataSet->GetDataDescription(),"Values","Times",$key);  
 		}
+
+		// draw background lines
+		$this->drawXAxis($Graph, $min_ts,  $max_ts);
+		$this->drawYAxis($Graph, 0,  $max_val);
 
 		
 		$Graph->drawTitle(50,22, $description,50,50,50,585);  		
@@ -432,14 +435,15 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		
 		$Graph->setLineStyle(0,0);
 
-			// draw background lines
-		$this->drawXAxis($Graph, $test_result_range->getMinTstamp(),  $test_result_range->getMaxTstamp() );
-		$this->drawYAxis($Graph, 0, $max_value );
+		
 
 		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_ERROR",   "Times" ,2,70, FALSE);
 		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_WARNING", "Times" ,1,70, FALSE);
 		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_OK",      "Times" ,0,70, FALSE);
 
+			// draw background lines
+		$this->drawXAxis($Graph, $test_result_range->getMinTstamp(),  $test_result_range->getMaxTstamp() );
+		$this->drawYAxis($Graph, 0, $max_value );
 		
 			// Finish the graph
 		$info = $test_result_range->getInfos();
@@ -492,7 +496,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 				$YPos,
 				$Graph->GArea_X2,
 				$YPos,
-				0,0,0,$DrawBorder=FALSE,$Alpha=20,$NoFallBack=FALSE
+				0,0,0,$DrawBorder=FALSE,$Alpha=15,$NoFallBack=FALSE
 			);
 
 				// text
@@ -505,7 +509,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			$TextWidth  = abs($Position[2])+abs($Position[0]);
 			$TextHeight = abs($Position[1])+abs($Position[3]);
 
-			$XPos = $Graph->GArea_X1 - $TextWidth;
+			$XPos = $Graph->GArea_X1 - $TextWidth - 6;
 			imagettftext($Graph->Picture,$size,$angle,floor($XPos)-floor($TextWidth/2),$YPos + 6,$color,$font,$value);
 			
 		}
@@ -608,7 +612,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 					$Graph->GArea_Y1,
 					$X+1,
 					$Graph->GArea_Y2 + 3,
-					0,0,0,$DrawBorder=FALSE,$Alpha=40,$NoFallBack=FALSE
+					0,0,0,$DrawBorder=FALSE,$Alpha=25,$NoFallBack=FALSE
 				);
 			}
 		}
@@ -621,7 +625,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 					$Graph->GArea_Y1,
 					$X,
 					$Graph->GArea_Y2 + 3,
-					0,0,0,$DrawBorder=FALSE,$Alpha=40,$NoFallBack=FALSE
+					0,0,0,$DrawBorder=FALSE,$Alpha=25,$NoFallBack=FALSE
 				);
 			}
 		}
@@ -634,7 +638,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 					$Graph->GArea_Y1,
 					$X,
 					$Graph->GArea_Y2 ,
-					0,0,0,$DrawBorder=FALSE,$Alpha=20,$NoFallBack=FALSE
+					0,0,0,$DrawBorder=FALSE,$Alpha=15,$NoFallBack=FALSE
 				);
 			}
 		}
