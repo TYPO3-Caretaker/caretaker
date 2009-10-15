@@ -471,8 +471,13 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 	 */
 	private function drawYAxis(&$Graph, $min_value, $max_value){
 		$rounded_value = $this->ceilDecimal($max_value);
-		$value_step        = $rounded_value/10;
-
+		if ($rounded_value > $max_value * 5){
+			$value_step        = $rounded_value/40;
+		} else if ($rounded_value > $max_value * 2){
+			$value_step        = $rounded_value/20;
+		} else {
+			$value_step        = $rounded_value/10;
+		}
 		for ($value = 0; $value <= $max_value; $value += $value_step){
 				// line
 			$YPos = $Graph->GArea_Y2 - (($value-$Graph->VMin) * $Graph->DivisionRatio);
