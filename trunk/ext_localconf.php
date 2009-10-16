@@ -28,5 +28,12 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TestrunnerTas
 	'description'      => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:testrunnerTask.description',
 	'additionalFields' => 'tx_caretaker_TestrunnerTask_AdditionalFieldProvider'
 );
+	// Register scheduler tasks for caretaker
+$TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TerupdateTask'] = array(
+	'extension'        => $_EXTKEY,
+	'title'            => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:terupdateTask.name',
+	'description'      => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:terupdateTask.description',
+	'additionalFields' => 'tx_caretaker_TerupdateTask_AdditionalFieldProvider'
+);
 
 ?> 

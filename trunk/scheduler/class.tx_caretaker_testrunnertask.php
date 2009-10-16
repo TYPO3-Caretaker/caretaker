@@ -2,9 +2,35 @@
 
 class tx_caretaker_TestrunnerTask extends tx_scheduler_Task {
 
-	public function execute() {
-		$success = false;
+	private $node_id;
 
+
+	public function setNodeId($id){
+		$this->node_id = $id;
+	}
+
+	public function getNodeId(){
+		return $this->node_id;
+	}
+
+	public function execute() {
+		
+
+		require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_Helper.php');
+		require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_CliLogger.php');
+		require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_CliNotifier.php');
+
+		$node = tx_caretaker_Helper::id2node($this->node_id);
+
+		if (!$node)return false;
+
+		$notifier = new tx_caretaker_CliNotifier();
+		$node->setNotifier($notifier);
+
+		$node->updateTestResult();
+
+		$success = true;
+		
 		return $success;
 	}
 

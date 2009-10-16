@@ -1,5 +1,5 @@
 <?php
-class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements tx_scheduler_AdditionalFieldProvider {
+class tx_caretaker_TerupdateTask_AdditionalFieldProvider implements tx_scheduler_AdditionalFieldProvider {
 
 	/**
 	 * This method is used to define new fields for adding or editing a task
@@ -17,31 +17,7 @@ class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements tx_schedule
 	 *										['cshLabel']	=> The code of the CSH label
 	 */
 	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $parentObject) {
-
-			// Initialize extra field value
-		if (empty($taskInfo['update_node_id'])) {
-			if ($parentObject->CMD == 'add') {
-					// In case of new task and if field is empty, set default email address
-				$taskInfo['update_node_id'] = 'root';
-
-			} elseif ($parentObject->CMD == 'edit') {
-					// In case of edit, and editing a test task, set to internal value if not data was submitted already
-				$taskInfo['update_node_id'] = $task->getNodeId();
-			} else {
-					// Otherwise set an empty value, as it will not be used anyway
-				$taskInfo['update_node_id'] = 'root';
-			}
-		}
-
-		$fieldID = 'update_node_id';
-		$fieldCode = '<input type="text" name="tx_scheduler['.$fieldID.']" id="' . $fieldID . '" value="' . $taskInfo['update_node_id'] . '" size="30" />';
-		$additionalFields[$fieldID] = array(
-			'code'     => $fieldCode,
-			'label'    => 'LLL:EXT:caretaker/locallang.xml:sceduler_update_node',
-			'cshKey'   => '_MOD_tools_txschedulerM1',
-			'cshLabel' => $fieldID
-		);
-		
+		$additionalFields = array();
 		return $additionalFields;
 	}
 
@@ -54,15 +30,7 @@ class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements tx_schedule
 	 * @return	boolean					True if validation was ok (or selected class is not relevant), false otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $parentObject) {
-		$submittedData['update_node_id'] = trim($submittedData['update_node_id']);
-
-		if (empty($submittedData['update_node_id'])) {
-			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:caretaker/locallang.xml:sceduler_update_node_required'), t3lib_FlashMessage::ERROR);
-			$result = false;
-		} else {
-			$result = true;
-		}
-
+		$result = true;
 		return $result;
 	}
 
@@ -75,7 +43,6 @@ class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements tx_schedule
 	 * @return	void
 	 */
 	public function saveAdditionalFields(array $submittedData, tx_scheduler_Task $task) {
-		$task->setNodeId( $submittedData['update_node_id'] );
 	}
 }
 
