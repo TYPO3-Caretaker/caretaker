@@ -374,7 +374,8 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			$DataSet->AddPoint($ok,"Values_OK");
 			$DataSet->AddPoint($ok+$warning,"Values_WARNING");  
 			$DataSet->AddPoint($ok+$warning+$error,"Values_ERROR");  
-						
+			$DataSet->AddPoint($ok+$warning+$error+$undefined,"Values_UNDEFINED");
+			
 		    $DataSet->AddPoint($result->getTstamp(),"Times");
 		    
 		}
@@ -383,6 +384,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$DataSet->AddSerie("Values_OK");
 		$DataSet->AddSerie("Values_WARNING");
 		$DataSet->AddSerie("Values_ERROR");
+		$DataSet->AddSerie("Values_UNDEFINED");
 
 		//$DataSet->SetYAxisName($this->getLL('value').($value?' ['.$value.']':''));
 		//$DataSet->SetXAxisName($this->getLL('date'));
@@ -436,10 +438,10 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$Graph->setLineStyle(0,0);
 
 		
-
-		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_ERROR",   "Times" ,2,70, FALSE);
-		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_WARNING", "Times" ,1,70, FALSE);
-		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_OK",      "Times" ,0,70, FALSE);
+		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_UNDEFINED", "Times" ,3,70, FALSE);
+		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_ERROR",     "Times" ,2,70, FALSE);
+		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_WARNING",   "Times" ,1,70, FALSE);
+		$Graph->drawFilledOrthoXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Values_OK",        "Times" ,0,70, FALSE);
 
 			// draw background lines
 		$this->drawXAxis($Graph, $test_result_range->getMinTstamp(),  $test_result_range->getMaxTstamp() );
