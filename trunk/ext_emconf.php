@@ -28,12 +28,16 @@ $EM_CONF[$_EXTKEY] = array(
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
+	'TYPO3_version' => '4.3.0dev-',
+	'PHP_version' => '5.2-',
 	'author_company' => '',
-	'version' => '4.2.0',
+	'version' => '0.0.1',
 	'constraints' => array(
 		'depends' => array(
 			'cms' => '',
 			'tt_address' => '2.2.1-',
+			'typo3' => '4.3.0dev-',
+			'php' => '5.2.0-'
 		),
 		'conflicts' => array(
 		),
