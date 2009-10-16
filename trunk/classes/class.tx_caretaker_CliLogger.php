@@ -51,7 +51,7 @@ class tx_caretaker_CliLogger implements tx_caretaker_LoggerInterface {
 	 * 
 	 * @param $silent
 	 */
-    private function setSilentMode($silent){
+    public function setSilentMode($silent){
     	$this->silentMode = $silent;
     }
 
@@ -59,7 +59,7 @@ class tx_caretaker_CliLogger implements tx_caretaker_LoggerInterface {
      * (non-PHPdoc)
      * @see caretaker/trunk/interfaces/tx_caretaker_LoggerInterface#log()
      */
-    function log($msg){
+    public function log($msg){
     	if ($this->silentMode == false){
 	    	echo($msg.chr(10));
 			flush();
