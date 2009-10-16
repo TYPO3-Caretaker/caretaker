@@ -450,19 +450,29 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			// Finish the graph
 		$info = $test_result_range->getInfos();
 		$Graph->drawTitle(50,22, $title.' '.round(($info['PercentAVAILABLE']*100),2 )."% ".$this->getLL('available'),50,50,50,585);  
-		
+
+			// Legend
 		$DataSet->SetSerieName(
-			round(($info['PercentOK']*100),2 ).'% '.$this->getLL('ok')
+			round(($info['PercentOK']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_ok')
 			,"Values_OK"
 		);
+
 		$DataSet->SetSerieName(
-			round(($info['PercentWARNING']*100),2 ).'% '.$this->getLL('warning')
+			round(($info['PercentWARNING']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_warning')
 			,"Values_WARNING"
 		);
+
 		$DataSet->SetSerieName(
-			round(($info['PercentERROR']*100),2 ).'% '.$this->getLL('error')
+			round(($info['PercentERROR']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_error')
 			,"Values_ERROR"
 		);
+
+		$DataSet->SetSerieName(
+			round(($info['PercentERROR']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_undefined')
+			,"Values_UNDEFINED"
+		);
+
+
 				
 		$Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);  
 		
