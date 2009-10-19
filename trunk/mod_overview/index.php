@@ -104,10 +104,10 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 					id:"'.tx_caretaker_Helper::node2id($node).'",
 					uid:'.$node->getUid().',
 					type:"'.$node->getType().'",
-					type_description:"'.$node->getTypeDescription().'",
+					type_description:"'.htmlspecialchars($node->getTypeDescription()).'",
 					type_lower:"'.strtolower($node->getType()).'",
 					state:"'.$node->getTestResult()->getStateInfo().'",
-					title:"'.$node->getTitle().'",
+					title:"'.htmlspecialchars($node->getTitle()).'",
 					hidden:"'.$node->getHidden().'"
 				};
 
