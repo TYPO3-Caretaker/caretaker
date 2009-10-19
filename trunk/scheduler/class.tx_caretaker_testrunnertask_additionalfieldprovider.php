@@ -18,12 +18,13 @@ class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements tx_schedule
 	 */
 	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $parentObject) {
 
+		if (!is_a($task, 'tx_caretaker_TestrunnerTask')) return;
+		
 			// Initialize extra field value
 		if (empty($taskInfo['update_node_id'])) {
 			if ($parentObject->CMD == 'add') {
 					// In case of new task and if field is empty, set default email address
 				$taskInfo['update_node_id'] = 'root';
-
 			} elseif ($parentObject->CMD == 'edit') {
 					// In case of edit, and editing a test task, set to internal value if not data was submitted already
 				$taskInfo['update_node_id'] = $task->getNodeId();

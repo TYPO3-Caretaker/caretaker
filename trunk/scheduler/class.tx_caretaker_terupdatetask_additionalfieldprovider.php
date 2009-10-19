@@ -17,6 +17,8 @@ class tx_caretaker_TerupdateTask_AdditionalFieldProvider implements tx_scheduler
 	 *										['cshLabel']	=> The code of the CSH label
 	 */
 	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $parentObject) {
+		if (!is_a($task, 'tx_caretaker_TerupdateTask')) return;
+
 		$additionalFields = array();
 		return $additionalFields;
 	}
@@ -46,8 +48,8 @@ class tx_caretaker_TerupdateTask_AdditionalFieldProvider implements tx_scheduler
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_testrunnertask_additionalfieldprovider.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_testrunnertask_additionalfieldprovider.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_terupdatetask_additionalfieldprovider.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_terupdatetask_additionalfieldprovider.php']);
 }
 
 ?>
