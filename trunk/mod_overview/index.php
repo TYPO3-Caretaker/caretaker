@@ -83,8 +83,12 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->pageRenderer->loadExtJS();
 			$this->pageRenderer->enableExtJSQuickTips();
 			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.js');
-			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeTree.js');
-			$this->pageRenderer->addJsFile('tx.caretaker.Overview.js');
+			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeInfo.js');
+			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeCharts.js');
+			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeLog.js');
+			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeToolbar.js');
+			
+			//$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeOverview.js');
 
 			// Enable debug mode for Ext JS
 			$this->pageRenderer->enableExtJsDebug();
@@ -99,23 +103,42 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 				Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 				Ext.namespace("tx","tx.caretaker");
 
-				tx.caretaker.back_path = "'.$this->doc->backPath.'";
-				tx.caretaker.node_info = {
-					id:"'.tx_caretaker_Helper::node2id($node).'",
-					uid:'.$node->getUid().',
-					type:"'.$node->getType().'",
-					type_description:"'.htmlspecialchars($node->getTypeDescription()).'",
-					type_lower:"'.strtolower($node->getType()).'",
-					state:"'.$node->getTestResult()->getStateInfo().'",
-					title:"'.htmlspecialchars($node->getTitle()).'",
-					hidden:"'.$node->getHidden().'"
-				};
+				Ext.onReady( function() {
 
-				tx.caretaker.back_url   = "'.urlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')).'";
-				tx.caretaker.path_typo3 = "'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'typo3/";
+					var back_path   = "'.$this->doc->backPath.'";
+					var back_url    = "'.urlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')).'";
+					var path_typo3  = "'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'typo3/";
+					var node_id     = "'.tx_caretaker_Helper::node2id($node).'";
+					var node_type   = "'.strtolower($node->getType()).'";
+					var node_hidden = "'.$node->getHidden().'";
+					var node_uid    = "'.$node->getUid().'";
+					var node_title  = "'.htmlspecialchars( $node->getTitle() ? $node->getTitle() : '[no title]' ).'( '.( $node->getTypeDescription() ? htmlspecialchars($node->getTypeDescription()) : $node->getType() ).' )" ;
 
-				Ext.onReady( function(){
-					tx.caretaker.overview();
+					tx.caretaker.view = new Ext.Viewport({
+						layout: "fit",
+						items: {
+								xtype    : "panel",
+								id       : "node",
+								autoScroll: true,
+								title    : node_title + " :: " + node_id,
+								iconCls  : "icon-caretaker-type-" + node_type,
+								tbar     : {
+									xtype: "caretaker-nodetoolbar",
+									back_path: back_path,
+									path_typo3: path_typo3,
+									back_url: back_url,
+									node_id: node_id,
+									node_type: node_type,
+									node_uid: node_uid
+								},
+								items    : [
+									{ id: "node-info",   xtype: "caretaker-nodeinfo"   , back_path: back_path , node_id: node_id },
+									{ id: "node-charts", xtype: "caretaker-nodecharts" , back_path: back_path , node_id: node_id },
+									{ id: "node-log",    xtype: "caretaker-nodelog"    , back_path: back_path , node_id: node_id },
+								]
+						}
+					 });
+
 				});
 			');
 	

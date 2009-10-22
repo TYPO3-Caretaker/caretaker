@@ -138,7 +138,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * @return string
 	 */
 	public function getTypeDescription(){
-		return $this->locallizeString( $this->typeDescription );
+		return tx_caretaker_Helper::locallizeString( $this->typeDescription );
 	}
 	
 	/**
@@ -190,7 +190,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 		return true;
 	}
 
-		/**
+	/**
 	 * Translate a given string in the current language
 	 *
 	 * @param string $string

@@ -198,4 +198,5 @@ tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 't
 tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_http',  'HTTP' , 'Call an URI and check the HTTP-Status' );
 
 
+
 ?>

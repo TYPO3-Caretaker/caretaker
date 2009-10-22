@@ -3,7 +3,7 @@
 require_once (t3lib_extMgm::extPath('caretaker') . '/classes/repositories/class.tx_caretaker_NodeRepository.php');
 require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_Helper.php');
 
-class tx_caretaker_treeloader {
+class tx_caretaker_TreeLoader {
 	
 	public function ajaxLoadTree($params, &$ajaxObj) {
 		
@@ -43,7 +43,7 @@ class tx_caretaker_treeloader {
 		$result['id'] = $id;
 		$result['uid'] = $uid;
 		$result['disabled'] = $hidden;
-		$result['text'] = $title;
+		$result['text'] = $title ? $title : '[no title]';
 		$result['cls'] = $resultClass . ' ' . $typeClass;
 		$result['iconCls'] = 'icon-' . $typeClass . ($hidden ? '-hidden' : '');
 		

@@ -81,7 +81,8 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	 * @var integer
 	 */
 	private $stop_hour  = false; 
-	
+
+
 	/**
 	 * Constructor
 	 * 
@@ -99,20 +100,27 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	public function __construct($uid, $title, $parent_node, $service_type, $service_configuration, $interval = 86400, $start_hour=false, $stop_hour=false, $hidden=FALSE ){
 		
 		parent::__construct($uid, $title, $parent_node, 'Test', $hidden);
-		
+
+			// create Test Service
+		$info = t3lib_extMgm::findService('caretaker_test_service', $service_type );
+		if ($info && $info['classFile'] ){
+			$requireFile = t3lib_div::getFileAbsFileName($info['classFile']);
+			if (@is_file($requireFile)) {
+				t3lib_div::requireOnce ($requireFile);
+				$this->test_service = t3lib_div::makeInstance($info['className']);
+				if ($this->test_service){
+					$this->test_service->setInstance( $this->getInstance() );
+					$this->test_service->setConfiguration($service_configuration);
+				}
+			}
+		}
+	
 		$this->test_service_type = $service_type;
 		$this->test_service_configuration = $service_configuration;
 		$this->test_interval = $interval;
 		$this->start_hour    = $start_hour;
 		$this->stop_hour     = $stop_hour;
 		
-		//unset($this->test_service);
-		
-		//echo $service_configuration;
-		
-		//$this->test_service = t3lib_div::makeInstanceService('caretaker_test_service',$service_type);
-		//$this->test_service->setInstance( $this->getInstance() );
-		//$this->test_service->setConfiguration($service_configuration);
 	}
 
 	/**
@@ -120,8 +128,8 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	 * @return string
 	 */
 	public function getTypeDescription(){
-		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_service_type);
-		return $test_service->getTypeDescription();
+		if ( $this->test_service ) return $this->test_service->getTypeDescription();
+		else;
 	}
 
 	/**
@@ -129,10 +137,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	 * @return string
 	 */
 	public function getConfigurationInfo(){
-		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_service_type);
-		$test_service->setInstance( $this->getInstance() );
-		$test_service->setConfiguration($this->test_service_configuration);
-		return  $test_service->getConfigurationInfo();
+		if ( $this->test_service ) return  $this->test_service->getConfigurationInfo();
 	}
 
 
@@ -161,29 +166,6 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	}
 	
 	/**
-	 * Execute the test
-	 * 
-	 * @param tx_caretaker_TestServiceBase $testService
-	 * @return tx_caretaker_TestResult
-	 */
-	public function runTest(tx_caretaker_TestServiceBase $testService){
-		
-		if (!$testService) {
-			
-			$error = new tx_caretaker_TestResult(TX_CARETAKER_STATE_ERROR, 0, 'Test Service not found');
-			return $error;
-		}
-		
-			// execute test
-		
-		$test_result = $testService->runTest();
-		
-			// return result
-		return $test_result;
-		
-	}
-	
-	/**
 	 * Update TestResult and store in DB. If the Test is not due the result is fetched from the cache.
 	 * 
 	 * If force is not set the execution time and exclude hours are taken in account.
@@ -195,10 +177,6 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 		
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$instance = $this->getInstance();
-		
-		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_service_type);
-		$test_service->setInstance( $this->getInstance() );
-		$test_service->setConfiguration($this->test_service_configuration);
 		
 			// check cache and return
 		if (!$force_update ){
@@ -216,11 +194,11 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 			}
 		}
 		
-		if($test_service->isExecutable()) {
+		if($this->test_service && $this->test_service->isExecutable()) {
 			
 				// prepare
 			$test_id = $test_result_repository->prepareTest($instance, $this);
-			$result = $this->runTest($test_service);
+			$result  = $this->test_service->runTest();
 			$test_result_repository->saveTestResult($test_id, $result);
 								
 			if ($result->getState() > 0){
