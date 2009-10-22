@@ -585,6 +585,7 @@ $TCA['tx_caretaker_test'] = array (
 			'config' => Array (
 				'type'     => 'select',
 				'items'    =>Array(
+					Array('always',          0),
 					Array('1 Minute',       60),
 					Array('5 Minutes',     300),
 					Array('10 Minutes',    600),
@@ -600,7 +601,13 @@ $TCA['tx_caretaker_test'] = array (
 					Array('12 Hours',    43200),
 					Array('1 Day',       86400),
 					Array('2 Days',     172800),
+					Array('3 Days',     259200),
+					Array('4 Days',     345600),
+					Array('5 Days',     432000),
+					Array('6 Days',     518400),
 					Array('1 Week',     604800),
+					Array('2 Weeks',   1209600),
+					Array('4 Weeks',   2419200),
 				),
 				'default' => 0
 			)
