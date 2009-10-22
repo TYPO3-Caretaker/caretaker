@@ -5,8 +5,6 @@ Ext.namespace('tx','tx.caretaker');
 tx.caretaker.NodeLog = Ext.extend( Ext.grid.GridPanel , {
 
     constructor: function(config) {
-
-		console.debug(config);
 		
 		var nodelog_store = new Ext.data.JsonStore({
 			root: 'logItems',
