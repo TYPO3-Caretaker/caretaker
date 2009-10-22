@@ -111,9 +111,16 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 				if ($this->test_service){
 					$this->test_service->setInstance( $this->getInstance() );
 					$this->test_service->setConfiguration($service_configuration);
+				} else {
+					throw new Exception('testservice class '.$info['className'].' could not be instanciated');
 				}
+			} else {
+				throw new Exception('testservice '.$service_type.' class file '.$requireFile.' nout found');
 			}
+		} else {
+			throw new Exception('caretaker testservice '.$service_type.' not found');
 		}
+
 	
 		$this->test_service_type = $service_type;
 		$this->test_service_configuration = $service_configuration;
