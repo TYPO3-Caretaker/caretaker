@@ -468,7 +468,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		);
 
 		$DataSet->SetSerieName(
-			round(($info['PercentERROR']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_undefined')
+			round(($info['PercentUNDEFINED']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_undefined')
 			,"Values_UNDEFINED"
 		);
 
