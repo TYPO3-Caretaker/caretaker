@@ -9,7 +9,7 @@ class tx_caretaker_NodeInfo {
 		
 		$node_id = t3lib_div::_GP('node');
 
-		if ($node_id && $node = tx_caretaker_Helper::id2node($node_id) ){
+		if ($node_id && $node = tx_caretaker_Helper::id2node($node_id, true) ){
 
 			$local_time = localtime(time(), true);
 			$local_hour = $local_time['tm_hour'];
