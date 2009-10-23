@@ -71,7 +71,7 @@ class tx_caretaker_NodeInfo {
 			echo $info;
 
 		} else {
-			echo "please selext a node";
+			echo "please select a node";
 
 		}
 		
