@@ -24,7 +24,7 @@ class tx_caretaker_NodeInfo {
 						$interval_info .= $interval.' Seconds';
 					} else if ($interval < 60*60){
 						$interval_info .= ($interval/60).' Minutes';
-					} else if ($interval < 60*60*60){
+					} else if ($interval < 60*60*24){
 						$interval_info .= ($interval/(60*60)).' Hours';
 					} else {
 						$interval_info .= ($interval/86400).' Days';
