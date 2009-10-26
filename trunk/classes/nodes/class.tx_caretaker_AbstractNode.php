@@ -129,6 +129,14 @@ abstract class tx_caretaker_AbstractNode {
 	public function getUid(){
 		return $this->uid;
 	}
+
+	/**
+	 * set hidden state
+	 * @param boolean boolean
+	 */
+	public function setHidden($hidden = true){
+		$this->hidden = (boolean)$hidden;
+	}
 	
 	/**
 	 * Get hidden state
@@ -172,6 +180,10 @@ abstract class tx_caretaker_AbstractNode {
 
 	public function getConfigurationInfo(){
 		return '';
+	}
+
+	public function getHiddenInfo(){
+		return ($this->getHidden() ? 'yes' : 'no');
 	}
 	
 	/** 
@@ -238,7 +250,7 @@ abstract class tx_caretaker_AbstractNode {
 	 */
 	abstract public function getTestResultRangeByOffset($offset=0, $limit=10);
 
-	
+
 	/*
 	 * Logging Methods
 	 */
@@ -329,7 +341,7 @@ abstract class tx_caretaker_AbstractNode {
 	 * @param string $description
 	 * @param integer $node_id
 	 */
-	private function notify( $recipients, $state, $msg = '' , $description = '' ,$node_id ){
+	private function notify( $recipients, $state, $msg = '' ,$description = '' , $node_id = false){
 		if ($this->notifier){
 			$this->notifier->addNotification($recipients, $state, $msg, $description, $node_id);
 		} else if ($this->parent) {

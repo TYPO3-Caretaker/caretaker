@@ -55,6 +55,8 @@ CREATE TABLE tx_caretaker_instance (
 	tests text NOT NULL,
 	instancegroup int(11) DEFAULT '0' NOT NULL,
 	notifications varchar(255) DEFAULT '' NOT NULL,
+	
+	testconfigurations text NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)

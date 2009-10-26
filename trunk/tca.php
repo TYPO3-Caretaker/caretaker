@@ -306,13 +306,23 @@ $TCA["tx_caretaker_instance"] = array (
 				'minitems'      => 0,
 				'maxitems'      => 50,
 			),
+		),
+		'testconfigurations' => array(
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_conf',
+			'config' => Array (
+				'type'          => 'flex',
+				'ds' => array (
+					'default' => 'FILE:EXT:caretaker/res/flexform/ds.tx_caretaker_instance_testconfiguration.xml'
+				)
+			),
 		)
 	),
 	"types" => array (
-		"0" => array("showitem" => 'title;;1, description;;;;1-1-1, instancegroup, url;;;;-2-2-2, host, public_key,
-									--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests,
-									--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, notifications
-					')
+		"0" => array("showitem" => 'title;;1, description;;;;1-1-1, instancegroup, url;;;;-2-2-2, host, public_key,' .
+			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests, ' .
+			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, notifications, ' .
+			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.testconfigurations, testconfigurations '
+		)
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'hidden,starttime,endtime,fe_group')

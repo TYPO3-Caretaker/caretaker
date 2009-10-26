@@ -34,6 +34,7 @@
 			<label index="tx_caretaker_instance">Instance</label>
 			<label index="tx_caretaker_instance.tab.relations">Groups &amp; Tests</label>
 			<label index="tx_caretaker_instance.tab.notifications">Notifications</label>
+			<label index="tx_caretaker_instance.tab.testconfigurations">Test Configuration</label>
 			<label index="tx_caretaker_instance.title">Name</label>
 			<label index="tx_caretaker_instance.description">Description</label>
 			<label index="tx_caretaker_instance.instancegroup">Instancegroup</label>
@@ -43,6 +44,7 @@
 			<label index="tx_caretaker_instance.tests">Tests assigned to this instance</label>
 			<label index="tx_caretaker_instance.public_key">Public Key of Instance</label>
 			<label index="tx_caretaker_instance.notifications">Notifications</label>
+			<label index="tx_caretaker_instance.testconfigurations">Overwrite Test Configuration</label>
 
 			<label index="tx_caretaker_testgroup">Testgroup</label>
 			<label index="tx_caretaker_testgroup.tab.relations">Instances &amp; Tests</label>

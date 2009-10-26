@@ -44,19 +44,25 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	 * URL to acces this instance
 	 * @var string
 	 */
-	private $url;
+	protected $url;
 	
 	/**
 	 * Hostname
 	 * @var string
 	 */
-	private $hostname;
+	protected $hostname;
 
 	/**
 	 * Public key
 	 * @var string
 	 */
-	private $publicKey;
+	protected $publicKey;
+
+	/**
+	 * test configuration overlay to overwritte tests default configurations
+	 * @var array
+	 */
+	protected $testConfigurationOverlay;
 	
 	/**
 	 * Constructor 
@@ -115,6 +121,10 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 		return $children;
 	}
 	
+	public function setTestConfigurations($data) {
+		$this->testConfigurationOverlay= t3lib_div::xml2array($data);
+	}
+
 }
 
 ?>

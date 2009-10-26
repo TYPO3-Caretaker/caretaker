@@ -66,6 +66,9 @@ class tx_caretaker_RootNode extends tx_caretaker_AggregatorNode {
 		return false;
 	}
 	
+	public function getTestConfigurationOverlayForTestUid($testUid) {
+		return false;
+	}
 	
 }
 

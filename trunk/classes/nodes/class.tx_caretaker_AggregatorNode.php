@@ -225,6 +225,38 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
             return $resultRange;
 	}
 	
+	/**
+	 * Get the test configuration overlay (configuration overwritten in instance)
+	 *
+	 * @param integer $testUid UID of the test
+	 */
+	public function getTestConfigurationOverlayForTestUid($testUid) {
+		$overlayConfig = false;
+		if ($this->testConfigurationOverlay) {
+			$fftools = new t3lib_flexformtools();
+			$tests = $fftools->getArrayValueByPath(
+				'data/sDEF/lDEF/testconfigurations/el',
+				$this->testConfigurationOverlay
+			);
+
+			foreach ($tests as $key => $el) {
+				if ($tests[$key]['test']['el']['test_service']['vDEF'] == $testUid) {
+					$overlayConfig = $tests[$key]['test']['el']['test_conf']['vDEF'];
+					$overlayConfig['hidden'] = $tests[$key]['test']['el']['test_hidden']['vDEF'];
+					$overlayConfig['overwritten_in']['title'] = $this->title;
+					$overlayConfig['overwritten_in']['uid'] = $this->uid;
+					$overlayConfig['overwritten_in']['id'] = tx_caretaker_Helper::node2id($this);
+				}
+			}
+		}
+		if (!$overlayConfig 
+		 && $this->parent
+		 && method_exists($this->parent, 'getTestConfigurationOverlayForTestUid')) {
+			$overlayConfig = $this->parent->getTestConfigurationOverlayForTestUid($testUid);
+		}
+		return $overlayConfig;
+	}
+	
 }
 
 ?>

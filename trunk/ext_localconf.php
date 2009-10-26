@@ -15,6 +15,8 @@ $TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::noderefresh'] = 'EXT:caretaker/cla
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodegraph']   = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeGraph';
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodelog']     = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeLog';
 
+$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass'][] = 'EXT:caretaker/classes/hooks/class.tx_caretaker_hooks_tceforms_getSingleFieldClass.php:tx_caretaker_hooks_tceforms_getSingleFieldClass';
+
 	// Register scheduler tasks for caretaker
 $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TestrunnerTask'] = array(
 	'extension'        => $_EXTKEY,
@@ -30,4 +32,4 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TerupdateTask
 	'additionalFields' => 'tx_caretaker_TerupdateTask_AdditionalFieldProvider'
 );
 
-?> 
+?>

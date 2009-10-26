@@ -46,7 +46,7 @@ class tx_caretaker_NodeInfo {
 						'Interval: '.        $interval_info.'<br/>'.
 						'Description: '.     $node->getDescription().'<br/>'.
 						'Configuration: '.   $node->getConfigurationInfo().'<br/>'.
-						'Hidden: '.          $node->getHidden().'<br/>'.
+						'Hidden: '.          $node->getHiddenInfo() .'<br/>'.
 						'last Execution: '.  strftime('%x %X',$result->getTimestamp()).'<br/>'.
 						'State: '.           $result->getLocallizedStateInfo().'<br/>'.
 						'Value: '.           $result->getValue().'<br/>'.
@@ -59,7 +59,7 @@ class tx_caretaker_NodeInfo {
 					$info = '<div class="tx_caretaker_node_info tx_caretaker_node_info_state_'.$result->getStateInfo().'">'.
 						'Title: '.$node->getTitle().'<br/>'.
 						'Description: '.$node->getDescription().'<br/>'.
-						'Hidden: '.$node->getHidden().'<br/>'.
+						'Hidden: '.$node->getHiddenInfo().'<br/>'.
 						'last Execution: '.strftime('%x %X',$result->getTimestamp()).'<br/>'.
 						'State: '.$result->getLocallizedStateInfo().'<br/>'.
 						'Message: '.nl2br($result->getLocallizedMessage()).'<br/>'.
@@ -82,7 +82,7 @@ class tx_caretaker_NodeInfo {
 		$node_id = t3lib_div::_GP('node');
 		$force   = (boolean)t3lib_div::_GP('force');
 
-		if ($node_id && $node = tx_caretaker_Helper::id2node($node_id) ){
+		if ($node_id && $node = tx_caretaker_Helper::id2node($node_id, true) ){
 
 			require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_MemoryLogger.php');
 			$logger  = new tx_caretaker_MemoryLogger();
@@ -105,7 +105,7 @@ class tx_caretaker_NodeInfo {
 		$date_stop  = time();
 		$date_start = $date_stop - $duration;
 
-		if ($node_id && $node = tx_caretaker_Helper::id2node($node_id) ){
+		if ($node_id && $node = tx_caretaker_Helper::id2node($node_id, true) ){
 
 			require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_ResultRangeRenderer_pChart.php');
 
@@ -138,7 +138,7 @@ class tx_caretaker_NodeInfo {
 
         $node_id = t3lib_div::_GP('node');
 
-        if ($node_id && $node = tx_caretaker_Helper::id2node($node_id) ){
+        if ($node_id && $node = tx_caretaker_Helper::id2node($node_id, true) ){
             
             $start     = (int)t3lib_div::_GP('start');
             $limit     = (int)t3lib_div::_GP('limit');

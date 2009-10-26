@@ -44,7 +44,7 @@ require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_care
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx_caretaker_TestResultRepository.php');
 require_once PATH_site.'typo3/sysext/lang/lang.php';
 
-class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
+class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	
 	/**
 	 * Test Service Type
@@ -57,7 +57,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	 * @var unknown_type
 	 */
 	private $test_service_configuration = false;
-	
+
 	/**
 	 * Reference to the test service
 	 * @var tx_caretaker_TestServiceBase
@@ -98,7 +98,16 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	 * @return tx_caretaker_TestNode
 	 */
 	public function __construct($uid, $title, $parent_node, $service_type, $service_configuration, $interval = 86400, $start_hour=false, $stop_hour=false, $hidden=FALSE ){
-		
+
+		// overwrite default test configuration
+		$configurationOverlay = $parent_node->getTestConfigurationOverlayForTestUid($uid);
+		if ($configurationOverlay) {
+			$service_configuration = $configurationOverlay;
+			if ($service_configuration['hidden']) {
+				$hidden = true;
+			}
+		}
+
 		parent::__construct($uid, $title, $parent_node, 'Test', $hidden);
 
 			// create Test Service
@@ -108,7 +117,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 			if (@is_file($requireFile)) {
 				t3lib_div::requireOnce ($requireFile);
 				$this->test_service = t3lib_div::makeInstance($info['className']);
-				if ($this->test_service){
+				if ($this->test_service) {
 					$this->test_service->setInstance( $this->getInstance() );
 					$this->test_service->setConfiguration($service_configuration);
 				} else {
@@ -121,7 +130,6 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 			throw new Exception('caretaker testservice '.$service_type.' not found');
 		}
 
-	
 		$this->test_service_type = $service_type;
 		$this->test_service_configuration = $service_configuration;
 		$this->test_interval = $interval;
@@ -135,8 +143,9 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	 * @return string
 	 */
 	public function getTypeDescription(){
-		if ( $this->test_service ) return $this->test_service->getTypeDescription();
-		else;
+		if ( $this->test_service ) {
+			return $this->test_service->getTypeDescription();
+		}
 	}
 
 	/**
@@ -144,7 +153,34 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode{
 	 * @return string
 	 */
 	public function getConfigurationInfo(){
-		if ( $this->test_service ) return  $this->test_service->getConfigurationInfo();
+		if ( $this->test_service ) {
+			$configurationInfo = $this->test_service->getConfigurationInfo();
+			if (is_array($this->test_service_configuration['overwritten_in'])) {
+				$configurationInfo .= ' (overwritten in ' .
+					'<span title=" '.
+					$this->test_service_configuration['overwritten_in']['id'] .
+					'">' .
+					$this->test_service_configuration['overwritten_in']['title'] .
+					'</span>)';
+			}
+			return $configurationInfo;
+		}
+	}
+
+	public function getHiddenInfo(){
+		$hiddenInfo = parent::getHiddenInfo();
+		if ( $this->test_service ) {
+			if (is_array($this->test_service_configuration['overwritten_in'])
+			 && $this->test_service_configuration['hidden']) {
+				$hiddenInfo .= ' (hidden in ' .
+					'<span title=" '.
+					$this->test_service_configuration['overwritten_in']['id'] .
+					'">' .
+					$this->test_service_configuration['overwritten_in']['title'] .
+					'</span>)';
+			}
+		}
+		return $hiddenInfo;
 	}
 
 

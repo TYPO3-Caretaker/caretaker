@@ -353,6 +353,7 @@ class tx_caretaker_NodeRepository {
 		$instance = new tx_caretaker_InstanceNode($row['uid'], $row['title'], $parent, $row['url'], $row['host'], $row['public_key'], $row['hidden']);
 		if ($row['notifications'] ) $instance->setNotificationIds(explode(',', $row['notifications'] ) );
 		if ($row['description'] )   $instance->setDescription( $row['description'] );
+		if ($row['testconfigurations']) $instance->setTestConfigurations($row['testconfigurations']);
 		return $instance; 
 	}
 	
@@ -531,7 +532,13 @@ class tx_caretaker_NodeRepository {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_test', 'deleted=0 '.$hidden.' AND uid='.(int)$uid);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		if ($row){
-			return $this->dbrow2test($row, $parent);
+			$test = $this->dbrow2test($row, $parent);
+
+			// the test may be disabled/hidden by configuration, so we need to double-check the hidden state
+			if (!$show_hidden && $test->getHidden()) {
+				return false;
+			}
+			return $test;
 		}
 		return false;
 	}

@@ -90,9 +90,13 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * @see caretaker/trunk/interfaces/tx_caretaker_TestService#setConfiguration($configuration)
 	 */
 	public function setConfiguration($configuration){
-		if (is_array( $configuration) ){
+		if (is_array( $configuration) && !is_array($configuration['data']) ){
 			$this->array_configuration  = $configuration;
-		} else if ($configuration){
+
+		} else if (is_array($configuration) && is_array($configuration['data']) ){
+			$this->flexform_configuration = $configuration;
+
+		} else if (!is_array($configuration)) {
 			$this->flexform_configuration = t3lib_div::xml2array($configuration);
 		}
 		

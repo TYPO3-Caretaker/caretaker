@@ -1,0 +1,99 @@
+<T3DataStructure>
+	<ROOT>
+		<type>array</type>
+		<el>
+			<testconfigurations>
+				<type>array</type>
+				<section>1</section>
+				<el>
+					<test>
+						<type>array</type>
+						<tx_templavoila type="array">
+							<title>LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.testconfigurations</title>
+						</tx_templavoila>
+						<el>
+						
+							<test_service>
+								<TCEforms>
+									<exclude>1</exclude>
+									<label>LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service</label>
+									<config>
+										<type>select</type>
+										<items>
+											<numIndex index="0">
+							    				<numIndex index="0">LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service.select_service</numIndex>
+												<numIndex index="1"></numIndex>
+							    			</numIndex>
+										</items>
+										<size>1</size>
+										<maxitems>1</maxitems>
+										<foreign_table>tx_caretaker_test</foreign_table>
+										<tag>testconfigurations.test_service</tag><!-- identifier in hook -->
+									</config>
+									<onChange>reload</onChange>
+								</TCEforms>
+							</test_service>
+							
+							<test_hidden>
+								<TCEforms>
+									<exclude>1</exclude>
+									<label>LLL:EXT:lang/locallang_general.php:LGL.hidden</label>
+									<config>
+										<type>check</type>
+										<tag>testconfigurations.test_disable</tag><!-- identifier in hook -->
+									</config>
+								</TCEforms>
+							</test_hidden>
+							
+							
+							<test_conf>
+								<TCEforms>
+									<displayCond>FIELD:test_service:REQ:true</displayCond>
+									<label>LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_conf</label>
+									<config>
+										<type>flex</type>
+										<ds_pointerField>test_service</ds_pointerField>
+										<ds></ds>
+										<tag>testconfigurations.test_conf</tag><!-- identifier in hook -->
+									</config>
+								</TCEforms>
+							</test_conf>
+<!-- 
+							<text1>
+								<TCEforms>
+									<label>Note</label>
+									<config>
+										<type>text</type>
+									</config>
+								</TCEforms>
+							</text1>
+-->
+						</el>
+					</test>
+
+					<!--
+					<something_2>
+						<type>array</type>
+						<tx_templavoila type="array">
+							<title>Section 2</title>
+						</tx_templavoila>
+						<el>
+							<text3>
+								<TCEforms>
+									<label>Flex-Form-Field</label>
+									<config>
+										<type>input</type>
+										<size>20</size>
+										<max>40</max>
+										<eval>trim</eval>
+									</config>
+								</TCEforms>
+							</text3>
+						</el>
+					</something_2>
+					 -->
+				</el>
+			</testconfigurations>
+		</el>
+	</ROOT>
+</T3DataStructure>
