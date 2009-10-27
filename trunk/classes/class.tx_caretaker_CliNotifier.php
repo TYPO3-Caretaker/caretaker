@@ -94,40 +94,41 @@ class tx_caretaker_CliNotifier implements tx_caretaker_NotifierInterface{
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tt_address', 'uid='.(int)$recipientID.' AND deleted=0 AND hidden=0');
 				$recipient = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				
-				if ($recipient && $recipient['email'] ){ 
-					$msg   = '';	
-					$cnt   = 1;
-					$num_e = 0;
-					$num_w = 0;
+				if ($recipient && $recipient['email'] ){
+					
+					$message     = '';
+					$count       = 1;
+					$num_error   = 0;
+					$num_warning = 0;
 					
 					foreach ($items as $item){
 						
-						$msg .= "*".($cnt ++).' '.$item['msg']."*\n";
+						$message .= "*".($count ++).' '.$item['msg']."*\n";
 						if ($item['description'])
-							$msg .= $item['description']."\n";
-						$msg .= "\n";
+							$message .= $item['description']."\n";
+						$message .= "\n";
 						
 						if ($item['id'] && $this->mail_link)
-							$msg .= str_replace('###', $item['id'] , $this->mail_link). "\n";
+							$message .= str_replace('###', $item['id'] , $this->mail_link). "\n";
 							
 						switch ($item['state']){
-							case 1:
-								$num_w ++;
+							case TX_CARETAKER_STATE_WARNING:
+								$num_warning ++;
 								break;
-							case 2:
-								$num_e ++;
+							case TX_CARETAKER_STATE_ERROR:
+								$num_error ++;
 								break;
 						}
 						
 					}
 					
 					$subject = $this->mail_subject;
-					if ($num_e > 0)
-						$subject .= ' ' .$num_e.' Errors';
-					if ($num_w > 0)
-						$subject .= ' ' .$num_w.' Warnings';	
+					if ($num_error > 0)
+						$subject .= ' ' .$num_error.' Errors';
+					if ($num_warning > 0)
+						$subject .= ' ' .$num_warning.' Warnings';
 					
-					$this->sendMail($subject, $recipient['email'], $this->mail_from, $msg  );				
+					$this->sendMail($subject, $recipient['email'], $this->mail_from, $message  );
 				}
 			}
 		}

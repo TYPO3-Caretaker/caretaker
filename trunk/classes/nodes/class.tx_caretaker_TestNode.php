@@ -245,7 +245,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 			$test_result_repository->saveTestResult($test_id, $result);
 								
 			if ($result->getState() > 0){
-				$this->sendNotification( $result->getLocallizedStateInfo() , $result->getLocallizedMessage() );
+				$this->sendNotification( $result->getState() , $result->getLocallizedMessage() );
 			} 
 			
 			$this->log('update '.$result->getLocallizedStateInfo().' '.$result->getLocallizedMessage().' '.$msg );
