@@ -78,7 +78,7 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 				} 
 				return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_OK, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' ) ;
 			} else {
-				return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_error', array('value'=>array('command'=>$command, 'message'=>$message) )  );
+				return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_error', array('values'=>array('command'=>$command, 'message'=>$message) )  );
 			}
 		} else {
 			return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, 0 , 'LLL:EXT:caretaker/locallang_fe.xml:ping_no_command_template');

@@ -29,7 +29,7 @@
 			<label index="ping_service_configuration">Warning: ###MAX_TIME_WARNING### Ms Error: ###MAX_TIME_ERROR### Ms</label>
 
 			<label index="ping_info">Ping command took ###VALUE### milliseconds</label>
-			<label index="ping_error">Ping command (###VALUE_COMMAND###) failed with Message: ###VALUE_RESULT### </label>
+			<label index="ping_error">Ping command (###VALUE_COMMAND###) failed with Message: ###VALUE_MESSAGE### </label>
 			<label index="ping_no_command_template">Ping command template must be configured in tx_caretaker extension configuration.</label>
 
 			<label index="http_service_description">Ping Test</label>
