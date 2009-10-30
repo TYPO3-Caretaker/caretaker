@@ -62,19 +62,10 @@ class tx_caretaker_Cli extends t3lib_cli {
         $this->cli_help['author'] = 'Martin Ficzel, (c) 2008';
 
         $this->cli_options[]=array('--root', 'update all beginning with Root Node');
-        $this->cli_options[]=array('-A', 'Same as --root');        
+        $this->cli_options[]=array('-R', 'Same as --root');
         
-        $this->cli_options[]=array('--instancegroup', 'Specify InstancegroupID to update');
-        $this->cli_options[]=array('-I', 'Same as --instancegroup');        
-        
-        $this->cli_options[]=array('--instance', 'Specify InstanceID to update');
-        $this->cli_options[]=array('-i', 'Same as --instance');
-        
-        $this->cli_options[]=array('--group', 'Specify TestgroupID to update');
-        $this->cli_options[]=array('-g', 'Same as --group');
-        
-        $this->cli_options[]=array('--test', 'Specify TestID to update');
-        $this->cli_options[]=array('-t', 'Same as --test');
+        $this->cli_options[]=array('--node', 'update all beginning with this NodeID ');
+        $this->cli_options[]=array('-N', 'Same as --node');        
         
         $this->cli_options[]=array('-f', 'force Refresh of testResults');        
         $this->cli_options[]=array('-r', 'Return status code');
@@ -101,24 +92,15 @@ class tx_caretaker_Cli extends t3lib_cli {
         }
         
         if ($task == 'update' || $task == 'get') {
+			
         	$force           = (boolean)$this->readArgument('--force','-f');
         	$return_status   = (boolean)$this->readArgument('-r');
-        	
-        	if ((boolean)$this->readArgument('--root', '-A')) {
-        		$node = tx_caretaker_Helper::getRootNode();
-        	} else {
-        		$instancegroupID = (int)$this->readArgument('--instancegroup', '-I');
-	        	$instanceID      = (int)$this->readArgument('--instance', '-i');
-	        	$groupID         = (int)$this->readArgument('--group','-g');
-	        	$testID          = (int)$this->readArgument('--test','-t');
+        	$node            = false;
 
-	        	if (!($instancegroupID || $instanceID)) {
-	        		$logger->log('Instance or Instancegroup must be specified');
-	        	} else if ( $instancegroupID && $instanceID ) {
-	        		$logger->log('Instance or Instancegroup must be specified');
-	        	}
-        	
-        		$node = tx_caretaker_Helper::getNode($instancegroupID, $instanceID, $groupID, $testID);
+        	if ((boolean)$this->readArgument('--root', '-R')) {
+        		$node = tx_caretaker_Helper::getRootNode();
+        	} else if ( $nodeId = $this->readArgument('--node', '-N') ) {
+        		$node = tx_caretaker_Helper::id2node($nodeId);
         	}
         	
         	if ($node) {
