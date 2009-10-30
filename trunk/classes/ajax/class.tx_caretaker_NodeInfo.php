@@ -42,6 +42,7 @@ class tx_caretaker_NodeInfo {
 					$result = $node->getTestResult();
 					$info = '<div class="tx_caretaker_node_info tx_caretaker_node_info_state_'.$result->getStateInfo().'">'.
 						'Title: '.           $node->getTitle().'<br/>'.
+						'NodeID: '.          tx_caretaker_Helper::node2id($node).'<br/>'.
 						'Type: '.            $node->getTypeDescription().'<br/>'.
 						'Interval: '.        $interval_info.'<br/>'.
 						'Description: '.     $node->getDescription().'<br/>'.
@@ -57,14 +58,14 @@ class tx_caretaker_NodeInfo {
 					// aggregator Node
 					$result = $node->getTestResult();
 					$info = '<div class="tx_caretaker_node_info tx_caretaker_node_info_state_'.$result->getStateInfo().'">'.
-						'Title: '.$node->getTitle().'<br/>'.
-						'Description: '.$node->getDescription().'<br/>'.
-						'Hidden: '.$node->getHiddenInfo().'<br/>'.
-						'last Execution: '.strftime('%x %X',$result->getTimestamp()).'<br/>'.
-						'State: '.$result->getLocallizedStateInfo().'<br/>'.
-						'Message: '.nl2br($result->getLocallizedMessage()).'<br/>'.
+						'Title: '.           $node->getTitle().'<br/>'.
+						'NodeID: '.          tx_caretaker_Helper::node2id($node).'<br/>'.
+						'Description: '.     $node->getDescription().'<br/>'.
+						'Hidden: '.          $node->getHiddenInfo().'<br/>'.
+						'last Execution: '.  strftime('%x %X',$result->getTimestamp()).'<br/>'.
+						'State: '.           $result->getLocallizedStateInfo().'<br/>'.
+						'Message: '.         nl2br($result->getLocallizedMessage()).'<br/>'.
 						'</div>';
-						
 					break;
 				}
 

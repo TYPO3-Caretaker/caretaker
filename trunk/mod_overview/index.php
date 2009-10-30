@@ -120,7 +120,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 								xtype    : "panel",
 								id       : "node",
 								autoScroll: true,
-								title    : node_title + " :: " + node_id,
+								title    : node_title,
 								iconCls  : "icon-caretaker-type-" + node_type,
 								tbar     : {
 									xtype: "caretaker-nodetoolbar",
