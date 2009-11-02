@@ -84,22 +84,22 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 
 	refreschNode : function (){
         Ext.Ajax.request({
-           url: this.back_path + 'ajax.php',
-           success: this.refreschSuccess,
-           failure: this.refreschFailure,
-		   scope  : this,
-           params: {
+			url: this.back_path + 'ajax.php',
+			success: this.refreschSuccess,
+			failure: this.refreschFailure,
+			scope  : this,
+			params: {
                ajaxID: 'tx_caretaker::noderefresh',
                node:   this.node_id,
                force:  0
-            }
+			}
         });
     },
 
     refreschNodeForced : function (){
          Ext.Ajax.request({
            url: this.back_path + 'ajax.php',
-           success: this.refreschSuccess,
+		   success: this.refreschSuccess,
            failure: this.refreschFailure,
 		   scope  : this,
            params: {
@@ -108,21 +108,17 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
                force:  1
             }
         });
-        // Ext.Ajax.on('requestcomplete',  this.refreschSuccessMessage, this);
-        // Ext.Ajax.on('requestexception', this.refreschSuccessMessage, tx.caretaker);
     },
 
     refreschSuccess : function (response, opts){
         var node_info_panel = Ext.getCmp('node-info');
         node_info_panel.load( this.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + this.node_id);
-        this.showUpdateLog(response.responseText);
-		this.refreshTree();
+        this.refreshTree();
     },
 
     refreschFailure : function (response, opts){
         var node_info_panel = Ext.getCmp('node-info');
         node_info_panel.load( this.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + this.node_id);
-		this.showUpdateLog(response.responseText);
 		this.refreshTree();
     },
 

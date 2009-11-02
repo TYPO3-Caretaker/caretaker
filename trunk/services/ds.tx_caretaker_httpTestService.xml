@@ -22,7 +22,7 @@
 		<el>
 			<request_query>
 				<TCEforms>
-					<label>Request Query</label>
+					<label>URL path and query (e.g. /index.php?id=123)</label>
 					<config>
 						<type>input</type>
 						<size>50</size>
