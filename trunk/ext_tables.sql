@@ -119,6 +119,7 @@ CREATE TABLE tx_caretaker_test (
 	test_interval_stop_hour tinyint(4) DEFAULT '0' NOT NULL,
 	test_service varchar(255) DEFAULT '' NOT NULL,
 	test_conf text NOT NULL,
+	test_retry int(11) DEFAULT '0' NOT NULL,
 	
 	notifications varchar(255) DEFAULT '' NOT NULL,
 

@@ -71,6 +71,12 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	private $test_interval  = false;
 
 	/**
+	 * Retry the test n times after failure or warning
+	 * @var integer
+	 */
+	protected $test_retry = 0;
+
+	/**
 	 * The test shall be executed only after this hour
 	 * @var integer
 	 */
@@ -97,7 +103,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @param boolean $hidden
 	 * @return tx_caretaker_TestNode
 	 */
-	public function __construct($uid, $title, $parent_node, $service_type, $service_configuration, $interval = 86400, $start_hour=false, $stop_hour=false, $hidden=FALSE ){
+	public function __construct($uid, $title, $parent_node, $service_type, $service_configuration, $interval = 86400, $retry=0, $start_hour=false, $stop_hour=false, $hidden=FALSE ){
 
 		// overwrite default test configuration
 		$configurationOverlay = $parent_node->getTestConfigurationOverlayForTestUid($uid);
@@ -133,6 +139,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		$this->test_service_type = $service_type;
 		$this->test_service_configuration = $service_configuration;
 		$this->test_interval = $interval;
+		$this->test_retry    = $retry;
 		$this->start_hour    = $start_hour;
 		$this->stop_hour     = $stop_hour;
 		
@@ -242,6 +249,16 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 				// prepare
 			$test_id = $test_result_repository->prepareTest($instance, $this);
 			$result  = $this->test_service->runTest();
+
+				// retry if not ok
+			if ($result->getState() > 0 && $this->test_retry > 0){
+				$round = 0;
+				while ( $round < $this->test_retry && $result->getState() > 0 ){
+					$result = $this->test_service->runTest();
+					$round ++;
+				}
+			}
+
 			$test_result_repository->saveTestResult($test_id, $result);
 								
 			if ($result->getState() > 0){

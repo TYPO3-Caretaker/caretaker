@@ -30,6 +30,21 @@ class tx_caretaker_AggregatorNode_testcase extends tx_phpunit_testcase  {
 		$this->assertEquals( TX_CARETAKER_STATE_ERROR, $aggregated_result->getState() , "wrong result" );
 		
 	}
+
+	function test_getPropertyMethods(){
+
+		$aggregator = new tx_caretaker_InstancegroupNode( 0, 'foo', false );
+
+		$this->assertEquals( false, $aggregator->getProperty('foo') , "wrong result" );
+
+		$aggregator->setDbRow(array('foo'=>'bar'));
+		
+		$this->assertEquals( 'bar', $aggregator->getProperty('foo') , "wrong result" );
+
+		$this->assertEquals( false, $aggregator->getProperty('bar') , "wrong result" );
+
+
+	}
 	
 }
 

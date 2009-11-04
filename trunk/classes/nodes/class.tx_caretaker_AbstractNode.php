@@ -96,6 +96,14 @@ abstract class tx_caretaker_AbstractNode {
 	 * @var unknown_type
 	 */
 	protected $notification_address_ids = array();
+
+
+	/**
+	 * Associatiove array ob DB-Row
+	 *
+	 * @var array
+	 */
+	protected $dbRow = NULL;
 	
 	/**
 	 * Constructor
@@ -169,6 +177,33 @@ abstract class tx_caretaker_AbstractNode {
 	public function getType(){
 		return $this->type;
 	}	
+
+	/**
+	 * Save the dbRow Array to the node
+	 *
+	 * @param array $dbRow
+	 */
+	public function setDbRow($dbRow){
+		$this->dbRow = $dbRow;
+	}
+	
+	/**
+	 * Get a property from node-dbRow
+	 * 
+	 * @param string $fieldname
+	 */
+	public function getProperty($fieldname){
+		if (!$this->dbRow || !is_array($this->dbRow)) {
+			return false;
+		}
+
+		if (isset($this->dbRow[$fieldname])){
+			return $this->dbRow[$fieldname];
+		}  else {
+			return false;
+		}
+
+	}
 
 	/**
 	 * Get the description of the Testsevice

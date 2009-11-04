@@ -665,6 +665,23 @@ $TCA['tx_caretaker_test'] = array (
 				'ds' => array()
 			)
 		),
+		'test_retry' =>Array(
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry',
+			'config' => Array (
+				'type'          => 'select',
+				'items' => array (
+					0 => array(0, 0),
+					1 => array(1, 1),
+					2 => array(2, 2),
+					3 => array(3, 3),
+					4 => array(4, 4),
+					5 => array(5, 5),
+				),
+				'size' => 1,
+				'maxitems' => 1,
+				'default' => 0
+			)
+		),
 		'groups' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.groups',
@@ -721,7 +738,7 @@ $TCA['tx_caretaker_test'] = array (
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'hidden, starttime,endtime,fe_group'),
-		'2' => array('showitem' => 'test_interval_start_hour,test_interval_stop_hour'),
+		'2' => array('showitem' => 'test_retry, test_interval_start_hour,test_interval_stop_hour'),
 	)
 );
 
