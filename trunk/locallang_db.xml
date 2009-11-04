@@ -77,7 +77,7 @@
 			<label index="tx_caretaker_test.test_service">Test Service</label>
 			<label index="tx_caretaker_test.test_conf">Test Configuration</label>
 			<label index="tx_caretaker_test.test_mode">Test Mode</label>
-			<label index="tx_caretaker_test.test_retry">Retry Number</label>
+			<label index="tx_caretaker_test.test_retry">Max Retry Number</label>
 			<label index="tx_caretaker_test.test_mode.group">run once for group</label>
 			<label index="tx_caretaker_test.instances">Include Test for those Instances</label>
 			<label index="tx_caretaker_test.groups">Include Test for those Testgroups</label>
