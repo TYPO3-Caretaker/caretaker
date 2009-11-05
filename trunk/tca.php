@@ -731,14 +731,14 @@ $TCA['tx_caretaker_test'] = array (
 		
 	),
 	'types' => array (
-		'0' => array('showitem' => 'test_service;;;;1-1-1, title;;1;;2-2-2,test_interval;;2, description;;;;3-3-3, test_conf;;;;4-4-4,
+		'0' => array('showitem' => 'test_service;;;;1-1-1, title;;1;;2-2-2,test_interval;;2, test_retry, description;;;;3-3-3, test_conf;;;;4-4-4,
 					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.relations, groups, instances,
 					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.notifications, notifications'
 					)
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'hidden, starttime,endtime,fe_group'),
-		'2' => array('showitem' => 'test_retry, test_interval_start_hour,test_interval_stop_hour'),
+		'2' => array('showitem' => 'test_interval_start_hour,test_interval_stop_hour'),
 	)
 );
 
