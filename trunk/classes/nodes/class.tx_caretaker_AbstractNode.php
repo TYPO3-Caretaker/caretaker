@@ -131,6 +131,14 @@ abstract class tx_caretaker_AbstractNode {
 	}
 	
 	/**
+	 * Get the caretaker node id of this node
+	 * return string
+	 */
+	public function getCaretakerNodeId(){
+		return tx_caretaker_Helper::node2id($this);
+	}
+
+	/**
 	 * Get the uid
 	 * @return integer 
 	 */
@@ -178,6 +186,12 @@ abstract class tx_caretaker_AbstractNode {
 		return $this->type;
 	}	
 
+	/**
+	 * Get the all tests wich can be found below this node
+	 * @return array
+	 */
+	abstract public function getTestNodes();
+	
 	/**
 	 * Save the dbRow Array to the node
 	 *

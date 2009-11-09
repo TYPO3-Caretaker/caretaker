@@ -7,7 +7,11 @@ tx.caretaker.NodeCharts = Ext.extend(Ext.TabPanel, {
 		config = Ext.apply({
 	    	enableTabScroll : true,
 			collapsible     : true,
+			collapsed       : true,
 			height          : 430,
+			stateful        : true,
+			stateEvents     : ['expand','collapse','tabchange'],
+			stateID         : 'tx.caretaker.NodeCharts',
 			title           : "Chart",
 			activeTab       : 3,
 			items:[
@@ -46,7 +50,16 @@ tx.caretaker.NodeCharts = Ext.extend(Ext.TabPanel, {
 		}, config);
 
 		tx.caretaker.NodeCharts.superclass.constructor.call(this, config);
+	},
+
+	getState: function() {
+		var state = {
+			collapsed: this.collapsed,
+			activeTab: this.activeTab.id
+		};
+		return state;
 	}
+	
 });
 
 Ext.reg( 'caretaker-nodecharts', tx.caretaker.NodeCharts );

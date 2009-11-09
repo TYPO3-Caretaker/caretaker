@@ -291,6 +291,14 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		
 		return $result;
 	}
+
+	/**
+	 * Get the all tests wich can be found below this node
+	 * @return array
+	 */
+	public function getTestNodes(){
+		return array($this);
+	}
 	
 	/**
 	 * Get the TestResultRange for the given Timerange

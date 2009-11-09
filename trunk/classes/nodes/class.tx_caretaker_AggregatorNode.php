@@ -113,6 +113,28 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		return $group_result;
 		
 	}
+
+	/**
+	 * Get the all tests wich can be found below this node
+	 * @return array
+	 */
+	public function getTestNodes(){
+		
+		$children  = $this->getChildren();
+		$tests     = array();
+		
+		if (count($children)>0){
+			foreach($children as $child){
+				if (is_a( $child , 'tx_caretaker_TestNode' ) ) {
+					$tests[ $child->getCaretakerNodeId() ] = $child;
+				} else if ( is_a( $child , 'tx_caretaker_AggregatorNode' ) ) {
+					$tests = array_merge($child->getTestNodes(), $tests );
+				}
+			}
+		}
+
+		return $tests;
+	}
 	
 	/**
 	 * (non-PHPdoc)

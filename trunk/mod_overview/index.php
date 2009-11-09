@@ -86,6 +86,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeInfo.js');
 			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeCharts.js');
 			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeLog.js');
+			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeProblems.js');
 			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeToolbar.js');
 			
 			//$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeOverview.js');
@@ -132,9 +133,10 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 									node_uid: node_uid
 								},
 								items    : [
-									{ id: "node-info",   xtype: "caretaker-nodeinfo"   , back_path: back_path , node_id: node_id },
-									{ id: "node-charts", xtype: "caretaker-nodecharts" , back_path: back_path , node_id: node_id },
-									{ id: "node-log",    xtype: "caretaker-nodelog"    , back_path: back_path , node_id: node_id },
+									{ id: "node-info",     xtype: "caretaker-nodeinfo"     , back_path: back_path , node_id: node_id },
+									{ id: "node-charts",   xtype: "caretaker-nodecharts"   , back_path: back_path , node_id: node_id },
+									{ id: "node-log",      xtype: "caretaker-nodelog"      , back_path: back_path , node_id: node_id },
+									{ id: "node-problems", xtype: "caretaker-nodeproblems" , back_path: back_path , node_id: node_id },
 								]
 						}
 					 });

@@ -172,6 +172,61 @@ class tx_caretaker_NodeInfo {
             $ajaxObj->setContentFormat('jsonbody');
         }
     }
+
+	public function ajaxGetNodeProblems ($params, &$ajaxObj){
+
+        $node_id = t3lib_div::_GP('node');
+
+        if ($node_id && $node = tx_caretaker_Helper::id2node($node_id, true) ){
+
+			$testChildNodes = $node->getTestNodes();
+
+           
+
+			$nodeErrors   = array();
+			$nodeWarnings = array();
+			$i = 0;
+            foreach ($testChildNodes as $testNode){
+
+				$testResut = $testNode->getTestResult();
+				$instance  = $testNode->getInstance();
+
+				if ( $testResut->getState() > 0 ){
+
+					$nodeInfo = Array (
+						'num'          => $i++ ,
+						'title'        =>'title_'.rand(),
+						
+						'node_title'   => $instance->getTitle().' '.$testNode->getTitle() ,
+						'node_id'      => $testNode->getCaretakerNodeId() ,
+
+						'timestamp'    => $testResut->getTimestamp(),
+						'stateinfo'    => $testResut->getStateInfo(),
+						'stateinfo_ll' => $testResut->getLocallizedStateInfo(),
+						'message'      => $testResut->getMessage(),
+						'message_ll'   => $testResut->getLocallizedMessage(),
+						'state'        => $testResut->getState(),
+					);
+
+					switch ( $testResut->getState() ){
+						case TX_CARETAKER_STATE_WARNING:
+							$nodeWarnings[] = $nodeInfo;
+							break;
+						case TX_CARETAKER_STATE_ERROR:
+							$nodeErrors[] = $nodeInfo;
+							break;
+					}
+				}
+            }
+			
+			$content = Array();
+			$content['nodeProblems'] = array_merge($nodeErrors, $nodeWarnings);
+			$content['totalCount']   = count($content['nodeProblems']);
+
+            $ajaxObj->setContent($content);
+            $ajaxObj->setContentFormat('jsonbody');
+        }
+    }
 	
 	
 }
