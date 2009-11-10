@@ -69,9 +69,9 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	 * 
 	 * @return tx_caretaker_TestResult
 	 */
-	static public function undefined (){
+	static public function undefined ($message = 'Result is undefined'){
 		$timestamp = time();
-		return new tx_caretaker_TestResult($timestamp, TX_CARETAKER_STATE_UNDEFINED, 0, 'Result is undefined');
+		return new tx_caretaker_TestResult($timestamp, TX_CARETAKER_STATE_UNDEFINED, 0, $message);
 	}
 	
 	/**

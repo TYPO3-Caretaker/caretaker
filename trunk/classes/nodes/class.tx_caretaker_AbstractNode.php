@@ -114,7 +114,11 @@ abstract class tx_caretaker_AbstractNode {
 		$this->title  = $title;
 		$this->parent = $parent;
 		$this->type   = $type;
-		$this->hidden = (boolean)$hidden;
+		if ($parent && $parent->getHidden()){
+			$this->hidden = true;
+		} else {
+			$this->hidden = (boolean)$hidden;
+		}
 	}
 
 	/**

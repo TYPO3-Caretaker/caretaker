@@ -107,11 +107,11 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	 * (non-PHPdoc)
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AggregatorNode#findChildren()
 	 */
-	public function findChildren ($hidden=false){
+	public function findChildren ($show_hidden=false){
 		
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
 		
-		$testgroups = $node_repository->getTestgroupsByInstanceUid($this->uid, $this, $hidden);
+		$testgroups = $node_repository->getTestgroupsByInstanceUid($this->uid, $this, $show_hidden);
 		$tests =      $node_repository->getTestsByInstanceUid($this->uid, $this, $show_hidden);
 		
 		$children = array_merge($testgroups, $tests);

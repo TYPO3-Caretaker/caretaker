@@ -87,9 +87,9 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 	 * 
 	 * @return tx_caretaker_AggregatorResult
 	 */
-	static public function undefined (){
+	static public function undefined ($message = 'Result is undefined'){
 		$ts = time();
-		return new tx_caretaker_AggregatorResult($ts, TX_CARETAKER_STATE_UNDEFINED, $undefined=0, $ok=0, $warning=0, $error=0, 'Result is undefined');
+		return new tx_caretaker_AggregatorResult($ts, TX_CARETAKER_STATE_UNDEFINED, $undefined=0, $ok=0, $warning=0, $error=0, $message );
 	}
 	
 	/**

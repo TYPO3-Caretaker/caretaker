@@ -72,28 +72,33 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 	 * @return tx_caretaker_AggregatorResult
 	 */
 	public function updateTestResult( $force_update = false){
+
+		
 		
 		$this->log('update', 1);
-		
-		$children  = $this->getChildren();
 
-		if (count($children)>0){		
-			$test_results = array(); 
-			foreach($children as $child){
-				$test_result = $child->updateTestResult($force_update);
-				$test_results[] = array('node'=>$child, 'result'=>$test_result);
-			}
-			$group_result = $this->getAggregatedResult($test_results);
+		if ( $this->getHidden() == true ){
+			$group_result = tx_caretaker_AggregatorResult::undefined('Node is disabled');
 		} else {
-			$group_result = tx_caretaker_AggregatorResult::create(TX_CARETAKER_STATE_UNDEFINED, 0, 'No children were found');
+				// find children
+			$children  = $this->getChildren();
+			if (count($children)>0){
+				$test_results = array();
+				foreach($children as $child){
+					$test_result = $child->updateTestResult($force_update);
+					$test_results[] = array('node'=>$child, 'result'=>$test_result);
+				}
+				$group_result = $this->getAggregatedResult($test_results);
+			} else {
+				$group_result = tx_caretaker_AggregatorResult::undefined( 'No children were found');
+			}
+				// save aggregator node state to cache
+			$result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
+			$result_repository->addNodeResult($this, $group_result);
 		}
 		
 		$this->log( ' |> '.$group_result->getStateInfo().' :: '.$group_result->getMsg(), false );
 		
-			// save aggregator node state to cache
-		$result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
-		$result_repository->addNodeResult($this, $group_result);
-
 		return $group_result;
 	}
 
@@ -104,9 +109,16 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 	public function getTestResult(){
 
 		$this->log( 'get', 1 );
-		$result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
-		$group_result = $result_repository->getLatestByNode($this);
+		
+		if ( $this->getHidden() == true ){
+			$group_result = tx_caretaker_AggregatorResult::undefined('Node is disabled');
+		} else {
+			$result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
+			$group_result = $result_repository->getLatestByNode($this);
+		}
+		
 		$this->log( ' |> '.$group_result->getStateInfo().' :: '.$group_result->getMsg(), false );
+		
 		return $group_result;
 		
 	}

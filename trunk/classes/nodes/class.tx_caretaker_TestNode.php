@@ -219,6 +219,12 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @return tx_caretaker_NodeResult
 	 */
 	public function updateTestResult($force_update = false){
+
+		if ( $this->getHidden() == true ){
+			$result = tx_caretaker_TestResult::undefined('Node is disabled');
+			$this->log('disabled '.$result->getLocallizedStateInfo().' '.$result->getLocallizedMessage().' '.$msg );
+			return $result;
+		}
 		
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$instance = $this->getInstance();
@@ -278,6 +284,13 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResult()
 	 */
 	public function getTestResult(){
+
+		if ( $this->getHidden() == true ){
+			$result = tx_caretaker_TestResult::undefined('Node is disabled');
+			$this->log('disabled '.$result->getLocallizedStateInfo().' '.$result->getLocallizedMessage().' '.$msg );
+			return $result;
+		}
+
 		$instance  = $this->getInstance();
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$result    = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
