@@ -528,11 +528,8 @@ class tx_caretaker_NodeRepository {
 		} 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_test', 'deleted=0 '.$hidden.' AND uid='.(int)$uid);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		
 		if ($row){
-			$row['title'] = $row['title'].' sh:'.$show_hidden;
 			$test = $this->dbrow2test($row, $parent);
-
 			// the test may be disabled/hidden by configuration, so we need to double-check the hidden state
 			if (!$show_hidden && $test->getHidden()) {
 				return false;
