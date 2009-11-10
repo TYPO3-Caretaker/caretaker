@@ -35,9 +35,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_caretaker_AggregatorResultRange.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_caretaker_AggregatorResult.php');
-
 class tx_caretaker_AggregatorResultRepository {
 
 	/**

@@ -35,9 +35,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_AggregatorNode.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx_caretaker_NodeRepository.php');
-
 class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 
 	/**
@@ -75,7 +72,7 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	 * @param string $ip
 	 * @param boolean $hidden
 	 */
-	public function __construct( $uid, $title, $parent, $url, $hostname='', $publicKey = '', $hidden=0) {
+	public function __construct( $uid, $title, $parent, $url='', $hostname='', $publicKey = '', $hidden=0) {
 		parent::__construct($uid, $title, $parent, 'Instance', $hidden);
 		$this->url = $url;
 		$this->hostname = $hostname;

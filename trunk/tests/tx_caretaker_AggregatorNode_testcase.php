@@ -1,25 +1,35 @@
 <?php 
 
+	/* create stub class to expose protected methods */
+class tx_caretaker_StubAggregatorNode extends tx_caretaker_AggregatorNode {
+	
+	protected function findChildren($show_hidden=false){
+		return array();
+	}
 
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_caretaker_AggregatorResult.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_caretaker_TestResult.php');
-require_once(t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx_caretaker_NodeRepository.php');
+	public function getAggregatedResult($results){
+		return parent::getAggregatedResult($results);
+	}
+	
+}
 
+	/* this is the test */
 class tx_caretaker_AggregatorNode_testcase extends tx_phpunit_testcase  {
 
 	function test_aggregation_of_results(){
-		
-		$aggregator = new tx_caretaker_InstancegroupNode( 0, 'foo', false );
+
+		$aggregator = new tx_caretaker_StubAggregatorNode( 0, 'foo', false );
+		$instance   = new tx_caretaker_InstanceNode (0, 'bar', false );
+		$node       = new tx_caretaker_TestNode (0, 'baz', $instance, 'tx_caretaker_ping' , '' );
 
 		$results = array();
-		$results[] = tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK      );
-		$results[] = tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK      );
-		$results[] = tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING );
-		$results[] = tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR   );
-		$results[] = tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR   );
-		$results[] = tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK      );
-		$results[] = tx_caretaker_TestResult::create( );
-
+		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK      ) );
+		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK      ) );
+		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING ) );
+		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR   ) );
+		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR   ) );
+		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK      ) );
+		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( ) );
 
 		$aggregated_result = $aggregator->getAggregatedResult($results);
 		$this->assertEquals( 2, $aggregated_result->getNumERROR() , "wrong error count" );
@@ -31,20 +41,7 @@ class tx_caretaker_AggregatorNode_testcase extends tx_phpunit_testcase  {
 		
 	}
 
-	function test_getPropertyMethods(){
-
-		$aggregator = new tx_caretaker_InstancegroupNode( 0, 'foo', false );
-
-		$this->assertEquals( false, $aggregator->getProperty('foo') , "wrong result" );
-
-		$aggregator->setDbRow(array('foo'=>'bar'));
-		
-		$this->assertEquals( 'bar', $aggregator->getProperty('foo') , "wrong result" );
-
-		$this->assertEquals( false, $aggregator->getProperty('bar') , "wrong result" );
-
-
-	}
+	
 	
 }
 

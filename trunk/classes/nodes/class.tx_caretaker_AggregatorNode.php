@@ -35,9 +35,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/nodes/class.tx_caretaker_AbstractNode.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx_caretaker_AggregatorResultRepository.php');
-
 abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 
 	/**
@@ -62,7 +59,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 	 * Find the children of this node
 	 *  
 	 * @param $hidden
-	 * @return unknown_type
+	 * @return array
 	 */
 	abstract protected function findChildren($show_hidden=false);
 	
@@ -154,7 +151,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 	 * @param tx_caretaker_NodeResult[] Child-Results to aggregate
 	 * @return tx_caretaker_AggregatorResult Aggregated State
 	 */
-	private function getAggregatedResult($test_results){
+	protected function getAggregatedResult($test_results){
 		
 		$num_tests = count($test_results);
 		

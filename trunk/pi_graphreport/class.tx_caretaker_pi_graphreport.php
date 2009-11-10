@@ -27,9 +27,6 @@
  * @author	 <>
  */
 
-
-require_once(t3lib_extMgm::extPath('caretaker').'/pi_base/class.tx_caretaker_pibase.php');
-require_once(t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Helper.php');
 require_once(t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_ResultRangeRenderer_pChart.php');
 
 class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {

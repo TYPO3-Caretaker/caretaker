@@ -37,13 +37,6 @@
 
 if (!defined('TYPO3_cliMode'))  die('You cannot run this script directly!');
 
-require_once(PATH_t3lib.'class.t3lib_cli.php');
-
-require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_Helper.php');
-require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_CliLogger.php');
-require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_CliNotifier.php');
-require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_ExtensionManagerHelper.php');
-
 class tx_caretaker_Cli extends t3lib_cli {
 	
 	/**

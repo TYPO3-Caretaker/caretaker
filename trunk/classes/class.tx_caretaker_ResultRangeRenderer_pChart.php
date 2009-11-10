@@ -1,6 +1,5 @@
 <?php 
 
-require_once(t3lib_extMgm::extPath('caretaker').'/interfaces/interface.tx_caretaker_ResultRangeRenderer.php');
 require_once(t3lib_extMgm::extPath('caretaker').'/lib/pChart/class.pData.php');  
 require_once(t3lib_extMgm::extPath('caretaker').'/lib/pChart/class.pChart.php');  
 		

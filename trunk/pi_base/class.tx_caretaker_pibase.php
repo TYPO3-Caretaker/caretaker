@@ -1,7 +1,5 @@
 <?php
 
-require_once(PATH_tslib.'class.tslib_pibase.php');
-
 abstract class tx_caretaker_pibase extends tslib_pibase {
 	
 	/**

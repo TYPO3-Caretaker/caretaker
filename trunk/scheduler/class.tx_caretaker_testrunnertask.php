@@ -15,11 +15,6 @@ class tx_caretaker_TestrunnerTask extends tx_scheduler_Task {
 
 	public function execute() {
 		
-
-		require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_Helper.php');
-		require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_CliLogger.php');
-		require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_CliNotifier.php');
-
 		$node = tx_caretaker_Helper::id2node($this->node_id);
 
 		if (!$node)return false;

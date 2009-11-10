@@ -33,11 +33,7 @@ require_once($BACK_PATH . 'init.php');
 require_once($BACK_PATH . 'template.php');
 
 $GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
-require_once (PATH_t3lib."class.t3lib_scbase.php");
 $GLOBALS['BE_USER']->modAccess($MCONF, 1);
-
-require_once (t3lib_extMgm::extPath('caretaker') . '/classes/repositories/class.tx_caretaker_NodeRepository.php');
-require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_Helper.php');
 
 class tx_caretaker_mod_nav extends t3lib_SCbase {
 	var $pageinfo;

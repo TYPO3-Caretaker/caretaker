@@ -4,9 +4,9 @@ require_once (t3lib_extMgm::extPath('caretaker').'/classes/repositories/class.tx
 class tx_caretaker_TestResultRepository_testcase extends tx_phpunit_testcase  {
 
 	function test_getLatest(){
-
-		$test     = new tx_caretaker_TestNode(0, 'title' , false, '' , '' );
-		$instance = new tx_caretaker_InstanceNode(1, 'title' , false, '', ''); 
+		$instance = new tx_caretaker_InstanceNode(1, 'title' , false, '', '');
+		$test     = new tx_caretaker_TestNode(0, 'title' , $instance, 'tx_caretaker_ping' , '' );
+		
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$result  =  $test_result_repository->getLatestByInstanceAndTest($instance, $test);
 		$this->assertEquals( get_class($result), 'tx_caretaker_TestResult' , 'a testresult was found');
@@ -14,8 +14,8 @@ class tx_caretaker_TestResultRepository_testcase extends tx_phpunit_testcase  {
 	
 	function test_getResultRange(){
 
-		$test     = new tx_caretaker_TestNode(0, 'title' , false, '', '' );
-		$instance = new tx_caretaker_InstanceNode(1, 'title', false, ''); 
+		$instance = new tx_caretaker_InstanceNode(1, 'title', false, '');
+		$test     = new tx_caretaker_TestNode(0, 'title' , $instance, 'tx_caretaker_ping', '' );
 		
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		

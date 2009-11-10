@@ -1,8 +1,5 @@
 <?php
 
-require_once (t3lib_extMgm::extPath('caretaker') . '/classes/repositories/class.tx_caretaker_NodeRepository.php');
-require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_Helper.php');
-
 class tx_caretaker_TreeLoader {
 	
 	public function ajaxLoadTree($params, &$ajaxObj) {

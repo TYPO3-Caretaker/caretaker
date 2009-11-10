@@ -5,7 +5,6 @@ class tx_caretaker_TerupdateTask extends tx_scheduler_Task {
 
 	public function execute() {
 		$success = false;
-		require_once (t3lib_extMgm::extPath('caretaker') . '/classes/class.tx_caretaker_ExtensionManagerHelper.php');
 		tx_caretaker_ExtensionManagerHelper::updateExtensionList();
 		$success = true;
 		return $success;

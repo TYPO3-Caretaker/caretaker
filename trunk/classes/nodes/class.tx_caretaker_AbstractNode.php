@@ -35,11 +35,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once (t3lib_extMgm::extPath('caretaker').'/interfaces/interface.tx_caretaker_LoggerInterface.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/interfaces/interface.tx_caretaker_NotifierInterface.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_caretaker_NodeResultRange.php');
-require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Helper.php');
-
 abstract class tx_caretaker_AbstractNode {
 
 	/**

@@ -27,9 +27,6 @@
  * @author	 <>
  */
 
-require_once(t3lib_extMgm::extPath('caretaker').'/pi_base/class.tx_caretaker_pibase.php');
-require_once(t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_Helper.php');
-
 class tx_caretaker_pi_overview extends tx_caretaker_pibase {
 	var $prefixId = 'tx_caretaker_pi_overview';		// Same as class name
 	var $scriptRelPath = 'pi_overview/class.tx_caretaker_pi_overview.php';	// Path to this script relative to the extension dir.
