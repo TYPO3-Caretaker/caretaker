@@ -143,12 +143,14 @@ t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi_graphreport', 'FILE:EXT:'.$_EXTKE
 t3lib_extMgm::addPlugin(Array('LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_graphreport', $_EXTKEY.'_pi_graphreport'),'list_type');
 if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_caretaker_pi_graphreport_wizicon"] = t3lib_extMgm::extPath($_EXTKEY).'pi_graphreport/class.tx_caretaker_pi_graphreport_wizicon.php';
 
-	// status
+	// abstract
+/*
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi_abstract']='layout,select_key,pages';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi_abstract']='pi_flexform';
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi_abstract', 'FILE:EXT:'.$_EXTKEY.'/pi_abstract/flexform_ds.xml');
 t3lib_extMgm::addPlugin(Array('LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_abstract', $_EXTKEY.'_pi_abstract'),'list_type');
 if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_caretaker_pi_abstract_wizicon"] = t3lib_extMgm::extPath($_EXTKEY).'pi_abstract/class.tx_caretaker_pi_abstract_wizicon.php';
+*/
 
 	// register Extension TS templates
 t3lib_extMgm::addStaticFile($_EXTKEY,'res/typoscript/plugin','Caretaker Plugin Template');
