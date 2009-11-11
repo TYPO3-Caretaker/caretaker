@@ -6,6 +6,8 @@ if (TYPO3_MODE=='BE')    {
 t3lib_extMgm::addPItoST43($_EXTKEY,'pi_overview/class.tx_caretaker_pi_overview.php','_pi_overview','list_type',0);
 t3lib_extMgm::addPItoST43($_EXTKEY,'pi_singleview/class.tx_caretaker_pi_singleview.php','_pi_singleview','list_type',0);
 t3lib_extMgm::addPItoST43($_EXTKEY,'pi_graphreport/class.tx_caretaker_pi_graphreport.php','_pi_graphreport','list_type',0);
+t3lib_extMgm::addPItoST43($_EXTKEY,'pi_abstract/class.tx_caretaker_pi_abstract.php','_pi_abstract','list_type',0);
+
 
 
 // Add eID script for caretaker tree loader

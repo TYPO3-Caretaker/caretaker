@@ -226,6 +226,66 @@ plugin.tx_caretaker_pi_graphreport{
 	}	
 }
 
+plugin.tx_caretaker_pi_abstract {
+
+	template = FILE
+	template.file = EXT:caretaker/res/html/pi_abstract.html
+
+	markers {
+
+		TITLE = TEXT
+		TITLE.data = LLL:EXT:caretaker/pi_abstract/locallang.xml:abstract
+
+		STATE = TEXT
+		STATE.field = stateInfo
+		STATE.case = lower
+
+		NODE_TITLE = TEXT
+		NODE_TITLE.field = nodeTitle
+
+		NUM_ERROR = TEXT
+		NUM_ERROR.field = numError
+
+		NUM_WARNING = TEXT
+		NUM_WARNING.field = numWarning
+
+		NUM_OK = TEXT
+		NUM_OK.field = numOk
+	}
+
+	subparts {
+		CARETAKER-CHILDREN = COA
+		CARETAKER-CHILDREN {
+			10 = TEXT
+			10.field = renderedErrorNodes
+
+			30 = TEXT
+			30.field = renderedWarningNodes
+		}
+	}
+
+	childSubpartError = CARETAKER-CHILD-ERROR
+	childSubpartWarning = CARETAKER-CHILD-WARNING
+	childMarkers {
+
+		STATE = TEXT
+		STATE.field = stateinfo
+		STATE.case = lower
+
+		TITLE = TEXT
+		TITLE.value = {field:title}
+		TITLE.insertData = 1
+		TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
+		TITLE.typolink.additionalParams.field = link_parameters
+		TITLE.typolink.target = _self
+
+		INFO = TEXT
+		INFO.field = message_ll
+
+	}
+
+}
+
 [globalVar = GP:tx_caretaker_pi_graphreport|range = 720]
 plugin.tx_caretaker_pi_graphreport.markers.CHART_LINKS.30.wrap = <li class="active">|</li>
 [globalVar = GP:tx_caretaker_pi_graphreport|range = 168]

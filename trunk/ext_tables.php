@@ -122,24 +122,33 @@ $TCA['tx_caretaker_test'] = array (
 	// register FE-Plugins
 t3lib_div::loadTCA('tt_content');
 
+	// overview
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi_overview']='layout,select_key,pages';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi_overview']='pi_flexform';
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi_overview', 'FILE:EXT:'.$_EXTKEY.'/pi_overview/flexform_ds.xml');
 t3lib_extMgm::addPlugin(Array('LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_overview', $_EXTKEY.'_pi_overview'),'list_type');
 if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_caretaker_pi_overview_wizicon"] = t3lib_extMgm::extPath($_EXTKEY).'pi_overview/class.tx_caretaker_pi_overview_wizicon.php';
 
+	// singleview
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi_singleview']='layout,select_key,pages';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi_singleview']='pi_flexform';
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi_singleview', 'FILE:EXT:'.$_EXTKEY.'/pi_singleview/flexform_ds.xml');
 t3lib_extMgm::addPlugin(Array('LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_singleview', $_EXTKEY.'_pi_singleview'),'list_type');
 if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_caretaker_pi_singleview_wizicon"] = t3lib_extMgm::extPath($_EXTKEY).'pi_singleview/class.tx_caretaker_pi_singleview_wizicon.php';
 
+	// graphreport
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi_graphreport']='layout,select_key,pages';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi_graphreport']='pi_flexform';
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi_graphreport', 'FILE:EXT:'.$_EXTKEY.'/pi_graphreport/flexform_ds.xml');
 t3lib_extMgm::addPlugin(Array('LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_graphreport', $_EXTKEY.'_pi_graphreport'),'list_type');
 if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_caretaker_pi_graphreport_wizicon"] = t3lib_extMgm::extPath($_EXTKEY).'pi_graphreport/class.tx_caretaker_pi_graphreport_wizicon.php';
 
+	// status
+$TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi_abstract']='layout,select_key,pages';
+$TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi_abstract']='pi_flexform';
+t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi_abstract', 'FILE:EXT:'.$_EXTKEY.'/pi_abstract/flexform_ds.xml');
+t3lib_extMgm::addPlugin(Array('LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_abstract', $_EXTKEY.'_pi_abstract'),'list_type');
+if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_caretaker_pi_abstract_wizicon"] = t3lib_extMgm::extPath($_EXTKEY).'pi_abstract/class.tx_caretaker_pi_abstract_wizicon.php';
 
 	// register Extension TS templates
 t3lib_extMgm::addStaticFile($_EXTKEY,'res/typoscript/plugin','Caretaker Plugin Template');

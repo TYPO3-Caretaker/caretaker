@@ -67,8 +67,8 @@ class tx_caretaker_pi_overview_wizicon {
 
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/user_overview/pi1/class.user_overview_pi1_wizicon.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/user_overview/pi1/class.user_overview_pi1_wizicon.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_overview/class.user_overview_pi1_wizicon.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_overview/class.user_overview_pi1_wizicon.php']);
 }
 
 ?>

@@ -95,7 +95,10 @@
 			<label index="pi_graphreport_title">Caretaker Graphical Report</label>
 			<label index="pi_graphreport_plus_wiz_description">Show combined Graphical Report of selected tests.</label>
 			
-			
+			<label index="tt_content.list_type_pi_abstract">Caretaker Abstract</label>
+			<label index="pi_abstract_title">Caretaker Abstract</label>
+			<label index="pi_abstract_plus_wiz_description">Show number and list of all Errors and Warnings.</label>
+
 		</languageKey>
 		<languageKey index="de" type="array">
 

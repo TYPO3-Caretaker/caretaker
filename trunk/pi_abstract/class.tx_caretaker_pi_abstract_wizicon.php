@@ -29,7 +29,7 @@
 
 
 
-class tx_caretaker_pi_graphreport_wizicon {
+class tx_caretaker_pi_abstract_wizicon {
 
 	/**
 	 * Processing the wizard items array
@@ -42,11 +42,11 @@ class tx_caretaker_pi_graphreport_wizicon {
 
 		$LL = $this->includeLocalLang();
 
-		$wizardItems['plugins_caretaker_pi_graphreport'] = array(
-			'icon'=>t3lib_extMgm::extRelPath('caretaker').'pi_graphreport/ce_wiz.gif',
-			'title'=>$LANG->getLLL('pi_graphreport_title',$LL),
-			'description'=>$LANG->getLLL('pi_graphreport_plus_wiz_description',$LL),
-			'params'=>'&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=caretaker_pi_graphreport'
+		$wizardItems['plugins_caretaker_pi_abstract'] = array(
+			'icon'=>t3lib_extMgm::extRelPath('caretaker').'pi_abstract/ce_wiz.gif',
+			'title'=>$LANG->getLLL('pi_abstract_title',$LL),
+			'description'=>$LANG->getLLL('pi_abstract_plus_wiz_description',$LL),
+			'params'=>'&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=caretaker_pi_abstract'
 		);
 
 		return $wizardItems;
@@ -67,8 +67,8 @@ class tx_caretaker_pi_graphreport_wizicon {
 
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_graphreport/class.user_graphreport_pi1_wizicon.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_graphreport/class.user_graphreport_pi1_wizicon.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_abstract/class.tx_caretaker_pi_abstract_wizicon.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_abstract/class.tx_caretaker_pi_abstract_wizicon.php']);
 }
 
 ?>

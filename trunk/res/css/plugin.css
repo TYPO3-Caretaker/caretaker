@@ -296,3 +296,120 @@ div.caretaker_graphreport div.caretaker_graphreport_diagram {
 	-moz-box-shadow:6px 6px 5px #888888;
 	
 }
+
+/*
+############################
+### Caretaker Singleview ###
+############################
+*/
+
+
+div.caretaker_status h2 {
+	text-decoration:none;
+	color:white;
+	background-color:grey;
+	padding:6px 6px 4px 10px;
+	margin:0 0 0 0;
+	-moz-box-shadow:6px 6px 5px #888888;
+	-moz-border-radius-topright: 7px;
+}
+
+div.caretaker_status div.caretaker_status_box {
+	background: #fff;
+	border: 1px solid #b2cdea;
+	font-size: 12px;
+	list-style-type: none;
+
+	overflow: hidden;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 6px 6px 3px 6px;
+
+	margin: 0 0 20px 0;
+
+	-moz-box-shadow:6px 6px 5px #888888;
+	-moz-border-radius-bottomleft: 7px;
+	-webkit-border-bottom-left-radius: 7px;
+	-moz-border-radius-bottomright: 7px;
+	-webkit-border-bottom-right-radius: 7px;
+
+}
+
+
+div.caretaker_status div.caretaker_status_box ul.caretaker_children {
+	
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	clear:both;
+
+
+}
+
+div.caretaker_status_ok h2{ background-color:green; }
+div.caretaker_status_ok div.caretaker_status_box{ background-color:#DDFFDD; border-color:green;  }
+
+div.caretaker_status_warning h2{ background-color:orange; }
+div.caretaker_status_warning div.caretaker_status_box{	background-color:#FFFFDD;  border-color:orange; }
+
+div.caretaker_status_error h2{	background-color:red;}
+div.caretaker_status_error div.caretaker_status_box{ background-color:#FFDDDD;  border-color:red; }
+
+div.caretaker_status_undefined h2{	background-color:grey;}
+div.caretaker_status_undefined div.caretaker_status_box{	background-color:#EEEEEE;  border-color:grey;}
+
+
+div.caretaker_status ul.caretaker_children li{
+		list-style:none;
+		padding: 2px 2px 2px 20px;
+		background-repeat: no-repeat;
+		background-position: 5px 2px;
+}
+
+
+
+div.caretaker_status ul.caretaker_children li a{ text-decoration:none; }
+div.caretaker_status ul.caretaker_children li a:hover{ text-decoration:underline; }
+
+div.caretaker_status ul.caretaker_children li.state_ok{  background-image:url(../img/state_ok.gif); }
+div.caretaker_status ul.caretaker_children li.state_ok a{ color:green; }
+
+div.caretaker_status ul.caretaker_children li.state_warning{  background-image:url(../img/state_warning.gif);}
+div.caretaker_status ul.caretaker_children li.state_warning a{ color:orange;}
+
+div.caretaker_status ul.caretaker_children li.state_error{  background-image:url(../img/state_error.gif);}
+div.caretaker_status ul.caretaker_children li.state_error a{ color:red; }
+
+div.caretaker_status ul.caretaker_children li.state_undefined{  }
+div.caretaker_status ul.caretaker_children li.state_undefined a{ color:grey ; }
+
+
+div.caretaker_status dl.caretaker_status_infos{
+	clear: both;
+	height: 40px;
+	margin: 0;
+}
+
+div.caretaker_status dl.caretaker_status_infos dt{
+	line-height:65px;
+	height: 40px;
+	float:left;
+}
+
+div.caretaker_status dl.caretaker_status_infos dd{
+	float:left;
+	font-size: 40px;
+	font-weight:bold;
+	margin:0;
+	padding:10px;
+}
+
+div.caretaker_status dl.caretaker_status_infos dd.error{
+	color: red;
+}
+div.caretaker_status dl.caretaker_status_infos dd.warning{
+	color: orange;
+}
+div.caretaker_status dl.caretaker_status_infos dd.ok{
+	color: green;
+}
