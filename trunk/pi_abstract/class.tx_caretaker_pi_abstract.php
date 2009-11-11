@@ -148,73 +148,88 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 
 		$nodesErrors    = array();
 		$nodesWarnings  = array();
-		$nodesOK        = array();
-		$nodesUndefined = array();
 
 		$worst_state       = TX_CARETAKER_STATE_OK;
 		$worst_state_info  = '';
-		
+
+		$num_error = 0;
+		$num_warning = 0;
+		$num_ok = 0;
+		$num_undefined = 0;
+
 		foreach ($testChildNodes as $testNode) {
 
 			$testResut = $testNode->getTestResult();
-			$instance  = $testNode->getInstance();
-
-			$nodeInfo = Array (
-				'title'           => $instance->getTitle().' '.$testNode->getTitle() ,
-				'node_title'      => $testNode->getTitle() ,
-				'instance_title'  => $instance->getTitle() ,
-				'node_id'         => $testNode->getCaretakerNodeId(),
-				'link_parameters' => '&tx_caretaker_pi_singleview[id]='.$testNode->getCaretakerNodeId(),
-
-				'timestamp'    => $testResut->getTimestamp(),
-				'stateinfo'    => $testResut->getStateInfo(),
-				'stateinfo_ll' => $testResut->getLocallizedStateInfo(),
-				'message'      => $testResut->getMessage(),
-				'message_ll'   => $testResut->getLocallizedMessage(),
-				'state'        => $testResut->getState(),
-			);
-
-			$testState = $testResut->getState();
+			$testNodeState     = $testResut->getState();
 
 				// worst state
-			if ( $testState > $worst_state ){
-				$worst_state      = $testState;
+			if ( $testNodeState > $worst_state ){
+				$worst_state      = $testNodeState;
 				$worst_state_info = $testResut->getStateInfo();
 			}
 
-				// save info
+				// count node states info
 			switch ( $testState ) {
 				case TX_CARETAKER_STATE_ERROR:
-					$nodesErrors[] = $nodeInfo;
+					$num_error ++;
 					break;
 				case TX_CARETAKER_STATE_WARNING:
-					$nodesWarnings[] = $nodeInfo;
+					$num_warning ++;
 					break;
 				case TX_CARETAKER_STATE_OK:
-					$nodesOK[] = $nodeInfo;
+					$num_ok ++;
 					break;
 				case TX_CARETAKER_STATE_UNDEFINED:
-					$nodesUndefined[] = $nodeInfo;
+					$num_undefined ++;
 					break;
 			}
 
+				// aggreate infos about warnings and errors
+			if ( $testNodeState > TX_CARETAKER_STATE_OK ) {
+				
+				$instance  = $testNode->getInstance();
+				$nodeInfo = Array (
+					'title'           => $instance->getTitle().' '.$testNode->getTitle() ,
+					'node_title'      => $testNode->getTitle() ,
+					'instance_title'  => $instance->getTitle() ,
+					'node_id'         => $testNode->getCaretakerNodeId(),
+					'link_parameters' => '&tx_caretaker_pi_singleview[id]='.$testNode->getCaretakerNodeId(),
+
+					'timestamp'    => $testResut->getTimestamp(),
+					'stateinfo'    => $testResut->getStateInfo(),
+					'stateinfo_ll' => $testResut->getLocallizedStateInfo(),
+					'message'      => $testResut->getMessage(),
+					'message_ll'   => $testResut->getLocallizedMessage(),
+					'state'        => $testResut->getState(),
+				);
+
+					// save info
+				switch ( $testNodeState ) {
+					case TX_CARETAKER_STATE_ERROR:
+						$nodesErrors[] = $nodeInfo;
+						$num_error ++;
+						break;
+					case TX_CARETAKER_STATE_WARNING:
+						$nodesWarnings[] = $nodeInfo;
+						$num_warning ++;
+						break;
+				}
+			}
 		}
 
 		$data = array(
 			'nodeInfo' => array(
-				'numError'     => count($nodesErrors),
-				'numWarning'   => count($nodesWarnings),
-				'numUndefined' => count($nodesUndefined),
-				'numOk'        => count($nodesOK),
+				'numError'     => $num_error,
+				'numWarning'   => $num_warning,
+				'numUndefined' => $num_undefined,
+				'numOk'        => $num_ok,
 				'nodeTitle'    => $node->getTitle(),
 				'state'        => $worst_state,
 				'stateInfo'    => $worst_state_info
 			),
 			'testResults' => array(
 				'error'     => $nodesErrors,
-				'warning'   =>$nodesWarnings,
-				'ok'        => $nodesOK,
-				'undefined' => $nodesUndefined
+				'warning'   => $nodesWarnings
 			)
 		);
 		
