@@ -58,8 +58,7 @@ class tx_caretaker_NodeInfo {
 						'Title: '.           $node->getTitle().'<br/>'.
 						'NodeID: '.          tx_caretaker_Helper::node2id($node).'<br/>'.
 						'Description: '.     $node->getDescription().'<br/>'.
-						'Hidden: '.          $node->getHiddenInfo().'<br/>'.
-						'last Execution: '.  strftime('%x %X',$result->getTimestamp()).'<br/>'.
+						'Hidden: '.          $node->getHiddenInfo().'<br/>'.						
 						'State: '.           $result->getLocallizedStateInfo().'<br/>'.
 						'Message: '.         nl2br($result->getLocallizedMessage()).'<br/>'.
 						'</div>';
