@@ -45,11 +45,21 @@ class tx_caretaker_TestResultRepository {
 	private static $instance = null;
 
 	/**
+	 * The time in seconds to search for the last node result
+	 *
+	 * @var integer
+	 */
+	private $lastTestResultScanRange = 0;
+	
+	/**
 	 * Private constructor use getInstance instead
 	 * 
 	 * @return unknown_type
 	 */
-	private function __construct (){}	
+	private function __construct (){
+		$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+		$this->lastTestResultScanRange = (int)$confArray['lastTestResultScanRange'];
+	}
 	
 	/**
 	 * Get the Singleton Object
@@ -71,8 +81,17 @@ class tx_caretaker_TestResultRepository {
 	 * @return tx_caretaker_TestResult
 	 */
 	public function getLatestByInstanceAndTest($instance, $test){
-			
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid(), '', 'tstamp DESC', '1'  );
+		
+		if ($this->lastTestResultScanRange > 0){
+			$now = time();
+			$optimizeQuery = ' AND tstamp >= '.($now-$this->lastTestResultScanRange) ;
+		} else {
+			$optimizeQuery = '';
+		}
+		
+		$optimizeQuery = '';
+
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid().$optimizeQuery, '', 'tstamp DESC', '1'  );
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		
 		if ($row) {
