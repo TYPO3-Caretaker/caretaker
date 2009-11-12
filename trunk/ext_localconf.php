@@ -3,14 +3,19 @@ if (TYPO3_MODE=='BE')    {
     $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array('EXT:'.$_EXTKEY.'/classes/class.tx_caretaker_Cli.php','_CLI_caretaker');
 }
 
+	// define caretaker status  constants
+define('TX_CARETAKER_STATE_OK',          0);
+define('TX_CARETAKER_STATE_WARNING',     1);
+define('TX_CARETAKER_STATE_ERROR',       2);
+define('TX_CARETAKER_STATE_UNDEFINED',  -1);
+
+	// register Plugins
 t3lib_extMgm::addPItoST43($_EXTKEY,'pi_overview/class.tx_caretaker_pi_overview.php','_pi_overview','list_type',0);
 t3lib_extMgm::addPItoST43($_EXTKEY,'pi_singleview/class.tx_caretaker_pi_singleview.php','_pi_singleview','list_type',0);
 t3lib_extMgm::addPItoST43($_EXTKEY,'pi_graphreport/class.tx_caretaker_pi_graphreport.php','_pi_graphreport','list_type',0);
 t3lib_extMgm::addPItoST43($_EXTKEY,'pi_abstract/class.tx_caretaker_pi_abstract.php','_pi_abstract','list_type',0);
 
-
-
-// Add eID script for caretaker tree loader
+	// Add eID script for caretaker tree loader
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::treeloader']   = 'EXT:caretaker/classes/ajax/class.tx_caretaker_TreeLoader.php:tx_caretaker_TreeLoader->ajaxLoadTree';
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodeinfo']     = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeInfo';
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::noderefresh']  = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxRefreshNode';

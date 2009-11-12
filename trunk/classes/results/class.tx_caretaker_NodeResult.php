@@ -36,11 +36,6 @@
  ***************************************************************/
 
 
-define('TX_CARETAKER_STATE_OK',          0);
-define('TX_CARETAKER_STATE_WARNING',     1);
-define('TX_CARETAKER_STATE_ERROR',       2);
-define('TX_CARETAKER_STATE_UNDEFINED',  -1);
-
 class tx_caretaker_NodeResult {
 	
 	/**

@@ -19,7 +19,7 @@ CREATE TABLE tx_caretaker_instancegroup (
 	l18n_diffsource mediumblob NOT NULL,
 
 	title varchar(255) DEFAULT '' NOT NULL,
-	description varchar(255) DEFAULT '' NOT NULL,
+	description text NOT NULL,
 	parent_group int(11) DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),
@@ -46,8 +46,8 @@ CREATE TABLE tx_caretaker_instance (
 	l18n_diffsource mediumblob NOT NULL,
 
 	title varchar(255) DEFAULT '' NOT NULL,
-	description varchar(255) DEFAULT '' NOT NULL,
-	public_key text DEFAULT '' NOT NULL,
+	description text NOT NULL,
+	public_key text NOT NULL,
 	url varchar(255) DEFAULT '' NOT NULL,
 	host varchar(255) DEFAULT '' NOT NULL,
 
@@ -81,7 +81,7 @@ CREATE TABLE tx_caretaker_testgroup (
 	l18n_diffsource mediumblob NOT NULL,
 
 	title varchar(255) DEFAULT '' NOT NULL,
-	description varchar(255) DEFAULT '' NOT NULL,
+	description text NOT NULL,
 	parent_group int(11) DEFAULT '0' NOT NULL,
 	instances int(11) DEFAULT '0' NOT NULL,
 	
@@ -112,7 +112,7 @@ CREATE TABLE tx_caretaker_test (
 	l18n_diffsource mediumblob NOT NULL,
 
 	title varchar(255) DEFAULT '' NOT NULL,
-	description text DEFAULT '' NOT NULL,
+	description text NOT NULL,
 
 	test_interval int(11) DEFAULT '0' NOT NULL,
 	test_interval_start_hour tinyint(4) DEFAULT '0' NOT NULL,
@@ -195,11 +195,12 @@ CREATE TABLE tx_caretaker_testresult (
 	
 	result_status int(11) DEFAULT '0' NOT NULL,
 	result_value float DEFAULT '0' NOT NULL,
-	result_msg text DEFAULT '' NOT NULL,
-	result_infos text DEFAULT '' NOT NULL,
+	result_msg text NOT NULL,
+	result_infos text NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY test_instance_uid (test_uid,instance_uid)
+	KEY test_instance_uid_tstamp (tstamp,test_uid,instance_uid)
 	
 );
 
