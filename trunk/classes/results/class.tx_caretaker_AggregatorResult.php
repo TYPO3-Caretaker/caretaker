@@ -139,23 +139,32 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 	public function getNumERROR(){
 		return $this->num_ERROR;
 	}
-	
+
+	/**
+	 * Check if another tx_caretaker_AggregatorResult is equal to this one
+	 * @param tx_caretaker_AggregatorResult $result
+	 * @return boolean
+	 */
+	public function equals(tx_caretaker_AggregatorResult $result){
+		return ( !$this->isDifferent($result) );
+	}
+
 	/**
 	 * Check if another tx_caretaker_AggregatorResult is different from this one
 	 * @param tx_caretaker_AggregatorResult $result  	
 	 * @return boolean
 	 */
-	public function is_different(tx_caretaker_AggregatorResult $result){
-		if ( 
-			$this->status        != $result->getState()||
-			$this->num_UNDEFINED != $result->getNumUNDEFINED() ||
-			$this->num_OK        != $result->getNumOK() ||
-			$this->num_WARNING   != $result->getNumWARNING() ||
-			$this->num_ERROR     != $result->getNumERROR()
+	public function isDifferent(tx_caretaker_AggregatorResult $result){
+		if (
+			$this->getState()        != $result->getState() ||
+			$this->getNumUNDEFINED() != $result->getNumUNDEFINED() ||
+			$this->getNumOK()        != $result->getNumOK() ||
+			$this->getNumWARNING()   != $result->getNumWARNING() ||
+			$this->getNumERROR()     != $result->getNumERROR()
 		) {
-			return false;
-		} else {
 			return true;
+		} else {
+			return false;
 		}
 	}
 
