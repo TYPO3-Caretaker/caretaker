@@ -8,7 +8,7 @@ tx.caretaker.NodeCharts = Ext.extend(Ext.Panel, {
 	    	enableTabScroll : true,
 			collapsible     : true,
 			collapsed       : true,
-			height          : 430,
+			autoHeight      : true,
 			stateful        : true,
 			stateEvents     : ['expand','collapse','tabchange'],
 			stateID         : 'tx.caretaker.NodeCharts',
@@ -17,6 +17,7 @@ tx.caretaker.NodeCharts = Ext.extend(Ext.Panel, {
 				{
 					xtype		: 'tabpanel',
 					region		: 'south',
+					height      : 430,
 					activeTab	: 3,
 
 					items: [{
