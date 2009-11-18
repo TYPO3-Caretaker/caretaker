@@ -17,90 +17,100 @@
 	<meta>
 		<langDisable>1</langDisable>
 	</meta>
-	<ROOT>
-		<type>array</type>
-		<el>
-			<request_query>
+			<ROOT>
 				<TCEforms>
-					<label>URL path and query (e.g. /index.php?id=123)</label>
-					<config>
-						<type>input</type>
-						<size>50</size>
-					</config>
-				</TCEforms>
-			</request_query>	
-			<request_method>
-				<TCEforms>
-					<label>Request Method</label>
-					<config>
-						<type>select</type>
-					    <items>
-					    	<numIndex index="0">
-					    		<numIndex index="0">GET</numIndex>
-								<numIndex index="1">GET</numIndex>
-					    	</numIndex>
-					    	<numIndex index="1">
-					    		<numIndex index="0">PUT</numIndex>
-								<numIndex index="1">PUT</numIndex>
-					    	</numIndex>
-					    	<numIndex index="2">
-					    		<numIndex index="0">POST</numIndex>
-								<numIndex index="1">POST</numIndex>
-					    	</numIndex>
-					    	<numIndex index="3">
-					    		<numIndex index="0">DELETE</numIndex>
-								<numIndex index="1">DELETE</numIndex>
-					    	</numIndex>
-					  	</items>
-					  	<default>GET</default>
-					</config>
-				</TCEforms>
-			</request_method>
-			<request_data>
-				<TCEforms>
-					<label>Request Data</label>
-					<displayCond>FIELD:request_method:IN:PUT,POST</displayCond>
-					<config>
-						<type>text</type>
-						<cols>50</cols>
-						<rows>5</rows>
-					</config>
-				</TCEforms>
-			</request_data>
-			<expected_status>
-				<TCEforms>
-					<label>expected HTTP status code</label>
-					<config>
-						<type>input</type>
-						<size>10</size>
-						<eval>int</eval>
-						<default>200</default>
-					</config>
-				</TCEforms>
-			</expected_status>
-			<max_time_warning>
-				<TCEforms>
-					<label>Milliseconds for warning</label>
-					<config>
-						<type>input</type>
-						<size>10</size>
-						<eval>int</eval>
-						<default>0</default>
-					</config>
-				</TCEforms>
-			</max_time_warning>>
-			<max_time_error>
-				<TCEforms>
-					<label>Milliseconds for error</label>
-					<config>
-						<type>input</type>
-						<size>10</size>
-						<eval>int</eval>
-						<default>0</default>
-					</config>
-				</TCEforms>
-			</max_time_error>
-		</el>
-	</ROOT>
-
+						<sheetTitle>Request</sheetTitle>
+					</TCEforms>
+				<type>array</type>
+				<el>
+					<request_query>
+						<TCEforms>
+							<label>URL path and query (e.g. /index.php?id=123)</label>
+							<config>
+								<type>input</type>
+								<size>50</size>
+							</config>
+						</TCEforms>
+					</request_query>
+					<request_method>
+						<TCEforms>
+							<label>Request Method</label>
+							<config>
+								<type>select</type>
+								<items>
+									<numIndex index="0">
+										<numIndex index="0">GET</numIndex>
+										<numIndex index="1">GET</numIndex>
+									</numIndex>
+									<numIndex index="1">
+										<numIndex index="0">PUT</numIndex>
+										<numIndex index="1">PUT</numIndex>
+									</numIndex>
+									<numIndex index="2">
+										<numIndex index="0">POST</numIndex>
+										<numIndex index="1">POST</numIndex>
+									</numIndex>
+									<numIndex index="3">
+										<numIndex index="0">DELETE</numIndex>
+										<numIndex index="1">DELETE</numIndex>
+									</numIndex>
+								</items>
+								<default>GET</default>
+							</config>
+						</TCEforms>
+					</request_method>
+					<request_data>
+						<TCEforms>
+							<label>Request Data</label>
+							<displayCond>FIELD:request_method:IN:PUT,POST</displayCond>
+							<config>
+								<type>text</type>
+								<cols>50</cols>
+								<rows>5</rows>
+							</config>
+						</TCEforms>
+					</request_data>
+					<max_time_warning>
+						<TCEforms>
+							<label>Milliseconds for warning</label>
+							<config>
+								<type>input</type>
+								<size>10</size>
+								<eval>int</eval>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</max_time_warning>>
+					<max_time_error>
+						<TCEforms>
+							<label>Milliseconds for error</label>
+							<config>
+								<type>input</type>
+								<size>10</size>
+								<eval>int</eval>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</max_time_error>
+					<expected_status>
+						<TCEforms>
+							<label>expected HTTP status code</label>
+							<config>
+								<type>input</type>
+								<size>10</size>
+								<eval>int</eval>
+								<default>200</default>
+							</config>
+						</TCEforms>
+					</expected_status>
+					<expected_headers>
+						<TCEforms>
+							<label>expected HTTP Headers (__Header__:__Value__)</label>
+							<config>
+								<type>text</type>
+							</config>
+						</TCEforms>
+					</expected_headers>
+				</el>
+			</ROOT>
 </T3DataStructure>

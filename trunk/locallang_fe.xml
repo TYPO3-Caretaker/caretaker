@@ -33,12 +33,12 @@
 			<label index="ping_no_command_template">Ping command template must be configured in tx_caretaker extension configuration.</label>
 
 			<label index="http_service_description">Ping Test</label>
-			<label index="http_service_configuration">Warning: ###MAX_TIME_WARNING### Ms Error: ###MAX_TIME_ERROR### Ms</label>
+			<label index="http_service_configuration">Expected HTTP-Status: ###EXPECTED_STATUS### Warning: ###MAX_TIME_WARNING### Ms Error: ###MAX_TIME_ERROR### Ms</label>
 
 			<label index="http_no_query">No HTTP-Code or no query was set</label>
 			<label index="http_info">HTTP-Request of URL ###VALUE_URL### took ###VALUE### milliseconds and returned State ###VALUE_STATUS###</label>
 			<label index="http_error">Returned Status ###VALUE_STATUS### does not match expected state ###VALUE_EXPECTED### ###VALUE_URL###</label>
-
+			<label index="header_error">Returned HTTP-Headers did not match expected values ###VALUE_URL###</label>
 
 		</languageKey>
 		<languageKey index="de" type="array">
