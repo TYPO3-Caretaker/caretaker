@@ -25,7 +25,7 @@
 				<el>
 					<request_query>
 						<TCEforms>
-							<label>URL path and query (e.g. /index.php?id=123)</label>
+							<label>URL path and query (e.g. index.php?id=123). Empty for root request.</label>
 							<config>
 								<type>input</type>
 								<size>50</size>

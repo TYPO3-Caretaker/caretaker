@@ -71,7 +71,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		$request_data     = $this->getRequestData();
 		
 		$url           = $this->getInstanceUrl();
-		$request_url   = $url.$request_query;
+		$request_url   = $url.'/'.$request_query;
 
 			// no query
 		if ( !($expected_status && $request_url)) {
@@ -98,7 +98,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		}
 
 			// OK but header fails
-		if ( !$this->checkHeaders( $expected_headers,$headers ) ){
+		if ( !$this->checkExpectedHeaders( $expected_headers,$headers ) ){
 			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'LLL:EXT:caretaker/locallang_fe.xml:header_error', $info_array  );
 		}
 
@@ -108,20 +108,55 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	}
 
 	/**
-	 *
+	 * Compare the expected headers
+	 * 
 	 * @return boolean
 	 */
-	protected function checkHeaders($expectedHeaders,$responseHeaders){
+	protected function checkExpectedHeaders( $expectedHeaders,$responseHeaders ){
+
+		$instanceUrl      = $this->getInstanceUrl();
+		$instanceUrlParts = explode( '/', str_replace( '://' , '/' , $instanceUrl ) );
+
+		$instanceProtocol = array_shift( $instanceUrlParts );
+ 		$instanceHostname = array_shift( $instanceUrlParts );
+		$instanceQuery    = implode( '/', $instanceUrlParts );
+
+		$requestQuery     = $this->getRequestQuery();
+
 		$result = TRUE;
 		foreach ( $expectedHeaders as $headerName => $expectedValue ){
+			
+			$partialResult = TRUE;
+			$headerValue   = NULL;
+			
+				// header was not found
+			if (!$responseHeaders[$headerName]) {
+				$partialResult = FALSE;
+			}
 				// header was found
-			if ($responseHeaders[$headerName]) {
-				if ($responseHeaders[$headerName] != $expectedValue){
-					$result = FALSE;
+			else {
+				$headerValue = $responseHeaders[$headerName];
+				
+					// replace values
+				$expectedValue = str_replace ('###INSTANCE_URL###',      $instanceUrl,      $expectedValue);
+				$expectedValue = str_replace ('###INSTANCE_PROTOCOL###', $instanceProtocol, $expectedValue);
+				$expectedValue = str_replace ('###INSTANCE_HOSTNAME###', $instanceHostname, $expectedValue);
+				$expectedValue = str_replace ('###INSTANCE_QUERY###',    $instanceQuery,    $expectedValue);
+				$expectedValue = str_replace ('###REQUEST_QUERY###',     $requestQuery,     $expectedValue);
+				
+					// find comparison mode
+				if ( strpos( $expectedValue , '=') === 0 )  {
+					$partialResult = ( $headerValue == trim( substr( $expectedValue , 1 ) ) );
+				} else if ( strpos( $expectedValue , '<' ) === 0 ) {
+					$partialResult = ( intval( $headerValue ) < intval( substr( $expectedValue , 1 ) ) );
+				} else if ( strpos( $expectedValue , '>' ) === 0 ) {
+					$partialResult = ( intval( $headerValue ) > intval( substr( $expectedValue , 1 ) ) );
+				} else {
+					$partialResult = ( $headerValue == $expectedValue );
 				}
 			}
-				// header was not found
-			else {
+
+			if ($partialResult == FALSE) {
 				$result = FALSE;
 			}
 		}
@@ -201,9 +236,17 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 			
 	/**
 	 * 
-	 * @return unknown_type
+	 * @return string
 	 */
 	protected function getInstanceUrl(){
+		return $this->instance->getUrl();
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	protected function getInstanceHostname(){
 		return $this->instance->getUrl();
 	}
 	
