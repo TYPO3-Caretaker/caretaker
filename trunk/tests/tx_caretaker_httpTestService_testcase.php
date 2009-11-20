@@ -37,6 +37,16 @@
 
 require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_httpTestService.php');
 
+/**
+ * Stub class to expose protected methods for testing
+ */
+class tx_caretaker_httpTestService_stub extends tx_caretaker_httpTestService {
+	
+	public function checkExpectedHeaders( $expectedHeaders,$responseHeaders ){
+		return parent::checkExpectedHeaders( $expectedHeaders,$responseHeaders );
+	}
+	
+}
 
 class tx_caretaker_httpTestService_testcase extends tx_phpunit_testcase  {
 	
@@ -162,6 +172,54 @@ class tx_caretaker_httpTestService_testcase extends tx_phpunit_testcase  {
 		$this->assertEquals(2, $result->getState() );
 		$this->assertEquals(5, $result->getValue() );
 		
+	}
+
+	public function testHttpHeaderComparison(){
+
+		$stub = $this->getMock(
+			'tx_caretaker_httpTestService_stub',
+			array('getRequestQuery','getInstanceUrl' )
+		);
+
+		$this->setMethodReturnValue($stub, 'getRequestQuery',  'blah');
+		$this->setMethodReturnValue($stub, 'getInstanceUrl',   'http://foo.bar.de/blubber');
+
+			// TRUE Assertations
+		$testedHeaders = array('value','123');
+
+		$expectedHeaders = array('value','= 123');
+		$this->assertTrue( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
+
+		$expectedHeaders = array('value','> 99');
+		$this->assertTrue( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
+
+		$expectedHeaders = array('value','< 200');
+		$this->assertTrue( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
+
+			// FALSE Assertations
+		$testedHeaders = array('value','345');
+
+		$expectedHeaders = array('value','123');
+		$this->assertFalse( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
+
+		$expectedHeaders = array('value','= 123');
+		$this->assertFalse( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
+
+		$expectedHeaders = array('value','> 400');
+		$this->assertFalse( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
+
+		$expectedHeaders = array('value','< 300');
+		$this->assertFalse( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
+
+			// Test Markers
+		$testedHeaders = array('value','http://foo.bar.de/blubber/blah');
+		$expectedHeaders = array('value','= ###INSTANCE_PROTOCOL###://###INSTANCE_HOSTNAME###/###INSTANCE_QUERY###/###REQUEST_QUERY###');
+		$this->assertTrue( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
+
+		$testedHeaders = array('value','https://foo.barz.de/blub/bläh');
+		$expectedHeaders = array('value','= ###INSTANCE_PROTOCOL###://###INSTANCE_HOSTNAME###/###INSTANCE_QUERY###/###REQUEST_QUERY###');
+		$this->assertFalse( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
+
 	}
 	
 }
