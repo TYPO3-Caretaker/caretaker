@@ -16,6 +16,8 @@ tx.caretaker.NodeProblems = Ext.extend( Ext.grid.GridPanel , {
 				'title',
 				'node_title',
 				'node_id',
+				'instance_title',
+				'instance_id',
 				{name: 'timestamp', mapping: 'timestamp', type: 'date', dateFormat: 'timestamp'},
 				'stateinfo',
 				'stateinfo_ll',
@@ -28,6 +30,49 @@ tx.caretaker.NodeProblems = Ext.extend( Ext.grid.GridPanel , {
 			})
 		});
 
+		this.column_model = new Ext.grid.ColumnModel({
+			defaults: {
+				width: 120,
+				sortable: true
+			},
+			columns: [
+			{
+				header: "Title",
+				dataIndex: 'node_title'
+			},{
+				header: "Instance",
+				dataIndex: 'instance_title'
+			},{
+				header: "Time",
+				dataIndex: 'timestamp'
+			},{
+				header: "State",
+				dataIndex: 'stateinfo_ll'
+			},{
+				header:'Message',
+				dataIndex: 'message_ll'
+			}]
+		});
+
+		this.column_view = new Ext.grid.GridView({
+			forceFit:true,
+			enableRowBody:true,
+			showPreview:true,
+			getRowClass: function(record, index) {
+				var state = parseInt( record.get('state') );
+				switch (state) {
+					case 0:
+						return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_OK';
+					case 1:
+						return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_WARNING';
+					case 2:
+						return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_ERROR';
+					default:
+						return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_UNDEFINED';
+				}
+			}
+		});
+			
 		config = Ext.apply({
 
 			collapsed        : true,
@@ -41,45 +86,8 @@ tx.caretaker.NodeProblems = Ext.extend( Ext.grid.GridPanel , {
 			disableSelection : true,
 			loadMask         : true,
 			autoHeight       : true,
-
-			// grid columns
-			columns:[
-			{
-				header: "Title",
-				dataIndex: 'node_title'
-			},{
-				header: "NodeID",
-				dataIndex: 'node_id'
-			},{
-				header: "Time",
-				dataIndex: 'timestamp'
-			},{
-				header: "State",
-				dataIndex: 'stateinfo_ll'
-			},{
-				header:'Message',
-				dataIndex: 'message_ll'
-			}],
-
-			// customize view config
-			viewConfig: {
-				forceFit:true,
-				enableRowBody:true,
-				showPreview:true,
-				getRowClass: function(record, index) {
-					var state = parseInt( record.get('state') );
-					switch (state) {
-						case 0:
-							return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_OK';
-						case 1:
-							return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_WARNING';
-						case 2:
-							return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_ERROR';
-						default:
-							return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_UNDEFINED';
-					}
-				}
-			}
+			colModel         : this.column_model,
+			view             : this.column_view
 			
 		}, config);
 

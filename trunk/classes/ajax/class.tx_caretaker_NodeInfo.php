@@ -192,9 +192,12 @@ class tx_caretaker_NodeInfo {
 					$nodeInfo = Array (
 						'num'          => $i++ ,
 						'title'        =>'title_'.rand(),
-						
-						'node_title'   => $instance->getTitle().' '.$testNode->getTitle() ,
-						'node_id'      => $testNode->getCaretakerNodeId() ,
+
+						'node_title'   => $testNode->getTitle(),
+						'node_id'      => $testNode->getCaretakerNodeId(),
+
+						'instance_title' => $instance->getTitle(),
+						'instance_id'    => $instance->getCaretakerNodeId(),
 
 						'timestamp'    => $testResut->getTimestamp(),
 						'stateinfo'    => $testResut->getStateInfo(),
