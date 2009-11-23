@@ -296,12 +296,24 @@ plugin.tx_caretaker_pi_graphreport.markers.CHART_LINKS.20.wrap = <li class="acti
 plugin.tx_caretaker_pi_graphreport.markers.CHART_LINKS.10.wrap = <li class="active">|</li>
 [global]
 
-[globalVar = GP:tx_caretaker_pi_singleview|range = 720]
-plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.30.wrap = <li class="active">|</li>
-[globalVar = GP:tx_caretaker_pi_singleview|range = 168]
-plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.20.wrap = <li class="active">|</li>
-[globalVar = GP:tx_caretaker_pi_singleview|range < 168]
+#### change the active tab depending on the submitted range ####
+
+[globalVar = GP:tx_caretaker_pi_singleview|range = 1]
 plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.10.wrap = <li class="active">|</li>
+[globalVar = GP:tx_caretaker_pi_singleview|range = 3]
+plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.20.wrap = <li class="active">|</li>
+[globalVar = GP:tx_caretaker_pi_singleview|range = 24]
+plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.40.wrap = <li class="active">|</li>
+[globalVar = GP:tx_caretaker_pi_singleview|range = 72]
+plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.50.wrap = <li class="active">|</li>
+[globalVar = GP:tx_caretaker_pi_singleview|range = 168]
+plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.60.wrap = <li class="active">|</li>
+[globalVar = GP:tx_caretaker_pi_singleview|range = 720]
+plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.70.wrap = <li class="active">|</li>
+[globalVar = GP:tx_caretaker_pi_singleview|range = 2250]
+plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.80.wrap = <li class="active">|</li>
+[globalVar = GP:tx_caretaker_pi_singleview|range = 8760]
+plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.90.wrap = <li class="active">|</li>
 [global]
 		
 
