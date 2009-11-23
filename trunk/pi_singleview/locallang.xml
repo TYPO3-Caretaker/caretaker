@@ -41,9 +41,16 @@
 			<label index="value">Messwert</label>
 			<label index="message">Meldung</label>
 			<label index="children">Gruppenelemente</label>
+			<label index="1hour">1 Stunde</label>
+			<label index="3hours">3 Stunden</label>
+			<label index="12hours">12 Stunden</label>
 			<label index="24hours">24 Stunden</label>
+			<label index="3days">3 Tage</label>
 			<label index="7days">7 Tage</label>
 			<label index="30days">30 Tage</label>
+			<label index="3month">3 Monate</label>
+			<label index="6month">6 Monate</label>
+			<label index="12month">12 Monate</label>
 			<label index="times">Zeiten</label>
 			<label index="values">Werte</label>
 			<label index="date">Datum</label>
