@@ -173,7 +173,7 @@ class tx_caretaker_TestResultRepository {
 
 			// add first value if needed
 		$first = $result_range->getFirst();
-		if ($first && $first->getTstamp() > $start_timestamp){
+		if (!$first || ($first && $first->getTstamp() > $start_timestamp) ){
 			$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', $base_condition.' AND tstamp <'.$start_timestamp, '', 'tstamp DESC' , 1  );
 			if ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {

@@ -98,7 +98,7 @@ class tx_caretaker_httpTestService_testcase extends tx_phpunit_testcase  {
 		$this->setMethodReturnValue($stub, 'getExpectedReturnCode',  200);
 		$this->setMethodReturnValue($stub, 'getRequestQuery',  true);
 		$this->setMethodReturnValue($stub, 'getInstanceUrl',  true);
-		$this->setMethodReturnValue($stub, 'executeCurlRequest', array(200,5));
+		$this->setMethodReturnValue($stub, 'executeCurlRequest', array(5,'',array('http_code' => 200, array() ) ) );
 		
 		$result = $stub->runTest();
 		
@@ -120,7 +120,7 @@ class tx_caretaker_httpTestService_testcase extends tx_phpunit_testcase  {
 		$this->setMethodReturnValue($stub, 'getExpectedReturnCode',  200);
 		$this->setMethodReturnValue($stub, 'getRequestQuery',  true);
 		$this->setMethodReturnValue($stub, 'getInstanceUrl',  true);
-		$this->setMethodReturnValue($stub, 'executeCurlRequest', array(200,12));
+		$this->setMethodReturnValue($stub, 'executeCurlRequest', array(12,'',array('http_code' => 200, array() ) ) );
 		
 		$result = $stub->runTest();
 		
@@ -142,7 +142,7 @@ class tx_caretaker_httpTestService_testcase extends tx_phpunit_testcase  {
 		$this->setMethodReturnValue($stub, 'getExpectedReturnCode',  200);
 		$this->setMethodReturnValue($stub, 'getRequestQuery',  true);
 		$this->setMethodReturnValue($stub, 'getInstanceUrl',  true);
-		$this->setMethodReturnValue($stub, 'executeCurlRequest', array(200,22));
+		$this->setMethodReturnValue($stub, 'executeCurlRequest', array(22,'',array('http_code' => 200, array() ) ) );
 		
 		$result = $stub->runTest();
 		
@@ -164,7 +164,7 @@ class tx_caretaker_httpTestService_testcase extends tx_phpunit_testcase  {
 		$this->setMethodReturnValue($stub, 'getExpectedReturnCode',  404);
 		$this->setMethodReturnValue($stub, 'getRequestQuery',  true);
 		$this->setMethodReturnValue($stub, 'getInstanceUrl',  true);
-		$this->setMethodReturnValue($stub, 'executeCurlRequest', array(200,5));
+		$this->setMethodReturnValue($stub, 'executeCurlRequest', array(5,'',array('http_code' => 200, array() ) ) );
 		
 		$result = $stub->runTest();
 		

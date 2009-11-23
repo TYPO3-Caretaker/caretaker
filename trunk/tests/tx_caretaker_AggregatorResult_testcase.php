@@ -2,7 +2,7 @@
 
 class tx_caretaker_AggregatorResult_testcase extends tx_phpunit_testcase  {
 	
-	function test_comparisonOfAggreagtorReslts (){
+	function test_comparisonOfAggreagtorResults (){
 		
 		$result = tx_caretaker_AggregatorResult::create(TX_CARETAKER_STATE_UNDEFINED);
 

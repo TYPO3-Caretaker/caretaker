@@ -40,7 +40,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 	 */
 	public function renderTestResultRange ($filename, $test_result_range, $title , $value_description ){
 		
-		if ($test_result_range->getLength() < 2 )return false;
+		if ( ! $test_result_range->getLength() )return false;
 		   
 			// Dataset definition
 		$DataSet   = new pData;
@@ -354,7 +354,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 	 */
 	public function renderAggregatorResultRange ($filename, $test_result_range, $title ){
 
-		if ($test_result_range->getLength() <2 ) return false;
+		if ( ! $test_result_range->getLength() ) return false;
 				   
 			// Dataset definition
 		$DataSet   = new pData;

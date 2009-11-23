@@ -2,17 +2,12 @@
 
 require_once (t3lib_extMgm::extPath('caretaker').'/classes/results/class.tx_caretaker_TestResult.php');
 
+
+/**
+ * 
+ */
 class tx_caretaker_NodeResult_testcase extends tx_phpunit_testcase  {
 	
-	function test_NodeResult_stores_data (){
-		$result = new tx_caretaker_NodeResult(123, 1, 'This is a Message');
-
-		$this->assertEquals($result->getTimestamp(), 123 );
-		$this->assertEquals($result->getState(), 1 );
-		$this->assertEquals($result->getStateInfo(), 'WARNING' );
-		$this->assertEquals($result->getMessage(), 'This is a Message' );		
-	}
-
 	function test_TestResult_stores_data (){
 		$result = new tx_caretaker_TestResult(123, 1, 1.75 ,'This is a Message');
 
