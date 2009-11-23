@@ -17,6 +17,7 @@ plugin.tx_caretaker_pi_overview{
 		TITLE.insertData = 1
 		TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
 		TITLE.typolink.additionalParams.field = link_parameters
+		TITLE.typolink.additionalParams.wrap = |&tx_caretaker_pi_singleview[range]=24
 		TITLE.typolink.target = _blank
 		
 		DESCRIPTION = TEXT
@@ -38,6 +39,7 @@ plugin.tx_caretaker_pi_overview{
 		TITLE.insertData = 1
 		TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
 		TITLE.typolink.additionalParams.field = link_parameters
+		TITLE.typolink.additionalParams.wrap = |&tx_caretaker_pi_singleview[range]=24
 		TITLE.typolink.target = _blank
 		
 		DESCRIPTION = TEXT
