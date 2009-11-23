@@ -152,6 +152,21 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 
 	}
 
+
+	/**
+	 * Get a Hash for the given Status. If two results give the same hash they
+	 * are considered to be equal.
+	 *
+	 * @return string ResultHash
+	 */
+	public function getResultHash (){
+		$state = array (
+			'state' => $this->getState(),
+			'value' => $this->getValue()
+		);
+		return md5( serialize( $state ) );
+	}
+
 }
 
 ?>

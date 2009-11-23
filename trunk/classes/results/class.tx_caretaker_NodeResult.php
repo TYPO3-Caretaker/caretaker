@@ -36,7 +36,7 @@
  ***************************************************************/
 
 
-class tx_caretaker_NodeResult {
+abstract class tx_caretaker_NodeResult {
 	
 	/**
 	 * Status Code of the Test Result
@@ -159,6 +159,39 @@ class tx_caretaker_NodeResult {
 		
 	}
 
+	/**
+	 * Check if another tx_caretaker_AggregatorResult is equal to this one
+	 * @param tx_caretaker_AggregatorResult $result
+	 * @return boolean
+	 */
+	public function equals(tx_caretaker_NodeResult $result){
+		if ($this->getResultHash() == $result->getResultHash() ) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
+	/**
+	 * Check if another tx_caretaker_AggregatorResult is different from this one
+	 * @param tx_caretaker_AggregatorResult $result
+	 * @return boolean
+	 */
+	public function isDifferent(tx_caretaker_NodeResult $result){
+		if ($this->getResultHash() != $result->getResultHash() ) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
+	/**
+	 * Get a Hash for the given Status. If two results give the same hash they
+	 * are considered to be equal.
+	 *
+	 * @return string ResultHash
+	 */
+	abstract public function getResultHash();
 	
 }
 

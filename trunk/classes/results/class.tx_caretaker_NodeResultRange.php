@@ -35,7 +35,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class tx_caretaker_NodeResultRange implements Iterator {
+abstract class tx_caretaker_NodeResultRange implements Iterator {
 	
 	/**
 	 * Array of testResults

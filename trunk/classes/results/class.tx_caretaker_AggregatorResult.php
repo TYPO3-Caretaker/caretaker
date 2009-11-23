@@ -140,34 +140,23 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 		return $this->num_ERROR;
 	}
 
-	/**
-	 * Check if another tx_caretaker_AggregatorResult is equal to this one
-	 * @param tx_caretaker_AggregatorResult $result
-	 * @return boolean
-	 */
-	public function equals(tx_caretaker_AggregatorResult $result){
-		return ( !$this->isDifferent($result) );
-	}
 
 	/**
-	 * Check if another tx_caretaker_AggregatorResult is different from this one
-	 * @param tx_caretaker_AggregatorResult $result  	
-	 * @return boolean
+	 * Get a Hash for the given Status. If two results give the same hash they
+	 * are considered to be equal.
+	 *
+	 * @return string ResultHash
 	 */
-	public function isDifferent(tx_caretaker_AggregatorResult $result){
-		if (
-			$this->getState()        != $result->getState() ||
-			$this->getNumUNDEFINED() != $result->getNumUNDEFINED() ||
-			$this->getNumOK()        != $result->getNumOK() ||
-			$this->getNumWARNING()   != $result->getNumWARNING() ||
-			$this->getNumERROR()     != $result->getNumERROR()
-		) {
-			return true;
-		} else {
-			return false;
-		}
+	public function getResultHash (){
+		$state = array (
+			'state'           => $this->getState(),
+			'STATE_UNDEFINED' => $this->getNumUNDEFINED(),
+			'STATE_OK'        => $this->getNumOK(),
+			'STATE_WARNING'   => $this->getNumWARNING(),
+			'STATE_ERROR'     => $this->getNumERROR()
+		);
+		return md5( serialize( $state ) );
 	}
-
 }
 
 ?>
