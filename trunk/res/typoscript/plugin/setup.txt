@@ -23,7 +23,7 @@ plugin.tx_caretaker_pi_overview{
 		DESCRIPTION = TEXT
 		DESCRIPTION.stdWrap.value = {field:type}: {field:state_msg}
 		DESCRIPTION.stdWrap.insertData = 1
-		DESCROPTION.htmlSpecialChars = 1
+		DESCRIPTION.htmlSpecialChars = 1
 		
 		TYPE = TEXT
 		TYPE.field = type
