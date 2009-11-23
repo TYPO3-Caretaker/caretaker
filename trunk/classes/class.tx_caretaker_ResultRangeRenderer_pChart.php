@@ -166,13 +166,11 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$Graph->XDivisionRatio = ( $Graph->GArea_X2 - $Graph->GArea_X1 ) / ( $test_result_range->getMaxTstamp() - $test_result_range->getMinTstamp() ) ;
 
 			// plot value line
-		$Graph->setLineStyle(0,0);
-	
 		$DataSet->removeAllSeries();
 		$DataSet->AddSerie("Times");
 		$DataSet->AddSerie("Values");
 		
-		$Graph->setLineStyle(0,0);
+		$Graph->setLineStyle(1,0);
 
 		
 		// $Graph->drawXYGraph($DataSet->GetData(),$DataSet->GetDataDescription(),"Times","Values",13);  
@@ -327,9 +325,9 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$scale_is_plotted = false;
 		foreach ( $DataSets as $key=>$LocalDataSet ){
 				// generate color
-			$Graph->setColorPalette($key, (($key*100)+0)%255 ,(($key*100)+85)%255, (($key*100)+170)%255);  //OK
+			$Graph->setColorPalette($key, (($key*127)+0)%255 ,(($key*63)+85)%255, (($key*190)+170)%255);  //OK
 				// plot value line
-			$Graph->setLineStyle(0,0);
+			$Graph->setLineStyle(1,0);
 			$Graph->drawOrthoXYGraph($LocalDataSet->GetData(),$LocalDataSet->GetDataDescription(),"Values","Times",$key);  
 		}
 

@@ -88,7 +88,8 @@ $TCA['tx_caretaker_instancegroup'] = array (
 				'type' => 'text',
 				'cols' => '50',
 				'rows' => '5',
-			)
+			),
+			'defaultExtras' => 'richtext'
 		),
 		'parent_group'=>Array(
 			'exclude' => 1,
@@ -192,7 +193,8 @@ $TCA["tx_caretaker_instance"] = array (
 				'type' => 'text',
 				'cols' => '50',
 				'rows' => '5',
-			)
+			),
+			'defaultExtras' => 'richtext'
 		),
 		'url' => Array (
 			'exclude' => 1,
@@ -404,7 +406,8 @@ $TCA['tx_caretaker_testgroup'] = array (
 				'type' => 'text',
 				'cols' => '50',
 				'rows' => '5',
-			)
+			),
+			'defaultExtras' => 'richtext'
 		),
 		'parent_group'=>Array(
 			'exclude' => 1,
@@ -587,7 +590,8 @@ $TCA['tx_caretaker_test'] = array (
 				'type' => 'text',
 				'cols' => '50',
 				'rows' => '5',
-			)
+			),
+			'defaultExtras' => 'richtext'
 		),
 		'test_interval' => Array (
 			'exclude' => 1,
