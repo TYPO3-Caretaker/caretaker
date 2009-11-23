@@ -62,7 +62,7 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		
 		require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_ResultRangeRenderer_pChart.php');
 		
-		$range = 24;
+		$range = 1;
 		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
 		
 		$id = tx_caretaker_Helper::node2id($node);
