@@ -44,8 +44,9 @@ plugin.tx_caretaker_pi_overview{
 		TITLE.typolink.target = _blank
 		
 		DESCRIPTION = TEXT
-		DESCRIPTION.value = {field:state_msg}
-		DESCRIPTION.insertData = 1
+		DESCRIPTION.stdWrap.value = {field:state_msg}
+		DESCRIPTION.stdWrap.insertData = 1
+		DESCRIPTION.htmlSpecialChars = 1
 	} 	
 	
 	stdWrap.wrap = <div style="clear:both;"><!-- --></div>
