@@ -298,6 +298,8 @@ plugin.tx_caretaker_pi_graphreport.markers.CHART_LINKS.10.wrap = <li class="acti
 
 #### change the active tab depending on the submitted range ####
 
+[globalVar = GP:tx_caretaker_pi_singleview|range < 1]
+plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.40.wrap = <li class="active">|</li>
 [globalVar = GP:tx_caretaker_pi_singleview|range = 1]
 plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.10.wrap = <li class="active">|</li>
 [globalVar = GP:tx_caretaker_pi_singleview|range = 3]
