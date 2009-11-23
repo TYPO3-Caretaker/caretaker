@@ -325,7 +325,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$scale_is_plotted = false;
 		foreach ( $DataSets as $key=>$LocalDataSet ){
 				// generate color
-			$Graph->setColorPalette($key, (($key*30)+0)%255 ,(($key*40)+85)%255, (($key*50)+170)%255);  //OK
+			$Graph->setColorPalette($key, (($key*25)+0)%255 ,(($key*55)+85)%255, (($key*75)+170)%255);  //OK
 				// plot value line
 			$Graph->setLineStyle(2,0);
 			$Graph->drawOrthoXYGraph($LocalDataSet->GetData(),$LocalDataSet->GetDataDescription(),"Values","Times",$key);  
