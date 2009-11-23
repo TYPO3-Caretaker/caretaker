@@ -46,12 +46,14 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 			
 		$id   = $this->piVars['id'];
 		$node = false;
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
+
 		if ($id){
-			$node = tx_caretaker_Helper::id2node($id);
+			$node = $node_repository->id2node($id);
 		} else {
 			$this->pi_initPIflexForm();
 			$node_id =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'node_id');
-			$node = tx_caretaker_Helper::id2node($node_id);
+			$node = $node_repository->id2node($node_id);
 		}	
 		return $node;
 	}
@@ -65,7 +67,7 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		$range = 24;
 		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
 		
-		$id = tx_caretaker_Helper::node2id($node);
+		$id = $node->getCaretakerNodeID();
 		$result_range = $node->getTestResultRange(time()-3600*$range , time() );
 		$filename = 'typo3temp/caretaker/charts/'.$id.'_'.$range.'.png';
 		

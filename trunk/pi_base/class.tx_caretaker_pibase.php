@@ -109,7 +109,7 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 			$data['instance'] = $node->getInstance()->getTitle();
 		} 
 		
-		$data['link_parameters'] = '&tx_caretaker_pi_singleview[id]='.tx_caretaker_Helper::node2id($node);
+		$data['link_parameters'] = '&tx_caretaker_pi_singleview[id]='.$node->getCaretakerNodeId() ;
 		return $data;
 	}
 	

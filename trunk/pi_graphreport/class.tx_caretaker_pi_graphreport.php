@@ -72,7 +72,7 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 				if (is_a($node,'tx_caretaker_TestNode')){
 					$result_ranges[] = $node->getTestResultRange(time()-(3600*$range), time());
 					$titles[] = $node->getTitle();
-					$id .= tx_caretaker_Helper::node2id($node);
+					$id .= $node->getCaretakerNodeId();
 				}
 			}
 
@@ -104,9 +104,10 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 		
 		$nodes = array();
 		$ids = explode (chr(10),$node_ids);
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
 		
 		foreach ($ids as $id){
-			$node = tx_caretaker_Helper::id2node($id);
+			$node = $node_repository->id2node($id);
 			if ($node) $nodes[]=$node;
 		}
 

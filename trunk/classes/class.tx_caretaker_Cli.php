@@ -90,10 +90,11 @@ class tx_caretaker_Cli extends t3lib_cli {
         	$return_status   = (boolean)$this->readArgument('-r');
         	$node            = false;
 
-        	if ((boolean)$this->readArgument('--root', '-R')) {
-        		$node = tx_caretaker_Helper::getRootNode();
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
+    	if ((boolean)$this->readArgument('--root', '-R')) {
+				$node = $node_repository->getRootNode();
         	} else if ( $nodeId = $this->readArgument('--node', '-N') ) {
-        		$node = tx_caretaker_Helper::id2node($nodeId);
+				$node = $node_repository->id2node($nodeId);
         	}
         	
         	if ($node) {

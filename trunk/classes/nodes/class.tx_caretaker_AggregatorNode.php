@@ -280,7 +280,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 					$overlayConfig['hidden'] = $tests[$key]['test']['el']['test_hidden']['vDEF'];
 					$overlayConfig['overwritten_in']['title'] = $this->title;
 					$overlayConfig['overwritten_in']['uid'] = $this->uid;
-					$overlayConfig['overwritten_in']['id'] = tx_caretaker_Helper::node2id($this);
+					$overlayConfig['overwritten_in']['id'] = $this->getCaretakerNodeId();
 				}
 			}
 		}

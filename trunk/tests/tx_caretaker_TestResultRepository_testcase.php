@@ -8,7 +8,7 @@ class tx_caretaker_TestResultRepository_testcase extends tx_phpunit_testcase  {
 		$test     = new tx_caretaker_TestNode(0, 'title' , $instance, 'tx_caretaker_ping' , '' );
 		
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$result  =  $test_result_repository->getLatestByInstanceAndTest($instance, $test);
+		$result  =  $test_result_repository->getLatestByNode($test);
 		$this->assertEquals( get_class($result), 'tx_caretaker_TestResult' , 'a testresult was found');
 	}
 	
@@ -19,7 +19,7 @@ class tx_caretaker_TestResultRepository_testcase extends tx_phpunit_testcase  {
 		
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		
-		$result_range  =  $test_result_repository->getRangeByInstanceAndTest($instance, $test, time()-10000, time() );
+		$result_range  =  $test_result_repository->getRangeByNode( $test, time()-10000, time() );
 		$this->assertNotNull( count($result_range), 'there are tests found in range');
 		
 	}

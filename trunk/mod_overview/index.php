@@ -92,9 +92,10 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 
 			//Add caretaker css
 			$this->pageRenderer->addCssFile('../res/css/tx.caretaker.overview.css');
-	
-			$node = tx_caretaker_Helper::id2node( $this->node_id , true);
-			if (!$node) $node = tx_caretaker_Helper::getRootNode();
+
+			$node_repository = tx_caretaker_NodeRepository::getInstance();
+			$node = $node_repository->id2node( $this->node_id , true);
+			if (!$node) $node = $node_repository->getRootNode();
 
                         $this->pageRenderer->addJsInlineCode('Caretaker_Overview','
 				Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
@@ -105,7 +106,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 					var back_path   = "'.$this->doc->backPath.'";
 					var back_url    = "'.urlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')).'";
 					var path_typo3  = "'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'typo3/";
-					var node_id     = "'.tx_caretaker_Helper::node2id($node).'";
+					var node_id     = "'.$node->getCaretakerNodeId().'";
 					var node_type   = "'.strtolower($node->getType()).'";
 					var node_hidden = "'.$node->getHidden().'";
 					var node_uid    = "'.$node->getUid().'";

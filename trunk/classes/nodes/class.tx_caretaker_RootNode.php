@@ -40,7 +40,16 @@ class tx_caretaker_RootNode extends tx_caretaker_AggregatorNode {
 	public function __construct( $hidden=false) {
 		parent::__construct(0, 'Caretaker Root', false, 'Root', $hidden);
 	}
-	
+
+	/**
+	 * Get the caretaker node id of this node
+	 * return string
+	 */
+	public function getCaretakerNodeId(){
+		return 'root';
+	}
+
+
 	/**
 	 * (non-PHPdoc)
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AggregatorNode#findChildren()

@@ -117,7 +117,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 	    	}
 		}
 
-		$value_description = tx_caretaker_Helper::locallizeString($value_description);
+		$value_description = tx_caretaker_LocallizationHelper::locallizeString($value_description);
 	
 		$DataSet->AddSerie($this->getLL('times'));  
 		$DataSet->AddSerie($this->getLL('values'));
@@ -222,17 +222,17 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 
 			// Legend
 		$DataSet->SetSerieName(
-			round(($info['PercentOK']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_ok')
+			round(($info['PercentOK']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_ok')
 			,"Values_OK"
 		);
 		
 		$DataSet->SetSerieName(
-			round(($info['PercentWARNING']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_warning')
+			round(($info['PercentWARNING']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_warning')
 			,"Values_WARNING"
 		);
 		
 		$DataSet->SetSerieName(
-			round(($info['PercentERROR']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_error')
+			round(($info['PercentERROR']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_error')
 			,"Values_ERROR"
 		);
 		
@@ -450,22 +450,22 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 
 			// Legend
 		$DataSet->SetSerieName(
-			round(($info['PercentOK']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_ok')
+			round(($info['PercentOK']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_ok')
 			,"Values_OK"
 		);
 
 		$DataSet->SetSerieName(
-			round(($info['PercentWARNING']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_warning')
+			round(($info['PercentWARNING']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_warning')
 			,"Values_WARNING"
 		);
 
 		$DataSet->SetSerieName(
-			round(($info['PercentERROR']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_error')
+			round(($info['PercentERROR']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_error')
 			,"Values_ERROR"
 		);
 
 		$DataSet->SetSerieName(
-			round(($info['PercentUNDEFINED']*100),2 ).'% '.tx_caretaker_Helper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_undefined')
+			round(($info['PercentUNDEFINED']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_undefined')
 			,"Values_UNDEFINED"
 		);
 

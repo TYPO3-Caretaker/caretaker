@@ -14,8 +14,9 @@ class tx_caretaker_TestrunnerTask extends tx_scheduler_Task {
 	}
 
 	public function execute() {
-		
-		$node = tx_caretaker_Helper::id2node($this->node_id);
+
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
+		$node = $node_repository->id2node($this->node_id);
 
 		if (!$node)return false;
 

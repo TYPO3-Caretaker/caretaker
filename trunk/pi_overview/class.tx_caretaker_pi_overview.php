@@ -53,9 +53,11 @@ class tx_caretaker_pi_overview extends tx_caretaker_pibase {
 		
 		$nodes = array();
 		$ids = explode (chr(10),$node_ids);
-		
+
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
+
 		foreach ($ids as $id){
-			$node = tx_caretaker_Helper::id2node($id);
+			$node = $node_repository->id2node($id);
 			if ($node) $nodes[]=$node;
 		}
 

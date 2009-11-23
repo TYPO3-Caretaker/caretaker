@@ -54,8 +54,7 @@ abstract class tx_caretaker_NodeResult {
 	 * A human readable representation of the testrsult
 	 * @var string
 	 */
-	protected $message='';
-	
+	protected $message='';	
 	
 	/**
 	 * Constructor
@@ -139,7 +138,7 @@ abstract class tx_caretaker_NodeResult {
 	 * @return string
 	 */
 	public function getLocallizedStateInfo(){
-		return tx_caretaker_Helper::locallizeString( 'LLL:EXT:caretaker/locallang_fe.xml:state_' . strtolower( $this->getStateInfo() ) );
+		return tx_caretaker_LocallizationHelper::locallizeString( 'LLL:EXT:caretaker/locallang_fe.xml:state_' . strtolower( $this->getStateInfo() ) );
 	}
 
 	/**
@@ -152,7 +151,7 @@ abstract class tx_caretaker_NodeResult {
 		$message = $this->getMessage();
 
 			// locallize
-		$message = tx_caretaker_Helper::locallizeString($message);
+		$message = tx_caretaker_LocallizationHelper::locallizeString($message);
 		if (strpos($message,'###STATE###')!== false )$message = str_replace('###STATE###',$this->getLocallizedStateInfo(), $message);
 		
 		return $message;

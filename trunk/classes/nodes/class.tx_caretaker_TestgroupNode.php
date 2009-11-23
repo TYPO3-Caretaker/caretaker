@@ -48,7 +48,16 @@ class tx_caretaker_TestgroupNode extends tx_caretaker_AggregatorNode {
 	public function __construct($uid, $title, $parent, $hidden=0){
 		parent::__construct($uid, $title, $parent, 'Testgroup',$hidden );
 	}
-	
+
+	/**
+	 * Get the caretaker node id of this node
+	 * return string
+	 */
+	public function getCaretakerNodeId(){
+		$instance = $this->getInstance();
+		return 'instance_'.$instance->getUid().'_testgroup_'.$this->getUid();
+	}
+
 	/**
 	 * (non-PHPdoc)
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AggregatorNode#findChildren()
@@ -64,7 +73,8 @@ class tx_caretaker_TestgroupNode extends tx_caretaker_AggregatorNode {
 		$children = array_merge($subgroups, $tests);
 		return $children;
 	}
-	
+
+
 
 }
 

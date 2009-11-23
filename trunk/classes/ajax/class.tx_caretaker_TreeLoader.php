@@ -11,7 +11,8 @@ class tx_caretaker_TreeLoader {
 			$node = $node_repository->getRootNode(true);
 			$result = $this->nodeToArray($node, 2);
 		} else {
-			$node =  tx_caretaker_Helper::id2node($node_id, 1);
+			$node_repository = tx_caretaker_NodeRepository::getInstance();
+			$node =  $node_repository->id2node($node_id, 1);
 			$result = $this->nodeToArray($node);
 		}
 		
@@ -30,7 +31,7 @@ class tx_caretaker_TreeLoader {
 		$hidden = $node->getHidden();
 		$table  = 'tx_caretaker_' . strToLower($node->getType());
 		
-		$id = tx_caretaker_Helper::node2id($node);
+		$id = $node->getCaretakerNodeId();
 		
 		$testResult = $node->getTestResult();
 		$resultClass = 'caretaker-state-' . $testResult->getState();

@@ -36,49 +36,6 @@
  ***************************************************************/
 
 class tx_caretaker_Helper {
-	
-	/**
-	 * Retrieve a specific Node 
-	 * 
-	 * @param integer $instancegroupId
-	 * @param integer $instanceId
-	 * @param integer $testgroupId
-	 * @param integer $testId
-	 * @param boolean $show_hidden
-	 * @return tx_caretaker_AbstractNode
-	 */
-	static function getNode($instancegroupId = false, $instanceId = false, $testgroupId = false, $testId = false, $show_hidden=false){
-		$node_repository    = tx_caretaker_NodeRepository::getInstance();
-		return $node_repository->getNode($instancegroupId, $instanceId, $testgroupId, $testId, $show_hidden);
-	}
-	
-	/**
-	 * Get the Identifier String for a Node
-	 * 
-	 * @param tx_caretaker_AbstractNode $node
-	 * @return string
-	 */
-	static function node2id ($node){
-		$node_repository    = tx_caretaker_NodeRepository::getInstance();
-		return $node_repository->node2id ($node);
-	}
-
-	/**
-	 * Get the Node Object for a given Identifier String
-	 * 
-	 * @param string $id_string
-	 * @param boolean $show_hidden
-	 * @return tx_caretaker_AbstractNode
-	 */
-	static function id2node ($id_string, $show_hidden=false){
-		$node_repository    = tx_caretaker_NodeRepository::getInstance();
-		return $node_repository->id2node ($id_string, $show_hidden);
-	}
-	
-	static function getRootNode (){
-		$node_repository    = tx_caretaker_NodeRepository::getInstance();
-		return $node_repository->getRootNode();
-	}
 
 	/**
 	 * Translate a given string in the current language

@@ -132,7 +132,9 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 
 		$this->pi_initPIflexForm();
 		$node_id =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'node_id');
-		$node = tx_caretaker_Helper::id2node($node_id);
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
+
+		$node = $node_repository->id2node($node_id);
 		return $node;
 	}
 

@@ -72,66 +72,64 @@ class tx_caretaker_TestResultRepository {
 		}
 		return self::$instance;
 	}
-	
+
 	/**
-	 * Get the latest Testresult for the given Instance and Test 
-	 * 
-	 * @param tx_caretaker_InstanceNode $instance 
-	 * @param tx_caretaker_TestNode $test
+	 * Get the latest Testresult for the given Instance and Test
+	 *
+	 * @param tx_caretaker_TestNode $testNode
 	 * @return tx_caretaker_TestResult
 	 */
-	public function getLatestByInstanceAndTest($instance, $test){
-		
-		if ($this->lastTestResultScanRange > 0){
-			$now = time();
-			$optimizeQuery = ' AND tstamp >= '.($now-$this->lastTestResultScanRange) ;
-		} else {
-			$optimizeQuery = '';
-		}
-		
-		$optimizeQuery = '';
+	public function getLatestByNode( tx_caretaker_TestNode $testNode ){
+		$testUID     = $testNode->getUid();
+		$instanceUID = $testNode->getInstance()->getUid();
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid().$optimizeQuery, '', 'tstamp DESC', '1'  );
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', 'test_uid='.$testUID.' AND instance_uid='.$instanceUID, '', 'tstamp DESC', '1'  );
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		
+
 		if ($row) {
 			$result = $this->dbrow2instance($row);
 			return $result;
 		} else {
 			return new tx_caretaker_TestResult();
-		} 		
+		}
 	}
 
-        /**
-         * Return the Number of available TestResults
-         * 
-         * @param tx_caretaker_Instance $instance
-         * @param tx_caretaker_Test $test
-         * @return integer
-         */
-        public function getResultNumberByInstanceAndTest($instance, $test){
-        	$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 'COUNT(*) AS number', 'tx_caretaker_testresult', 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid(), '', '', '1'  );
-                $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-                
-                if ($row) {
-                    return ( (int) $row['number'] );
-                } else {
-                    return 0;
-                }
-        }
 
-        /**
-         * Get a List of Testresults defined by Offset and Limit
-         *
-         * @param tx_caretaker_Instance $instance
-         * @param tx_caretaker_Test $test
-         * @param integer $offset
-         * @param integer $limit
-         * @return tx_caretaker_TestResultRange
-         */
-        public function getResultRangeByInstanceAndTestAndOffset($instance, $test, $offset=0, $limit=10){
+	/**
+	 * Return the Number of available TestResults
+	 *
+	 * @param  tx_caretaker_TestNode $testNode
+	 * @return integer
+	 */
+	public function getResultNumberByNode( tx_caretaker_TestNode $testNode ){
+		$testUID     = $testNode->getUid();
+		$instanceUID = $testNode->getInstance()->getUid();
+
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 'COUNT(*) AS number', 'tx_caretaker_testresult', 'test_uid='.$testUID.' AND instance_uid='.$instanceUID, '', '', '1'  );
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+
+			if ($row) {
+				return ( (int) $row['number'] );
+			} else {
+				return 0;
+			}
+	}
+
+	/**
+	 * Get a List of Testresults defined by Offset and Limit
+	 *
+	 * @param tx_caretaker_TestNode $testNode
+	 * @param integer $offset
+	 * @param integer $limit
+	 * @return tx_caretaker_TestResultRange
+	 */
+	public function getResultRangeByNodeAndOffset( tx_caretaker_TestNode $testNode, $offset=0, $limit=10){
+
+		$testUID     = $testNode->getUid();
+		$instanceUID = $testNode->getInstance()->getUid();
+		
 		$result_range = new tx_caretaker_TestResultRange(NULL, NULL);
-		$base_condition = 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid().' ';
+		$base_condition = 'test_uid='.$testUID.' AND instance_uid='.$instanceUID.' ';
 
 		$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', $base_condition, '', 'tstamp DESC' , (int)$offset.','.(int)$limit);
@@ -144,22 +142,25 @@ class tx_caretaker_TestResultRepository {
 		}
 
 		return $result_range;
-            
-        }
+
+	}
 
 	/**
 	 * Get the ResultRange for the given Instance Test and the timerange 
 	 * 
-	 * @param tx_caretaker_InstanceNode $instance 
-	 * @param tx_caretaker_TestNode $test 
+	 * @param tx_caretaker_TestNode $testNode
 	 * @param integer $start_timestamp
 	 * @param integer $stop_timestamp
 	 * @param boolean $graph By default the result range is created for the graph, so the last result is added again at the end
 	 * @return tx_caretaker_testResultRange
 	 */
-	public function getRangeByInstanceAndTest($instance, $test, $start_timestamp, $stop_timestamp, $graph = true){
+	public function getRangeByNode ( tx_caretaker_TestNode $testNode, $start_timestamp, $stop_timestamp, $graph = true){
+
+		$testUID     = $testNode->getUid();
+		$instanceUID = $testNode->getInstance()->getUid();
+
 		$result_range = new tx_caretaker_TestResultRange($start_timestamp, $stop_timestamp);
-		$base_condition = 'test_uid='.$test->getUid().' AND instance_uid='.$instance->getUid().' ';
+		$base_condition = 'test_uid='.$testUID.' AND instance_uid='.$instanceUID.' ';
 		
 		$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', $base_condition.'AND tstamp >='.$start_timestamp.' AND tstamp <='.$stop_timestamp, '', 'tstamp ASC'  );
@@ -184,19 +185,11 @@ class tx_caretaker_TestResultRepository {
 		}
 		
 			// add last value if needed
-			/*
-			 * modified by thorben <thorben@work.de>
-			 * if result range is generated for graphing the last result must be added again with the last timestamp
-			 * that the graph is drawn to the end
-			 */
 		$last = $result_range->getLast(); 
 		if ($last && $last->getTstamp() < $stop_timestamp){
-			
 			if($graph) {
-				
 				$real_last = new tx_caretaker_TestResult($stop_timestamp, $last->getState() , $last->getValue(), $last->getMsg() );
 				$result_range->addResult($real_last);
-				
 			}
 		}
 
@@ -223,31 +216,34 @@ class tx_caretaker_TestResultRepository {
 	 */
 	function prepareTest($instance, $test){
 			//add an undefined row to the testresult column
-		$values = array(
-			'test_uid' =>$test->getUid(),
-			'instance_uid' => $instance->getUid(),
-			'result_status' => TX_CARETAKER_UNDEFINED,
-			'tstamp' => time()
-		);		
 		
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_testresult', $values);
+		
+		
 		return $GLOBALS['TYPO3_DB']->sql_insert_id();
 	} 
 	
 	/**
-	 * Save the Testresult to the DB-Record with the given UID
-	 * @param integer $uid  
-	 * @param $result tx_caretaker_TestResult
+	 * Save the Testresult for the given TestNode
+	 * @param tx_caretaker_TestNode $uid
+	 * @param tx_caretaker_TestResult $result tx_caretaker_TestResult
 	 */
-	function saveTestResult($uid, $test_result){
+	function saveTestResultForNode(tx_caretaker_TestNode $test, $testResult){
+
+		$instance= $test->getInstance();
+
 		$values = array(
-			'tstamp'        => $test_result->getTstamp(),
-			'result_status' => $test_result->getState(),
-			'result_value'  => $test_result->getValue(),
-			'result_msg'    => $test_result->getMsg(),
-			'result_infos'  => serialize( $test_result->getInfoArray() )
+			'test_uid'      => $test->getUid(),
+			'instance_uid'  => $instance->getUid(),
+			'result_status' => TX_CARETAKER_UNDEFINED,
+			'tstamp'        => $testResult->getTstamp(),
+			'result_status' => $testResult->getState(),
+			'result_value'  => $testResult->getValue(),
+			'result_msg'    => $testResult->getMsg(),
+			'result_infos'  => serialize( $testResult->getInfoArray() )
+
 		);
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_caretaker_testresult', 'uid='.$uid, $values);
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_testresult', $values);
+	
 	}
 	
 	

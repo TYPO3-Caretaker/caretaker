@@ -1,8 +1,12 @@
 <?php 
 
 	/* create stub class to expose protected methods */
-class tx_caretaker_StubAggregatorNode extends tx_caretaker_AggregatorNode {
-	
+class tx_caretaker_AggregatorNode_Stub extends tx_caretaker_AggregatorNode {
+
+	public function getCaretakerNodeId(){
+		return "aggregator_node";
+	}
+
 	protected function findChildren($show_hidden=false){
 		return array();
 	}
@@ -18,7 +22,7 @@ class tx_caretaker_AggregatorNode_testcase extends tx_phpunit_testcase  {
 
 	function test_aggregation_of_results(){
 
-		$aggregator = new tx_caretaker_StubAggregatorNode( 0, 'foo', false );
+		$aggregator = new tx_caretaker_AggregatorNode_Stub( 0, 'foo', false );
 		$instance   = new tx_caretaker_InstanceNode (0, 'bar', false );
 		$node       = new tx_caretaker_TestNode (0, 'baz', $instance, 'tx_caretaker_ping' , '' );
 

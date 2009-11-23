@@ -51,6 +51,14 @@ class tx_caretaker_InstancegroupNode extends tx_caretaker_AggregatorNode {
 	}
 
 	/**
+	 * Get the caretaker node id of this node
+	 * return string
+	 */
+	public function getCaretakerNodeId(){
+		return 'instancegroup_'.$this->getUid();
+	}
+
+	/**
 	 * Find Childnodes of this Instancegroup
 	 * @param boolean $show_hidden
 	 * @return array

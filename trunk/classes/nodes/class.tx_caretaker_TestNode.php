@@ -141,6 +141,15 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	}
 
 	/**
+	 * Get the caretaker node id of this node
+	 * return string
+	 */
+	public function getCaretakerNodeId(){
+		$instance = $this->getInstance();
+		return 'instance_'.$instance->getUid().'_test_'.$this->getUid();
+	}
+
+	/**
 	 * Get the description of the Testsevice
 	 * @return string
 	 */
@@ -231,7 +240,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		
 			// check cache and return
 		if (!$force_update ){
-			$result = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
+			$result = $test_result_repository->getLatestByNode( $this );
 			if ($result && $result->getTstamp() > time()-$this->test_interval ) {
 				$this->log('cacheresult '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMsg() );
 				return $result;
@@ -247,11 +256,10 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		
 		if($this->test_service && $this->test_service->isExecutable()) {
 			
-				// prepare
-			$test_id = $test_result_repository->prepareTest($instance, $this);
-			$result  = $this->test_service->runTest();
+				// run test
+			$result = $this->test_service->runTest();
 
-				// retry if not ok
+				// retry if not ok and retrying is enabled
 			if ($result->getState() > 0 && $this->test_retry > 0){
 				$round = 0;
 				while ( $round < $this->test_retry && $result->getState() > 0 ){
@@ -260,12 +268,20 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 				}
 			}
 
-			$test_result_repository->saveTestResult($test_id, $result);
-								
+				// save to repository if the result differs from the last one
+			$resultRepository = tx_caretaker_TestResultRepository::getInstance();
+			$lastTestResult = $resultRepository->getLatestByNode($this);
+
+			if ($lastTestResult->isDifferent($result) ){
+				$resultRepository->saveTestResultForNode( $this, $result);
+			}
+			
+				// trigger notification
 			if ($result->getState() > 0){
 				$this->sendNotification( $result->getState() , $result->getLocallizedMessage() );
 			} 
-			
+
+				// trigger log
 			$this->log('update '.$result->getLocallizedStateInfo().' '.$result->getLocallizedMessage().' '.$msg );
 			
 		} else {
@@ -278,27 +294,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		
 	}
 	
-	/**
-	 * Get the current Test Result from Cache
-	 * 
-	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResult()
-	 */
-	public function getTestResult(){
 
-		if ( $this->getHidden() == true ){
-			$result = tx_caretaker_TestResult::undefined('Node is disabled');
-			$this->log('disabled '.$result->getLocallizedStateInfo().' '.$result->getLocallizedMessage().' '.$msg );
-			return $result;
-		}
-
-		$instance  = $this->getInstance();
-		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$result    = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
-	
-		$this->log('cache '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMsg() );
-		
-		return $result;
-	}
 
 	/**
 	 * Get the all tests wich can be found below this node
@@ -308,18 +304,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		return array($this);
 	}
 	
-	/**
-	 * Get the TestResultRange for the given Timerange
-	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
-	 * @param $graph True by default. Used in the resultrange repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
-	 */
-	public function getTestResultRange($start_timestamp, $stop_timestamp, $graph = true){
-		$instance  = $this->getInstance();
-		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$resultRange = $test_result_repository->getRangeByInstanceAndTest($instance, $this , $start_timestamp, $stop_timestamp, $graph);
-		return $resultRange;
-	}
-	
+
 	/**
 	 * Get the Value Description for this test
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getValueDescription()
@@ -336,6 +321,40 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	}
 
 	/**
+	 * Get the current Test Result from Cache
+	 *
+	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResult()
+	 */
+	public function getTestResult(){
+
+		if ( $this->getHidden() == true ){
+			$result = tx_caretaker_TestResult::undefined('Node is disabled');
+			$this->log('disabled '.$result->getLocallizedStateInfo().' '.$result->getLocallizedMessage().' '.$msg );
+			return $result;
+		}
+
+		$instance  = $this->getInstance();
+		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
+		$result    = $test_result_repository->getLatestByNode($this);
+
+		$this->log('cache '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMsg() );
+
+		return $result;
+	}
+	
+	/**
+	 * Get the TestResultRange for the given Timerange
+	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
+	 * @param $graph True by default. Used in the resultrange repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
+	 */
+	public function getTestResultRange($start_timestamp, $stop_timestamp, $graph = true){
+		$instance  = $this->getInstance();
+		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
+		$resultRange = $test_result_repository->getRangeByNode( $this, $start_timestamp, $stop_timestamp, $graph );
+		return $resultRange;
+	}
+
+	/**
 	 * Get the number of available Test Results
 	 *
 	 * @return integer
@@ -343,7 +362,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	public function getTestResultNumber(){
 		$instance  = $this->getInstance();
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$resultNumber = $test_result_repository->getResultNumberByInstanceAndTest($instance, $this);
+		$resultNumber = $test_result_repository->getResultNumberByNode( $this );
 		return $resultNumber;
 	}
 
@@ -356,7 +375,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	public function getTestResultRangeByOffset($offset=0, $limit=10){
 		$instance  = $this->getInstance();
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$resultRange = $test_result_repository->getResultRangeByInstanceAndTestAndOffset($instance, $this , $offset, $limit);
+		$resultRange = $test_result_repository->getResultRangeByNodeAndOffset( $this, $offset, $limit );
 		return $resultRange;
 	}
 }

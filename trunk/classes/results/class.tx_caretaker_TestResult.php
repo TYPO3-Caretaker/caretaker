@@ -131,13 +131,13 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 			foreach ($info_array['details'] as $detail){
 				if (is_array($detail)){
 					$detail_line = $detail['message'];
-					$detail_line = tx_caretaker_Helper::locallizeString($detail_line);
+					$detail_line = tx_caretaker_LocallizationHelper::locallizeString($detail_line);
 					foreach ($detail['values'] as $key=>$value){
 						$marker = '###VALUE_'.strtoupper($key).'###';
 						if (strpos($detail_line,$marker)!== false ) $detail_line = str_replace($marker, $value, $detail_line);
 					}
 				} else {
-					$detail_line = tx_caretaker_Helper::locallizeString($detail);;
+					$detail_line = tx_caretaker_LocallizationHelper::locallizeString($detail);;
 				}
 				$detail_array[] = $detail_line;
 			}

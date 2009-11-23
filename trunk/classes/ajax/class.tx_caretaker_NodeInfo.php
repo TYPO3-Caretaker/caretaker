@@ -6,7 +6,8 @@ class tx_caretaker_NodeInfo {
 		
 		$node_id = t3lib_div::_GP('node');
 
-		if ($node_id && $node = tx_caretaker_Helper::id2node($node_id, true) ){
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
+		if ($node_id && $node = $node_repository->id2node($node_id, true) ){
 
 			$local_time = localtime(time(), true);
 			$local_hour = $local_time['tm_hour'];
@@ -39,7 +40,7 @@ class tx_caretaker_NodeInfo {
 					$result = $node->getTestResult();
 					$info = '<div class="tx_caretaker_node_info tx_caretaker_node_info_state_'.$result->getStateInfo().'">'.
 						'Title: '.           $node->getTitle().'<br/>'.
-						'NodeID: '.          tx_caretaker_Helper::node2id($node).'<br/>'.
+						'NodeID: '.          $node->getCaretakerNodeId().'<br/>'.
 						'Type: '.            $node->getTypeDescription().'<br/>'.
 						'Interval: '.        $interval_info.'<br/>'.
 						'Description: '.     $node->getDescription().'<br/>'.
@@ -56,7 +57,7 @@ class tx_caretaker_NodeInfo {
 					$result = $node->getTestResult();
 					$info = '<div class="tx_caretaker_node_info tx_caretaker_node_info_state_'.$result->getStateInfo().'">'.
 						'Title: '.           $node->getTitle().'<br/>'.
-						'NodeID: '.          tx_caretaker_Helper::node2id($node).'<br/>'.
+						'NodeID: '.          $node->getCaretakerNodeId().'<br/>'.
 						'Description: '.     $node->getDescription().'<br/>'.
 						'Hidden: '.          $node->getHiddenInfo().'<br/>'.						
 						'State: '.           $result->getLocallizedStateInfo().'<br/>'.
@@ -79,7 +80,8 @@ class tx_caretaker_NodeInfo {
 		$node_id = t3lib_div::_GP('node');
 		$force   = (boolean)t3lib_div::_GP('force');
 
-		if ($node_id && $node = tx_caretaker_Helper::id2node($node_id, true) ){
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
+		if ($node_id && $node = $node_repository->id2node($node_id, true) ){
 
 			require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_MemoryLogger.php');
 			$logger  = new tx_caretaker_MemoryLogger();
@@ -102,13 +104,14 @@ class tx_caretaker_NodeInfo {
 		$date_stop  = time();
 		$date_start = $date_stop - $duration;
 
-		if ($node_id && $node = tx_caretaker_Helper::id2node($node_id, true) ){
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
+		if ($node_id && $node = $node_repository->id2node($node_id, true) ){
 
 			require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_ResultRangeRenderer_pChart.php');
 
 			$result_range = $node->getTestResultRange($date_start , $date_stop);
 
-			if ($result_range->count() > 1 ){
+			if ( $result_range->count() ){
 				$filename = 'typo3temp/caretaker/charts/'.$node_id.'_'.$duration.'.png';
 				$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
 				$base_url = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
@@ -135,7 +138,8 @@ class tx_caretaker_NodeInfo {
 
         $node_id = t3lib_div::_GP('node');
 
-        if ($node_id && $node = tx_caretaker_Helper::id2node($node_id, true) ){
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
+        if ($node_id && $node = $node_repository->id2node($node_id, true) ){
             
             $start     = (int)t3lib_div::_GP('start');
             $limit     = (int)t3lib_div::_GP('limit');
@@ -172,8 +176,8 @@ class tx_caretaker_NodeInfo {
 	public function ajaxGetNodeProblems ($params, &$ajaxObj){
 
         $node_id = t3lib_div::_GP('node');
-
-        if ($node_id && $node = tx_caretaker_Helper::id2node($node_id, true) ){
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
+        if ($node_id && $node = $node_repository->id2node($node_id, true) ){
 
 			$testChildNodes = $node->getTestNodes();
 

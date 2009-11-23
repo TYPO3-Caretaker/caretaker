@@ -6,11 +6,13 @@
  */
 return array(
 
-	'tx_caretaker_helper'                 => t3lib_extMgm::extPath('caretaker', 'classes/class.tx_caretaker_Helper.php'),
-	'tx_caretaker_extensionmanagerhelper' => t3lib_extMgm::extPath('caretaker', 'classes/class.tx_caretaker_ExtensionManagerHelper.php'),
-	'tx_caretaker_servicehelper'          => t3lib_extMgm::extPath('caretaker', 'classes/class.tx_caretaker_ServiceHelper.php'),
 	'tx_caretaker_clilogger'		      => t3lib_extMgm::extPath('caretaker', 'classes/class.tx_caretaker_CliLogger.php'),
 	'tx_caretaker_clinotifier'		      => t3lib_extMgm::extPath('caretaker', 'classes/class.tx_caretaker_CliNotifier.php'),
+
+		/* helpers */
+	'tx_caretaker_servicehelper'          => t3lib_extMgm::extPath('caretaker', 'classes/helpers/class.tx_caretaker_ServiceHelper.php'),
+	'tx_caretaker_locallizationhelper'     => t3lib_extMgm::extPath('caretaker', 'classes/helpers/class.tx_caretaker_LocallizationHelper.php'),
+	'tx_caretaker_extensionmanagerhelper' => t3lib_extMgm::extPath('caretaker', 'classes/helpers/class.tx_caretaker_ExtensionManagerHelper.php'),
 
 		/* plugins */
 	'tx_caretaker_pibase' => t3lib_extMgm::extPath('caretaker', '/pi_base/class.tx_caretaker_pibase.php'),

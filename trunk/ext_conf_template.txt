@@ -10,8 +10,5 @@ notification.mail_link = http://caretaker.example.org/index.php?id=123&tx_careta
 # cat=caretaker/subject; type=string; label=Email Subject for Cli Notifications
 notification.mail_subject = caretaker
 
-# cat=caretaker/lastresult; type=integer; label=Scanrange for last Result in Seconds: this should be set to a greater value than the longest test interval used in your installation
-lastTestResultScanRange = 0
-
 # cat=caretaker/ping; type=string; label=CLI Command used for ping tests. ### is replaced by Hostname.
 ping.cli_command = /sbin/ping -c 1 ### 2>&1

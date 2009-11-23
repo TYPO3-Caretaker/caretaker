@@ -80,6 +80,14 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	}
 
 	/**
+	 * Get the caretaker node id of this node
+	 * return string
+	 */
+	public function getCaretakerNodeId(){
+		return 'instance_'.$this->getUid();
+	}
+
+	/**
 	 * Get the url
 	 * @return string
 	 */

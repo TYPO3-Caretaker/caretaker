@@ -133,9 +133,7 @@ abstract class tx_caretaker_AbstractNode {
 	 * Get the caretaker node id of this node
 	 * return string
 	 */
-	public function getCaretakerNodeId(){
-		return tx_caretaker_Helper::node2id($this);
-	}
+	abstract public function getCaretakerNodeId();
 
 	/**
 	 * Get the uid
@@ -407,7 +405,7 @@ abstract class tx_caretaker_AbstractNode {
 		$notification_address_ids = $this->getNotificationIds(true);
 		if ( count($notification_address_ids) > 0 ){
 			foreach($notification_address_ids as $notfificationId){
-				$this->notify( $notfificationId, $state, $this->type.' '.$this->title.'['.$this->uid.'] '.$msg, $this->description, tx_caretaker_Helper::node2id($this) );
+				$this->notify( $notfificationId, $state, $this->type.' '.$this->title.'['.$this->uid.'] '.$msg, $this->description, $this->getCaretakerNodeId() );
 			}
 		}
 	}
