@@ -108,8 +108,8 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	 */
 	public function getResultHash (){
 		$state = array (
-			'state' => $this->getState(),
-			'value' => $this->getValue()
+			'state' => (int)$this->getState(),
+			'value' => (float)$this->getValue()
 		);
 		return md5( serialize( $state ) );
 	}

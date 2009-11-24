@@ -152,11 +152,11 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 	 */
 	public function getResultHash (){
 		$state = array (
-			'state'           => $this->getState(),
-			'STATE_UNDEFINED' => $this->getNumUNDEFINED(),
-			'STATE_OK'        => $this->getNumOK(),
-			'STATE_WARNING'   => $this->getNumWARNING(),
-			'STATE_ERROR'     => $this->getNumERROR()
+			'state'           => (int)$this->getState(),
+			'STATE_UNDEFINED' => (int)$this->getNumUNDEFINED(),
+			'STATE_OK'        => (int)$this->getNumOK(),
+			'STATE_WARNING'   => (int)$this->getNumWARNING(),
+			'STATE_ERROR'     => (int)$this->getNumERROR()
 		);
 		return md5( serialize( $state ) );
 	}
