@@ -231,7 +231,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 		if ( $this->getHidden() == true ){
 			$result = tx_caretaker_TestResult::undefined('Node is disabled');
-			$this->log('disabled '.$result->getLocallizedStateInfo().' '.$result->getLocallizedMessage().' '.$msg );
+			$this->log('disabled '.$result->getLocallizedStateInfo().' '.$result->getLocallizedInfotext().' '.$msg );
 			return $result;
 		}
 		
@@ -242,13 +242,13 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		if (!$force_update ){
 			$result = $test_result_repository->getLatestByNode( $this );
 			if ($result && $result->getTstamp() > time()-$this->test_interval ) {
-				$this->log('cacheresult '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMsg() );
+				$this->log('cacheresult '.$result->getStateInfo().' '.$result->getValue().' '.$result->getLocallizedInfotext() );
 				return $result;
 			} else if ($this->start_hour > 0 || $this->stop_hour > 0 ) {
 				$local_time = localtime(time(), true);
 				$local_hour = $local_time['tm_hour'];
 				if ($local_hour < $this->start_hour || $local_hour >= $this->stop_hour ){
-					$this->log('cacheresult '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMsg() );
+					$this->log('cacheresult '.$result->getStateInfo().' '.$result->getValue().' '.$result->getLocallizedInfotext() );
 					return $result;	
 				}
 			}
@@ -256,9 +256,13 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		
 		if($this->test_service && $this->test_service->isExecutable()) {
 			
-				// run test
-			$result = $this->test_service->runTest();
-
+				// try to execute test
+			try {
+				$result = $this->test_service->runTest();
+			} catch ( Exception $e ) {
+				$result = new tx_caretaker_TestResult( TX_CARETAKER_STATE_ERROR , 0, 'Testservice failed with exception: '.$e->getMessage  );
+			}
+			
 				// retry if not ok and retrying is enabled
 			if ($result->getState() > 0 && $this->test_retry > 0){
 				$round = 0;

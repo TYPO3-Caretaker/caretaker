@@ -49,7 +49,7 @@ class tx_caretaker_NodeInfo {
 						'last Execution: '.  strftime('%x %X',$result->getTimestamp()).'<br/>'.
 						'State: '.           $result->getLocallizedStateInfo().'<br/>'.
 						'Value: '.           $result->getValue().'<br/>'.
-						'Message: <br/>'.nl2br( str_replace( ' ' , '&nbsp;', $result->getLocallizedInfotext() ) ) .'<br/>'.
+						'Message: '.         '<br/>'.nl2br( $result->getLocallizedInfotext() ) .'<br/>'.
 						'</div>';
 					break;
 				default:
@@ -61,7 +61,7 @@ class tx_caretaker_NodeInfo {
 						'Description: '.     $node->getDescription().'<br/>'.
 						'Hidden: '.          $node->getHiddenInfo().'<br/>'.						
 						'State: '.           $result->getLocallizedStateInfo().'<br/>'.
-						'Message: '.         nl2br( $result->getLocallizedInfotext() ).'<br/>'.
+						'Message:'.          '<br/>'.nl2br( $result->getLocallizedInfotext() ).'<br/>'.
 						'</div>';
 					break;
 				}
