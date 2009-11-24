@@ -31,7 +31,7 @@
 			<label index="description">Description</label>
 			<label index="lastRunHeader">Last run:</label>
 
-			<label index="aggregator_result_message">###VALUE_NUM_OK### of ###VALUE_NUM_TESTS### subnodes passed the tests (###VALUE_NUM_ERRORS### Errors, ###VALUE_NUM_WARNINGS### Warnings).</label>
+			<label index="aggregator_result_message">###VALUE_NUM_OK### of ###VALUE_NUM_TESTS### subnodes passed the tests (###VALUE_NUM_ERROR### Errors, ###VALUE_NUM_WARNING### Warnings).</label>
 			<label index="aggregator_result_submessage_error">Error in subnode ###VALUE_TITLE###</label>
 			<label index="aggregator_result_submessage_warning">Warnig in subnode ###VALUE_TITLE###</label>
 			<label index="aggregator_result_submessage_undefined">Undefined state in subnode ###VALUE_TITLE###</label>
