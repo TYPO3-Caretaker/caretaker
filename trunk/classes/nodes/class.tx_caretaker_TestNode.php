@@ -260,16 +260,21 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 			try {
 				$result = $this->test_service->runTest();
 			} catch ( Exception $e ) {
-				$result = new tx_caretaker_TestResult( TX_CARETAKER_STATE_ERROR , 0, 'Testservice failed with exception: '.$e->getMessage  );
+				$result = new tx_caretaker_TestResult( TX_CARETAKER_STATE_ERROR , 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}'.$e->getMessage  );
 			}
 			
 				// retry if not ok and retrying is enabled
-			if ($result->getState() > 0 && $this->test_retry > 0){
+			if ($result->getState() != 0 && $this->test_retry > 0){
 				$round = 0;
-				while ( $round < $this->test_retry && $result->getState() > 0 ){
-					$result = $this->test_service->runTest();
+				while ( $round < $this->test_retry && $result->getState() != 0 ){
+					try {
+						$result = $this->test_service->runTest();
+					} catch ( Exception $e ) {
+						$result = new tx_caretaker_TestResult( TX_CARETAKER_STATE_ERROR , 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}'.$e->getMessage  );
+					}
 					$round ++;
 				}
+				$result->addSubMessage( new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:retry_info' , array( 'number'=>$round )  ) );
 			}
 
 				// save to repository if the result differs from the last one

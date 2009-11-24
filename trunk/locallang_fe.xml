@@ -31,6 +31,10 @@
 			<label index="description">Description</label>
 			<label index="lastRunHeader">Last run:</label>
 
+			<label index="service_exception">Execution of Test failed with php-exception: </label>
+			<label index="retry_info">Test was retried ###VALUE_NUMBER### times.</label>
+
+
 			<label index="aggregator_result_message">###VALUE_NUM_OK### of ###VALUE_NUM_TESTS### subnodes passed the tests (###VALUE_NUM_ERROR### Errors, ###VALUE_NUM_WARNING### Warnings).</label>
 			<label index="aggregator_result_submessage_error">Error in subnode ###VALUE_TITLE###</label>
 			<label index="aggregator_result_submessage_warning">Warnig in subnode ###VALUE_TITLE###</label>
@@ -76,6 +80,9 @@
 			<label index="available">verfügbar</label>
 			<label index="description">Beschreibung</label>
 			<label index="lastRunHeader">Letzter Lauf:</label>
+
+			<label index="service_exception">Die Testausführung schlug mit dem folgenden PHP-Fehler fehl: </label>
+			<label index="retry_info">Der Test wurde ###VALUE_NUMBER### mel wiederholt.</label>
 
 			<label index="aggregator_result_message">###VALUE_NUM_OK### von ###VALUE_NUM_TESTS### Unterelementen haben die Tests bestanden (###VALUE_NUM_ERROR### Fehler ###VALUE_NUM_WARNING### Warnungen)</label>
 			<label index="aggregator_result_submessage_error">Fehler in Unterelement ###VALUE_TITLE###</label>

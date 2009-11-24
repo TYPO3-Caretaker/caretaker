@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of classtx_caretaker_ResultMessage
+ * Description of class tx_caretaker_ResultMessage
  *
  * @author martin
  */

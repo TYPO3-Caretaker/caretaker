@@ -57,10 +57,10 @@ abstract class tx_caretaker_NodeResult {
 	protected $message = NULL;
 
 	/**
-	 *
-	 * @var array
+	 * The submessage
+	 * @var array array of tx_caretaker_ResultMessage objects
 	 */
-	protected $submessages='';
+	protected $submessages= array();
 
 	/**
 	 * Constructor
@@ -75,7 +75,7 @@ abstract class tx_caretaker_NodeResult {
 		if (is_a($message , 'tx_caretaker_ResultMessage') ){
 			$this->message = $message;
 		} else {
-			$this->message = new tx_caretaker_ResultMessage ($message);
+			$this->message = new tx_caretaker_ResultMessage ( (string) $message );
 		}
 		
 		if ($submessages){
@@ -133,6 +133,18 @@ abstract class tx_caretaker_NodeResult {
 	 */
 	public function getMessage(){
 		return $this->message;
+	}
+
+	/**
+	 * add a submessage to the result
+	 * @param mixed $message string or tx_caretaker_ResultMessage
+	 */
+	public function addSubMessage($message){
+		if (is_a($message , 'tx_caretaker_ResultMessage') ){
+			$this->submessages[] = $message;
+		} else {
+			$this->submessages[] = new tx_caretaker_ResultMessage ( (string)$message );
+		}
 	}
 
 	/**
