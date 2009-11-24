@@ -299,6 +299,7 @@ plugin.tx_caretaker_pi_abstract {
 
 		INFO = TEXT
 		INFO.field = message_ll
+		INFO.br = 1
 
 	}
 
