@@ -196,7 +196,8 @@ CREATE TABLE tx_caretaker_testresult (
 	result_status int(11) DEFAULT '0' NOT NULL,
 	result_value float DEFAULT '0' NOT NULL,
 	result_msg text NOT NULL,
-	result_infos text NOT NULL,
+	result_values text NOT NULL,
+	result_submessages text NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY test_instance_uid (test_uid,instance_uid)
@@ -220,7 +221,10 @@ CREATE TABLE tx_caretaker_aggregatorresult (
 	result_num_ok        int(11) DEFAULT '0' NOT NULL,
 	result_num_warnig    int(11) DEFAULT '0' NOT NULL,
 	result_num_error     int(11) DEFAULT '0' NOT NULL,
+
 	result_msg varchar(255) DEFAULT '' NOT NULL,
+	result_values text NOT NULL,
+    result_submessages text NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY aggregator (aggregator_uid,aggregator_type,instance_uid)

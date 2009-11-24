@@ -136,7 +136,7 @@ class tx_caretaker_AggregatorResultRepository {
 			// add last value if needed
 		$last = $result_range->getLast(); 
 		if ($last && $last->getTstamp() < $stop_timestamp){
-			$real_last = new tx_caretaker_AggregatorResult($stop_timestamp, $last->getState() , $last->getNumUNDEFINED(), $last->getNumOK() , $last->getNumWARNING(),  $last->getNumERROR(),$last->getMsg() );
+			$real_last = new tx_caretaker_AggregatorResult($stop_timestamp, $last->getState() , $last->getNumUNDEFINED(), $last->getNumOK() , $last->getNumWARNING(),  $last->getNumERROR(),$last->getMessage()->getText() );
 			$result_range->addResult($real_last);			
 		}
 		
@@ -221,12 +221,14 @@ class tx_caretaker_AggregatorResultRepository {
 			'instance_uid'    => $instanceUid,
 		
 			'result_status'        => $aggregator_result->getState(),
+			'tstamp'               => $aggregator_result->getTstamp(),
 			'result_num_undefined' => $aggregator_result->getNumUNDEFINED(),
 			'result_num_ok'        => $aggregator_result->getNumOK(),
 			'result_num_warnig'    => $aggregator_result->getNumWARNING(),
 			'result_num_error'     => $aggregator_result->getNumERROR(),
-			'result_msg'           => $aggregator_result->getMsg(),
-			'tstamp'               => $aggregator_result->getTstamp()
+			'result_msg'           => $aggregator_result->getMessage()->getText(),
+			'result_values'        => serialize( $aggregator_result->getMessage()->getValues() ),
+			'result_submessages'   => serialize( $aggregator_result->getSubMessages() )
 		);
 		
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_aggregatorresult', $values);
@@ -240,6 +242,8 @@ class tx_caretaker_AggregatorResultRepository {
 	 * @return tx_caretaker_AggregatorResult
 	 */
 	private function dbrow2instance($row){
+		$message     = new tx_caretaker_ResultMessage( $row['result_msg'] , unserialize($row['result_values']) );
+		$submessages = ($row['result_submessages']) ? unserialize( $row['result_submessages'] ) : array ();
 		$instance = new tx_caretaker_AggregatorResult(
 			$row['tstamp'], 
 			$row['result_status'], 
@@ -247,7 +251,8 @@ class tx_caretaker_AggregatorResultRepository {
 			$row['result_num_ok'], 
 			$row['result_num_warnig'], 
 			$row['result_num_error'], 
-			$row['result_msg']
+			$message,
+			$submessages
 		);
 		return $instance; 
 	}

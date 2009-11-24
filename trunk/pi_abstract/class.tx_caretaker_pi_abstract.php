@@ -201,7 +201,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 					'stateinfo'    => $testResut->getStateInfo(),
 					'stateinfo_ll' => $testResut->getLocallizedStateInfo(),
 					'message'      => $testResut->getMessage(),
-					'message_ll'   => $testResut->getLocallizedMessage(),
+					'message_ll'   => $testResut->getLocallizedInfotext(),
 					'state'        => $testResut->getState(),
 				);
 

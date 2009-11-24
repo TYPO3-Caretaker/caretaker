@@ -42,6 +42,20 @@ plugin.tx_caretaker_pi_overview{
 		TITLE.typolink.additionalParams.field = link_parameters
 		TITLE.typolink.additionalParams.wrap = |&tx_caretaker_pi_singleview[range]=24
 		TITLE.typolink.target = _blank
+		TITLE.append = CASE
+		TITLE.append {
+			key.field = node_type
+			key.case = lower
+			instance = TEXT
+			instance.data = LLL:EXT:caretaker/locallang_fe.xml:instance
+			instance.noTrimWrap = | [|]|
+			testgroup = TEXT
+			testgroup.data = LLL:EXT:caretaker/locallang_fe.xml:testgroup
+			testgroup.noTrimWrap = | [|]|
+			instancegroup = TEXT
+			instancegroup.data = LLL:EXT:caretaker/locallang_fe.xml:instancegroup
+			instancegroup.noTrimWrap = | [|]|
+		}
 		
 		DESCRIPTION = TEXT
 		DESCRIPTION.stdWrap.override = {field:state_msg}

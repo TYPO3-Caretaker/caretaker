@@ -101,7 +101,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 			}
 		}
 		
-		$this->log( ' |> '.$groupResult->getStateInfo().' :: '.$groupResult->getMsg(), false );
+		$this->log( ' |> '.$groupResult->getStateInfo().' :: '.$groupResult->getLocallizedInfotext() , false );
 		
 		return $groupResult;
 	}
@@ -121,7 +121,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 			$group_result = $result_repository->getLatestByNode($this);
 		}
 		
-		$this->log( ' |> '.$group_result->getStateInfo().' :: '.$group_result->getMsg(), false );
+		$this->log( ' |> '.$group_result->getStateInfo().' :: '.$group_result->getLocallizedInfotext(), false );
 		
 		return $group_result;
 		
@@ -203,27 +203,54 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 			}
 		}
 
-		$info = $num_ok.' of '.$num_tests.' subnodes passed the tests. ';
+		$values = array(
+			'num_tests'=>$num_tests,
+			'num_ok'=>$num_ok,
+			'num_warning'=>$num_warnings,
+			'num_error'=>$num_errors,
+			'num_undefined'=>$num_undefined
+		);
 
+		$message = new tx_caretaker_ResultMessage( 
+			'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_message',
+			$values
+		);
+
+			// create Submessages
+		$submessages = array();
 		if ($num_errors > 0){
-			$info .= chr(10).'  '.$num_errors.' errors in subnodes: '.implode(', ',$childnode_titles_error).'. ';
+			foreach ($childnode_titles_error as $childTitle){
+				$submessages[] = new tx_caretaker_ResultMessage(
+					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_error',
+					array('title'=>$childTitle)
+				);
+			}
 		}
 
 		if ($num_warnings > 0){
-			$info .= chr(10).'  '.$num_warnings.' warnings in subnodes: '.implode(', ',$childnode_titles_warning).'. ';
+			foreach ($childnode_titles_warning as $childTitle){
+				$submessages[] = new tx_caretaker_ResultMessage(
+					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_warning',
+					array('title'=>$childTitle)
+				);
+			}
 		}
 
 		if ($num_undefined > 0){
-			$info .= chr(10).'  '.$num_undefined.' undefined subnodes: '.implode(', ',$childnode_titles_undefined).'. ';
+			foreach ($childnode_titles_undefined as $childTitle){
+				$submessages[] = new tx_caretaker_ResultMessage(
+					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_undefined',
+					array('title'=>$childTitle)
+				);
+			}
 		}
 
-
 		if  ($num_errors > 0){
-			return tx_caretaker_AggregatorResult::create(TX_CARETAKER_STATE_ERROR,$num_undefined,$num_ok,$num_warnings,$num_errors, $info);
+			return tx_caretaker_AggregatorResult::create(TX_CARETAKER_STATE_ERROR,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
 		} else if ($num_warnings > 0){
-			return tx_caretaker_AggregatorResult::create(TX_CARETAKER_STATE_WARNING,$num_undefined,$num_ok,$num_warnings,$num_errors, $info);
+			return tx_caretaker_AggregatorResult::create(TX_CARETAKER_STATE_WARNING,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
 		} else {
-			return tx_caretaker_AggregatorResult::create(TX_CARETAKER_STATE_OK,$num_undefined,$num_ok,$num_warnings,$num_errors, $info);
+			return tx_caretaker_AggregatorResult::create(TX_CARETAKER_STATE_OK,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
 		}
 
 	}

@@ -278,11 +278,11 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 			
 				// trigger notification
 			if ($result->getState() > 0){
-				$this->sendNotification( $result->getState() , $result->getLocallizedMessage() );
+				$this->sendNotification( $result->getState() , $result->getLocallizedInfotext() );
 			} 
 
 				// trigger log
-			$this->log('update '.$result->getLocallizedStateInfo().' '.$result->getLocallizedMessage().' '.$msg );
+			$this->log('update '.$result->getLocallizedStateInfo().' '.$result->getLocallizedInfotext().' '.$msg );
 			
 		} else {
 			
@@ -329,7 +329,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 		if ( $this->getHidden() == true ){
 			$result = tx_caretaker_TestResult::undefined('Node is disabled');
-			$this->log('disabled '.$result->getLocallizedStateInfo().' '.$result->getLocallizedMessage().' '.$msg );
+			$this->log('disabled '.$result->getLocallizedStateInfo().' '.$result->getMessage()->getLocallizedInfotext().' '.$msg );
 			return $result;
 		}
 
@@ -337,7 +337,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$result    = $test_result_repository->getLatestByNode($this);
 
-		$this->log('cache '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMsg() );
+		$this->log('cache '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMessage()->getLocallizedInfotext() );
 
 		return $result;
 	}

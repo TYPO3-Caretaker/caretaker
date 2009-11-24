@@ -51,21 +51,37 @@ abstract class tx_caretaker_NodeResult {
 	protected $timestamp = NULL;
 	
 	/**
-	 * A human readable representation of the testrsult
-	 * @var string
+	 * The Result message 
+	 * @var tx_caretaker_ResultMessage
 	 */
-	protected $message='';	
-	
+	protected $message = NULL;
+
+	/**
+	 *
+	 * @var array
+	 */
+	protected $submessages='';
+
 	/**
 	 * Constructor
 	 * @param integer $timestamp  Timestamp of the result
 	 * @param integer $state      Status of the result
-	 * @param string  $message    Result message
+	 * @param mixed   $message    Result message (string or tx_caretaker_ResultMessage Object )
 	 */
-	public function __construct ($timestamp, $state, $message=''){
+	public function __construct ($timestamp, $state, $message , $submessages){
 		$this->timestamp = (int)$timestamp;
 		$this->state     = (int)$state;
-		$this->message   = $message;
+		
+		if (is_a($message , 'tx_caretaker_ResultMessage') ){
+			$this->message = $message;
+		} else {
+			$this->message = new tx_caretaker_ResultMessage ($message);
+		}
+		
+		if ($submessages){
+			$this->submessages = $submessages;
+		}
+		
 	}
 		
 	/**
@@ -107,30 +123,40 @@ abstract class tx_caretaker_NodeResult {
 	 * Get Timestamp of this Testresult
 	 * @return integer
 	 */
-	function getTimestamp(){
+	public function getTimestamp(){
 		return $this->timestamp;
 	}
 	
 	/**
 	 * Return result message
-	 * 
-	 * @return string
-	 * @depricated 
-	 * @todo remove this method
-	 */
-	public function getMsg(){
-		return $this->message;
-	}
-	
-	/**
-	 * Return result message
-	 * 
 	 * @return string
 	 */
 	public function getMessage(){
 		return $this->message;
 	}
 
+	/**
+	 * Return the array of submessages
+	 * @return array
+	 */
+	public function getSubMessages(){
+		return $this->submessages;
+	}
+
+	/**
+	 * Get a combined and locallized Info of message and all submessages
+	 * @return string
+	 */
+	public function getLocallizedInfotext(){
+		$result = $this->message->getLocallizedInfotext();
+		if ($this->submessages ) {
+			foreach ($this->submessages as $submessage){
+				$result .= chr(10).' - ' . $submessage->getLocallizedInfotext();
+			}
+		}
+		
+		return $result;
+	}
 
 	/**
 	 * Get the locallized StateInformation
@@ -139,23 +165,6 @@ abstract class tx_caretaker_NodeResult {
 	 */
 	public function getLocallizedStateInfo(){
 		return tx_caretaker_LocallizationHelper::locallizeString( 'LLL:EXT:caretaker/locallang_fe.xml:state_' . strtolower( $this->getStateInfo() ) );
-	}
-
-	/**
-	 * Get the locallized Result Message
-	 *
-	 * @return string
-	 */
-	public function getLocallizedMessage(){
-
-		$message = $this->getMessage();
-
-			// locallize
-		$message = tx_caretaker_LocallizationHelper::locallizeString($message);
-		if (strpos($message,'###STATE###')!== false )$message = str_replace('###STATE###',$this->getLocallizedStateInfo(), $message);
-		
-		return $message;
-		
 	}
 
 	/**

@@ -80,30 +80,32 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 
 			// execute query
 		list ($time, $response, $info, $headers) = $this->executeCurlRequest($request_url, $time_error, $request_method, $request_data);
-		$info_array = array('values'=>array('url'=>$request_url, 'status'=>$info['http_code'], 'expected' => $expected_status ) );
+		
+		$values = array('url'=>$request_url, 'status'=>$info['http_code'], 'expected' => $expected_status );
+		$submessages = array();
 
 			// ERROR
 		if ($time_error && $time > $time_error ){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'LLL:EXT:caretaker/locallang_fe.xml:http_info', $info_array  );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:http_info', $values )  );
 		}
 
 			// WARNING
 		if ($time_warning && $time > $time_warning ){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time ,  'LLL:EXT:caretaker/locallang_fe.xml:http_info', $info_array );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time ,  new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:http_info', $values )  );
 		}
 
 			// OK but status fails
 		if ($info['http_code'] != $expected_status){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'LLL:EXT:caretaker/locallang_fe.xml:http_error', $info_array  );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:http_error', $values )  );
 		}
 
 			// OK but header fails
 		if ( !$this->checkExpectedHeaders( $expected_headers,$headers ) ){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , 'LLL:EXT:caretaker/locallang_fe.xml:header_error', $info_array  );
+			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:header_error', $values )  );
 		}
 
 			// ERROR wrong status code
-		return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time ,  'LLL:EXT:caretaker/locallang_fe.xml:http_info', $info_array );
+		return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time ,  new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:http_info', $values )  );
 		
 	}
 

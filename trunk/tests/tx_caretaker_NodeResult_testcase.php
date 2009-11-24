@@ -15,7 +15,7 @@ class tx_caretaker_NodeResult_testcase extends tx_phpunit_testcase  {
 		$this->assertEquals($result->getState(), 1 );
 		$this->assertEquals($result->getStateInfo(), 'WARNING' );
 		$this->assertEquals($result->getValue(), 1.75 );		
-		$this->assertEquals($result->getMessage(), 'This is a Message' );		
+		$this->assertEquals($result->getMessage()->getText(), 'This is a Message' );
 	}
 
 	function test_AggregatorResult_stores_data (){
@@ -24,7 +24,7 @@ class tx_caretaker_NodeResult_testcase extends tx_phpunit_testcase  {
 		$this->assertEquals($result->getTimestamp(), 123 );
 		$this->assertEquals($result->getState(), 2 );
 		$this->assertEquals($result->getStateInfo(), 'ERROR' );
-		$this->assertEquals($result->getMessage(), 'This is a Message' );
+		$this->assertEquals($result->getMessage()->getText(), 'This is a Message' );
 		
 		$this->assertEquals($result->getNumUNDEFINED(), 2 );
 		$this->assertEquals($result->getNumOK(), 1 );		

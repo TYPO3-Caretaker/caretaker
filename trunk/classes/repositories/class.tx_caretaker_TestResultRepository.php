@@ -188,7 +188,7 @@ class tx_caretaker_TestResultRepository {
 		$last = $result_range->getLast(); 
 		if ($last && $last->getTstamp() < $stop_timestamp){
 			if($graph) {
-				$real_last = new tx_caretaker_TestResult($stop_timestamp, $last->getState() , $last->getValue(), $last->getMsg() );
+				$real_last = new tx_caretaker_TestResult($stop_timestamp, $last->getState() , $last->getValue(), $last->getMessage()->getText() );
 				$result_range->addResult($real_last);
 			}
 		}
@@ -203,24 +203,17 @@ class tx_caretaker_TestResultRepository {
 	 * @return tx_caretaker_TestResult
 	 */
 	private function dbrow2instance($row){
-		$instance = new tx_caretaker_TestResult($row['tstamp'], $row['result_status'], $row['result_value'], $row['result_msg'], unserialize( $row['result_infos'] ));
+		$message     = new tx_caretaker_ResultMessage( $row['result_msg'] , unserialize($row['result_values']) );
+		$submessages = ($row['result_submessages']) ? unserialize( $row['result_submessages'] ) : array ();
+		$instance    = new tx_caretaker_TestResult(
+			$row['tstamp'],
+			$row['result_status'],
+			$row['result_value'],
+			$message,
+			$submessages
+		);
 		return $instance; 
 	}
-	
-	/**
-	 * Prepare a db record for storing of test results
-	 * 
-	 * @param tx_caretaker_InstanceNode $instance 
-	 * @param tx_caretaker_TestNode $test 
-	 * @return integer uid of created result record
-	 */
-	function prepareTest($instance, $test){
-			//add an undefined row to the testresult column
-		
-		
-		
-		return $GLOBALS['TYPO3_DB']->sql_insert_id();
-	} 
 	
 	/**
 	 * Save the Testresult for the given TestNode
@@ -229,18 +222,16 @@ class tx_caretaker_TestResultRepository {
 	 */
 	function saveTestResultForNode(tx_caretaker_TestNode $test, $testResult){
 
-		$instance= $test->getInstance();
-
 		$values = array(
 			'test_uid'      => $test->getUid(),
-			'instance_uid'  => $instance->getUid(),
+			'instance_uid'  => $test->getInstance()->getUid(),
 			'result_status' => TX_CARETAKER_UNDEFINED,
 			'tstamp'        => $testResult->getTstamp(),
 			'result_status' => $testResult->getState(),
 			'result_value'  => $testResult->getValue(),
-			'result_msg'    => $testResult->getMsg(),
-			'result_infos'  => serialize( $testResult->getInfoArray() )
-
+			'result_msg'    => $testResult->getMessage()->getText(),
+			'result_values' => serialize( $testResult->getMessage()->getValues() ),
+			'result_submessages'  => serialize( $testResult->getSubMessages() )
 		);
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_testresult', $values);
 	

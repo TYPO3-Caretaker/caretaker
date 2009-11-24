@@ -49,7 +49,7 @@ class tx_caretaker_NodeInfo {
 						'last Execution: '.  strftime('%x %X',$result->getTimestamp()).'<br/>'.
 						'State: '.           $result->getLocallizedStateInfo().'<br/>'.
 						'Value: '.           $result->getValue().'<br/>'.
-						'Message: <br/>'.nl2br( str_replace( ' ' , '&nbsp;', $result->getLocallizedMessage() ) ) .'<br/>'.
+						'Message: <br/>'.nl2br( str_replace( ' ' , '&nbsp;', $result->getLocallizedInfotext() ) ) .'<br/>'.
 						'</div>';
 					break;
 				default:
@@ -61,7 +61,7 @@ class tx_caretaker_NodeInfo {
 						'Description: '.     $node->getDescription().'<br/>'.
 						'Hidden: '.          $node->getHiddenInfo().'<br/>'.						
 						'State: '.           $result->getLocallizedStateInfo().'<br/>'.
-						'Message: '.         nl2br($result->getLocallizedMessage()).'<br/>'.
+						'Message: '.         nl2br( $result->getLocallizedInfotext() ).'<br/>'.
 						'</div>';
 					break;
 				}
@@ -82,15 +82,8 @@ class tx_caretaker_NodeInfo {
 
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
 		if ($node_id && $node = $node_repository->id2node($node_id, true) ){
-
-			require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_MemoryLogger.php');
-			$logger  = new tx_caretaker_MemoryLogger();
-
-			$node->setLogger($logger);
 			$node->updateTestResult($force);
-
-			echo nl2br($logger->getLog());
-			
+			echo "updated node ".$node->getCaretakerNodeId();
 		} else {
 			echo "please give a valid node id";
 		}
@@ -155,14 +148,14 @@ class tx_caretaker_NodeInfo {
             $logItems = array();
             foreach ($results as $result){
                 $logItems[] = Array (
-                    'num'=> ($i+1) ,
-                    'title'=>'title_'.rand(),
-                    'timestamp' => $result->getTimestamp(),
-					'stateinfo' => $result->getStateInfo(),
+                    'num'          => ($i+1) ,
+                    'title'        =>'title_'.rand(),
+                    'timestamp'    => $result->getTimestamp(),
+					'stateinfo'    => $result->getStateInfo(),
                     'stateinfo_ll' => $result->getLocallizedStateInfo(),
-					'message'   => $result->getMessage(),
-                    'message_ll'   => $result->getLocallizedMessage(),
-                    'state'     => $result->getState(),
+					'message'      => $result->getMessage()->getText(),
+                    'message_ll'   => $result->getLocallizedInfotext() ,
+                    'state'        => $result->getState(),
                 );
             }
             $content['logItems'] = array_reverse($logItems);
@@ -206,8 +199,8 @@ class tx_caretaker_NodeInfo {
 						'timestamp'    => $testResut->getTimestamp(),
 						'stateinfo'    => $testResut->getStateInfo(),
 						'stateinfo_ll' => $testResut->getLocallizedStateInfo(),
-						'message'      => $testResut->getMessage(),
-						'message_ll'   => $testResut->getLocallizedMessage(),
+						'message'      => $testResut->getMessage()->getText(),
+						'message_ll'   => $testResut->getLocallizedInfotext(),
 						'state'        => $testResut->getState(),
 					);
 

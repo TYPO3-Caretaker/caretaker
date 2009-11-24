@@ -12,7 +12,7 @@ class tx_caretaker_ResultMessage {
 	 * The Result Message string. Can be a LLL: String or can contain {LLL:parts}
 	 * @var string;
 	 */
-	protected $message;
+	protected $text;
 
 	/**
 	 * Associative Array of values which should be inserted in the locallized message
@@ -23,25 +23,48 @@ class tx_caretaker_ResultMessage {
 	/**
 	 * Constructor
 	 * 
-	 * @param string $message 
+	 * @param string $text
 	 * @param array $values
 	 */
-	public function __construct ( $message='', $values=array() ){
-		$this->message = $message;
+	public function __construct ( $text='', $values=array() ){
+		$this->text    = $text;
 		$this->values  = $values;
 	}
 
-	public function getMessage (){
-		return $this->message;
+	/**
+	 * Get the plain unlocallized text
+	 * @return string
+	 */
+	public function getText (){
+		return $this->text;
 	}
 
+	/**
+	 * Get the value array which will be merged with the text
+	 * @return array
+	 */
 	public function getValues (){
 		return $this->values;
 	}
 
-	public function getLocallizedMessage(){
+	/**
+	 * Get the locallized and valuemerged message to show
+	 * @return sring
+	 */
+	public function getLocallizedInfotext(){
 		
-	}
+		$result = $this->text;
 
+			// check for LLL strings
+		$result = tx_caretaker_LocallizationHelper::locallizeString($result);
+		
+			// insert Values
+		foreach ( $this->values as $key=>$value){
+			$marker = '###VALUE_'.strtoupper($key).'###';
+			$result = str_replace($marker, $value, $result);
+		}
+
+		return $result;
+	}
 }
 ?>

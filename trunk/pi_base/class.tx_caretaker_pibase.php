@@ -86,6 +86,8 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		$date = array();
 			// node data
 		$data['uid']           = $node->getUid();
+		$data['node_id']       = $node->getCaretakerNodeId();
+		$data['node_type']     = $node->getType();
 		$data['type']          = $node->getTypeDescription();
 		$data['configuration'] = $node->getConfigurationInfo();
 		$data['title']         = $node->getTitle();
@@ -96,7 +98,7 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		$data['state']       = $result->getState();
 		$data['state_info']  = $result->getStateInfo();
 		$data['state_show']  = $result->getLocallizedStateInfo();
-		$data['state_msg']   = $result->getLocallizedMessage();
+		$data['state_msg']   = $result->getLocallizedInfotext();
 		$data['state_tstamp']= $result->getTstamp();
 		
 		if(is_a($result, 'tx_caretaker_TestResult')) {

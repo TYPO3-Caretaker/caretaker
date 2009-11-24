@@ -71,10 +71,12 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 	 * @param integer $num_ok
 	 * @param integer $num_warning
 	 * @param integer $num_error
-	 * @param string  $message
+	 * @param mixed   $message String or tx_caretaker_ResultMessage object
+	 * @param array   $submessages array of tx_caretaker_ResultMessage objects
+	 *
 	 */
-	public function __construct ($timestamp = 0, $state=TX_CARETAKER_STATE_UNDEFINED, $num_undefined=0, $num_ok=0, $num_warning=0, $num_error=0, $message=''){
-		parent::__construct($timestamp, $state, $message);
+	public function __construct ($timestamp = 0, $state=TX_CARETAKER_STATE_UNDEFINED, $num_undefined=0, $num_ok=0, $num_warning=0, $num_error=0, $message='', $submessages=NULL){
+		parent::__construct($timestamp, $state, $message, $submessages);
 		$this->num_UNDEFINED = $num_undefined;
 		$this->num_OK        = $num_ok; 
 		$this->num_WARNING   = $num_warning;
@@ -100,12 +102,13 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 	 * @param integer $num_ok
 	 * @param integer $num_warning
 	 * @param integer $num_error
-	 * @param string  $message
+	 * @param mixed   $message String or tx_caretaker_ResultMessage object
+	 * @param array   $submessages array of tx_caretaker_ResultMessage objects
 	 * @return tx_caretaker_AggregatorResult
 	 */
-	static public function create($state=TX_CARETAKER_STATE_UNDEFINED, $num_undefined=0, $num_ok=0, $num_warning=0, $num_error=0, $message=''){
+	static public function create($state=TX_CARETAKER_STATE_UNDEFINED, $num_undefined=0, $num_ok=0, $num_warning=0, $num_error=0, $message='', $submessges = NULL){
 		$timestamp = time();
-		return new tx_caretaker_AggregatorResult($timestamp, $state, $num_undefined, $num_ok, $num_warning, $num_error, $message);
+		return new tx_caretaker_AggregatorResult($timestamp, $state, $num_undefined, $num_ok, $num_warning, $num_error, $message, $submessges);
 	}
 
 	/**

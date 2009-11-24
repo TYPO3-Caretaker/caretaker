@@ -50,6 +50,7 @@ return array(
 	'tx_caretaker_noderesultrange'	     => t3lib_extMgm::extPath('caretaker', 'classes/results/class.tx_caretaker_NodeResultRange.php'),
 	'tx_caretaker_aggregatorresultrange' => t3lib_extMgm::extPath('caretaker', 'classes/results/class.tx_caretaker_AggregatorResultRange.php'),
 	'tx_caretaker_testresultrange'	     => t3lib_extMgm::extPath('caretaker', 'classes/results/class.tx_caretaker_TestResultRange.php'),
+	'tx_caretaker_resultmessage'         => t3lib_extMgm::extPath('caretaker', 'classes/results/class.tx_caretaker_ResultMessage.php'),
 
 		/* services */
 	'tx_caretaker_testservicebase'	     => t3lib_extMgm::extPath('caretaker', 'services/class.tx_caretaker_TestServiceBase.php'),

@@ -327,7 +327,10 @@ abstract class tx_caretaker_AbstractNode {
 				}
 			}
 		} else {
-			$indented_message = Array($message);
+			$indented_message = Array();
+			foreach ( explode(chr(10), $message) as $number => $line ){
+				$indented_message[] = $line;
+			}
 		}
 
 		foreach ($indented_message as $message){
