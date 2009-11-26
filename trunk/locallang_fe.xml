@@ -47,7 +47,7 @@
 			<label index="ping_error">Ping command (###VALUE_COMMAND###) failed with Message: ###VALUE_MESSAGE### </label>
 			<label index="ping_no_command_template">Ping command template must be configured in tx_caretaker extension configuration.</label>
 
-			<label index="http_service_description">Ping Test</label>
+			<label index="http_service_description">HTTP Test</label>
 			<label index="http_service_configuration">Expected HTTP-Status: ###EXPECTED_STATUS### Warning: ###MAX_TIME_WARNING### Ms Error: ###MAX_TIME_ERROR### Ms</label>
 
 			<label index="http_no_query">No HTTP-Code or no query was set</label>
