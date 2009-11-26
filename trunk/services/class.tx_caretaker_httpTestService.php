@@ -71,7 +71,11 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		$request_data     = $this->getRequestData();
 		
 		$url           = $this->getInstanceUrl();
-		$request_url   = $url.'/'.$request_query;
+		$parsed_url    = parse_url($url);
+		if ($parsed_url['path'] == '') {
+			$parsed_url['path'] = '/';
+		}
+		$request_url   = $parsed_url['scheme'] . '://' . $parsed_url['host'] . $parsed_url['path'] . $request_query;
 
 			// no query
 		if ( !($expected_status && $request_url)) {
