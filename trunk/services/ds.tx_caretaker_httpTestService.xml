@@ -142,7 +142,7 @@
 
 					<expected_headers>
 						<TCEforms>
-							<label>expected HTTP Headers (__Header__:__Value__) comparison : :&lt; :&gt; := :age:&lt; :age:&gt;</label>
+							<label>expected HTTP Headers (__Header__:__Value__) comparison : :&lt; :&gt; := :Age:&lt; :Age:&gt;</label>
 							<config>
 								<type>text</type>
 							</config>

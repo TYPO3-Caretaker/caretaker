@@ -183,7 +183,8 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 					$submessages[] = new tx_caretaker_ResultMessage(
 						'LLL:EXT:caretaker/locallang_fe.xml:http_date_error',
 						array(
-							'date'=>$returnedDate,
+							'plain'  => $returnedDate,
+							'parsed' => strftime('%X %x', $this->parseHeaderDate($returnedDate) ),
 							'max_age'=> $expectedDateAge
 						)
 					);
@@ -208,7 +209,8 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 					$submessages[] = new tx_caretaker_ResultMessage(
 						'LLL:EXT:caretaker/locallang_fe.xml:http_modified_error',
 						array(
-							'last_modified'=>$returnedDate,
+							'plain'  => $returnedDate,
+							'parsed' => strftime('%X %x', $this->parseHeaderDate($returnedDate) ),
 							'max_age'=> $expectedModifiedAge
 						)
 					);

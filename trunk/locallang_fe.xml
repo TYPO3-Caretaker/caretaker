@@ -59,8 +59,8 @@
 			<label index="http_state_error">Returned Status ###VALUE_STATE_RETURNED### does not match expected state ###VALUE_STATE_EXPECTED###</label>
 			<label index="http_header_error">HTTP-Header ###VALUE_NAME###:###VALUE_RETURNED### did not match expected value ###VALUE_EXPECTED##</label>
 			<label index="http_header_missing">Expected HTTP-Header ###VALUE_NAME### was not found</label>
-			<label index="http_date_error">HTTP-Date-Header ###VALUE_DATE### is older than ###VALUE_MAX_AGE## seconds</label>
-			<label index="http_modified_error">HTTP-Last-Modified-Header  ###VALUE_LAST_MODIFIED### is older than ###VALUE_MAX_AGE## seconds</label>
+			<label index="http_date_error">HTTP-Date-Header ###VALUE_PLAIN### (###VALUE_PARSED###) is older than ###VALUE_MAX_AGE## seconds</label>
+			<label index="http_modified_error">HTTP-Last-Modified-Header  ###VALUE_PLAIN### (###VALUE_PARSED###) is older than ###VALUE_MAX_AGE## seconds</label>
 
 			<label index="http_no_query">No HTTP-Code or no query was set</label>
 
