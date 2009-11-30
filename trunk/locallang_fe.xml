@@ -91,7 +91,7 @@
 			<label index="lastRunHeader">Letzter Lauf:</label>
 
 			<label index="service_exception">Die Testausführung schlug mit dem folgenden PHP-Fehler fehl: </label>
-			<label index="retry_info">Der Test wurde ###VALUE_NUMBER### mel wiederholt.</label>
+			<label index="retry_info">Der Test wurde ###VALUE_NUMBER### mal wiederholt.</label>
 
 			<label index="aggregator_result_message">###VALUE_NUM_OK### von ###VALUE_NUM_TESTS### Unterelementen haben die Tests bestanden (###VALUE_NUM_ERROR### Fehler ###VALUE_NUM_WARNING### Warnungen)</label>
 			<label index="aggregator_result_submessage_error">Fehler in Unterelement ###VALUE_TITLE###</label>
@@ -113,8 +113,8 @@
 			<label index="http_state_error">Der HTTP Status ###VALUE_STATE_RETURNED### entspricht nicht dem erwarteten Wert von ###VALUE_STATE_EXPECTED###</label>
 			<label index="http_header_error">Der Wert "###VALUE_RETURNED###" im HTTP-Header "###VALUE_NAME###" entsprach nicht der Erwartung "###VALUE_EXPECTED###"</label>
 			<label index="http_header_missing">Der erwartete HTTP-Header ###VALUE_NAME### wurde nicht gefunden</label>
-			<label index="http_date_error">HTTP-Date-Header ###VALUE_DATE### ist älter als ###VALUE_MAX_AGE### Sekunden</label>
-			<label index="http_modified_error">HTTP-Last-Modified-Header  ###VALUE_LAST_MODIFIED### ist älter als ###VALUE_MAX_AGE### Sekunden</label>
+			<label index="http_date_error">HTTP-Date-Header ###VALUE_PLAIN### (###VALUE_PARSED###) ist älter als ###VALUE_MAX_AGE### Sekunden</label>
+			<label index="http_modified_error">HTTP-Last-Modified-Header  ###VALUE_PLAIN### (###VALUE_PARSED###) ist älter als ###VALUE_MAX_AGE### Sekunden</label>
 
 		</languageKey>
 	</data>

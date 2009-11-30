@@ -95,6 +95,15 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		if ($parsed_url['path'] == '') {
 			$parsed_url['path'] = '/';
 		}
+
+		if ($parsed_url['user'] && !$requestUsername) {
+			$requestUsername = $parsed_url['user'];
+		}
+
+		if ($parsed_url['pass'] && !$requestPassword) {
+			$requestPassword = $parsed_url['pass'];
+		}
+		
 		$request_url   = $parsed_url['scheme'] . '://' . $parsed_url['host'] . $parsed_url['path'] . $requestQuery;
 
 			// no query
@@ -451,8 +460,10 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		
 			// username & password
 		if ( $request_username && $request_password ) {
-			curl_setopt($curl, CURLOPT_USERPWD, $request_username.':'.$request_password);
+			curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY );
+			curl_setopt($curl, CURLOPT_USERPWD, $request_username . ':' . $request_password );
 		}
+		
 			// handle request method
 		switch ($request_method){
 			case 'POST':
@@ -477,7 +488,6 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		$response = curl_exec($curl);
 		$info     = curl_getinfo($curl);
 		curl_close($curl);
-
 		list ($headerText, $content) = preg_split( '/\n[\s]*\n/', $response, 2);
 
 			// split headers
