@@ -70,6 +70,22 @@
 							</config>
 						</TCEforms>
 					</request_data>
+					<request_username>
+						<TCEforms>
+							<label>Request Username</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</request_username>
+					<request_password>
+						<TCEforms>
+							<label>Request Password</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</request_password>
 					<max_time_warning>
 						<TCEforms>
 							<label>Milliseconds for warning</label>
@@ -103,9 +119,30 @@
 							</config>
 						</TCEforms>
 					</expected_status>
+					<expected_date_age>
+						<TCEforms>
+							<label>expected Age of Date-Header in seconds</label>
+							<config>
+								<type>input</type>
+								<size>6</size>
+								<eval>int</eval>
+							</config>
+						</TCEforms>
+					</expected_date_age>
+					<expected_modified_age>
+						<TCEforms>
+							<label>expected Age of Modified-Header in seconds</label>
+							<config>
+								<type>input</type>
+								<size>6</size>
+								<eval>int</eval>
+							</config>
+						</TCEforms>
+					</expected_modified_age>
+
 					<expected_headers>
 						<TCEforms>
-							<label>expected HTTP Headers (__Header__:__Value__)</label>
+							<label>expected HTTP Headers (__Header__:__Value__) comparison : :&lt; :&gt; := :age:&lt; :age:&gt;</label>
 							<config>
 								<type>text</type>
 							</config>

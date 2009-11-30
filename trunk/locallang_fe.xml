@@ -50,10 +50,19 @@
 			<label index="http_service_description">HTTP Test</label>
 			<label index="http_service_configuration">Expected HTTP-Status: ###EXPECTED_STATUS### Warning: ###MAX_TIME_WARNING### Ms Error: ###MAX_TIME_ERROR### Ms</label>
 
+			<label index="http_error">HTTP Test of ###VALUE_URL### failed</label>
+			<label index="http_warning">HTTP Test of ###VALUE_URL### returned a warning</label>
+			<label index="http_ok">HTTP Test of ###VALUE_URL### passed succesfully in ###VALUE_TIME### Seconds and returned State ###VALUE_STATE###</label>
+
+			<label index="http_time_error">HTTP-Request took ###VALUE_TIME### milliseconds returned an timeout-error</label>
+			<label index="http_time_warning">HTTP-Request took ###VALUE_TIME### milliseconds returned an timeout-warning</label>
+			<label index="http_state_error">Returned Status ###VALUE_STATE_RETURNED### does not match expected state ###VALUE_STATE_EXPECTED###</label>
+			<label index="http_header_error">HTTP-Header ###VALUE_NAME###:###VALUE_RETURNED### did not match expected value ###VALUE_EXPECTED##</label>
+			<label index="http_header_missing">Expected HTTP-Header ###VALUE_NAME### was not found</label>
+			<label index="http_date_error">HTTP-Date-Header ###VALUE_DATE### is older than ###VALUE_MAX_AGE## seconds</label>
+			<label index="http_modified_error">HTTP-Last-Modified-Header  ###VALUE_LAST_MODIFIED### is older than ###VALUE_MAX_AGE## seconds</label>
+
 			<label index="http_no_query">No HTTP-Code or no query was set</label>
-			<label index="http_info">HTTP-Request of URL ###VALUE_URL### took ###VALUE### milliseconds and returned State ###VALUE_STATUS###</label>
-			<label index="http_error">Returned Status ###VALUE_STATUS### does not match expected state ###VALUE_EXPECTED### ###VALUE_URL###</label>
-			<label index="header_error">Returned HTTP-Headers did not match expected values ###VALUE_URL###</label>
 
 		</languageKey>
 		<languageKey index="de" type="array">
@@ -94,10 +103,19 @@
 			<label index="ping_error">Das Ping Kommando (###VALUE_COMMAND###) konnte nicht ausgeführt werden. Fehler: ###VALUE_RESULT### </label>
 			<label index="ping_no_command_template">Das Ping Kommandotemplate muss in der Extension Konfiguration definiert werden.</label>
 
+			<label index="http_error">HTTP Test der URL ###VALUE_URL### ergab einen FEHLER</label>
+			<label index="http_warning">HTTP Test der URL ###VALUE_URL### ergab eine WARNUNG</label>
+			<label index="http_ok">HTTP Test der URL ###VALUE_URL### war erfolgreich in ###VALUE_TIME### Sekuden und gab den Status ###VALUE_STATE### zurück</label>
+
 			<label index="http_no_query">Kein HTTP-Status-Code oder kein Query wurde eingegeben</label>
-			<label index="http_info">Der HTTP-Request der URL ###VALUE_URL### dauerte ###VALUE### Millisekunden und gab Status-Code ###VALUE_STATUS### zurück</label>
-			<label index="http_error">Der zurückgebene Status ###VALUE_STATUS### entspricht nicht dem erwarteten Wert ###VALUE_EXPECTED### ###VALUE_URL###</label>
-			
+			<label index="http_time_error">Der HTTP-Request dauerte ###VALUE_TIME### Millisekunden gab einen Fehler aufgrund Zeitüberschreitung zurück</label>
+			<label index="http_time_warning">Der HTTP-Request dauerte ###VALUE_TIME### Millisekunden gab eine Warnung aufgrund Zeitüberschreitung zurück</label>
+			<label index="http_state_error">Der HTTP Status ###VALUE_STATE_RETURNED### entspricht nicht dem erwarteten Wert von ###VALUE_STATE_EXPECTED###</label>
+			<label index="http_header_error">Der Wert "###VALUE_RETURNED###" im HTTP-Header "###VALUE_NAME###" entsprach nicht der Erwartung "###VALUE_EXPECTED###"</label>
+			<label index="http_header_missing">Der erwartete HTTP-Header ###VALUE_NAME### wurde nicht gefunden</label>
+			<label index="http_date_error">HTTP-Date-Header ###VALUE_DATE### ist älter als ###VALUE_MAX_AGE### Sekunden</label>
+			<label index="http_modified_error">HTTP-Last-Modified-Header  ###VALUE_LAST_MODIFIED### ist älter als ###VALUE_MAX_AGE### Sekunden</label>
+
 		</languageKey>
 	</data>
 </T3locallang>

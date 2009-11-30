@@ -42,8 +42,8 @@ require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_h
  */
 class tx_caretaker_httpTestService_stub extends tx_caretaker_httpTestService {
 	
-	public function checkExpectedHeaders( $expectedHeaders,$responseHeaders ){
-		return parent::checkExpectedHeaders( $expectedHeaders,$responseHeaders );
+	public function checkSingleHeader( $expectedHeaders,$responseHeaders ){
+		return parent::checkSingleHeader( $expectedHeaders,$responseHeaders );
 	}
 	
 }
@@ -185,43 +185,38 @@ class tx_caretaker_httpTestService_testcase extends tx_phpunit_testcase  {
 		$this->setMethodReturnValue($stub, 'getInstanceUrl',   'http://foo.bar.de/blubber');
 
 			// TRUE Assertations
-		$testedHeaders = array('value','123');
-
-		$expectedHeaders = array('value','= 123');
-		$this->assertTrue( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
-
-		$expectedHeaders = array('value','> 99');
-		$this->assertTrue( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
-
-		$expectedHeaders = array('value','< 200');
-		$this->assertTrue( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
+		$this->assertTrue( $stub->checkSingleHeader( '123', '=123' ) );
+		$this->assertTrue( $stub->checkSingleHeader( '123', '>99'  ) );
+		$this->assertTrue( $stub->checkSingleHeader( '123', '<200' ) );
 
 			// FALSE Assertations
-		$testedHeaders = array('value','345');
+		$this->assertFalse( $stub->checkSingleHeader( '345', '123'   ) );
+		$this->assertFalse( $stub->checkSingleHeader( '345', '= 123' ) );
+		$this->assertFalse( $stub->checkSingleHeader( '345', '> 400' ) );
+		$this->assertFalse( $stub->checkSingleHeader( '345', '< 300' ) );
 
-		$expectedHeaders = array('value','123');
-		$this->assertFalse( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
+			// Time comparison
+			// Mon, 30 Nov 2009 08:42:46 GMT
+		$date_timestamp = time() - 250 ;
+		$date_string    = strftime('%a, %e %b %Y %H:%M:%S %Z', $date_timestamp );
+		$testedHeaders  = array('value', $date_string );
 
-		$expectedHeaders = array('value','= 123');
-		$this->assertFalse( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
-
-		$expectedHeaders = array('value','> 400');
-		$this->assertFalse( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
-
-		$expectedHeaders = array('value','< 300');
-		$this->assertFalse( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
+		$this->assertTrue(  $stub->checkSingleHeader( $date_string, 'Age:<300'  ) );
+		$this->assertFalse( $stub->checkSingleHeader( $date_string, 'Age:<100'  ) );
+		$this->assertTrue(  $stub->checkSingleHeader( $date_string, 'Age:> 100' ) );
+		$this->assertFalse( $stub->checkSingleHeader( $date_string, 'Age:> 400' ) );
 
 			// Test Markers
-		$testedHeaders = array('value','http://foo.bar.de/blubber/blah');
-		$expectedHeaders = array('value','= ###INSTANCE_PROTOCOL###://###INSTANCE_HOSTNAME###/###INSTANCE_QUERY###/###REQUEST_QUERY###');
-		$this->assertTrue( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
-
-		$testedHeaders = array('value','https://foo.barz.de/blub/blÃ¤h');
-		$expectedHeaders = array('value','= ###INSTANCE_PROTOCOL###://###INSTANCE_HOSTNAME###/###INSTANCE_QUERY###/###REQUEST_QUERY###');
-		$this->assertFalse( $stub->checkExpectedHeaders( $expectedHeaders, $testedHeaders ) );
+		$header   = 'http://foo.bar.de/blubber/blah';
+		$compare  = '= ###INSTANCE_PROTOCOL###://###INSTANCE_HOSTNAME###/###INSTANCE_QUERY###/###REQUEST_QUERY###';
+		$this->assertTrue(  $stub->checkSingleHeader(  $header , $compare ) );
+		$this->assertFalse( $stub->checkSingleHeader( 'https://foo.barz.de/blub/bŠh', $compare ) );
+		$this->assertFalse( $stub->checkSingleHeader( 'https://foo.bar.de/blubber/blah', $compare ) );
+		$this->assertFalse( $stub->checkSingleHeader( 'http://foo.baz.de/blubber/blah', $compare ) );
+		$this->assertFalse( $stub->checkSingleHeader( 'http://foo.bar.de/blub/blah', $compare ) );
+		$this->assertFalse( $stub->checkSingleHeader( 'http://foo.bar.de/blubber/blŠh', $compare ) );
 
 	}
-	
 }
 
 ?>

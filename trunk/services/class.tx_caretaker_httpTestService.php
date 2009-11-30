@@ -73,113 +73,241 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 */
 	function runTest() {
 		
-		$time_warning     = $this->getTimeWarning();
-		$time_error       = $this->getTimeError();
-		$expected_status  = $this->getExpectedReturnCode();
-		$expected_headers = $this->getExpectedHeaders();
-		$request_query    = $this->getRequestQuery();
-		$request_method   = $this->getRequestMethod();
-		$request_data     = $this->getRequestData();
+		$timeWarning     = $this->getTimeWarning();
+		$timeError       = $this->getTimeError();
+
+			// request
+		$requestQuery    = $this->getRequestQuery();
+		$requestMethod   = $this->getRequestMethod();
+		$requestData     = $this->getRequestData();
+		$requestUsername = $this->getRequestUsername();
+		$requestPassword = $this->getRequestPassword();
+
+			// response
+		$expectedStatus  = $this->getExpectedReturnCode();
+		$expectedHeaders = $this->getExpectedHeaders();
+		$expectedDateAge = $this->getExpectedDateAge();
+		$expectedModifiedAge = $this->getExpectedModifiedAge();
+		
 		
 		$url           = $this->getInstanceUrl();
 		$parsed_url    = parse_url($url);
 		if ($parsed_url['path'] == '') {
 			$parsed_url['path'] = '/';
 		}
-		$request_url   = $parsed_url['scheme'] . '://' . $parsed_url['host'] . $parsed_url['path'] . $request_query;
+		$request_url   = $parsed_url['scheme'] . '://' . $parsed_url['host'] . $parsed_url['path'] . $requestQuery;
 
 			// no query
-		if ( !($expected_status && $request_url)) {
+		if ( !($expectedStatus && $request_url)) {
 	    	return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_UNDEFINED, 0 , 'LLL:EXT:caretaker/locallang_fe.xml:http_no_query' );
 		}
 
 			// execute query
-		list ($time, $response, $info, $headers) = $this->executeCurlRequest($request_url, $time_error, $request_method, $request_data);
+		list ($time, $response, $info, $headers) = $this->executeCurlRequest($request_url, $timeError * 3, $requestMethod, $requestUsername, $requestPassword, $requestData);
 		
-		$values = array('url'=>$request_url, 'status'=>$info['http_code'], 'expected' => $expected_status );
 		$submessages = array();
 
-			// ERROR
-		if ($time_error && $time > $time_error ){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:http_info', $values )  );
+			// time-ERROR
+		$resultState = TX_CARETAKER_STATE_OK;
+		if ($timeError && $time > $timeError ){
+			$resultState = TX_CARETAKER_STATE_ERROR;
+			$submessages[] = new tx_caretaker_ResultMessage(
+				'LLL:EXT:caretaker/locallang_fe.xml:http_time_error',
+				array('time'=>$time)
+			);
+		}
+			// time-WARNING
+		else if ($timeWarning && $time > $timeWarning ){
+			if ($resultState < TX_CARETAKER_STATE_WARNING ) $resultState = TX_CARETAKER_STATE_WARNING;
+			$submessages[] = new tx_caretaker_ResultMessage(
+				'LLL:EXT:caretaker/locallang_fe.xml:http_time_warning',
+				array('time'=>$time)
+			);
 		}
 
-			// WARNING
-		if ($time_warning && $time > $time_warning ){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING, $time ,  new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:http_info', $values )  );
+			// http-status check
+		if ($info['http_code'] != $expectedStatus){
+			$resultState = TX_CARETAKER_STATE_ERROR;
+			$submessages[] = new tx_caretaker_ResultMessage(
+				'LLL:EXT:caretaker/locallang_fe.xml:http_state_error',
+				array(
+					'state_returned'=>$info['http_code'],
+					'state_expected'=>$expectedStatus,
+				)
+			);
+		}
+		
+			// http-header check
+		if ( count($expectedHeaders)>0 ){
+			$headerSuccess = TRUE;
+			foreach ( $expectedHeaders as $headerName => $expectedValue ){
+				$returnedValue = $headers[$headerName];
+				if ( !$returnedValue ) {
+					$resultState = TX_CARETAKER_STATE_ERROR;
+					$submessages[] = new tx_caretaker_ResultMessage(
+						'LLL:EXT:caretaker/locallang_fe.xml:http_header_missing',
+						array( 'name'=>$headerName )
+					);
+				} else {
+					$partialSuccess = $this->checkSingleHeader ($returnedValue , $expectedValue ) ;
+					if ($partialSuccess == FALSE) {
+						$headerSuccess = FALSE;
+						$submessages[] = new tx_caretaker_ResultMessage(
+							'LLL:EXT:caretaker/locallang_fe.xml:http_header_error',
+							array(
+								'name'=>$headerName,
+								'expected'=>$expectedValue,
+								'returned'=>$returnedValue
+							)
+						);
+					}
+				}
+			}
+			if ( !$headerSuccess ) $resultState = TX_CARETAKER_STATE_ERROR;
 		}
 
-			// OK but status fails
-		if ($info['http_code'] != $expected_status){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:http_error', $values )  );
+			// date header check
+		if ( $expectedDateAge ) {
+			$expectedDate   = 'Age:<'.$expectedDateAge;
+			$returnedDate   = $headers['Date'];
+			if (!$returnedDate ) {
+				$resultState = TX_CARETAKER_STATE_ERROR;
+				$submessages[] = new tx_caretaker_ResultMessage(
+					'LLL:EXT:caretaker/locallang_fe.xml:http_header_missing',
+					array( 'name'=>'Date' )
+				);
+			} else {
+				$partialSuccess = $this->checkSingleHeader ( $returnedDate , $expectedDate ) ;
+				if (!$partialSuccess){
+					$resultState = TX_CARETAKER_STATE_ERROR;
+					$submessages[] = new tx_caretaker_ResultMessage(
+						'LLL:EXT:caretaker/locallang_fe.xml:http_date_error',
+						array(
+							'date'=>$returnedDate,
+							'max_age'=> $expectedDateAge
+						)
+					);
+				}
+			}
 		}
 
-			// OK but header fails
-		if ( !$this->checkExpectedHeaders( $expected_headers,$headers ) ){
-			return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR, $time , new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:header_error', $values )  );
+			// modified header check
+		if ( $expectedModifiedAge ) {
+			$expectedDate   = 'Age:<'.$expectedModifiedAge;
+			$returnedDate   = $headers['Last-Modified'];
+			if (!$returnedDate ) {
+				$resultState = TX_CARETAKER_STATE_ERROR;
+				$submessages[] = new tx_caretaker_ResultMessage(
+					'LLL:EXT:caretaker/locallang_fe.xml:http_header_missing',
+					array( 'name'=>'Last-Modified' )
+				);
+			} else {
+				$partialSuccess = $this->checkSingleHeader ( $returnedDate, $expectedDate ) ;
+				if (!$partialSuccess){
+					$resultState = TX_CARETAKER_STATE_ERROR;
+					$submessages[] = new tx_caretaker_ResultMessage(
+						'LLL:EXT:caretaker/locallang_fe.xml:http_modified_error',
+						array(
+							'last_modified'=>$returnedDate,
+							'max_age'=> $expectedModifiedAge
+						)
+					);
+				}
+			}
 		}
 
-			// ERROR wrong status code
-		return tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK, $time ,  new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:http_info', $values )  );
+		$message = '';
+		$values  = array( 'url'=>$request_url, 'time'=>$time, 'state'=>$info['http_code']);
+		switch ($resultState){
+			case TX_CARETAKER_STATE_ERROR:
+				$message = 'LLL:EXT:caretaker/locallang_fe.xml:http_error';
+				break;
+			case TX_CARETAKER_STATE_WARNING:
+				$message = 'LLL:EXT:caretaker/locallang_fe.xml:http_warning';
+				break;
+			case TX_CARETAKER_STATE_OK:
+				$message = 'LLL:EXT:caretaker/locallang_fe.xml:http_ok';
+				break;
+		}
+
+
+			// Return
+		return tx_caretaker_TestResult::create( $resultState, $time ,  new tx_caretaker_ResultMessage( $message, $values ), $submessages  );
 		
 	}
 
+
 	/**
-	 * Compare the expected headers
-	 * 
+	 * compare returned http headers with expected values
+	 *
+	 * @param string $headerValue
+	 * @param string $expectedValue
 	 * @return boolean
 	 */
-	protected function checkExpectedHeaders( $expectedHeaders,$responseHeaders ){
+	protected function checkSingleHeader ($headerValue, $expectedValue){
 
-		$instanceUrl      = $this->getInstanceUrl();
-		$instanceUrlParts = explode( '/', str_replace( '://' , '/' , $instanceUrl ) );
+		if ( !$headerValue || strlen(trim($headerValue)) == 0 ) return false;
 
-		$instanceProtocol = array_shift( $instanceUrlParts );
- 		$instanceHostname = array_shift( $instanceUrlParts );
-		$instanceQuery    = implode( '/', $instanceUrlParts );
+			// replace values in expectd headers
+		if ( strpos( $expectedValue, '###' ) !== FALSE ){
+			$instanceUrl      = $this->getInstanceUrl();
+			$instanceUrlParts = explode( '/', str_replace( '://' , '/' , $instanceUrl ) );
+			$instanceProtocol = array_shift( $instanceUrlParts );
+			$instanceHostname = array_shift( $instanceUrlParts );
+			$instanceQuery    = implode( '/', $instanceUrlParts );
+			$requestQuery     = $this->getRequestQuery();
 
-		$requestQuery     = $this->getRequestQuery();
-
+			$expectedValue = str_replace ('###INSTANCE_URL###',      $instanceUrl,      $expectedValue);
+			$expectedValue = str_replace ('###INSTANCE_PROTOCOL###', $instanceProtocol, $expectedValue);
+			$expectedValue = str_replace ('###INSTANCE_HOSTNAME###', $instanceHostname, $expectedValue);
+			$expectedValue = str_replace ('###INSTANCE_QUERY###',    $instanceQuery,    $expectedValue);
+			$expectedValue = str_replace ('###REQUEST_QUERY###',     $requestQuery,     $expectedValue);
+		}
+		
 		$result = TRUE;
-		foreach ( $expectedHeaders as $headerName => $expectedValue ){
-			
-			$partialResult = TRUE;
-			$headerValue   = NULL;
-			
-				// header was not found
-			if (!$responseHeaders[$headerName]) {
-				$partialResult = FALSE;
-			}
-				// header was found
-			else {
-				$headerValue = $responseHeaders[$headerName];
-				
-					// replace values
-				$expectedValue = str_replace ('###INSTANCE_URL###',      $instanceUrl,      $expectedValue);
-				$expectedValue = str_replace ('###INSTANCE_PROTOCOL###', $instanceProtocol, $expectedValue);
-				$expectedValue = str_replace ('###INSTANCE_HOSTNAME###', $instanceHostname, $expectedValue);
-				$expectedValue = str_replace ('###INSTANCE_QUERY###',    $instanceQuery,    $expectedValue);
-				$expectedValue = str_replace ('###REQUEST_QUERY###',     $requestQuery,     $expectedValue);
-				
-					// find comparison mode
-				if ( strpos( $expectedValue , '=') === 0 )  {
-					$partialResult = ( $headerValue == trim( substr( $expectedValue , 1 ) ) );
-				} else if ( strpos( $expectedValue , '<' ) === 0 ) {
-					$partialResult = ( intval( $headerValue ) < intval( substr( $expectedValue , 1 ) ) );
-				} else if ( strpos( $expectedValue , '>' ) === 0 ) {
-					$partialResult = ( intval( $headerValue ) > intval( substr( $expectedValue , 1 ) ) );
-				} else {
-					$partialResult = ( $headerValue == $expectedValue );
-				}
-			}
 
-			if ($partialResult == FALSE) {
-				$result = FALSE;
-			}
+			// = Value equals
+		if ( strpos( $expectedValue , '=') === 0 )  {
+			$result = ( $headerValue == trim( substr( $expectedValue , 1 ) ) );
+		}
+			// < Intval smaller than
+		else if ( strpos( $expectedValue , '<' ) === 0 ) {
+			$result = ( intval( $headerValue ) < intval( substr( $expectedValue , 1 ) ) );
+		}
+			// > Intval bigger than
+		else if ( strpos( $expectedValue , '>' ) === 0 ) {
+			$result = ( intval( $headerValue ) > intval( substr( $expectedValue , 1 ) ) );
+		}
+			// AGE<
+		else if ( strpos( $expectedValue , 'Age:<' ) === 0 ) {
+			$age = intval( substr( $expectedValue , 5 ) );
+			$headerTimestamp =  $this->parseHeaderDate($headerValue);
+			$result = ( $headerTimestamp >= time() - $age );
+		}
+			// AGE>
+		else if ( strpos( $expectedValue , 'Age:>' ) === 0 ) {
+			$age = intval( substr( $expectedValue , 5 ) );
+			$headerTimestamp =  $this->parseHeaderDate($headerValue);
+			$result = ( $headerTimestamp < time() - $age );
+		}
+			// default
+		else {
+			$result = ( $headerValue == $expectedValue );
 		}
 
 		return $result;
-		
+	}
+
+	
+	public function parseHeaderDate($datestring){
+			// replace  wekkdays >> %u
+		$datestring = str_replace( array( 'Mon','Tue','Wed','Thu','Fri','Sat','Sun' ), array( 1,2,3,4,5,6,7), $datestring );
+			// replace Month >> %m or %e
+		$datestring = str_replace( array( 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec' ), array( 1,2,3,4,5,6,7,8,9,10,11,12 ), $datestring );
+			// convert
+		$date = strptime( $datestring, '%u, %e %m %Y %H:%M:%S %Z');
+		$timestamp = mktime($date['tm_hour'],$date['tm_min'],$date['tm_sec'],$date['tm_mon']+1,$date['tm_mday'], 1900+$date['tm_year'] );
+		return $timestamp;
 	}
 	
 	/**
@@ -207,6 +335,22 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	}
 
 	/**
+	 * Get the expected maximum age of the Last-Modified Header in Seconds
+	 * @return integer
+	 */
+	protected function getExpectedDateAge(){
+		return intval($this->getConfigValue('expected_date_age'));
+	}
+
+	/**
+	 * Get the expected maximum age of the Date Header in Seconds
+	 * @return integer
+	 */
+	protected function getExpectedModifiedAge(){
+		return intval($this->getConfigValue('expected_modified_age'));
+	}
+
+	/**
 	 * Get the expected headers from the test configuration
 	 * @return array an associative Array with headers as key and expectec values as sting value
 	 */
@@ -228,7 +372,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	}
 
 	/**
-	 * 
+	 * Get the url path and query for the request
 	 * @return string
 	 */
 	protected function getRequestQuery(){
@@ -236,13 +380,30 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	}
 	
 	/**
-	 * 
+	 * Get the HTTP-Method for the Request
 	 * @return string
 	 */
 	protected function getRequestMethod(){
 		return $this->getConfigValue('request_method');
 	}
-	
+
+	/**
+	 * Get the username for the HTTP-request
+	 * @return string
+	 */
+	protected function getRequestUsername(){
+		return $this->getConfigValue('request_username');
+	}
+
+
+	/**
+	 * Get the password for the HTTP-request
+	 * @return string
+	 */
+	protected function getRequestPassword(){
+		return $this->getConfigValue('request_password');
+	}
+
 	/**
 	 * 
 	 * @return string
@@ -271,12 +432,13 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * 
 	 * @param string $request_url
 	 * @param string $request_method
+	 * @param string $request_username
+	 * @param string $request_password
 	 * @param string $request_data
-	 * @return array http-Status and time in Seconds
+	 * @return array time in seconds and status information im associatie arrays
 	 */
-	protected function executeCurlRequest($request_url , $timeout=0, $request_method="GET" , $request_data="" ){
-		$starttime=microtime(TRUE);
-		
+	protected function executeCurlRequest($request_url , $timeout=0, $request_method='GET', $request_username='', $request_password='', $request_data='' ){
+
 		$curl = curl_init();
 		
 			// url & timeout
@@ -284,6 +446,11 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
         if ( $timeout > 0 ) { 
         	curl_setopt($curl, CURLOPT_TIMEOUT, (int)ceil( $timeout / 1000) );
         }
+		
+			// username & password
+		if ( $request_username && $request_password ) {
+			curl_setopt($curl, CURLOPT_USERPWD, $request_username.':'.$request_password);
+		}
 			// handle request method
 		switch ($request_method){
 			case 'POST':
@@ -325,9 +492,8 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 			}
 		}
 
-		$endtime=microtime(TRUE);
-		$time = ($endtime-$starttime)*1000;
-		
+		$time = $info['total_time'] * 1000;
+
 		return array ( $time, $response, $info, $headers );
 	}
 }
