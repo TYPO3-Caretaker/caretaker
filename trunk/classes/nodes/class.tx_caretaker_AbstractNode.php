@@ -155,6 +155,14 @@ abstract class tx_caretaker_AbstractNode {
 	}
 
 	/**
+	 * Get the parent node
+	 * @return tx_caretaker_AbstractNode
+	 */
+	public function getParent(){
+		return $this->parent;
+	}
+
+	/**
 	 * set hidden state
 	 * @param boolean boolean
 	 */
@@ -181,6 +189,7 @@ abstract class tx_caretaker_AbstractNode {
 	/**
 	 * Get the Description
 	 * @return string
+	 * @deprecated
 	 */
 	public function getDescription(){
 		return $this->description;
@@ -230,22 +239,37 @@ abstract class tx_caretaker_AbstractNode {
 	/**
 	 * Get the description of the Testsevice
 	 * @return string
+	 * @deprecated
 	 */
 	public function getTypeDescription(){
 		return '';
 	}
 
+	/**
+	 * Get the configuration infotext
+	 *
+	 * @return string
+	 * @deprecated
+	 */
 	public function getConfigurationInfo(){
 		return '';
 	}
 
+	/**
+	 * Get the info weather a node is hidden
+	 *
+	 * @return string
+	 * @deprecated
+	 */
 	public function getHiddenInfo(){
 		return ($this->getHidden() ? 'yes' : 'no');
 	}
 	
 	/** 
 	 * Get a Description for the Node Value
+	 *
 	 * @return string
+	 * @deprecated
 	 */
 	abstract public function getValueDescription();
 
@@ -264,15 +288,9 @@ abstract class tx_caretaker_AbstractNode {
 		}
 	}
 	
-	/*
-	 * Update Node Result and store in DB. 
-	 * 
-	 * @param boolean Force update of children
-	 * @return tx_caretaker_NodeResult
-	 */
-	
 	/**
 	 * Update the NodeState (Execute Test)
+	 *
  	 * @param boolean $force_update
 	 * @return tx_caretaker_NodeResult
 	 */
@@ -280,6 +298,7 @@ abstract class tx_caretaker_AbstractNode {
 	
 	/**
 	 * Read current Node Result
+	 * 
 	 * @return tx_caretaker_NodeResult
 	 */	
 	abstract public function getTestResult();
@@ -294,13 +313,14 @@ abstract class tx_caretaker_AbstractNode {
 	abstract public function getTestResultRange($startdate, $stopdate);
 
 	/**
-	 * @return interger Number of available Testresults
+	 * Get the Number of available Testresults
+	 * @return interger
 	 */
 	abstract public function getTestResultNumber();
 
 
 	/**
-	 * Get Test Result Objects
+	 * Get Test Result Objects 
 	 *
 	 * @param integer $offset
 	 * @param integer $limit
@@ -353,76 +373,7 @@ abstract class tx_caretaker_AbstractNode {
 		}
 	}
 	
-	/*
-	 * ###########################
-	 * ### Notification Methods ##
-	 * ###########################
-	 */
-
-	/**
-	 * Add a list of tt_address UIDs for Notification
-	 *
-	 * @param $id_array
-	 * @return unknown_type
-	 */
-	public function setNotificationIds($notification_address_ids){
-		$this->notification_address_ids = $notification_address_ids;
-	}
-
-	/**
-	 * Get the list of notifications
-	 *
-	 * @return array Array of tt_address uids
-	 */
-	public function getNotificationIds ($include_parent_notification_ids = false){
-		$notification_address_ids = $this->notification_address_ids;
-		if ($include_parent_notification_ids && $this->parent) {
-			$notification_address_ids = array_merge($notification_address_ids,  $this->parent->getNotificationIds($include_parent_notification_ids) );
-			$notification_address_ids = array_unique($notification_address_ids);
-		}
-		return $notification_address_ids;
-	}
-
-	/**
-	 * Set the current Notifier
-	 *
-	 * @param tx_caretaker_NotifierInterface $notifier
-	 */
-	public function setNotifier (tx_caretaker_NotifierInterface $notifier){
-		$this->notifier = $notifier;
-	}
 	
-	/**
-	 * Pass Notification to Notifier or Parent
-	 *
-	 * @param array $recipients
-	 * @param integer $state
-	 * @param string $msg
-	 * @param string $description
-	 * @param integer $node_id
-	 */
-	private function notify( $recipients, $state, $msg = '' ,$description = '' , $node_id = false){
-		if ($this->notifier){
-			$this->notifier->addNotification($recipients, $state, $msg, $description, $node_id);
-		} else if ($this->parent) {
-			$this->parent->notify($recipients, $state, $msg, $description, $node_id);
-		}
-	}
-
-	/**
-	 * Add a Nofitcation
-	 *
-	 * @param integer $state
-	 * @param string $msg
-	 */
-	public function sendNotification( $state, $msg){
-		$notification_address_ids = $this->getNotificationIds(true);
-		if ( count($notification_address_ids) > 0 ){
-			foreach($notification_address_ids as $notfificationId){
-				$this->notify( $notfificationId, $state, $this->type.' '.$this->title.'['.$this->uid.'] '.$msg, $this->description, $this->getCaretakerNodeId() );
-			}
-		}
-	}
 	
 }
 ?>

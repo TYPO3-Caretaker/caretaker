@@ -44,8 +44,11 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TerupdateTask
 	// load Service Helper
 include_once(t3lib_extMgm::extPath('caretaker').'classes/helpers/class.tx_caretaker_ServiceHelper.php');
 
-	// register Tests
-tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_ping',  'Ping' , 'Retrieves System Informations' );
-tx_caretaker_ServiceHelper::registerCaretakerService ($_EXTKEY , 'services' , 'tx_caretaker_http',  'HTTP' , 'Call an URI and check the HTTP-Status' );
+	// register Test-Services
+tx_caretaker_ServiceHelper::registerCaretakerTestService ($_EXTKEY , 'services' , 'tx_caretaker_ping',  'Ping' , 'Retrieves System Informations' );
+tx_caretaker_ServiceHelper::registerCaretakerTestService ($_EXTKEY , 'services' , 'tx_caretaker_http',  'HTTP' , 'Call an URI and check the HTTP-Status' );
+
+	//register Notification-Services
+tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'SimpleMailNotificationService', 'classes/services/class.tx_caretaker_SimpleMailNotificationService.php', 'tx_caretaker_SimpleMailNotificationService' );
 
 ?>

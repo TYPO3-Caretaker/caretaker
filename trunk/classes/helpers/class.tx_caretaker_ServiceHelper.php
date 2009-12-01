@@ -49,27 +49,50 @@
  */
 class tx_caretaker_ServiceHelper {
 
+	private static $notificationServiceInstances = array();
+
 	/**
-	 * Returns an array with all services with the type "caretaker"
+	 * Returns an array with all services with the type "caretaker_test_service"
+	 * 
+	 * @return array
+	 * @deprecated
+	 */
+	public static function getAllCaretakerServices() {
+		return tx_caretaker_ServiceHelper::getAllCaretakerTestServices();
+	}
+
+	/**
+	 * Returns an array with all services with the type "caretaker_test_service"
 	 *
 	 * @return array
 	 */
-	public function getAllCaretakerServices() {
-		global $T3_SERVICES;
-		return $T3_SERVICES['caretaker_test_service'];
+	public static function getAllCaretakerTestServices(){
+		return $GLOBALS['T3_SERVICES']['caretaker_test_service'];
 	}
-		
+
 	/**
 	 * Adds a service for caretaker. The service is registered and the type and flexform is added to the testconf
 	 *
-	 * @param string $extKey: kex of the extension wich is adding the service
-	 * @param string $path: path to the flexform and service class without slahes before and after
-	 * @param key $key: key wich is used for the service
-	 * @param class: the class wich implements the service (default: <path>/class.<key>.txt)
-	 * @param flexform: the flexform config (default: <path>/ds.<key>.xml)
+	 * @param string $extKey kex of the extension wich is adding the service
+	 * @param string $path path to the flexform and service class without slahes before and after
+	 * @param string $key key wich is used for to identify the service
+	 * @param string $title  title of the testservice
+	 * @param string $description description of the testservice
 	 */
-	
 	public static function registerCaretakerService ($extKey, $path, $key, $title, $description=''){
+		return tx_caretaker_ServiceHelper::registerCaretakerTestService($extKey, $path, $key, $title, $description);
+	}
+	
+	/**
+	 * Adds a service for caretaker. The service is registered and the type and flexform is added to the testconf
+	 *
+	 * @param string $extKey kex of the extension wich is adding the service
+	 * @param string $path path to the flexform and service class without slahes before and after
+	 * @param string $key key wich is used for to identify the service
+	 * @param string $title  title of the testservice
+	 * @param string $description description of the testservice
+	 */
+	public static function registerCaretakerTestService ($extKey, $path, $key, $title, $description=''){
 		global $TCA;
 		
 		t3lib_div::loadTCA('tx_caretaker_test');
@@ -104,6 +127,31 @@ class tx_caretaker_ServiceHelper {
 		}
 		
 	}
-	
+
+	/**
+	 * Register a new caretaker notification service. The ClassFile and
+	 *
+	 * @param string $extKey key of the extension wich is adding the service
+	 * @param string $serviceKey  key wich is used for the service
+	 * @param string $classFile path and filename of the php which implements the service
+	 * @param string $className the classname of the php-class which implements the service
+	 */
+	public static function registerCaretakerNotificationService ( $extKey, $serviceKey, $classPath, $className ){
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$serviceKey] = 'EXT:'.$extKey.'/'.$classPath.':'.$className;
+	}
+
+	/**
+	 * Returns an array with all services with the type "caretaker_notification_service"
+	 * 
+	 * @return array
+	 */
+	public static function getAllCaretakerNotificationServices(){
+		$result = array();
+		foreach ( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'] as $serviceKey => $notificationService){
+			$result[$serviceKey] = t3lib_div::getUserObj($notificationService);
+		}
+		return $result;
+	}
+
 }
 ?>

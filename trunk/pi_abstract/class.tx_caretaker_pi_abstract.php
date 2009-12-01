@@ -145,9 +145,15 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 	 * @return array Associative Array with the keys 'nodeInfo' and 'testResults'
 	 */
 	function getNodeStatusData($node){
-		
-		$testChildNodes = $node->getTestNodes();
 
+		if ( is_a( $node, 'tx_caretaker_AggregatorNode') ){
+			$testChildNodes = $node->getTestNodes();
+		} else if ( is_a( $node, 'tx_caretaker_TestNode') ) {
+			$testChildNodes = array ($node);
+		} else {
+			$testChildNodes = array ();
+		}
+			
 		$nodesErrors    = array();
 		$nodesWarnings  = array();
 

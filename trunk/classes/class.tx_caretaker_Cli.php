@@ -107,10 +107,8 @@ class tx_caretaker_Cli extends t3lib_cli {
         	}
         	
         	if ($node) {
-        		$notifier = new tx_caretaker_CliNotifier();
 
-        		$node->setNotifier($notifier);
-        		$node->setLogger($logger);
+				$node->setLogger($logger);
         	
         		$res = FALSE;
 	        	if ($task == 'update') {
@@ -120,9 +118,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 	        	if ($task == 'get') {
 		        	 $res = $node->getTestResult();
 	        	}
-	        	
-	        	$notifier->sendNotifications();
-	        	
+	        	       	
 	        	if ($return_status) {
 	        		$logger->log('State: ' . $res->getState() . ':' . $res->getStateInfo());
 	        		exit ((int)$res->getState());

@@ -295,9 +295,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 			}
 			
 				// trigger notification
-			if ($result->getState() > 0){
-				$this->sendNotification( $result->getState() , $result->getLocallizedInfotext() );
-			} 
+			$this->notify( $result,$lastTestResult );
 
 				// trigger log
 			$this->log('update '.$result->getLocallizedStateInfo().' '.$result->getLocallizedInfotext().' '.$msg );
@@ -317,6 +315,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	/**
 	 * Get the all tests wich can be found below this node
 	 * @return array
+	 * @deprecated This should be only necessary for aggregator nodes
 	 */
 	public function getTestNodes(){
 		return array($this);
@@ -359,18 +358,6 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 		return $result;
 	}
-	
-	/**
-	 * Get the TestResultRange for the given Timerange
-	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
-	 * @param $graph True by default. Used in the resultrange repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
-	 */
-	public function getTestResultRange($start_timestamp, $stop_timestamp, $graph = true){
-		$instance  = $this->getInstance();
-		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$resultRange = $test_result_repository->getRangeByNode( $this, $start_timestamp, $stop_timestamp, $graph );
-		return $resultRange;
-	}
 
 	/**
 	 * Get the number of available Test Results
@@ -383,10 +370,23 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		$resultNumber = $test_result_repository->getResultNumberByNode( $this );
 		return $resultNumber;
 	}
+	
+	/**
+	 * Get the TestResultRange for the given Timerange
+	 * 
+	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
+	 * @param $graph True by default. Used in the resultrange repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
+	 */
+	public function getTestResultRange($start_timestamp, $stop_timestamp, $graph = true){
+		$instance  = $this->getInstance();
+		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
+		$resultRange = $test_result_repository->getRangeByNode( $this, $start_timestamp, $stop_timestamp, $graph );
+		return $resultRange;
+	}
 
-        /**
+	/**
 	 * Get the TestResultRange for the Offset and Limit
-         *
+	 *
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
 	 * @param $graph True by default. Used in the resultrange repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
 	 */
@@ -396,5 +396,21 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		$resultRange = $test_result_repository->getResultRangeByNodeAndOffset( $this, $offset, $limit );
 		return $resultRange;
 	}
+
+
+	/**
+	 * Send a notification to all registered notofication services
+	 *
+	 * @param tx_caretaker_TestResult $result
+	 * @param tx_caretaker_TestResult $lastResult
+	 */
+	public function notify ($result, $lastResult = NULL ){
+			// find all registered notification services
+		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
+		foreach ($notificationServices as $notificationService){
+			$notificationService->addNotification( $this, $result, $lastResult );
+		}
+	}
+	
 }
 ?>

@@ -359,7 +359,6 @@ class tx_caretaker_NodeRepository {
 	 */
 	private function dbrow2instance($row, $parent = false){
 		$instance = new tx_caretaker_InstanceNode($row['uid'], $row['title'], $parent, $row['url'], $row['host'], $row['public_key'], $row['hidden']);
-		if ($row['notifications'] ) $instance->setNotificationIds(explode(',', $row['notifications'] ) );
 		if ($row['description'] )   $instance->setDescription( $row['description'] );
 		if ($row['testconfigurations']) $instance->setTestConfigurations($row['testconfigurations']);
 		$instance->setDbRow($row);
@@ -468,7 +467,6 @@ class tx_caretaker_NodeRepository {
 	 */
 	private function dbrow2testgroup($row, $parent){
 		$instance = new tx_caretaker_TestgroupNode($row['uid'], $row['title'], $parent, $row['hidden']);
-		if ($row['notifications'] ) $instance->setNotificationIds(explode(',', $row['notifications'] ) );
 		if ($row['description'] )   $instance->setDescription( $row['description'] );
 		$instance->setDbRow($row);
 		return $instance; 
@@ -561,7 +559,6 @@ class tx_caretaker_NodeRepository {
 	 */
 	private function dbrow2test($row, $parent = false){
 		$instance = new tx_caretaker_TestNode( $row['uid'], $row['title'], $parent, $row['test_service'], $row['test_conf'], $row['test_interval'], $row['test_retry'], $row['test_interval_start_hour'], $row['test_interval_stop_hour'] , $row['hidden']);
-		if ($row['notifications'] ) $instance->setNotificationIds(explode(',', $row['notifications'] ) );
 		if ($row['description'] )   $instance->setDescription( $row['description'] );
 		$instance->setDbRow($row);
 		return $instance; 
