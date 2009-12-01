@@ -219,7 +219,13 @@ class tx_caretaker_NodeInfo {
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
         if ($node_id && $node = $node_repository->id2node($node_id, true) ){
 
-			$testChildNodes = $node->getTestNodes();
+			if ( is_a( $node, 'tx_caretaker_AggregatorNode') ){
+				$testChildNodes = $node->getTestNodes();
+			} else if ( is_a( $node, 'tx_caretaker_TestNode') ) {
+				$testChildNodes = array ($node);
+			} else {
+				$testChildNodes = array ();
+			}
 
            
 
