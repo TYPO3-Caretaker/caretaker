@@ -71,6 +71,13 @@ class tx_caretaker_TestrunnerTask extends tx_scheduler_Task {
 
 		$node->updateTestResult();
 
+			// send aggregated notifications
+		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
+		foreach ( $notificationServices as $notificationService ){
+			$notificationService->sendNotifications();
+		}
+
+
 		$success = true;
 		
 		return $success;

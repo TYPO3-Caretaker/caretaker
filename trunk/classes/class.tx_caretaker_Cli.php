@@ -118,7 +118,13 @@ class tx_caretaker_Cli extends t3lib_cli {
 	        	if ($task == 'get') {
 		        	 $res = $node->getTestResult();
 	        	}
-	        	       	
+				
+					// send aggregated notifications
+				$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
+				foreach ( $notificationServices as $notificationService ){
+					$notificationService->sendNotifications();
+				}
+
 	        	if ($return_status) {
 	        		$logger->log('State: ' . $res->getState() . ':' . $res->getStateInfo());
 	        		exit ((int)$res->getState());

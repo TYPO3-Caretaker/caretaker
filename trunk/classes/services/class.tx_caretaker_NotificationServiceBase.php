@@ -46,7 +46,7 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-abstract class tx_caretaker_NotificationServiceBase implements tx_caretaker_NotificationServiceInterface {
+abstract class tx_caretaker_NotificationServiceBase {
 	
     /**
 	 * Notify the service about a test status
@@ -55,19 +55,12 @@ abstract class tx_caretaker_NotificationServiceBase implements tx_caretaker_Noti
 	 * @param tx_caretaker_TestResult $result
 	 * @param tx_caretaKer_TestResult $lastResult
 	 */
-	//abstract public function addNotification ($test, $result, $lastResult);
+	abstract public function addNotification ($test, $result, $lastResult);
 
 	/**
 	 * Send the aggregated Notifications
 	 */
-	//abstract public function sendNotifications();
-
-	/*
-	 * The destructor triggers the notification sending
-	 */
-	public function __destruct(){
-		$this->sendNotifications();
-	}
+	abstract public function sendNotifications();
 	
 }
 ?>

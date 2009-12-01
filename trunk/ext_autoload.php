@@ -18,13 +18,11 @@ return array(
 	'tx_caretaker_pibase' => t3lib_extMgm::extPath('caretaker', '/pi_base/class.tx_caretaker_pibase.php'),
 
 		/* notification services */
-	'tx_caretaker_notificationserviceinterface'  => t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_NotificationServiceInterface.php'),
 	'tx_caretaker_notificationservicebase'       => t3lib_extMgm::extPath('caretaker', 'classes/services/class.tx_caretaker_NotificationServiceBase.php'),
 	'tx_caretaker_simplemailnotificationservice' => t3lib_extMgm::extPath('caretaker', 'classes/services/class.tx_caretaker_SimpleMailNotificationService.php'),
 
 		/* interfaces */
 	'tx_caretaker_loggerinterface'		=> t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_LoggerInterface.php'),
-	'tx_caretaker_notifierinterface'	=> t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_NotifierInterface.php'),
 	'tx_caretaker_resultrangerenderer'	=> t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_ResultRangeRenderer.php'),
 	'tx_caretaker_testservice'			=> t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_TestService.php'),
 

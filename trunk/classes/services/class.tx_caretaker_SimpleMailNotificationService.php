@@ -66,7 +66,7 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_Notificati
 		$this->mail_from      = $confArray['notification.']['mail_from'];
 		$this->mail_subject   = $confArray['notification.']['mail_subject'];
 		$this->mail_link      = $confArray['notification.']['mail_link'];
-
+		
 	}
 
    	/**
@@ -78,14 +78,14 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_Notificati
 	 */
 	public function addNotification ($test, $result, $lastResult){
 
-			// check that the state is not ok
+			// check that the state is not ok or undefined
 		if ( $result->getState() <= TX_CARETAKER_STATE_OK ){
 			return;
 		}
 
 			// Check that the result is not equal to the previous one
 		if ( $lastResult && $result->getState() == $lastResult->getState() ){
-			return;
+			// return;
 		}
 
 			// collect the recipients fron the node rootline
@@ -129,8 +129,7 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_Notificati
 	 * Send the aggregated Notifications
 	 */
 	public function sendNotifications(){
-		
-
+				
 		foreach ($this->recipients_messages as $recipientID => $recipientInfo){
 				
 				// read address

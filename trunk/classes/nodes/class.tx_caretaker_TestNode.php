@@ -407,7 +407,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	public function notify ($result, $lastResult = NULL ){
 			// find all registered notification services
 		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
-		foreach ($notificationServices as $notificationService){
+		foreach ( $notificationServices as $notificationService ){
 			$notificationService->addNotification( $this, $result, $lastResult );
 		}
 	}
