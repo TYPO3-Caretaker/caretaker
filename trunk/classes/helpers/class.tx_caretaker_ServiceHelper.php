@@ -148,9 +148,23 @@ class tx_caretaker_ServiceHelper {
 	public static function getAllCaretakerNotificationServices(){
 		$result = array();
 		foreach ( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'] as $serviceKey => $notificationService){
-			$result[$serviceKey] = t3lib_div::getUserObj($notificationService);
+			$result[$serviceKey] = self::getCaretakerNotificationService($serviceKey);
 		}
 		return $result;
+	}
+
+	public static function getAllCaretakerNotificationServiceKeys(){
+		return array_keys( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'] );
+	}
+
+	public static function getCaretakerNotificationService($key){
+		if ( self::$notificationServiceInstances[$key]){
+			return self::$notificationServiceInstances[$key];
+		} else if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$key]) {
+			$instance = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$key]);
+			self::$notificationServiceInstances[$key] = $instance;
+			return $instance;
+		}
 	}
 
 }
