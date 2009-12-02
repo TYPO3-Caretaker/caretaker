@@ -118,7 +118,7 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 
 			// Check that the result is not equal to the previous one
 		if ( $lastResult && $result->getState() == $lastResult->getState() ){
-			// return;
+			return;
 		}
 
 			// collect the recipients fron the node rootline
