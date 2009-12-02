@@ -46,8 +46,16 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-abstract class tx_caretaker_NotificationServiceBase {
-	
+interface tx_caretaker_NotificationServiceInterface {
+
+
+	/**
+	 * Check weather the notificationService is enabled
+	 * 
+	 * @return boolean
+	 */
+	public function isEnabled();
+
     /**
 	 * Notify the service about a test status
 	 *
@@ -55,12 +63,12 @@ abstract class tx_caretaker_NotificationServiceBase {
 	 * @param tx_caretaker_TestResult $result
 	 * @param tx_caretaKer_TestResult $lastResult
 	 */
-	abstract public function addNotification ($test, $result, $lastResult);
+	public function addNotification ($test, $result, $lastResult);
 
 	/**
 	 * Send the aggregated Notifications
 	 */
-	abstract public function sendNotifications();
+	public function sendNotifications();
 	
 }
 ?>

@@ -46,7 +46,7 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_NotificationServiceBase  {
+class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_NotificationServiceInterface  {
 
 	/**
 	 * The notification storage 
@@ -54,19 +54,52 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_Notificati
 	 */
 	private $recipients_messages = array();
 
+	/**
+	 * Notification Email from Address
+	 * @var string
+	 */
 	private $mail_from;
 
+	/**
+	 * The mail subject Prefix
+	 * @var string
+	 */
 	private $mail_subject;
 
+	/**
+	 * URL Pattern for links to display the frontend info for a test
+	 * @var string URL with a ### marker which is replaced by the caretakerNodId
+	 */
 	private $mail_link;
 
+	/**
+	 * Testservice is enabled
+	 * @var boolean
+	 */
+	private $enabled = TRUE;
+	
+
+	/**
+	 * Constructor
+	 * reads the service configuration
+	 */
 	public function __construct (){
 		$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
 
 		$this->mail_from      = $confArray['notification.']['mail_from'];
 		$this->mail_subject   = $confArray['notification.']['mail_subject'];
 		$this->mail_link      = $confArray['notification.']['mail_link'];
-		
+		$this->mail_link      = $confArray['notification.']['mail_link'];
+		$this->enabled        = (bool)$confArray['notification.']['enabled'];
+	}
+
+	/**
+	 * Check weather the notificationService is enabled
+	 *
+	 * @return boolean
+	 */
+	public function isEnabled(){
+		return $this->enabled;
 	}
 
    	/**
@@ -129,7 +162,7 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_Notificati
 	 * Send the aggregated Notifications
 	 */
 	public function sendNotifications(){
-				
+
 		foreach ($this->recipients_messages as $recipientID => $recipientInfo){
 				
 				// read address

@@ -1,3 +1,6 @@
+# cat=caretaker/enable; type=boolean; label=Enable Simple Mail Notification
+notification.enabled = 1
+
 # cat=caretaker/from; type=string; label=Email Address from wich Cli Notifications are sent
 notification.mail_from = servermonitoring@example.org
 

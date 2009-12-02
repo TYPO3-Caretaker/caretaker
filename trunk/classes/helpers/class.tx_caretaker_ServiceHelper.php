@@ -49,7 +49,11 @@
  */
 class tx_caretaker_ServiceHelper {
 
-	private static $notificationServiceInstances = array();
+	/**
+	 * Array of all active Notification Services
+	 * @var array
+	 */
+	private static $notificationServiceInstances;
 
 	/**
 	 * Returns an array with all services with the type "caretaker_test_service"
@@ -146,26 +150,38 @@ class tx_caretaker_ServiceHelper {
 	 * @return array
 	 */
 	public static function getAllCaretakerNotificationServices(){
-		$result = array();
+		if (!self::$notificationServiceInstances)  self::loadAllCaretakerNotificationServices();
+		return self::$notificationServiceInstances;
+	}
+
+	/**
+	 * Get a specific notificationService
+	 * 
+	 * @param string $serviceKey the notificationService key to get
+	 * @return mixed tx_caretaker_NotificationServiceInterfaceObject of false
+	 */
+	public static function getCaretakerNotificationService($serviceKey){
+		if (!self::$notificationServiceInstances)  self::loadAllCaretakerNotificationServices();
+		if (self::$notificationServiceInstances[$serviceKey] ){
+			return self::$notificationServiceInstances[$serviceKey];
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Load all active notificationServices into static array which are active and of correct type
+	 * 
+	 * @return void
+	 */
+	protected static function loadAllCaretakerNotificationServices(){
+		self::$notificationServiceInstances = Array();
 		foreach ( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'] as $serviceKey => $notificationService){
-			$result[$serviceKey] = self::getCaretakerNotificationService($serviceKey);
-		}
-		return $result;
-	}
-
-	public static function getAllCaretakerNotificationServiceKeys(){
-		return array_keys( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'] );
-	}
-
-	public static function getCaretakerNotificationService($key){
-		if ( self::$notificationServiceInstances[$key]){
-			return self::$notificationServiceInstances[$key];
-		} else if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$key]) {
-			$instance = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$key]);
-			self::$notificationServiceInstances[$key] = $instance;
-			return $instance;
+			$instance = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$serviceKey]);
+			if ( $instance instanceof tx_caretaker_NotificationServiceInterface && $instance->isEnabled() ){
+				self::$notificationServiceInstances[$serviceKey] = $instance;
+			} 
 		}
 	}
-
 }
 ?>
