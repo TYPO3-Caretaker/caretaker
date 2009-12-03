@@ -46,7 +46,7 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_TestService{
+class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_TestServiceInterface {
 	
 	/**
 	 * The instance the test is run for

@@ -33,7 +33,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-interface tx_caretaker_TestService {
+interface tx_caretaker_TestServiceInterface {
 	
 	/**
 	 * Initialize the Service
