@@ -110,7 +110,6 @@ $TCA['tx_caretaker_test'] = array (
 			'endtime' => 'endtime',
 			'fe_group' => 'fe_group',
     	),
-		'type' => 'testservice',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/test.png',
 	),
