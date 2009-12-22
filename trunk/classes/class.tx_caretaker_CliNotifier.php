@@ -46,7 +46,7 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_CliNotifier implements tx_caretaker_NotifierInterface{
+class tx_caretaker_CliNotifier {
 	
 	/**
 	 * Array of Messages  
