@@ -1,6 +1,7 @@
 .ext-gecko .x-btn button {
 	background-repeat: no-repeat;
 	padding-left: 18px;
+	color: #333333;
 }
 
 .icon-caretaker-root { background-image: url(../icons/caretaker.gif) !important; }
