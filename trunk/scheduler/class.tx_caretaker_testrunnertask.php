@@ -67,7 +67,9 @@ class tx_caretaker_TestrunnerTask extends tx_scheduler_Task {
 		if (!$node)return false;
 
 		$notifier = new tx_caretaker_CliNotifier();
-		$node->setNotifier($notifier);
+		if (method_exists($node, 'setNotifier')) {
+			$node->setNotifier($notifier);
+		}
 
 		$node->updateTestResult();
 
