@@ -18,7 +18,7 @@ class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements tx_schedule
 	 */
 	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $parentObject) {
 
-		if (!is_a($task, 'tx_caretaker_TestrunnerTask')) return;
+		if ($task != null && !is_a($task, 'tx_caretaker_TestrunnerTask')) return;
 		
 			// Initialize extra field value
 		if (empty($taskInfo['update_node_id'])) {
