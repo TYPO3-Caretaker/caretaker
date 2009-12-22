@@ -234,10 +234,10 @@ class tx_caretaker_NodeInfo {
 			$i = 0;
             foreach ($testChildNodes as $testNode){
 
-				$testResut = $testNode->getTestResult();
+				$testResult = $testNode->getTestResult();
 				$instance  = $testNode->getInstance();
 
-				if ( $testResut->getState() > 0 ){
+				if ( $testResult->getState() > 0 ){
 
 					$nodeInfo = Array (
 						'num'          => $i++ ,
@@ -249,15 +249,15 @@ class tx_caretaker_NodeInfo {
 						'instance_title' => $instance->getTitle(),
 						'instance_id'    => $instance->getCaretakerNodeId(),
 
-						'timestamp'    => $testResut->getTimestamp(),
-						'stateinfo'    => $testResut->getStateInfo(),
-						'stateinfo_ll' => $testResut->getLocallizedStateInfo(),
-						'message'      => $testResut->getLocallizedInfotext(),
-						'message_ll'   => $testResut->getLocallizedInfotext(),
-						'state'        => $testResut->getState(),
+						'timestamp'    => $testResult->getTimestamp(),
+						'stateinfo'    => $testResult->getStateInfo(),
+						'stateinfo_ll' => $testResult->getLocallizedStateInfo(),
+						'message'      => $testResult->getLocallizedInfotext(),
+						'message_ll'   => $testResult->getLocallizedInfotext(),
+						'state'        => $testResult->getState(),
 					);
 
-					switch ( $testResut->getState() ){
+					switch ( $testResult->getState() ){
 						case TX_CARETAKER_STATE_WARNING:
 							$nodeWarnings[] = $nodeInfo;
 							break;

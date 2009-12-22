@@ -38,7 +38,7 @@ class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements tx_schedule
 		$fieldCode = '<input type="text" name="tx_scheduler['.$fieldID.']" id="' . $fieldID . '" value="' . $taskInfo['update_node_id'] . '" size="30" />';
 		$additionalFields[$fieldID] = array(
 			'code'     => $fieldCode,
-			'label'    => 'LLL:EXT:caretaker/locallang.xml:sceduler_update_node',
+			'label'    => 'LLL:EXT:caretaker/locallang.xml:scheduler_update_node',
 			'cshKey'   => '_MOD_tools_txschedulerM1',
 			'cshLabel' => $fieldID
 		);
@@ -58,7 +58,7 @@ class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements tx_schedule
 		$submittedData['update_node_id'] = trim($submittedData['update_node_id']);
 
 		if (empty($submittedData['update_node_id'])) {
-			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:caretaker/locallang.xml:sceduler_update_node_required'), t3lib_FlashMessage::ERROR);
+			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:caretaker/locallang.xml:scheduler_update_node_required'), t3lib_FlashMessage::ERROR);
 			$result = false;
 		} else {
 			$result = true;

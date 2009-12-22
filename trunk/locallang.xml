@@ -12,9 +12,9 @@
 			<label index="terupdateTask.name">TER Update</label>
 			<label index="terupdateTask.description">This task updates the ter extension list.</label>
 
-			<label index="sceduler_update_node">Update NodeId</label>
-			<label index="sceduler_update_node_required">You have to enter a valid node ID.</label>
-			<label index="sceduler_update_ter">Update Extension List</label>
+			<label index="scheduler_update_node">Update NodeId</label>
+			<label index="scheduler_update_node_required">You have to enter a valid node ID.</label>
+			<label index="scheduler_update_ter">Update Extension List</label>
 
 		</languageKey>
 	</data>

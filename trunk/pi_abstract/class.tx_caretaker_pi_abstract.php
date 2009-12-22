@@ -167,13 +167,13 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 
 		foreach ($testChildNodes as $testNode) {
 
-			$testResut = $testNode->getTestResult();
-			$testNodeState     = $testResut->getState();
+			$testResult = $testNode->getTestResult();
+			$testNodeState     = $testResult->getState();
 
 				// worst state
 			if ( $testNodeState > $worst_state ){
 				$worst_state      = $testNodeState;
-				$worst_state_info = $testResut->getStateInfo();
+				$worst_state_info = $testResult->getStateInfo();
 			}
 
 				// count node states info
@@ -203,12 +203,12 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 					'node_id'         => $testNode->getCaretakerNodeId(),
 					'link_parameters' => '&tx_caretaker_pi_singleview[id]='.$testNode->getCaretakerNodeId(),
 
-					'timestamp'    => $testResut->getTimestamp(),
-					'stateinfo'    => $testResut->getStateInfo(),
-					'stateinfo_ll' => $testResut->getLocallizedStateInfo(),
-					'message'      => $testResut->getMessage(),
-					'message_ll'   => $testResut->getLocallizedInfotext(),
-					'state'        => $testResut->getState(),
+					'timestamp'    => $testResult->getTimestamp(),
+					'stateinfo'    => $testResult->getStateInfo(),
+					'stateinfo_ll' => $testResult->getLocallizedStateInfo(),
+					'message'      => $testResult->getMessage(),
+					'message_ll'   => $testResult->getLocallizedInfotext(),
+					'state'        => $testResult->getState(),
 				);
 
 					// save info
