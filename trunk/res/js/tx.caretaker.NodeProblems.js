@@ -32,32 +32,39 @@ tx.caretaker.NodeProblems = Ext.extend( Ext.grid.GridPanel , {
 
 		this.column_model = new Ext.grid.ColumnModel({
 			defaults: {
-				width: 120,
 				sortable: true
 			},
 			columns: [
 			{
 				header: "Title",
-				dataIndex: 'node_title'
+				dataIndex: 'node_title',
+				width: 120
 			},{
 				header: "Instance",
-				dataIndex: 'instance_title'
+				dataIndex: 'instance_title',
+				width: 120
 			},{
 				header: "Time",
-				dataIndex: 'timestamp'
+				dataIndex: 'timestamp',
+				fixed: true,
+				width: 110,
+				xtype: 'datecolumn',
+				format: 'd.m.y H:i:s'
 			},{
 				header: "State",
-				dataIndex: 'stateinfo_ll'
+				dataIndex: 'stateinfo_ll',
+				fixed: true,
+				width: 50
 			},{
-				header:'Message',
+				id: 'message',
+				header: 'Message',
 				dataIndex: 'message_ll'
 			}]
 		});
 
 		this.column_view = new Ext.grid.GridView({
-			forceFit:true,
-			enableRowBody:true,
-			showPreview:true,
+			enableRowBody: true,
+			showPreview: true,
 			getRowClass: function(record, index) {
 				var state = parseInt( record.get('state') );
 				switch (state) {
@@ -74,7 +81,7 @@ tx.caretaker.NodeProblems = Ext.extend( Ext.grid.GridPanel , {
 		});
 			
 		config = Ext.apply({
-
+			autoExpandColumn : 'message',
 			collapsed        : true,
 			collapsible      : true,
 			stateful         : true,
