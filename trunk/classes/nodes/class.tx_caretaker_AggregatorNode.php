@@ -85,9 +85,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 	 */
 	public function updateTestResult( $force_update = false){
 
-		
-		
-		$this->log('update', 1);
+		$this->notify( 'updateAggregatorNode' );
 
 		if ( $this->getHidden() == true ){
 			$groupResult = tx_caretaker_AggregatorResult::undefined('Node is disabled');
@@ -112,8 +110,8 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 				$resultRepository->addNodeResult($this,$groupResult);
 			}
 		}
-		
-		$this->log( ' |> '.$groupResult->getStateInfo().' :: '.$groupResult->getLocallizedInfotext() , false );
+
+		$this->notify( 'updateAggregatorNode' , $groupResult, $lastGroupResult);
 		
 		return $groupResult;
 	}
@@ -124,16 +122,12 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 	 */
 	public function getTestResult(){
 
-		$this->log( 'get', 1 );
-		
 		if ( $this->getHidden() == true ){
 			$group_result = tx_caretaker_AggregatorResult::undefined('Node is disabled');
 		} else {
 			$result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
 			$group_result = $result_repository->getLatestByNode($this);
 		}
-		
-		$this->log( ' |> '.$group_result->getStateInfo().' :: '.$group_result->getLocallizedInfotext(), false );
 		
 		return $group_result;
 		

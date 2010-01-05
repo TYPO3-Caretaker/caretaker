@@ -87,11 +87,6 @@ class tx_caretaker_Cli extends t3lib_cli {
             $this->cli_help();
             exit;
         } 
-
-        $logger = new tx_caretaker_CliLogger();        		
-        if (isset($this->cli_args['-ss']) || isset($this->cli_args['-s']) || isset($this->cli_args['--silent'])) {
-          	$logger->setSilentMode(TRUE);
-        }
         
         if ($task == 'update' || $task == 'get') {
 			
@@ -107,16 +102,25 @@ class tx_caretaker_Cli extends t3lib_cli {
         	}
         	
         	if ($node) {
-
-				$node->setLogger($logger);
-        	
-        		$res = FALSE;
+				
+        		$result = FALSE;
 	        	if ($task == 'update') {
-		        	 $res = $node->updateTestResult($force);
+					
+					$lockObj = t3lib_div::makeInstance('t3lib_lock', 'tx_caretaker_update_'.$node->getCaretakerNodeId() , $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode'] );
+					if( $lockObj->acquire() ) {
+			        	$result = $node->updateTestResult($force);
+						$lockObj->release();
+					} else {
+						$result = false;
+						echo ( 'node '.$node->getCaretakerNodeId() . ' is locked because of other running update processes!'.chr(10) );
+					}
+
 	        	}
 	        	
 	        	if ($task == 'get') {
-		        	 $res = $node->getTestResult();
+					$result = $node->getTestResult();
+					echo ( $node->getTitle().' ['.$node->getCaretakerNodeId().']'.$infotext.' '.$event.chr(10) );
+					echo ( $result->getLocallizedStateInfo().' '.$event.' ['.$node->getCaretakerNodeId().']'.chr(10) );
 	        	}
 				
 					// send aggregated notifications
@@ -126,21 +130,17 @@ class tx_caretaker_Cli extends t3lib_cli {
 				}
 
 	        	if ($return_status) {
-	        		$logger->log('State: ' . $res->getState() . ':' . $res->getStateInfo());
-	        		exit ((int)$res->getState());
+	        		exit ((int)$result->getState());
 	        	} else {
 	        		exit;
 	        	}
         	} else {
-        		/**
-        		 * @todo tx_caretaker_cli::log doesnt exist, must be implemented
-        		 */
-        		$logger->log('Node not found or inactive');
+        		echo( 'Node not found or inactive'.chr(10) );
         		exit;
         	}
         } elseif ($task == 'update-extension-list') {
         	$result = tx_caretaker_ExtensionManagerHelper::updateExtensionList();
-        	$logger->log('Extension list update result: ' . $result);
+        	echo( 'Extension list update result: ' . $result.chr(10) );
         	exit;
         }
         

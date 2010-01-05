@@ -105,11 +105,16 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
    	/**
 	 * Notify the service about a test status
 	 *
-	 * @param tx_caretaker_TestNode $test
+	 * @param tx_caretaker_AbstractNode $node
 	 * @param tx_caretaker_TestResult $result
 	 * @param tx_caretaKer_TestResult $lastResult
 	 */
-	public function addNotification ($test, $result, $lastResult){
+	public function addNotification ($event, $node, $result = NULL, $lastResult = NULL ){
+
+			// stop if event is not updatedTestResult of a TestNode
+		if ( $event != 'updatedTestResult' && is_a( $node, 'tx_caretaker_TestNode' ) == false ){
+			return;
+		}
 
 			// check that the state is not ok or undefined
 		if ( $result->getState() <= TX_CARETAKER_STATE_OK ){

@@ -228,19 +228,19 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		return $this->stop_hour;
 	}
 	
-	/**
+	/** 
 	 * Update TestResult and store in DB. If the Test is not due the result is fetched from the cache.
-	 * 
+	 *
 	 * If force is not set the execution time and exclude hours are taken in account.
-	 * 
+	 *
 	 * @param boolean $force_update Force update of this test
 	 * @return tx_caretaker_NodeResult
 	 */
 	public function updateTestResult($force_update = false){
-
+		
 		if ( $this->getHidden() == true ){
 			$result = tx_caretaker_TestResult::undefined('Node is disabled');
-			$this->log('disabled '.$result->getLocallizedStateInfo().' '.$result->getLocallizedInfotext().' '.$msg );
+			$this->notify( 'cachedTestResult' , $result );
 			return $result;
 		}
 		
@@ -251,13 +251,13 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		if (!$force_update ){
 			$result = $test_result_repository->getLatestByNode( $this );
 			if ($result && $result->getTstamp() > time()-$this->test_interval ) {
-				$this->log('cacheresult '.$result->getStateInfo().' '.$result->getValue().' '.$result->getLocallizedInfotext() );
+				$this->notify( 'cachedTestResult', $result );
 				return $result;
 			} else if ($this->start_hour > 0 || $this->stop_hour > 0 ) {
 				$local_time = localtime(time(), true);
 				$local_hour = $local_time['tm_hour'];
 				if ($local_hour < $this->start_hour || $local_hour >= $this->stop_hour ){
-					$this->log('cacheresult '.$result->getStateInfo().' '.$result->getValue().' '.$result->getLocallizedInfotext() );
+					$this->notify( 'cachedTestResult', $result );
 					return $result;	
 				}
 			}
@@ -295,15 +295,12 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 			}
 			
 				// trigger notification
-			$this->notify( $result,$lastTestResult );
-
-				// trigger log
-			$this->log('update '.$result->getLocallizedStateInfo().' '.$result->getLocallizedInfotext().' '.$msg );
-			
+			$this->notify( 'updatedTestResult', $result, $lastTestResult );
+	
 		} else {
 			
 			$result = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
-			$this->log('Service is busy... skipping test.');
+			$this->notify( 'cachedTestResult', $result, $lastTestResult );
 		}
 		
 		return $result;
@@ -346,15 +343,12 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 		if ( $this->getHidden() == true ){
 			$result = tx_caretaker_TestResult::undefined('Node is disabled');
-			$this->log('disabled '.$result->getLocallizedStateInfo().' '.$result->getMessage()->getLocallizedInfotext().' '.$msg );
 			return $result;
 		}
 
 		$instance  = $this->getInstance();
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$result    = $test_result_repository->getLatestByNode($this);
-
-		$this->log('cache '.$result->getStateInfo().' '.$result->getValue().' '.$result->getMessage()->getLocallizedInfotext() );
 
 		return $result;
 	}
@@ -398,19 +392,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	}
 
 
-	/**
-	 * Send a notification to all registered notofication services
-	 *
-	 * @param tx_caretaker_TestResult $result
-	 * @param tx_caretaker_TestResult $lastResult
-	 */
-	public function notify ($result, $lastResult = NULL ){
-			// find all registered notification services
-		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
-		foreach ( $notificationServices as $notificationService ){
-			$notificationService->addNotification( $this, $result, $lastResult );
-		}
-	}
+
 	
 }
 ?>

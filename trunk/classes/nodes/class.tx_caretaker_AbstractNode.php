@@ -86,18 +86,6 @@ abstract class tx_caretaker_AbstractNode {
 	protected $parent    = NULL;
 	
 	/**
-	 * Logger
-	 * @var tx_caretaker_LoggerInterface
-	 */
-	protected $logger    = false;
-	
-	/**
-	 * Notifier
-	 * @var tx_caretaker_NotificationInterface
-	 */
-	protected $notifier  = false;
-	
-	/**
 	 * 
 	 * @var unknown_type
 	 */
@@ -327,53 +315,18 @@ abstract class tx_caretaker_AbstractNode {
 	 */
 	abstract public function getTestResultRangeByOffset($offset=0, $limit=10);
 
-
-	/*
-	 * Logging Methods
-	 */
-	
 	/**
-	 * Set the current Logger
-	 * 
-	 * @param tx_caretaker_LoggerInterface $logger
+	 * Send a notification to all registered notofication services
+	 *
+	 * @param tx_caretaker_TestResult $result
+	 * @param tx_caretaker_TestResult $lastResult
 	 */
-	public function setLogger (tx_caretaker_LoggerInterface $logger){
-		$this->logger = $logger;
-	}
-	
-	/**
-	 * Add Message to Log
-	 * 
-	 * @param string $message
-	 * @param boolean $add_node_info
-	 */
-	public function log($message, $add_node_info=true){
-		if ($add_node_info){
-			$indented_message = array();
-			foreach ( explode(chr(10), $message) as $number => $line ){
-				if ($number == 0){
-					$indented_message[] = ' +- '.$this->type.' '.$this->title.'['.$this->uid.'] '.$line;
-				} else {
-					$indented_message[] = '    '.$line;
-				}
-			}
-		} else {
-			$indented_message = Array();
-			foreach ( explode(chr(10), $message) as $number => $line ){
-				$indented_message[] = $line;
-			}
-		}
-
-		foreach ($indented_message as $message){
-			if ($this->logger){
-				$this->logger->log($message);
-			} else if ($this->parent) {
-				$this->parent->log(' | '.$message , false);
-			}
+	public function notify ($event, $result = NULL, $lastResult = NULL ){
+			// find all registered notification services
+		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
+		foreach ( $notificationServices as $notificationService ){
+			$notificationService->addNotification( $event, $this, $result, $lastResult );
 		}
 	}
-	
-	
-	
 }
 ?>

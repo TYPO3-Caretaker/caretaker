@@ -50,5 +50,6 @@ tx_caretaker_ServiceHelper::registerCaretakerTestService ($_EXTKEY , 'services' 
 
 	//register Notification-Services
 tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'SimpleMailNotificationService', 'classes/services/class.tx_caretaker_SimpleMailNotificationService.php', 'tx_caretaker_SimpleMailNotificationService' );
+tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'CliNotificationService', 'classes/services/class.tx_caretaker_CliNotificationService.php', 'tx_caretaker_CliNotificationService' );
 
 ?>

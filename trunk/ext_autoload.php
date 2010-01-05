@@ -4,24 +4,22 @@
  *
  * $Id$
  */
+
 return array(
-
-	'tx_caretaker_clilogger'		      => t3lib_extMgm::extPath('caretaker', 'classes/class.tx_caretaker_CliLogger.php'),
-	'tx_caretaker_clinotifier'		      => t3lib_extMgm::extPath('caretaker', 'classes/class.tx_caretaker_CliNotifier.php'),
-
+	
 		/* helpers */
-	'tx_caretaker_servicehelper'          => t3lib_extMgm::extPath('caretaker', 'classes/helpers/class.tx_caretaker_ServiceHelper.php'),
+	'tx_caretaker_servicehelper'           => t3lib_extMgm::extPath('caretaker', 'classes/helpers/class.tx_caretaker_ServiceHelper.php'),
 	'tx_caretaker_locallizationhelper'     => t3lib_extMgm::extPath('caretaker', 'classes/helpers/class.tx_caretaker_LocallizationHelper.php'),
-	'tx_caretaker_extensionmanagerhelper' => t3lib_extMgm::extPath('caretaker', 'classes/helpers/class.tx_caretaker_ExtensionManagerHelper.php'),
+	'tx_caretaker_extensionmanagerhelper'  => t3lib_extMgm::extPath('caretaker', 'classes/helpers/class.tx_caretaker_ExtensionManagerHelper.php'),
 
 		/* plugins */
 	'tx_caretaker_pibase' => t3lib_extMgm::extPath('caretaker', '/pi_base/class.tx_caretaker_pibase.php'),
 
 		/* notification services */
 	'tx_caretaker_simplemailnotificationservice' => t3lib_extMgm::extPath('caretaker', 'classes/services/class.tx_caretaker_SimpleMailNotificationService.php'),
+	'tx_caretaker_clinotificationservice'        => t3lib_extMgm::extPath('caretaker', 'classes/services/class.tx_caretaker_CliNotificationService.php'),
 
 		/* interfaces */
-	'tx_caretaker_loggerinterface'               => t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_LoggerInterface.php'),
 	'tx_caretaker_resultrangerenderer'           => t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_ResultRangeRenderer.php'),
 	'tx_caretaker_testserviceinterface'          => t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_TestServiceInterface.php'),
 	'tx_caretaker_notificationserviceinterface'  => t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_NotificationServiceInterface.php'),
