@@ -32,7 +32,7 @@
  * n@work GmbH - http://www.work.de
  * networkteam GmbH - http://www.networkteam.com/
  *
- * $Id: class.tx_caretaker_SimpleMailNotificationService.php 27247 2009-12-02 10:02:32Z martoro $
+ * $Id$
  */
 
 /**
