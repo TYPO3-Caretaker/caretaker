@@ -59,11 +59,12 @@ interface tx_caretaker_NotificationServiceInterface {
     /**
 	 * Notify the service about a test status
 	 *
-	 * @param tx_caretaker_TestNode $test
+	 * @param string $event
+	 * @param tx_caretaker_AbstractNode $node
 	 * @param tx_caretaker_TestResult $result
 	 * @param tx_caretaKer_TestResult $lastResult
 	 */
-	public function addNotification ($test, $result, $lastResult);
+	public function addNotification ( $event, $node, $result=NULL, $lastResult=NULL);
 
 	/**
 	 * Send the aggregated Notifications
