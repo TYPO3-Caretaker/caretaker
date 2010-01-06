@@ -101,6 +101,12 @@ class tx_caretaker_CliNotificationService implements tx_caretaker_NotificationSe
 	 */
 	public function sendNotifications(){}
 
+	/**
+	 * Get the prefix string for each line in the cli based on the current hirarchy depth
+	 *
+	 * @param tx_caretaker_AbstractNode $node
+	 * @return string
+	 */
 	private function getCliIndentation( $node ){
 		$indentation = '';
 		while ( $node && $node = $node->getParent() ){
