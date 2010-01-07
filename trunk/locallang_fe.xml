@@ -52,7 +52,7 @@
 
 			<label index="http_error">HTTP Test of ###VALUE_URL### failed</label>
 			<label index="http_warning">HTTP Test of ###VALUE_URL### returned a warning</label>
-			<label index="http_ok">HTTP Test of ###VALUE_URL### passed succesfully in ###VALUE_TIME### Seconds and returned State ###VALUE_STATE###</label>
+			<label index="http_ok">HTTP Test of ###VALUE_URL### passed succesfully in ###VALUE_TIME### milliseconds and returned state ###VALUE_STATE###</label>
 
 			<label index="http_time_error">HTTP-Request took ###VALUE_TIME### milliseconds returned an timeout-error</label>
 			<label index="http_time_warning">HTTP-Request took ###VALUE_TIME### milliseconds returned an timeout-warning</label>
@@ -105,7 +105,7 @@
 
 			<label index="http_error">HTTP Test der URL ###VALUE_URL### ergab einen FEHLER</label>
 			<label index="http_warning">HTTP Test der URL ###VALUE_URL### ergab eine WARNUNG</label>
-			<label index="http_ok">HTTP Test der URL ###VALUE_URL### war erfolgreich in ###VALUE_TIME### Sekuden und gab den Status ###VALUE_STATE### zurück</label>
+			<label index="http_ok">HTTP Test der URL ###VALUE_URL### war erfolgreich in ###VALUE_TIME### Millisekuden und gab den Status ###VALUE_STATE### zurück</label>
 
 			<label index="http_no_query">Kein HTTP-Status-Code oder kein Query wurde eingegeben</label>
 			<label index="http_time_error">Der HTTP-Request dauerte ###VALUE_TIME### Millisekunden gab einen Fehler aufgrund Zeitüberschreitung zurück</label>
