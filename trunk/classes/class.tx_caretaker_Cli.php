@@ -107,14 +107,22 @@ class tx_caretaker_Cli extends t3lib_cli {
 				
 	       		$result = FALSE;
 	        	if ($task == 'update') {
-					
-					$lockObj = t3lib_div::makeInstance('t3lib_lock', 'tx_caretaker_update_'.$node->getCaretakerNodeId() , $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode'] );
-					if( $lockObj->acquire() ) {
+
+					try {
+						$lockObj = t3lib_div::makeInstance('t3lib_lock', 'tx_caretaker_update_'.$node->getCaretakerNodeId() , $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode'] );
+						$lockIsAquired =  $lockObj->acquire() ;
+					} catch (Exception $e){
+						echo ( 'lock '.'tx_caretaker_update_'.$node->getCaretakerNodeId() . ' could not be aquired!'.chr(10).$e->getMessage() );
+						exit;
+					}
+
+					if($lockIsAquired) {
 			        	$result = $node->updateTestResult($force);
 						$lockObj->release();
 					} else {
 						$result = false;
 						echo ( 'node '.$node->getCaretakerNodeId() . ' is locked because of other running update processes!'.chr(10) );
+						exit;
 					}
 
 	        	}
@@ -136,6 +144,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 	        	} else {
 	        		exit;
 	        	}
+				
         	} else {
         		echo( 'Node not found or inactive'.chr(10) );
         		exit;
