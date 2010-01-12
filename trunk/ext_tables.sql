@@ -206,6 +206,28 @@ CREATE TABLE tx_caretaker_testresult (
 );
 
 #
+# Table structure for table 'tx_caretaker_testresult'
+#
+CREATE TABLE tx_caretaker_lasttestresult (
+	uid int(11) NOT NULL auto_increment,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+
+	test_uid int(11) DEFAULT '0' NOT NULL,
+	instance_uid int(11) DEFAULT '0' NOT NULL,
+
+	result_status int(11) DEFAULT '0' NOT NULL,
+	result_value float DEFAULT '0' NOT NULL,
+	result_msg text NOT NULL,
+	result_values text NOT NULL,
+	result_submessages text NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY test_instance_uid (test_uid,instance_uid)
+	KEY test_instance_uid_tstamp (tstamp,test_uid,instance_uid)
+
+);
+
+#
 # Table structure for table 'tx_caretaker_aggregatorresult'
 #
 CREATE TABLE tx_caretaker_aggregatorresult (

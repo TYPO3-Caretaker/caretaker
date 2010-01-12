@@ -290,9 +290,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 			$resultRepository = tx_caretaker_TestResultRepository::getInstance();
 			$lastTestResult = $resultRepository->getLatestByNode($this);
 
-			if ($lastTestResult->isDifferent($result) ){
-				$resultRepository->saveTestResultForNode( $this, $result);
-			}
+			$resultRepository->saveTestResultForNode( $this, $result,$lastTestResult->isDifferent($result) );
 			
 				// trigger notification
 			$this->notify( 'updatedTestResult', $result, $lastTestResult );

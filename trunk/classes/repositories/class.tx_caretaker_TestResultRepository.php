@@ -96,7 +96,7 @@ class tx_caretaker_TestResultRepository {
 		$testUID     = $testNode->getUid();
 		$instanceUID = $testNode->getInstance()->getUid();
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', 'test_uid='.$testUID.' AND instance_uid='.$instanceUID, '', 'tstamp DESC', '1'  );
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_lasttestresult', 'test_uid='.$testUID.' AND instance_uid='.$instanceUID, '', '', '1'  );
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 
 		if ($row) {
@@ -106,7 +106,6 @@ class tx_caretaker_TestResultRepository {
 			return new tx_caretaker_TestResult();
 		}
 	}
-
 
 	/**
 	 * Return the Number of available TestResults
@@ -232,24 +231,36 @@ class tx_caretaker_TestResultRepository {
 	 * Save the Testresult for the given TestNode
 	 * @param tx_caretaker_TestNode $uid
 	 * @param tx_caretaker_TestResult $result tx_caretaker_TestResult
+	 * @param booleab $isDifferent result is different from last one
 	 */
-	function saveTestResultForNode(tx_caretaker_TestNode $test, $testResult){
+	function saveTestResultForNode(tx_caretaker_TestNode $test, $testResult, $isDifferent = false){
 
 		$values = array(
-			'test_uid'      => $test->getUid(),
-			'instance_uid'  => $test->getInstance()->getUid(),
-			'result_status' => TX_CARETAKER_UNDEFINED,
-			'tstamp'        => $testResult->getTstamp(),
-			'result_status' => $testResult->getState(),
-			'result_value'  => $testResult->getValue(),
-			'result_msg'    => $testResult->getMessage()->getText(),
-			'result_values' => serialize( $testResult->getMessage()->getValues() ),
-			'result_submessages'  => serialize( $testResult->getSubMessages() )
+				'test_uid'      => $test->getUid(),
+				'instance_uid'  => $test->getInstance()->getUid(),
+				'result_status' => TX_CARETAKER_UNDEFINED,
+				'tstamp'        => $testResult->getTstamp(),
+				'result_status' => $testResult->getState(),
+				'result_value'  => $testResult->getValue(),
+				'result_msg'    => $testResult->getMessage()->getText(),
+				'result_values' => serialize( $testResult->getMessage()->getValues() ),
+				'result_submessages'  => serialize( $testResult->getSubMessages() )
 		);
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_testresult', $values);
-	
+
+			// store log of state changes
+		if ($isDifferent) {
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_testresult', $values);
+		}
+
+			// store last results for fast access
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 'uid', 'tx_caretaker_lasttestresult', 'test_uid = '.$test->getUid(). ' AND instance_uid = '.$test->getInstance()->getUid() , '', '' , 1  );
+		if ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_caretaker_lasttestresult', 'uid = '.$row['uid'], $values  );
+		} else {
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_lasttestresult', $values);
+		}
+
 	}
-	
 	
 }
 
