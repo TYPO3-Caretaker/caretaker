@@ -102,8 +102,10 @@ class tx_caretaker_Cli extends t3lib_cli {
         	}
         	
         	if ($node) {
+
+				echo ( 'node '.$node->getCaretakerNodeId().chr(10) );
 				
-        		$result = FALSE;
+	       		$result = FALSE;
 	        	if ($task == 'update') {
 					
 					$lockObj = t3lib_div::makeInstance('t3lib_lock', 'tx_caretaker_update_'.$node->getCaretakerNodeId() , $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode'] );
