@@ -71,10 +71,6 @@ class tx_caretaker_CliNotificationService implements tx_caretaker_NotificationSe
 	 */
 	public function addNotification ( $event, $node, $result = NULL, $lastResult = NULL ){
 
-		if ($node->getCaretakerNodeId() == "instance_3") {
-		//	print_r ($node);
-		}
-
 		$indent = $this->getCliIndentation($node);
 
 		if ( is_a ($node, 'tx_caretaker_TestNode' )  ) {
