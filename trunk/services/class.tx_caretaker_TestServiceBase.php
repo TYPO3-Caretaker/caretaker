@@ -137,8 +137,8 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 				$result = $this->array_configuration[$sheet][$key];
 			}
 		}
-		
-		if ($result){
+
+		if ( $result !== false){
 			return $result;
 		} else {
 			return $default;
