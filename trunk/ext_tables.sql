@@ -122,6 +122,7 @@ CREATE TABLE tx_caretaker_test (
 	test_retry int(11) DEFAULT '0' NOT NULL,
 	
 	notifications varchar(255) DEFAULT '' NOT NULL,
+	roles int(11) DEFAULT '0' NOT NULL,
 
 	groups int(11) DEFAULT '0' NOT NULL,
 	instances int(11) DEFAULT '0' NOT NULL,
@@ -130,6 +131,21 @@ CREATE TABLE tx_caretaker_test (
 	KEY parent (pid)
 );
 
+#
+# Table structure for table 'tx_caretaker_test_roles_mm'
+#
+CREATE TABLE tx_caretaker_test_roles_mm (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	uid_local int(11) DEFAULT '0' NOT NULL,
+	uid_foreign int(11) DEFAULT '0' NOT NULL,
+	tablenames varchar(30) DEFAULT '' NOT NULL,
+	sorting int(11) DEFAULT '0' NOT NULL,
+	sorting_foreign int(11) DEFAULT '0' NOT NULL,
+	PRIMARY KEY (uid),
+	KEY uid_local (uid_local),
+	KEY uid_foreign (uid_foreign)
+);
 
 #
 # Table structure for table 'tx_caretaker_instance_testgroup_mm'
@@ -252,3 +268,63 @@ CREATE TABLE tx_caretaker_aggregatorresult (
 	KEY aggregator (aggregator_uid,aggregator_type,instance_uid)
 );
 
+#
+# Table structure for table 'tx_caretaker_roles'
+#
+CREATE TABLE tx_caretaker_roles (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+
+	id varchar(30) DEFAULT '' NOT NULL,
+	name varchar(255) DEFAULT '' NOT NULL,
+	description text NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
+#
+# Table structure for table 'tx_caretaker_exitpoints'
+#
+CREATE TABLE tx_caretaker_exitpoints (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+
+	name varchar(255) DEFAULT '' NOT NULL,
+	description text NOT NULL,
+	service varchar(255) DEFAULT '' NOT NULL,
+	config text NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
+#
+# Table structure for table 'tx_caretaker_strategies'
+#
+CREATE TABLE tx_caretaker_strategies (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+
+	name varchar(50) DEFAULT '' NOT NULL,
+	description text NOT NULL,
+	config text NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);

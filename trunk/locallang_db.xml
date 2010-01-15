@@ -17,6 +17,7 @@
 			<label index="tx_caretaker_instance_test_rel.test_id">Test</label>
 			<label index="tx_caretaker_instance_test_rel.instance_sorting">Instance Sorting</label>
 			<label index="tx_caretaker_instance_test_rel.test_sorting">Test Sorting</label>
+
 			<label index="tx_caretaker_instance">Instance</label>
 			<label index="tx_caretaker_instance.tab.relations">Groups &amp; Tests</label>
 			<label index="tx_caretaker_instance.tab.notifications">Notifications</label>
@@ -68,6 +69,19 @@
 			<label index="tx_caretaker_test.instances">Include Test for those Instances</label>
 			<label index="tx_caretaker_test.groups">Include Test for those Testgroups</label>
 			<label index="tx_caretaker_test.notifications">Notifications</label>
+			<label index="tx_caretaker_test.roles">Belongs to the following roles</label>
+
+			<label index="tx_caretaker_roles">Role</label>
+			<label index="tx_caretaker_roles.id">Unique identifier</label>
+			<label index="tx_caretaker_roles.name">Name</label>
+			<label index="tx_caretaker_roles.description">Description</label>
+
+			<label index="tx_caretaker_exitpoints">Exitpoint</label>
+			<label index="tx_caretaker_exitpoints.name">Unique name</label>
+			<label index="tx_caretaker_exitpoints.description">Description</label>
+			<label index="tx_caretaker_exitpoints.service">Service</label>
+			<label index="tx_caretaker_exitpoints.config">Configuration</label>
+			<label index="tx_caretaker_exitpoints.service.select_exitpoint">Select the Exitpointtype</label>
 
 			<label index="tt_content.list_type_pi_overview">Caretaker Tactical Overview</label>
 			<label index="pi_overview_title">Caretaker Tactical Overview</label>

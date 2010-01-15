@@ -183,5 +183,41 @@ class tx_caretaker_ServiceHelper {
 			} 
 		}
 	}
+
+	public static function registerNotificationExitPoint($extKey, $path, $key, $title, $description='') {
+		global $TCA;
+		var_dump($key);
+
+		t3lib_div::loadTCA('tx_caretaker_exitpoints');
+
+			// Register test service
+		t3lib_extMgm::addService(
+			'caretaker',
+			'caretaker_exitpoint',
+			$key,
+			array(
+				'title' => $title,
+				'description' => $description,
+				'subtype' => $key,
+				'available' => TRUE,
+				'priority' => 50,
+				'quality' => 50,
+				'os' => '',
+				'exec' => '',
+				'classFile' => t3lib_extMgm::extPath($extKey).$path.'/class.'.$key.'ExitPoint.php',
+				'className' => $key.'ExitPoint',
+			)
+		);
+
+			// Add exitpoint to TCA
+		if (is_array($TCA['tx_caretaker_exitpoints']['columns']) && is_array($TCA['tx_caretaker_exitpoints']['columns']['service']['config']['items'])) {
+			$TCA['tx_caretaker_exitpoints']['columns']['service']['config']['items'][] =  array( $title, $key);
+		}
+
+			// Add flexform to service-item
+		if (is_array($TCA['tx_caretaker_exitpoints']['columns']) && is_array($TCA['tx_caretaker_exitpoints']['columns']['config']['config']['ds'])) {
+			$TCA['tx_caretaker_exitpoints']['columns']['config']['config']['ds'][$key] = 'FILE:EXT:'.$extKey.'/'.$path.'/'.( $flexform ? $flexform:'ds.'.$key.'ExitPoint.xml');
+		}
+	}
 }
 ?>

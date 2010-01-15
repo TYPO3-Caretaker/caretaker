@@ -106,11 +106,12 @@ class tx_caretaker_Cli extends t3lib_cli {
 				echo ( 'node '.$node->getCaretakerNodeId().chr(10) );
 				
 	       		$result = FALSE;
+				
 	        	if ($task == 'update') {
 
 					try {
 						$lockObj = t3lib_div::makeInstance('t3lib_lock', 'tx_caretaker_update_'.$node->getCaretakerNodeId() , $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode'] );
-						$lockIsAquired =  $lockObj->acquire() ;
+						$lockIsAquired = $lockObj->acquire();
 					} catch (Exception $e){
 						echo ( 'lock '.'tx_caretaker_update_'.$node->getCaretakerNodeId() . ' could not be aquired!'.chr(10).$e->getMessage() );
 						exit;

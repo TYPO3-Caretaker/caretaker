@@ -32,7 +32,7 @@
  * n@work GmbH - http://www.work.de
  * networkteam GmbH - http://www.networkteam.com/
  *
- * $Id: class.tx_caretaker_CliNotificationService.php 28794 2010-01-13 08:56:48Z martoro $
+ * $Id$
  */
 
 /**

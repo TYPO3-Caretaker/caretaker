@@ -116,6 +116,46 @@ $TCA['tx_caretaker_testgroup'] = array (
 	)
 );
 
+$TCA['tx_caretaker_roles'] = array (
+	'ctrl' => array (
+		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles',
+		'label'     => 'name',
+		'tstamp'    => 'tstamp',
+		'crdate'    => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'default_sortby' => 'ORDER BY name',
+		'delete' => 'deleted',
+		'enablecolumns' => array (
+			'disabled' => 'hidden',
+		),
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
+		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/role.png',
+	),
+	'feInterface' => array (
+		'fe_admin_fieldList' => '',
+	),
+);
+
+$TCA['tx_caretaker_exitpoints'] = array (
+	'ctrl' => array (
+		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints',
+		'label'     => 'name',
+		'tstamp'    => 'tstamp',
+		'crdate'    => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'default_sortby' => 'ORDER BY name',
+		'delete' => 'deleted',
+		'enablecolumns' => array (
+			'disabled' => 'hidden',
+		),
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
+		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/exitpoint.png',
+	),
+	'feInterface' => array (
+		'fe_admin_fieldList' => '',
+	),
+);
+
 $TCA['tx_caretaker_test'] = array (
 	'ctrl' => array (
 		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test',
@@ -221,15 +261,5 @@ t3lib_extMgm::addService(
 	)
 );
 
-	// load Service Helper
-include_once(t3lib_extMgm::extPath('caretaker').'classes/helpers/class.tx_caretaker_ServiceHelper.php');
-
-	// register Test-Services
-tx_caretaker_ServiceHelper::registerCaretakerTestService ($_EXTKEY , 'services' , 'tx_caretaker_ping',  'Ping' , 'Retrieves System Informations' );
-tx_caretaker_ServiceHelper::registerCaretakerTestService ($_EXTKEY , 'services' , 'tx_caretaker_http',  'HTTP' , 'Call an URI and check the HTTP-Status' );
-
-	//register Notification-Services
-tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'SimpleMailNotificationService', 'classes/services/class.tx_caretaker_SimpleMailNotificationService.php', 'tx_caretaker_SimpleMailNotificationService' );
-tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'CliNotificationService', 'classes/services/class.tx_caretaker_CliNotificationService.php', 'tx_caretaker_CliNotificationService' );
-
+require_once(t3lib_extMgm::extPath('caretaker').'/ext_conf_include.php');
 ?>

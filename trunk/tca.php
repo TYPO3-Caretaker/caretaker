@@ -42,8 +42,8 @@ $TCA['tx_caretaker_instancegroup'] = array (
 	'interface' => array (
 		'showRecordFieldList' => 'hidden,tests,name'
 	),
-	"feInterface" => $TCA["tx_caretaker_instancegroup"]["feInterface"],
-	"columns" => array (
+	'feInterface' => $TCA['tx_caretaker_instancegroup']['feInterface'],
+	'columns' => array (
 	
 		'hidden' => Array (        
 			'exclude' => 1,
@@ -134,21 +134,21 @@ $TCA['tx_caretaker_instancegroup'] = array (
 			)
 		)
     ),
-	"types" => array (
-		"0" => array("showitem" => 'title;;1;;1-1-1, description,parent_group;;;;2-2-2')
+	'types' => array (
+		'0' => array('showitem' => 'title;;1;;1-1-1, description,parent_group;;;;2-2-2')
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'hidden,starttime,endtime,fe_group')
 	)
 );
 
-$TCA["tx_caretaker_instance"] = array (
-	"ctrl" => $TCA["tx_caretaker_instance"]["ctrl"],
-	"interface" => array (
-		"showRecordFieldList" => "hidden,instancegroup,testgroups,tests,request_mode,encryption_mode,encryption_key,project_namename,project_manager,domain,additional_domains,contacts,server_type,server_provider,server_customer_id,server_other,cms_url,cms_admin,cms_pwd,cms_install_pwd,accesses,other,request_url"
+$TCA['tx_caretaker_instance'] = array (
+	'ctrl' => $TCA['tx_caretaker_instance']['ctrl'],
+	'interface' => array (
+		'showRecordFieldList' => 'hidden,instancegroup,testgroups,tests,request_mode,encryption_mode,encryption_key,project_namename,project_manager,domain,additional_domains,contacts,server_type,server_provider,server_customer_id,server_other,cms_url,cms_admin,cms_pwd,cms_install_pwd,accesses,other,request_url'
 	),
-	"feInterface" => $TCA["tx_caretaker_instance"]["feInterface"],
-	"columns" => array (
+	'feInterface' => $TCA['tx_caretaker_instance']['feInterface'],
+	'columns' => array (
 	
 		'hidden' => Array (        
 			'exclude' => 1,
@@ -342,8 +342,8 @@ $TCA["tx_caretaker_instance"] = array (
 			),
 		)
 	),
-	"types" => array (
-		"0" => array("showitem" => 'title;;1, description;;;;1-1-1, instancegroup, url;;;;-2-2-2, host, public_key,' .
+	'types' => array (
+		'0' => array('showitem' => 'title;;1, description;;;;1-1-1, instancegroup, url;;;;-2-2-2, host, public_key,' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests, ' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, notifications, ' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.testconfigurations, testconfigurations '
@@ -360,8 +360,8 @@ $TCA['tx_caretaker_testgroup'] = array (
 	'interface' => array (
 		'showRecordFieldList' => 'hidden,tests,name'
 	),
-	"feInterface" => $TCA["tx_caretaker_testgroup"]["feInterface"],
-	"columns" => array (
+	'feInterface' => $TCA['tx_caretaker_testgroup']['feInterface'],
+	'columns' => array (
 	
 		'hidden' => Array (        
 			'exclude' => 1,
@@ -528,8 +528,8 @@ $TCA['tx_caretaker_testgroup'] = array (
 			),
 		)
     ),
-	"types" => array (
-		"0" => array("showitem" => 'title;;1;;1-1-1, description,parent_group;;;;2-2-2,
+	'types' => array (
+		'0' => array('showitem' => 'title;;1;;1-1-1, description,parent_group;;;;2-2-2,
 		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.relations, instances;;;;3-3-3,tests;;;;4-4-4,
 		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.notifications, notifications,
 		')
@@ -754,18 +754,145 @@ $TCA['tx_caretaker_test'] = array (
 				'minitems'      => 0,
 				'maxitems'      => 50,
 			),
+		),
+		'roles' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.roles',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_caretaker_roles',
+				'size' => 5,
+				'autoMaxSize' => 25,
+				'minItems' => 0,
+				'maxItems' => 50
+			)
 		)
 		
 	),
 	'types' => array (
 		'0' => array('showitem' => 'test_service;;;;1-1-1, title;;1;;2-2-2,test_interval;;2, test_retry, description;;;;3-3-3, test_conf;;;;4-4-4,
 					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.relations, groups, instances,
-					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.notifications, notifications'
+					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.notifications, notifications, roles'
 					)
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'hidden, starttime,endtime,fe_group'),
 		'2' => array('showitem' => 'test_interval_start_hour,test_interval_stop_hour'),
+	)
+);
+
+$TCA['tx_caretaker_roles'] = array (
+	'ctrl' => $TCA['tx_caretaker_roles']['ctrl'],
+	'interface' => array (
+		'showRecordFieldList' => 'hidden,id,name'
+	),
+	'feInterface' => $TCA['tx_caretaker_roles']['feInterface'],
+	'columns' => Array (
+		'hidden' => Array (
+			'exclude' => 1,
+			'label'   => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+			'config'  => Array (
+				'type'    => 'check',
+				'default' => '0'
+			),
+		),
+        'id' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles.id',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '30',
+				'eval' => 'unique,trim',
+			)
+		),
+		'name' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles.name',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '30',
+				'eval' => 'unique,trim',
+			)
+		),
+		'description' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles.description',
+			'config' => Array (
+				'type' => 'text',
+				'cols' => '50',
+				'rows' => '5',
+			)
+		)
+	),
+	'types' => array (
+		'0' => array('showitem' => 'id;;;;1-1-1, name, description')
+	),
+	'palettes' => array (
+		'1' => array('showitem' => 'hidden')
+	)
+);
+
+$TCA['tx_caretaker_exitpoints'] = array (
+	'ctrl' => $TCA['tx_caretaker_exitpoints']['ctrl'],
+	'interface' => array (
+		'showRecordFieldList' => 'hidden,id,name'
+	),
+	'feInterface' => $TCA['tx_caretaker_exitpoints']['feInterface'],
+	'columns' => Array (
+		'hidden' => Array (
+			'exclude' => 1,
+			'label'   => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+			'config'  => Array (
+				'type'    => 'check',
+				'default' => '0'
+			),
+		),
+		'name' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.name',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '30',
+				'eval' => 'unique,trim',
+			)
+		),
+		'description' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.description',
+			'config' => Array (
+				'type' => 'text',
+				'cols' => '50',
+				'rows' => '5',
+			)
+		),
+		'service' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service',
+			'config' => Array (
+				'type' => 'select',
+				'items' => array (
+					0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service.select_exitpoint', '')
+				),
+				'size' => 1,
+				'maxitems' => 1,
+			)
+		),
+		'config' => array (
+			'displayCond' => 'FIELD:service:REQ:true',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.config',
+			'config' => Array (
+				'type' => 'flex',
+				'ds_pointerField' => 'service',
+				'ds' => array()
+			)
+		)
+	),
+	'types' => array (
+		'0' => array('showitem' => 'id;;;;1-1-1, name, description, service, config')
+	),
+	'palettes' => array (
+		'1' => array('showitem' => 'hidden')
 	)
 );
 
