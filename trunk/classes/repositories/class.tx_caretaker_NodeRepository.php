@@ -341,7 +341,7 @@ class tx_caretaker_NodeRepository {
 	 * @return array
 	 */
 	public function getInstancesByInstancegroupUid($uid, $parent = FALSE, $show_hidden = FALSE){
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tx_caretaker_instance', 'instancegroup = '.(int)$uid);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tx_caretaker_instance', 'instancegroup = ' . (int)$uid , '' , 'title' );
 		$result = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
 			$item = $this->getInstanceByUid($row['uid'], $parent, $show_hidden);
