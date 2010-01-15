@@ -32,36 +32,33 @@
  * n@work GmbH - http://www.work.de
  * networkteam GmbH - http://www.networkteam.com/
  *
- * $Id$
+ * $Id: class.tx_caretaker_CliNotificationService.php 28794 2010-01-13 08:56:48Z martoro $
  */
 
 /**
- * The CLI Testrunner Output Notification-Service
+ * The Testrunner Output Notification-Service
  *
- * @author Martin Ficzel <martin@work.de>
  * @author Thomas Hempel <thomas@work.de>
- * @author Christopher Hlubek <hlubek@networkteam.com>
- * @author Tobias Liebig <liebig@networkteam.com>
  *
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_CliNotificationService implements tx_caretaker_NotificationServiceInterface  {
+class tx_caretaker_NotificationService implements tx_caretaker_NotificationServiceInterface  {
 	/**
 	 * Service is enabled or not
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $enabled = false;
-	
+
 	/**
 	 * Constructor
 	 * reads the service configuration
 	 */
 	public function __construct (){
-		$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+		$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
 
-		$this->enabled = (bool)$confArray['notifications.']['cli.']['enabled'];
+		$this->enabled = (bool)$confArray['notifications.']['escalating.']['enabled'];
 	}
 
 	/**
@@ -70,15 +67,12 @@ class tx_caretaker_CliNotificationService implements tx_caretaker_NotificationSe
 	 * @return boolean
 	 */
 	public function isEnabled(){
-		if ( $this->enabled === true && TYPO3_MODE == 'BE' && $GLOBALS["BE_USER"]->user['username'] == '_cli_caretaker'){
-			return true;
-		} else {
-			return false;
-		}
+		return $this->enabled;
 	}
 
     /**
-	 * Notify the service about a test status
+	 * This is called whenever the notfication service is called. We have to store all interesting
+	 * results in an internal structure to use it later.
 	 *
 	 * @param string $event
 	 * @param tx_caretaker_AbstractNode $node
@@ -87,23 +81,7 @@ class tx_caretaker_CliNotificationService implements tx_caretaker_NotificationSe
 	 */
 	public function addNotification ( $event, $node, $result = NULL, $lastResult = NULL ){
 
-		$indent = $this->getCliIndentation($node);
-
-		if ( is_a ($node, 'tx_caretaker_TestNode' )  ) {
-			$infotext = $result->getLocallizedInfotext();
-			$msg  = $indent.'--+ '.$node->getTitle().' ['.$node->getCaretakerNodeId().']';
-			$msg  .= str_replace( chr(10), chr(10).$indent.'  | ' , chr(10).$infotext );
-			$msg  .= chr(10).$indent.'  |-> '.$result->getLocallizedStateInfo().' ('.$event.')';
-		} else {
-			if ( $result == NULL ){
-				$msg = $indent.'--+ '.$node->getTitle().' ['.$node->getCaretakerNodeId().']'.$infotext.' '.$event;
-			} else {
-				$msg = $indent.'  |-> '.$result->getLocallizedStateInfo().' '.$event.' ['.$node->getCaretakerNodeId().']';
-			}
-		}
-
-		echo ( $msg.chr(10) );
-		flush();
+		
 	}
 
 	/**
@@ -112,19 +90,5 @@ class tx_caretaker_CliNotificationService implements tx_caretaker_NotificationSe
 	 * nothing happens here since all Informations are already sent to cli
 	 */
 	public function sendNotifications(){}
-
-	/**
-	 * Get the prefix string for each line in the cli based on the current hirarchy depth
-	 *
-	 * @param tx_caretaker_AbstractNode $node
-	 * @return string
-	 */
-	private function getCliIndentation( $node ){
-		$indentation = '';
-		while ( $node && $node = $node->getParent() ){
-			$indentation .= '  |';
-		}
-		return $indentation;
-	}
 }
 ?>

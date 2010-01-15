@@ -86,11 +86,11 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 	public function __construct (){
 		$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
 
-		$this->mail_from      = $confArray['notification.']['mail_from'];
-		$this->mail_subject   = $confArray['notification.']['mail_subject'];
-		$this->mail_link      = $confArray['notification.']['mail_link'];
-		$this->mail_link      = $confArray['notification.']['mail_link'];
-		$this->enabled        = (bool)$confArray['notification.']['enabled'];
+		$this->mail_from      = $confArray['notifications.']['simple_mail.']['mail_from'];
+		$this->mail_subject   = $confArray['notifications.']['simple_mail.']['mail_subject'];
+		$this->mail_link      = $confArray['notifications.']['simple_mail.']['mail_link'];
+		$this->mail_link      = $confArray['notifications.']['simple_mail.']['mail_link'];
+		$this->enabled        = (bool)$confArray['notifications.']['simple_mail.']['enabled'];
 	}
 
 	/**
