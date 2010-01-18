@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-class tx_caretaker_NotificationMailExitPoint implements tx_caretaker_NotificationExitPointInterface {
+class tx_caretaker_NotificationFileExitPoint implements tx_caretaker_NotificationExitPointInterface {
 	
 }
 

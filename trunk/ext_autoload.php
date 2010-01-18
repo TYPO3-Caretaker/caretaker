@@ -24,9 +24,10 @@ return array(
 	'tx_caretaker_notificationservice'           => t3lib_extMgm::extPath('caretaker', 'classes/services/notifications/escalation/exitpoints/class.tx_caretaker_NotificationMailExitPoint.php'),
 
 		/* interfaces */
-	'tx_caretaker_resultrangerenderer'           => t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_ResultRangeRenderer.php'),
-	'tx_caretaker_testserviceinterface'          => t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_TestServiceInterface.php'),
-	'tx_caretaker_notificationserviceinterface'  => t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_NotificationServiceInterface.php'),
+	'tx_caretaker_resultrangerenderer'            => t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_ResultRangeRenderer.php'),
+	'tx_caretaker_testserviceinterface'           => t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_TestServiceInterface.php'),
+	'tx_caretaker_notificationserviceinterface'   => t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_NotificationServiceInterface.php'),
+	'tx_caretaker_notificationexitpointinterface' => t3lib_extMgm::extPath('caretaker', 'interfaces/interface.tx_caretaker_NotificationExitPointInterface'),
 
 		/* testrunner */
 	'tx_caretaker_testrunnertask'							=> t3lib_extMgm::extPath('caretaker', 'scheduler/class.tx_caretaker_testrunnertask.php'),

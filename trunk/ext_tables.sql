@@ -50,6 +50,7 @@ CREATE TABLE tx_caretaker_instance (
 	public_key text NOT NULL,
 	url varchar(255) DEFAULT '' NOT NULL,
 	host varchar(255) DEFAULT '' NOT NULL,
+	contacts int(11) DEFAULT 0 NOT NULL,
 
 	groups text NOT NULL,
 	tests text NOT NULL,
@@ -60,6 +61,22 @@ CREATE TABLE tx_caretaker_instance (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
+);
+
+CREATE TABLE tx_caretaker_node_address_mm (
+	uid int(11) DEFAULT '0' NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+
+	uid_node int(11) DEFAULT '0' NOT NULL,
+	uid_address int(11) DEFAULT '0' NOT NULL,
+	role int(11) DEFAULT '0' NOT NULL,
+	node_table varchar(30) DEFAULT '' NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid),
+
+	KEY uid_local (uid_node),
+	KEY uid_foreign (uid_address)
 );
 
 #
@@ -300,6 +317,7 @@ CREATE TABLE tx_caretaker_exitpoints (
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 
+	id varchar(30) DEFAULT '' NOT NULL,
 	name varchar(255) DEFAULT '' NOT NULL,
 	description text NOT NULL,
 	service varchar(255) DEFAULT '' NOT NULL,

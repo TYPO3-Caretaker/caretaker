@@ -36,8 +36,6 @@
  * $Id$
  */
 
-var_dump('Hello World');
-
 	// load Service Helper
 include_once(t3lib_extMgm::extPath('caretaker').'classes/helpers/class.tx_caretaker_ServiceHelper.php');
 
@@ -52,5 +50,6 @@ tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'Not
 
 	// register ExitPoint services
 tx_caretaker_ServiceHelper::registerNotificationExitPoint($_EXTKEY, 'classes/services/notifications/escalation/exitpoints', 'tx_caretaker_NotificationMail', 'E-Mail', 'Sends an e-mail');
+tx_caretaker_ServiceHelper::registerNotificationExitPoint($_EXTKEY, 'classes/services/notifications/escalation/exitpoints', 'tx_caretaker_NotificationFile', 'File', 'Writes to a file');
 
 ?>

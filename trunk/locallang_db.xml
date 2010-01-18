@@ -31,10 +31,11 @@
 			<label index="tx_caretaker_instance.tests">Tests assigned to this instance</label>
 			<label index="tx_caretaker_instance.public_key">Public Key of Instance</label>
 			<label index="tx_caretaker_instance.notifications">Notifications</label>
+			<label index="tx_caretaker_instance.contacts">Contacts</label>
 			<label index="tx_caretaker_instance.testconfigurations">Overwrite Test Configuration</label>
 
 			<label index="tx_caretaker_testgroup">Testgroup</label>
-			<label index="tx_caretaker_testgroup.tab.relations">Instances &amp; Tests</label>
+			<label index="tx_caretaker_testgroup.tab.relations">Tests</label>
 			<label index="tx_caretaker_testgroup.tab.notifications">Notifications</label>
 			<label index="tx_caretaker_testgroup.title">Title</label>
 			<label index="tx_caretaker_testgroup.description">Description</label>
@@ -77,7 +78,8 @@
 			<label index="tx_caretaker_roles.description">Description</label>
 
 			<label index="tx_caretaker_exitpoints">Exitpoint</label>
-			<label index="tx_caretaker_exitpoints.name">Unique name</label>
+			<label index="tx_caretaker_exitpoints.id">Unique identifier</label>
+			<label index="tx_caretaker_exitpoints.name">Name</label>
 			<label index="tx_caretaker_exitpoints.description">Description</label>
 			<label index="tx_caretaker_exitpoints.service">Service</label>
 			<label index="tx_caretaker_exitpoints.config">Configuration</label>

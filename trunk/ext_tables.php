@@ -136,6 +136,21 @@ $TCA['tx_caretaker_roles'] = array (
 	),
 );
 
+$TCA['tx_caretaker_node_address_mm'] = array (
+	'ctrl' => array (
+		// 'hideTable' => 1,
+		'label' => 'uid_address',
+		'label_alt' => 'role',
+		'label_alt_force' => 1,
+		
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
+		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/nodeaddressrelation.png',
+	),
+	'feInterface' => array (
+		'fe_admin_fieldList' => '',
+	),
+);
+
 $TCA['tx_caretaker_exitpoints'] = array (
 	'ctrl' => array (
 		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints',
@@ -150,6 +165,7 @@ $TCA['tx_caretaker_exitpoints'] = array (
 		),
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/exitpoint.png',
+		'requestUpdate' => 'service',
 	),
 	'feInterface' => array (
 		'fe_admin_fieldList' => '',
