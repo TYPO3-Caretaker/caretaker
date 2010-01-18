@@ -127,7 +127,8 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 									back_url: back_url,
 									node_id: node_id,
 									node_type: node_type,
-									node_uid: node_uid
+									node_uid: node_uid,
+									node_hidden: node_hidden
 								},
 								items    : [
 									{ id: "node-info",     xtype: "caretaker-nodeinfo"     , back_path: back_path , node_id: node_id },

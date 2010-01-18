@@ -51,10 +51,7 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 	},
 
 	editNode : function (){
-		
-
         if (this.node_type != 'root'){
-			this.refreshTree(1000);
             var url = this.path_typo3 + 'alt_doc.php?edit[tx_caretaker_' + this.node_type + '][' + this.node_uid + ']=edit&returnUrl=' + this.back_url;
             window.location.href = url;
         } else {
@@ -63,10 +60,10 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
     },
 
     enableNode : function() {
-        if (this.node_hidden == 1 && this.type_lower != 'root'){
-			this.refreshTree(1000);
-            var url = this.path_typo3 + 'tce_db.php?&data[tx_caretaker_' + this.type_lower + '][' + this.uid + '][hidden]=0&redirect=' + this.back_url;
-            window.location.href = url;
+        if (this.node_hidden == 1 && this.node_type != 'root'){
+            var url = this.path_typo3 + 'tce_db.php?&data[tx_caretaker_' + this.node_type + '][' + this.node_uid + '][hidden]=0&redirect=' + this.back_url;
+			this.refreshNavigationTree(2000);
+            this.redirectUrl(url);
         } else {
             top.Ext.MessageBox.alert('Sorry', 'The node is already enabled');
         }
@@ -74,9 +71,9 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 
     disableNode : function() {
         if (this.node_hidden == 0 && this.node_type != 'root'){
-			this.refreshTree(1000);
             var url = this.path_typo3 + 'tce_db.php?&data[tx_caretaker_' + this.node_type + '][' + this.node_uid + '][hidden]=1&redirect=' + this.back_url;
-            window.location.href = url;
+			this.refreshNavigationTree(2000);
+            this.redirectUrl(url);
         } else {
             top.Ext.MessageBox.alert('Sorry', 'The node is already hidden');
         }
@@ -122,7 +119,18 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 		this.refreshTree();
     },
 
-	refreshTree : function (defer){
+	redirectUrl : function( url, defer ){
+		if (defer){
+			call_url =  function(){
+				window.location.href = url;
+			}
+			call_url.defer(defer);
+		} else {
+			window.location.href = url;
+		}
+	},
+	
+	refreshNavigationTree : function ( defer ){
 		if (top.content.nav_frame && top.content.nav_frame.tx.caretaker.view){
 			var cartaker_tree = top.content.nav_frame.tx.caretaker.view.get('cartaker-tree');
 			if (!defer) defer = false;
