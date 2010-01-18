@@ -22,6 +22,7 @@ CREATE TABLE tx_caretaker_instancegroup (
 	description text NOT NULL,
 	parent_group int(11) DEFAULT '0' NOT NULL,
 	contacts int(11) DEFAULT '0' NOT NULL,
+	notification_strategy int(11) DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -52,6 +53,7 @@ CREATE TABLE tx_caretaker_instance (
 	url varchar(255) DEFAULT '' NOT NULL,
 	host varchar(255) DEFAULT '' NOT NULL,
 	contacts int(11) DEFAULT 0 NOT NULL,
+	notification_strategy int(11) DEFAULT '0' NOT NULL,
 
 	groups text NOT NULL,
 	tests text NOT NULL,
@@ -347,3 +349,18 @@ CREATE TABLE tx_caretaker_strategies (
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
+
+/*
+CREATE TABLE tx_caretaker_resultlog (
+	uid int(11) DEFAULT '0' NOT NULL,
+
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	test_uid int(11) DEFAULT '0' NOT NULL,
+	instance_uid int(11) DEFAULT '0' NOT NULL,
+
+	status int(11) DEFAULT '0'NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY nodeId (test_uid, instance_uid)
+);
+*/

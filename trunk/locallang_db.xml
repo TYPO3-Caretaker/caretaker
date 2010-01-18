@@ -6,6 +6,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="tx_caretaker_general.notification_strategy">Notification strategy</label>
 			
 			<label index="tx_caretaker_instancegroup">Instancegroup</label>
 			<label index="tx_caretaker_instancegroup.title">Title</label>

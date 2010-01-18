@@ -147,10 +147,19 @@ $TCA['tx_caretaker_instancegroup'] = array (
 					'expandSingle' => true
 				)
 			)
+		),
+		'notification_strategy' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_general.notification_strategy',
+			'config' => array (
+				'type' => 'select',
+				'items' => array (array ('', 0)),
+				'foreign_table' => 'tx_caretaker_strategies'
+			)
 		)
     ),
 	'types' => array (
-		'0' => array('showitem' => 'title;;1;;1-1-1, description,parent_group;;;;2-2-2,contacts')
+		'0' => array('showitem' => 'title;;1;;1-1-1, description,parent_group;;;;2-2-2,contacts, notification_strategy')
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'hidden,starttime,endtime,fe_group')
@@ -370,12 +379,21 @@ $TCA['tx_caretaker_instance'] = array (
 					'expandSingle' => true
 				)
 			)
+		),
+		'notification_strategy' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_general.notification_strategy',
+			'config' => array (
+				'type' => 'select',
+				'items' => array (array ('', 0)),
+				'foreign_table' => 'tx_caretaker_strategies'
+			)
 		)
 	),
 	'types' => array (
 		'0' => array('showitem' => 'title;;1, description;;;;1-1-1, instancegroup, url;;;;-2-2-2, host, public_key,' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests, ' .
-			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, contacts, notifications, ' .
+			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, contacts, notification_strategy, notifications, ' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.testconfigurations, testconfigurations '
 		)
 	),
@@ -391,12 +409,14 @@ $TCA['tx_caretaker_node_address_mm'] = array (
 	),
 	'columns' => array (
 		'uid_address' => array (
+			'label' => 'LLL:EXT:tt_address/locallang_tca.xml:tt_address',
 			'config' => array (
 				'type' => 'select',
 				'foreign_table' => 'tt_address'
 			)
 		),
 		'role' => array (
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles',
 			'config' => array (
 				'type' => 'select',
 				'foreign_table' => 'tx_caretaker_roles'
@@ -569,12 +589,21 @@ $TCA['tx_caretaker_testgroup'] = array (
 					'expandSingle' => true
 				)
 			)
+		),
+		'notification_strategy' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_general.notification_strategy',
+			'config' => array (
+				'type' => 'select',
+				'items' => array (array ('', 0)),
+				'foreign_table' => 'tx_caretaker_strategies'
+			)
 		)
     ),
 	'types' => array (
 		'0' => array('showitem' => 'title;;1;;1-1-1, description,parent_group;;;;2-2-2,
 		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.relations;;;;3-3-3,tests;;;;4-4-4,
-		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.notifications, contacts, notifications,
+		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.notifications, contacts, notification_strategy, notifications,
 		')
 	),
 	'palettes' => array (
