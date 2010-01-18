@@ -183,6 +183,52 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 		$result = new tx_caretaker_TestResult();
 		return $result;
 	}
+
+
+	/**
+	 * Execute a HTTP request for the POST values via CURL
+	 *
+	 * @param $requestUrl string The URL for the HTTP request
+	 * @param $postValues array POST values with key / value
+	 * @return array info/response
+	 */
+	protected function executeHttpRequest($requestUrl, $postValues = null) {
+		$curl = curl_init();
+        if (!$curl) {
+        	return false;
+        }
+
+		curl_setopt($curl, CURLOPT_URL, $requestUrl);
+		curl_setopt($curl, CURLOPT_HEADER, 0);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
+		curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+
+		$headers = array(
+            "Cache-Control: no-cache",
+            "Pragma: no-cache"
+        );
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+		if (is_array($postValues)) {
+			foreach($postValues as $key => $value) {
+				$postQuery .= urlencode($key) . '=' . urlencode($value) . '&';
+			}
+			rtrim($postQuery, '&');
+
+			curl_setopt($curl, CURLOPT_POST, count($postValues));
+			curl_setopt($curl, CURLOPT_POSTFIELDS, $postQuery);
+		}
+
+		$response = curl_exec($curl);
+		$info = curl_getinfo($curl);
+		curl_close($curl);
+
+		return array(
+			'response' => $response,
+			'info' => $info
+		);
+	}
 	
 	/**
 	 * Get the value description for the test
