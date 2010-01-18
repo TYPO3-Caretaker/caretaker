@@ -108,7 +108,7 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 	            		this.unhideNode(node);
 	            	},
                     scope: this
-                },  {
+                },'-',  {
                 	id: 'tree-contextmenu-add-test',
                 	text: 'Create new test',
                 	iconCls: 'icon-test',
