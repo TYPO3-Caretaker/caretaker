@@ -156,6 +156,26 @@ $TCA['tx_caretaker_exitpoints'] = array (
 	),
 );
 
+$TCA['tx_caretaker_strategies'] = array (
+	'ctrl' => array (
+		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies',
+		'label'     => 'name',
+		'tstamp'    => 'tstamp',
+		'crdate'    => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'default_sortby' => 'ORDER BY name',
+		'delete' => 'deleted',
+		'enablecolumns' => array (
+			'disabled' => 'hidden',
+		),
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
+		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/strategy.png',
+	),
+	'feInterface' => array (
+		'fe_admin_fieldList' => '',
+	),
+);
+
 $TCA['tx_caretaker_test'] = array (
 	'ctrl' => array (
 		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test',
@@ -261,5 +281,5 @@ t3lib_extMgm::addService(
 	)
 );
 
-require_once(t3lib_extMgm::extPath('caretaker').'/ext_conf_include.php');
+require(t3lib_extMgm::extPath('caretaker').'/ext_conf_include.php');
 ?>

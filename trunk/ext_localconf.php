@@ -77,6 +77,6 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TerupdateTask
 	'additionalFields' => 'tx_caretaker_TerupdateTask_AdditionalFieldProvider'
 );
 
-require_once(t3lib_extMgm::extPath('caretaker').'/ext_conf_include.php');
+require(t3lib_extMgm::extPath('caretaker').'/ext_conf_include.php');
 
 ?>

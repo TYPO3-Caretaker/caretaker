@@ -896,4 +896,54 @@ $TCA['tx_caretaker_exitpoints'] = array (
 	)
 );
 
+$TCA['tx_caretaker_strategies'] = array (
+	'ctrl' => $TCA['tx_caretaker_strategies']['ctrl'],
+	'interface' => array (
+		'showRecordFieldList' => 'hidden,id,name'
+	),
+	'feInterface' => $TCA['tx_caretaker_strategies']['feInterface'],
+	'columns' => Array (
+		'hidden' => Array (
+			'exclude' => 1,
+			'label'   => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+			'config'  => Array (
+				'type'    => 'check',
+				'default' => '0'
+			),
+		),
+		'name' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies.name',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '30',
+				'eval' => 'unique,trim',
+			)
+		),
+		'description' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies.description',
+			'config' => Array (
+				'type' => 'text',
+				'cols' => '50',
+				'rows' => '5',
+			)
+		),
+		'config' => array (
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies.config',
+			'config' => Array (
+				'type' => 'text',
+				'cols' => 50,
+				'rows' => 10
+			)
+		)
+	),
+	'types' => array (
+		'0' => array('showitem' => 'id;;;;1-1-1, name, description, config')
+	),
+	'palettes' => array (
+		'1' => array('showitem' => 'hidden')
+	)
+);
+
 ?>

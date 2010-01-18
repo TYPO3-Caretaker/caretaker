@@ -83,6 +83,11 @@
 			<label index="tx_caretaker_exitpoints.config">Configuration</label>
 			<label index="tx_caretaker_exitpoints.service.select_exitpoint">Select the Exitpointtype</label>
 
+			<label index="tx_caretaker_strategies">Strategy</label>
+			<label index="tx_caretaker_strategies.name">Name</label>
+			<label index="tx_caretaker_strategies.description">Description</label>
+			<label index="tx_caretaker_strategies.config">Configuration</label>
+
 			<label index="tt_content.list_type_pi_overview">Caretaker Tactical Overview</label>
 			<label index="pi_overview_title">Caretaker Tactical Overview</label>
 			<label index="pi_overview_plus_wiz_description">Show Tactical Overview of selected Caretaker Records</label>

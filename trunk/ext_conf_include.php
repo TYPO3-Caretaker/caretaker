@@ -33,8 +33,10 @@
  * 
  * @author Thomas Hempel <thomas@work.de>
  *
- * $Id: ext_localconf.php 28437 2010-01-06 09:46:28Z martoro $
+ * $Id$
  */
+
+var_dump('Hello World');
 
 	// load Service Helper
 include_once(t3lib_extMgm::extPath('caretaker').'classes/helpers/class.tx_caretaker_ServiceHelper.php');
