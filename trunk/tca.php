@@ -132,10 +132,25 @@ $TCA['tx_caretaker_instancegroup'] = array (
                     Array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.parent_group.select', 0),
                 ),
 			)
+		),
+		'contacts' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.contacts',
+			'config' => array (
+				'type' => 'inline',
+				'foreign_table' => 'tx_caretaker_node_address_mm',
+				'foreign_field' => 'uid_node',
+				'foreign_table_field' => 'node_table',
+				// 'foreign_selector' => 'uid_address',
+				'appearance' => array (
+					'collapseAll' => true,
+					'expandSingle' => true
+				)
+			)
 		)
     ),
 	'types' => array (
-		'0' => array('showitem' => 'title;;1;;1-1-1, description,parent_group;;;;2-2-2')
+		'0' => array('showitem' => 'title;;1;;1-1-1, description,parent_group;;;;2-2-2,contacts')
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'hidden,starttime,endtime,fe_group')
@@ -539,12 +554,27 @@ $TCA['tx_caretaker_testgroup'] = array (
 				'minitems'      => 0,
 				'maxitems'      => 50,
 			),
+		),
+		'contacts' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.contacts',
+			'config' => array (
+				'type' => 'inline',
+				'foreign_table' => 'tx_caretaker_node_address_mm',
+				'foreign_field' => 'uid_node',
+				'foreign_table_field' => 'node_table',
+				// 'foreign_selector' => 'uid_address',
+				'appearance' => array (
+					'collapseAll' => true,
+					'expandSingle' => true
+				)
+			)
 		)
     ),
 	'types' => array (
 		'0' => array('showitem' => 'title;;1;;1-1-1, description,parent_group;;;;2-2-2,
 		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.relations;;;;3-3-3,tests;;;;4-4-4,
-		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.notifications, notifications,
+		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.notifications, contacts, notifications,
 		')
 	),
 	'palettes' => array (

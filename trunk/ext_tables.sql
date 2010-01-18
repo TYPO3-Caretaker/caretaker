@@ -21,6 +21,7 @@ CREATE TABLE tx_caretaker_instancegroup (
 	title varchar(255) DEFAULT '' NOT NULL,
 	description text NOT NULL,
 	parent_group int(11) DEFAULT '0' NOT NULL,
+	contacts int(11) DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -100,10 +101,10 @@ CREATE TABLE tx_caretaker_testgroup (
 	title varchar(255) DEFAULT '' NOT NULL,
 	description text NOT NULL,
 	parent_group int(11) DEFAULT '0' NOT NULL,
-	instances int(11) DEFAULT '0' NOT NULL,
 	
 	tests blob NOT NULL,
 	notifications varchar(255) DEFAULT '' NOT NULL,
+	contacts int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)

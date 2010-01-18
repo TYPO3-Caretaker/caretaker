@@ -138,7 +138,8 @@ $TCA['tx_caretaker_roles'] = array (
 
 $TCA['tx_caretaker_node_address_mm'] = array (
 	'ctrl' => array (
-		// 'hideTable' => 1,
+		'hideTable' => 1,
+		
 		'label' => 'uid_address',
 		'label_alt' => 'role',
 		'label_alt_force' => 1,
