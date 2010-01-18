@@ -121,25 +121,26 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		parent::__construct($uid, $title, $parent_node, 'Test', $hidden);
 
 			// create Test Service
-		$info = t3lib_extMgm::findService('caretaker_test_service', $service_type );
-		if ($info && $info['classFile'] ){
-			$requireFile = t3lib_div::getFileAbsFileName($info['classFile']);
-			if (@is_file($requireFile)) {
-				t3lib_div::requireOnce ($requireFile);
-				$this->test_service = t3lib_div::makeInstance($info['className']);
-				if ($this->test_service) {
-					$this->test_service->setInstance( $this->getInstance() );
-					$this->test_service->setConfiguration($service_configuration);
+		if ($service_type){
+			$info = t3lib_extMgm::findService('caretaker_test_service', $service_type );
+			if ($info && $info['classFile'] ){
+				$requireFile = t3lib_div::getFileAbsFileName($info['classFile']);
+				if (@is_file($requireFile)) {
+					t3lib_div::requireOnce ($requireFile);
+					$this->test_service = t3lib_div::makeInstance($info['className']);
+					if ($this->test_service) {
+						$this->test_service->setInstance( $this->getInstance() );
+						$this->test_service->setConfiguration($service_configuration);
+					} else {
+						throw new Exception('testservice class '.$info['className'].' could not be instanciated');
+					}
 				} else {
-					throw new Exception('testservice class '.$info['className'].' could not be instanciated');
+					throw new Exception('testservice '.$service_type.' class file '.$requireFile.' nout found');
 				}
 			} else {
-				throw new Exception('testservice '.$service_type.' class file '.$requireFile.' nout found');
+				throw new Exception('caretaker testservice '.$service_type.' not found');
 			}
-		} else {
-			throw new Exception('caretaker testservice '.$service_type.' not found');
 		}
-
 		$this->test_service_type = $service_type;
 		$this->test_service_configuration = $service_configuration;
 		$this->test_interval = $interval;
@@ -297,7 +298,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	
 		} else {
 			
-			$result = $test_result_repository->getLatestByInstanceAndTest($instance, $this);
+			$result = $test_result_repository->getLatestByNode($this);
 			$this->notify( 'cachedTestResult', $result, $lastTestResult );
 		}
 		

@@ -69,6 +69,7 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 	    tx.caretaker.NodeTree.superclass.constructor.call(this, config);
 	
 	    this.editUrl = config.editUrl;
+		this.addUrl = config.addUrl;
 	},
 	showContextMenu: function(node, eventObj) {
 		node.select(); 
@@ -107,23 +108,90 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 	            		this.unhideNode(node);
 	            	},
                     scope: this
+                },  {
+                	id: 'tree-contextmenu-add-test',
+                	text: 'Create new test',
+                	iconCls: 'icon-test',
+                    handler: function() {
+	            		var node = this.getSelectionModel().getSelectedNode();
+						this.addTest(node);
+	            	},
+                    scope: this
+                },  {
+                	id: 'tree-contextmenu-add-testgroup',
+                	text: 'Create new testgroup',
+                	iconCls: 'icon-testgroup',
+                    handler: function() {
+	            		var node = this.getSelectionModel().getSelectedNode();
+						this.addTestgroup(node);
+	            	},
+                    scope: this
+                },  {
+                	id: 'tree-contextmenu-add-instance',
+                	text: 'Create new Instance',
+                	iconCls: 'icon-instance',
+                    handler: function() {
+	            		var node = this.getSelectionModel().getSelectedNode();
+						this.addInstance(node);
+	            	},
+                    scope: this
+                },  {
+                	id: 'tree-contextmenu-add-instancegroup',
+                	text: 'Create new Instancegroup',
+                	iconCls: 'icon-instancegroup',
+                    handler: function() {
+	            		var node = this.getSelectionModel().getSelectedNode();
+	            		this.addInstancegroup(node);
+	            	},
+                    scope: this
                 }]
             }); 
         }
 
-        if (node.attributes.type) {
-        	var editItem = Ext.getCmp('tree-contextmenu-edit');
-        	var hideItem = Ext.getCmp('tree-contextmenu-hide');
+        if (node.attributes.type || node.attributes.id == 'root') {
+				// show && hide
+        	var editItem   = Ext.getCmp('tree-contextmenu-edit');
+        	var hideItem   = Ext.getCmp('tree-contextmenu-hide');
         	var unhideItem = Ext.getCmp('tree-contextmenu-unhide');
-        	if (node.attributes.disabled) {
-        		hideItem.disable();
-        		unhideItem.enable();
-        	} else {
-        		hideItem.enable();
-        		unhideItem.disable();
-        	}
+
+			if ( node.attributes.id != 'root') {
+				if (node.attributes.disabled)  {
+					hideItem.disable();
+					unhideItem.enable();
+				} else {
+					hideItem.enable();
+					unhideItem.disable();
+				}
+			} else {
+				editItem.disable();
+				hideItem.disable();
+				unhideItem.disable();
+			}
+
+				// add test && testgroup
+			var addTest = Ext.getCmp('tree-contextmenu-add-test');
+			var addTestgroup = Ext.getCmp('tree-contextmenu-add-testgroup');
+			if ( ( node.attributes.type == 'instance' || node.attributes.type == 'testgroup' )  && node.attributes.id != 'root') {
+				addTest.enable();
+				addTestgroup.enable();
+			} else {
+				addTest.disable();
+				addTestgroup.disable();
+			}
+
+				// add instance && instancegroup
+			var addInstance = Ext.getCmp('tree-contextmenu-add-instance');
+			var addInstancegroup = Ext.getCmp('tree-contextmenu-add-instancegroup');
+			if ( node.attributes.id == 'root' || node.attributes.type == 'instancegroup' ) {
+				addInstance.enable();
+				addInstancegroup.enable();
+			} else {
+				addInstance.disable();
+				addInstancegroup.disable();
+			}
+
         	this.contextMenu.showAt(eventObj.getXY());
-        }
+        } 
 	},
 	openUrlInContent: function(url) {
 		if (top.condensedMode)	{
@@ -183,6 +251,81 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 			scope: this
 		});
 	},
+	addTest: function(node) {
+		var url = '';
+		if (node.attributes.type == 'instance'){
+			url = this.addUrl.replace('###NODE_TYPE###', 'test');
+			url += '&defVals[tx_caretaker_test][instances]=' + node.attributes.uid ;
+		}
+
+		if (node.attributes.type == 'testgroup'){
+			url = this.addUrl.replace('###NODE_TYPE###', 'test');
+			url += '&defVals[tx_caretaker_test][groups]=' + node.attributes.uid ;
+		}
+
+		if (url) {
+			url += "&returnUrl=" + encodeURIComponent(parent.list_frame.document.location);
+			this.openUrlInContent(url);
+		}
+
+	},
+	
+	addTestgroup: function(node) {
+		var url = '';
+		if (node.attributes.type == 'instance'){
+			url = this.addUrl.replace('###NODE_TYPE###', 'testgroup');
+			url += '&defVals[tx_caretaker_testgroup][instances]=' + node.attributes.uid ;
+		}
+
+		if (node.attributes.type == 'testgroup'){
+			url = this.addUrl.replace('###NODE_TYPE###', 'testgroup');
+			url += '&defVals[tx_caretaker_testgroup][parent_group]=' + node.attributes.uid ;
+		}
+
+		if (url) {
+			url += "&returnUrl=" + encodeURIComponent(parent.list_frame.document.location);
+			this.openUrlInContent(url);
+		}
+
+	},
+	
+	addInstance: function(node) {
+		var url = '';
+
+		if (node.attributes.type == 'instancegroup'){
+			url = this.addUrl.replace('###NODE_TYPE###', 'instance');
+			url += '&defVals[tx_caretaker_instance][instancegroup]=' + node.attributes.uid ;
+		}
+
+		if (node.attributes.id == 'root'){
+			url = this.addUrl.replace('###NODE_TYPE###', 'instance');
+		}
+
+		if (url) {
+			url += "&returnUrl=" + encodeURIComponent(parent.list_frame.document.location);
+			this.openUrlInContent(url);
+		}
+	},
+
+	addInstancegroup: function(node) {
+		var url = '';
+
+		if (node.attributes.type == 'instancegroup'){
+			url = this.addUrl.replace('###NODE_TYPE###', 'instancegroup');
+			url += '&defVals[tx_caretaker_instancegroup][parent_group]=' + node.attributes.uid ;
+		}
+
+		if (node.attributes.id == 'root'){
+			url = this.addUrl.replace('###NODE_TYPE###', 'instancegroup');
+		}
+
+		if (url) {
+			url += "&returnUrl=" + encodeURIComponent(parent.list_frame.document.location);
+			this.openUrlInContent(url);
+		}
+
+	},
+	
 	reloadTree: function() {
 		var state = this.getState();
 		this.root.reload();
