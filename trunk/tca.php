@@ -159,10 +159,13 @@ $TCA['tx_caretaker_instancegroup'] = array (
 		)
     ),
 	'types' => array (
-		'0' => array('showitem' => 'title;;1;;1-1-1, description,parent_group;;;;2-2-2,contacts, notification_strategy')
+		'0' => array('showitem' => 'hidden;;1;;1-1-1,title;;1;;1-1-1, parent_group;;;;2-2-2,' .
+					'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.description, description, ' .
+					'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.notifications, contacts, notification_strategy'
+		)
 	),
 	'palettes' => array (
-		'1' => array('showitem' => 'hidden,starttime,endtime,fe_group')
+		'1' => array('showitem' => 'starttime,endtime,fe_group')
 	)
 );
 
@@ -391,14 +394,15 @@ $TCA['tx_caretaker_instance'] = array (
 		)
 	),
 	'types' => array (
-		'0' => array('showitem' => 'title;;1, description;;;;1-1-1, instancegroup, url;;;;-2-2-2, host, public_key,' .
+		'0' => array('showitem' => 'hidden;;1, title;;;;2-2-2, instancegroup, url;;;;3-3-3, host, public_key,' .
+			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.description, description, ' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests, ' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, contacts, notification_strategy, notifications, ' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.testconfigurations, testconfigurations '
 		)
 	),
 	'palettes' => array (
-		'1' => array('showitem' => 'hidden,starttime,endtime,fe_group')
+		'1' => array('showitem' => 'starttime,endtime,fe_group')
 	)
 );
 
@@ -537,18 +541,6 @@ $TCA['tx_caretaker_testgroup'] = array (
 				'autoSizeMax'   => 10,
 				'minitems'      => 0,
 				'maxitems'      => 99,
-				'wizards' => Array(
-					'_PADDING' => 1,
-					'_VERTICAL' => 1,
-					'edit' => Array(
-						'type' => 'popup',
-						'title' => 'Edit Test',
-						'script' => 'wizard_edit.php',
-						'icon' => 'edit2.gif',
-						'popup_onlyOpenIfSelected' => 1,
-						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
-					),
-				),
  			)
 		),
 		'tests' => Array (
@@ -627,13 +619,16 @@ $TCA['tx_caretaker_testgroup'] = array (
 		)
     ),
 	'types' => array (
-		'0' => array('showitem' => 'title;;1;;1-1-1, description,parent_group;;;;2-2-2,
-		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.relations,tests;;;;3-3-3,instances;;;;4-4-4,
+		'0' => array('showitem' => 'hidden;;1;;1-1-1, title;;2;;2-2-2, parent_group;;;;3-3-3,
+		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.description,description,
+		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.relations,tests;;;;4-4-4,
 		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.notifications, contacts, notification_strategy, notifications,
 		')
 	),
 	'palettes' => array (
-		'1' => array('showitem' => 'hidden,starttime,endtime,fe_group')
+		'1' => array('showitem' => 'starttime,endtime,fe_group'),
+		'2' => array('showitem' => 'instances')
+
 	)
 );
 
@@ -810,12 +805,8 @@ $TCA['tx_caretaker_test'] = array (
 		'groups' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.groups',
-
 			'config' => Array (
 				'type'          => 'select',
-				'form_type'     => 'user',
-				'userFunc'      => 'tx_ttaddress_treeview->displayGroupTree',
-				'treeView'      => 1,
 				'foreign_table' => 'tx_caretaker_testgroup',
 				'size'          => 5,
 				'autoSizeMax'   => 25,
@@ -828,7 +819,6 @@ $TCA['tx_caretaker_test'] = array (
 		'instances' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.instances',
-
 			'config' => Array (
 				'type'          => 'select',
 				'foreign_table' => 'tx_caretaker_instance',
@@ -869,15 +859,15 @@ $TCA['tx_caretaker_test'] = array (
 		
 	),
 	'types' => array (
-		'0' => array('showitem' => 'test_service;;;;1-1-1, title;;1;;2-2-2,test_interval;;2, test_retry;;;;3-3-3, test_conf;;;;4-4-4,
+		'0' => array('showitem' => 'test_service;;;;1-1-1, hidden;;1;;2-2-2, title;;3;;3-3-3,test_interval;;2, test_retry;;;;3-3-3, test_conf;;;;4-4-4,
 					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.description, description,
-					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.notifications, notifications, roles,
-					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.relations, groups, instances',
+					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.notifications, notifications, roles',
 					)
 	),
 	'palettes' => array (
-		'1' => array('showitem' => 'hidden, starttime,endtime,fe_group'),
+		'1' => array('showitem' => 'starttime,endtime,fe_group'),
 		'2' => array('showitem' => 'test_interval_start_hour,test_interval_stop_hour'),
+		'3' => array('showitem' => 'groups,instances'),
 	)
 );
 
