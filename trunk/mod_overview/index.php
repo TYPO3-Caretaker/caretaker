@@ -90,6 +90,10 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			// Enable debug mode for Ext JS
 			$this->pageRenderer->enableExtJsDebug();
 
+			// storage Pid
+			$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+			$storagePid = (int)$confArray['storagePid'];
+			
 			//Add caretaker css
 			$this->pageRenderer->addCssFile('../res/css/tx.caretaker.overview.css');
 
@@ -106,6 +110,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 					var back_path   = "'.$this->doc->backPath.'";
 					var back_url    = "'.urlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')).'";
 					var path_typo3  = "'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'typo3/";
+					var	add_url     = "' . $PATH_TYPO3 . 'alt_doc.php?edit[###NODE_TYPE###][' . $storagePid . ']=new";
 					var node_id     = "'.$node->getCaretakerNodeId().'";
 					var node_type   = "'.strtolower($node->getType()).'";
 					var node_hidden = "'.$node->getHidden().'";
@@ -125,6 +130,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 									back_path: back_path,
 									path_typo3: path_typo3,
 									back_url: back_url,
+									add_url :add_url,
 									node_id: node_id,
 									node_type: node_type,
 									node_uid: node_uid,

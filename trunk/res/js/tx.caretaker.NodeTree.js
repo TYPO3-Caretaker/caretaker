@@ -68,9 +68,11 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 	
 	    tx.caretaker.NodeTree.superclass.constructor.call(this, config);
 	
-	    this.editUrl = config.editUrl;
-		this.addUrl = config.addUrl;
+	    this.editUrl    = config.editUrl;
+		this.addUrl     = config.addUrl;
+		
 	},
+
 	showContextMenu: function(node, eventObj) {
 		node.select(); 
 		eventObj.stopEvent();
@@ -253,14 +255,17 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 	},
 	addTest: function(node) {
 		var url = '';
+		var add_record_type = 'tx_caretaker_test';
+
 		if (node.attributes.type == 'instance'){
-			url = this.addUrl.replace('###NODE_TYPE###', 'test');
-			url += '&defVals[tx_caretaker_test][instances]=' + node.attributes.uid ;
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
+			url += '&defVals[' + add_record_type + '][instances]=' + node.attributes.uid ;
+
 		}
 
 		if (node.attributes.type == 'testgroup'){
-			url = this.addUrl.replace('###NODE_TYPE###', 'test');
-			url += '&defVals[tx_caretaker_test][groups]=' + node.attributes.uid ;
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
+			url += '&defVals[' + add_record_type + '][groups]=' + node.attributes.uid ;
 		}
 
 		if (url) {
@@ -272,14 +277,17 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 	
 	addTestgroup: function(node) {
 		var url = '';
+		var add_record_type = 'tx_caretaker_testgroup';
+
 		if (node.attributes.type == 'instance'){
-			url = this.addUrl.replace('###NODE_TYPE###', 'testgroup');
-			url += '&defVals[tx_caretaker_testgroup][instances]=' + node.attributes.uid ;
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
+			url += '&defVals[' + add_record_type + '][instances]=' + node.attributes.uid ;
+
 		}
 
 		if (node.attributes.type == 'testgroup'){
-			url = this.addUrl.replace('###NODE_TYPE###', 'testgroup');
-			url += '&defVals[tx_caretaker_testgroup][parent_group]=' + node.attributes.uid ;
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
+			url += '&defVals[' + add_record_type + '][parent_group]=' + node.attributes.uid ;
 		}
 
 		if (url) {
@@ -291,14 +299,15 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 	
 	addInstance: function(node) {
 		var url = '';
+		var add_record_type = 'tx_caretaker_instance';
 
 		if (node.attributes.type == 'instancegroup'){
-			url = this.addUrl.replace('###NODE_TYPE###', 'instance');
-			url += '&defVals[tx_caretaker_instance][instancegroup]=' + node.attributes.uid ;
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
+			url += '&defVals[' + add_record_type + '][instancegroup]=' + node.attributes.uid ;
 		}
 
 		if (node.attributes.id == 'root'){
-			url = this.addUrl.replace('###NODE_TYPE###', 'instance');
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
 		}
 
 		if (url) {
@@ -309,14 +318,15 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 
 	addInstancegroup: function(node) {
 		var url = '';
+		var add_record_type = 'tx_caretaker_instancegroup';
 
 		if (node.attributes.type == 'instancegroup'){
-			url = this.addUrl.replace('###NODE_TYPE###', 'instancegroup');
-			url += '&defVals[tx_caretaker_instancegroup][parent_group]=' + node.attributes.uid ;
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
+			url += '&defVals[' + add_record_type + '][parent_group]=' + node.attributes.uid ;
 		}
 
 		if (node.attributes.id == 'root'){
-			url = this.addUrl.replace('###NODE_TYPE###', 'instancegroup');
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
 		}
 
 		if (url) {

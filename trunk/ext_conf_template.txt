@@ -1,3 +1,6 @@
+# cat=caretaker/storage/sysfolder; type=integer; label=Uid of the caretaker-sysfolder. The uid is used for creating new Records from caretaker be-modules instead of the list-module
+storagePid = 0
+
 # cat=caretaker/enable; type=boolean; label=Escalating notifications: Enables a notification system with escalation strategies. Should be used for systems with more than one administrator.
 notifications.escalating.enabled = 0
 

@@ -73,20 +73,23 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->doc = t3lib_div::makeInstance("template");
 			$this->doc->backPath = $BACK_PATH;
 
-                        $this->pageRenderer = $this->doc->getPageRenderer();
+			$this->pageRenderer = $this->doc->getPageRenderer();
 
-                        // Include Ext JS
-                        $this->pageRenderer->loadExtJS();
-                        $this->pageRenderer->enableExtJSQuickTips();
-                        $this->pageRenderer->addJsFile('../res/js/tx.caretaker.js');
-                        $this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeTree.js');
+			// Include Ext JS
+			$this->pageRenderer->loadExtJS();
+			$this->pageRenderer->enableExtJSQuickTips();
+			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.js');
+			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeTree.js');
 
-                        // Enable debug mode for Ext JS
-                        $this->pageRenderer->enableExtJsDebug();
+			// Enable debug mode for Ext JS
+			$this->pageRenderer->enableExtJsDebug();
 
-                        //Add caretaker css
-                        $this->pageRenderer->addCssFile('../res/css/tx.caretaker.nodetree.css');
-			
+			//Add caretaker css
+			$this->pageRenderer->addCssFile('../res/css/tx.caretaker.nodetree.css');
+
+			// storage Pid
+			$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+			$storagePid = (int)$confArray['storagePid'];
 			
 			$this->pageRenderer->addJsInlineCode('Caretaker_Nodetree',
 			'
@@ -97,9 +100,9 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 					items: {
 						id: "cartaker-tree",
 						xtype: "caretaker-nodetree",
-                                                autoScroll: true,
+                        autoScroll: true,
 						dataUrl: "' . $this->doc->backPath . 'ajax.php?ajaxID=tx_caretaker::treeloader",
-						addUrl: "' . $PATH_TYPO3 . 'alt_doc.php?edit[tx_caretaker_###NODE_TYPE###][1]=new",
+						addUrl: "' . $PATH_TYPO3 . 'alt_doc.php?edit[###NODE_TYPE###][' . $storagePid . ']=new",
 						editUrl: "' . $PATH_TYPO3 . 'alt_doc.php?edit[tx_caretaker_###NODE_TYPE###][###NODE_UID###]=edit",
 						hideUrl: "' . $PATH_TYPO3 . 'tce_db.php?&data[tx_caretaker_###NODE_TYPE###][###NODE_UID###][hidden]=1",
 						unhideUrl: "' . $PATH_TYPO3 . 'tce_db.php?&data[tx_caretaker_###NODE_TYPE###][###NODE_UID###][hidden]=0"

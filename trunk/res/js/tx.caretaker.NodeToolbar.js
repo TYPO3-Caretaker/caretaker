@@ -27,9 +27,43 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
                             disabled: (config.node_type =='root')?true:false,
                             handler : this.editNode,
 							scope   : this
-                    },
-                    "->",
-                    {
+                    },{
+                            text    : "Add Child Record",
+							xtype   : 'tbbutton',
+                            icon    : "../res/icons/add.png",
+							menu    : [
+								{
+									text    : "Add Instancegroup",
+				                	id      : 'toolbar-menu-add-instancegroup',
+									icon    : "../res/icons/instancegroup.png",
+									disabled: true,
+									handler : this.addInstancegroup,
+									scope   : this
+								},{
+									text    : "Add Instance",
+				                	id      : 'toolbar-menu-add-instance',
+									icon    : "../res/icons/instance.png",
+									disabled: true,
+									handler : this.addInstance,
+									scope   : this
+								},{
+									text    : "Add Testgroup",
+									id      : 'toolbar-menu-add-testgroup',
+									icon    : "../res/icons/group.png",
+									disabled: true,
+									handler : this.addTestgroup,
+									scope   : this
+								},{
+									text    : "Add Test",
+									id      : 'toolbar-menu-add-test',
+									icon    : "../res/icons/test.png",
+									disabled: true,
+									handler : this.addTest,
+									scope   : this
+								}
+							]
+
+                    },"->",{
                             text    : "Enable",
                             disabled: (config.node_hidden==0 || config.node_type=='root')?true:false,
                             icon    : "../res/icons/lightbulb.png",
@@ -46,7 +80,116 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 
             ]
 		}, config);
+
+		this.addUrl = config.add_url;
+
+		
+
 		tx.caretaker.NodeToolbar.superclass.constructor.call(this, config);
+
+			// add test && testgroup
+		var addTestComponent = Ext.getCmp('toolbar-menu-add-test');
+		var addTestgroupComponent = Ext.getCmp('toolbar-menu-add-testgroup');
+		if ( this.node_type == 'instance' || this.node_type == 'testgroup' ) {
+			addTestComponent.enable();
+			addTestgroupComponent.enable();
+		} else {
+			addTestComponent.disable();
+			addTestgroupComponent.disable();
+		}
+
+			// add instance && instancegroup
+		var addInstanceComponent = Ext.getCmp('toolbar-menu-add-instance');
+		var addInstancegroupComponent = Ext.getCmp('toolbar-menu-add-instancegroup');
+		if ( this.node_type == 'root' || this.node_type == 'instancegroup' ) {
+			addInstanceComponent.enable();
+			addInstancegroupComponent.enable();
+		} else {
+			addInstanceComponent.disable();
+			addInstancegroupComponent.disable();
+		}
+	},
+	
+	addTest: function() {
+		var url = '';
+		var add_record_type = 'tx_caretaker_test';
+
+		if ( this.node_type == 'instance'){
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
+			url += '&defVals[' + add_record_type + '][instances]=' + this.node_uid ;
+
+		}
+
+		if ( this.node_type == 'testgroup'){
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
+			url += '&defVals[' + add_record_type + '][groups]=' + this.node_uid ;
+		}
+
+		if (url) {
+			url += "&returnUrl=" + this.back_url;
+			window.location.href = url;
+		}
+
+	},
+
+	addTestgroup: function() {
+		var url = '';
+		var add_record_type = 'tx_caretaker_testgroup';
+
+		if ( this.node_type == 'instance'){
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
+			url += '&defVals[' + add_record_type + '][instances]=' + this.node_uid ;
+
+		}
+
+		if ( this.node_type == 'testgroup'){
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
+			url += '&defVals[' + add_record_type + '][parent_group]=' + this.node_uid ;
+		}
+
+		if (url) {
+			url += "&returnUrl=" + this.back_url;
+            window.location.href = url;
+		}
+
+	},
+
+	addInstance: function() {
+		var url = '';
+		var add_record_type = 'tx_caretaker_instance';
+
+		if ( this.node_type == 'instancegroup'){
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
+			url += '&defVals[' + add_record_type + '][instancegroup]=' + this.node_uid ;
+		}
+
+		if ( this.node_type == 'root'){
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
+		}
+
+		if (url) {
+			url += "&returnUrl=" +  this.back_url;
+            window.location.href = url;
+		}
+	},
+
+	addInstancegroup: function() {
+		var url = '';
+		var add_record_type = 'tx_caretaker_instancegroup';
+
+		if ( this.node_type == 'instancegroup'){
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
+			url += '&defVals[' + add_record_type + '][parent_group]=' + this.node_uid ;
+		}
+
+		if ( this.node_type == 'root'){
+			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
+		}
+
+		if (url) {
+			url += "&returnUrl=" + this.back_url;
+            window.location.href = url;
+		}
 
 	},
 
