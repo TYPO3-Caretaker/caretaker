@@ -231,9 +231,8 @@ class tx_caretaker_TestResultRepository {
 	 * Save the Testresult for the given TestNode
 	 * @param tx_caretaker_TestNode $uid
 	 * @param tx_caretaker_TestResult $result tx_caretaker_TestResult
-	 * @param booleab $isDifferent result is different from last one
 	 */
-	function saveTestResultForNode(tx_caretaker_TestNode $test, $testResult, $isDifferent = false){
+	function saveTestResultForNode(tx_caretaker_TestNode $test, $testResult){
 
 		$values = array(
 				'test_uid'      => $test->getUid(),
@@ -247,10 +246,8 @@ class tx_caretaker_TestResultRepository {
 				'result_submessages'  => serialize( $testResult->getSubMessages() )
 		);
 
-			// store log of state changes
-		if ($isDifferent) {
-			$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_testresult', $values);
-		}
+			// store log of results
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_testresult', $values);
 
 			// store last results for fast access
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 'uid', 'tx_caretaker_lasttestresult', 'test_uid = '.$test->getUid(). ' AND instance_uid = '.$test->getInstance()->getUid() , '', '' , 1  );
