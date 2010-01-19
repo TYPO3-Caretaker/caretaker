@@ -52,7 +52,7 @@ CREATE TABLE tx_caretaker_instance (
 	public_key text NOT NULL,
 	url varchar(255) DEFAULT '' NOT NULL,
 	host varchar(255) DEFAULT '' NOT NULL,
-	contacts int(11) DEFAULT 0 NOT NULL,
+	contacts int(11) DEFAULT '0' NOT NULL,
 	notification_strategy int(11) DEFAULT '0' NOT NULL,
 
 	groups text NOT NULL,
