@@ -186,8 +186,7 @@ class tx_caretaker_ServiceHelper {
 
 	public static function registerNotificationExitPoint($extKey, $path, $key, $title, $description='') {
 		global $TCA;
-		var_dump($key);
-
+		
 		t3lib_div::loadTCA('tx_caretaker_exitpoints');
 
 			// Register test service
