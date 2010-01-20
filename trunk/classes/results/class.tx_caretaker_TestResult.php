@@ -63,7 +63,7 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	 * @param string  $message
 	 * @param array   $info
 	 */
-	public function __construct ($timestamp = 0, $state=TX_CARETAKER_STATE_UNDEFINED, $value=0, $message='', $submessages){
+	public function __construct ($timestamp = 0, $state=tx_caretaker_Constants::state_undefined, $value=0, $message='', $submessages){
 		parent::__construct($timestamp, $state, $message, $submessages);
 		$this->value   = $value;
 	}
@@ -75,7 +75,7 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	 */
 	static public function undefined ($message = 'Result is undefined'){
 		$timestamp = time();
-		return new tx_caretaker_TestResult($timestamp, TX_CARETAKER_STATE_UNDEFINED, 0, $message);
+		return new tx_caretaker_TestResult($timestamp, tx_caretaker_Constants::state_undefined, 0, $message);
 	}
 	
 	/**
@@ -86,7 +86,7 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	 * @param string  $message
 	 * @return tx_caretaker_TestResult
 	 */
-	static public function create($status=TX_CARETAKER_STATE_UNDEFINED, $value=0, $message='' , $submessages = NULL ){
+	static public function create($status=tx_caretaker_Constants::state_undefined, $value=0, $message='' , $submessages = NULL ){
 		$ts = time();
 		return new tx_caretaker_TestResult($ts, $status, $value, $message, $submessages) ;
 	}

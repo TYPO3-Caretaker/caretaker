@@ -190,19 +190,19 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		foreach($test_results as $test_result){
 			switch ( $test_result['result']->getState() ){
 				default:
-				case TX_CARETAKER_STATE_UNDEFINED:
+				case tx_caretaker_Constants::state_undefined:
 					$num_undefined ++;
 					$childnode_titles_undefined[] = $test_result['node']->getTitle();
 					break;
-				case TX_CARETAKER_STATE_OK:
+				case tx_caretaker_Constants::state_ok:
 					$num_ok ++;
 					$childnode_titles_ok[] = $test_result['node']->getTitle();
 					break;
-				case TX_CARETAKER_STATE_WARNING:
+				case tx_caretaker_Constants::state_warning:
 					$num_warnings ++;
 					$childnode_titles_warning[] = $test_result['node']->getTitle();
 					break;
-				case TX_CARETAKER_STATE_ERROR:
+				case tx_caretaker_Constants::state_error:
 					$num_errors ++;
 					$childnode_titles_error[] = $test_result['node']->getTitle();
 					break;				
@@ -252,11 +252,11 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		}
 
 		if  ($num_errors > 0){
-			return tx_caretaker_AggregatorResult::create(TX_CARETAKER_STATE_ERROR,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
+			return tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_error,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
 		} else if ($num_warnings > 0){
-			return tx_caretaker_AggregatorResult::create(TX_CARETAKER_STATE_WARNING,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
+			return tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_warning,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
 		} else {
-			return tx_caretaker_AggregatorResult::create(TX_CARETAKER_STATE_OK,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
+			return tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_ok,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
 		}
 
 	}

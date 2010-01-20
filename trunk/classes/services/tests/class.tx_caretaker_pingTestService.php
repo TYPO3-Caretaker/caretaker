@@ -79,18 +79,18 @@
 
 			if ($returnCode === 0) {
 				if ($time_error && $time > $time_error) {
-					return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' );
+					return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' );
 				}
 				if ($time_warning && $time > $time_warning) {
-					return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_WARNING, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' );
+					return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_warning, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' );
 				} 
-				return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_OK, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' ) ;
+				return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_ok, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' ) ;
 			} else {
 				$message = new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:ping_error', array('command'=>$command, 'message'=>$message) );
-				return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, $time , $message );
+				return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time , $message );
 			}
 		} else {
-			return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, 0 , 'LLL:EXT:caretaker/locallang_fe.xml:ping_no_command_template');
+			return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0 , 'LLL:EXT:caretaker/locallang_fe.xml:ping_no_command_template');
 		}
 	}
 	

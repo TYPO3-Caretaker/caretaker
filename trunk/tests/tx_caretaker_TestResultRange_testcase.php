@@ -12,31 +12,31 @@ class tx_caretaker_TestResultRange_testcase extends tx_phpunit_testcase  {
 		$this->test_result_range = new tx_caretaker_TestResultRange(500, 1000);
 		
 		$this->test_result_range->addResult(
-			new tx_caretaker_TestResult(500, TX_CARETAKER_STATE_OK, 0, '')
+			new tx_caretaker_TestResult(500, tx_caretaker_Constants::state_ok, 0, '')
 		);
 		
 		$this->test_result_range->addResult(
-			new tx_caretaker_TestResult(600, TX_CARETAKER_STATE_ERROR, 0, '')
+			new tx_caretaker_TestResult(600, tx_caretaker_Constants::state_error, 0, '')
 		);
 		
 		$this->test_result_range->addResult(
-			new tx_caretaker_TestResult(650, TX_CARETAKER_STATE_OK, 0, '')
+			new tx_caretaker_TestResult(650, tx_caretaker_Constants::state_ok, 0, '')
 		);
 		
 		$this->test_result_range->addResult(
-			new tx_caretaker_TestResult(800, TX_CARETAKER_STATE_WARNING, 0, '')
+			new tx_caretaker_TestResult(800, tx_caretaker_Constants::state_warning, 0, '')
 		);
 		
 		$this->test_result_range->addResult(
-			new	tx_caretaker_TestResult(900, TX_CARETAKER_STATE_OK, 0, '')
+			new	tx_caretaker_TestResult(900, tx_caretaker_Constants::state_ok, 0, '')
 		);
 		
 		$this->test_result_range->addResult(
-			new tx_caretaker_TestResult(930, TX_CARETAKER_STATE_UNDEFINED, 0, '')
+			new tx_caretaker_TestResult(930, tx_caretaker_Constants::state_undefined, 0, '')
 		);
 		
 		$this->test_result_range->addResult(
-			new tx_caretaker_TestResult(950, TX_CARETAKER_STATE_OK, 0, '')
+			new tx_caretaker_TestResult(950, tx_caretaker_Constants::state_ok, 0, '')
 		);
 		
 	}

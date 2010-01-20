@@ -91,7 +91,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			// Dataset definition
 		$DataSet   = new pData;
 		
-		$lastState = TX_CARETAKER_STATE_OK;
+		$lastState = tx_caretaker_Constants::state_ok;
 		$lastState= -2;
 		
 		$rangesUndefined = array();

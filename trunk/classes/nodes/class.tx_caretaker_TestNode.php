@@ -118,7 +118,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 			}
 		}
 
-		parent::__construct($uid, $title, $parent_node, 'Test', $hidden);
+		parent::__construct($uid, $title, $parent_node, tx_caretaker_Constants::nodeType_Test, $hidden);
 
 			// create Test Service
 		if ($service_type){
@@ -270,7 +270,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 			try {
 				$result = $this->test_service->runTest();
 			} catch ( Exception $e ) {
-				$result = new tx_caretaker_TestResult( TX_CARETAKER_STATE_ERROR , 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}'.$e->getMessage  );
+				$result = new tx_caretaker_TestResult( tx_caretaker_Constants::state_error , 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}'.$e->getMessage  );
 			}
 			
 				// retry if not ok and retrying is enabled
@@ -280,7 +280,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 					try {
 						$result = $this->test_service->runTest();
 					} catch ( Exception $e ) {
-						$result = new tx_caretaker_TestResult( TX_CARETAKER_STATE_ERROR , 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}'.$e->getMessage  );
+						$result = new tx_caretaker_TestResult( tx_caretaker_Constants::state_error , 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}'.$e->getMessage  );
 					}
 					$round ++;
 				}

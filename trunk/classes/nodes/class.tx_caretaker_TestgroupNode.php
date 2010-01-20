@@ -58,7 +58,7 @@ class tx_caretaker_TestgroupNode extends tx_caretaker_AggregatorNode {
 	 * @param boolean $hidden
 	 */
 	public function __construct($uid, $title, $parent, $hidden=0){
-		parent::__construct($uid, $title, $parent, 'Testgroup',$hidden );
+		parent::__construct($uid, $title, $parent, tx_caretaker_Constants::nodeType_Testgroup, $hidden );
 	}
 
 	/**

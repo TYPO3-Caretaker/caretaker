@@ -84,7 +84,7 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	 * @param boolean $hidden
 	 */
 	public function __construct( $uid, $title, $parent, $url='', $hostname='', $publicKey = '', $hidden=0) {
-		parent::__construct($uid, $title, $parent, 'Instance', $hidden);
+		parent::__construct($uid, $title, $parent, tx_caretaker_Constants::nodeType_Instance, $hidden);
 		$this->url = $url;
 		$this->hostname = $hostname;
 		$this->publicKey = $publicKey;

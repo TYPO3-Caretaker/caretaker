@@ -27,12 +27,12 @@ class tx_caretaker_AggregatorNode_testcase extends tx_phpunit_testcase  {
 		$node       = new tx_caretaker_TestNode (0, 'baz', $instance, 'tx_caretaker_ping' , '' );
 
 		$results = array();
-		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK      ) );
-		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK      ) );
-		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( TX_CARETAKER_STATE_WARNING ) );
-		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR   ) );
-		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( TX_CARETAKER_STATE_ERROR   ) );
-		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( TX_CARETAKER_STATE_OK      ) );
+		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( tx_caretaker_Constants::state_ok      ) );
+		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( tx_caretaker_Constants::state_ok      ) );
+		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( tx_caretaker_Constants::state_warning ) );
+		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( tx_caretaker_Constants::state_error   ) );
+		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( tx_caretaker_Constants::state_error   ) );
+		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( tx_caretaker_Constants::state_ok      ) );
 		$results[] = array('node'=>$node , 'result'=> tx_caretaker_TestResult::create( ) );
 
 		$aggregated_result = $aggregator->getAggregatedResult($results);
@@ -41,7 +41,7 @@ class tx_caretaker_AggregatorNode_testcase extends tx_phpunit_testcase  {
 		$this->assertEquals( 3, $aggregated_result->getNumOK() , "wrong ok count" );
 		$this->assertEquals( 1, $aggregated_result->getNumUNDEFINED() , "wrong undefined count" );
 
-		$this->assertEquals( TX_CARETAKER_STATE_ERROR, $aggregated_result->getState() , "wrong result" );
+		$this->assertEquals( tx_caretaker_Constants::state_error, $aggregated_result->getState() , "wrong result" );
 		
 	}
 

@@ -117,7 +117,7 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 		}
 
 			// check that the state is not ok or undefined
-		if ( $result->getState() <= TX_CARETAKER_STATE_OK ){
+		if ( $result->getState() <= tx_caretaker_Constants::state_ok ){
 			return;
 		}
 
@@ -148,10 +148,10 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 				);
 			}
 			switch ( $result->getState() ){
-				case TX_CARETAKER_STATE_WARNING:
+				case tx_caretaker_Constants::state_warning:
 					$this->recipients_messages[$recipientId]['num_warning'] ++;
 					break;
-				case TX_CARETAKER_STATE_ERROR:
+				case tx_caretaker_Constants::state_error:
 					$this->recipients_messages[$recipientId]['num_error'] ++;
 					break;
 			}

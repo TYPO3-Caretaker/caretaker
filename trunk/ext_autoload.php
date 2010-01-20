@@ -8,6 +8,7 @@
 return array(
 	
 		/* helpers */
+	'tx_caretaker_constants'			   => t3lib_extMgm::extPath('caretaker', 'classes/class.tx_caretaker_Constants.php'),
 	'tx_caretaker_servicehelper'           => t3lib_extMgm::extPath('caretaker', 'classes/helpers/class.tx_caretaker_ServiceHelper.php'),
 	'tx_caretaker_locallizationhelper'     => t3lib_extMgm::extPath('caretaker', 'classes/helpers/class.tx_caretaker_LocallizationHelper.php'),
 	'tx_caretaker_extensionmanagerhelper'  => t3lib_extMgm::extPath('caretaker', 'classes/helpers/class.tx_caretaker_ExtensionManagerHelper.php'),

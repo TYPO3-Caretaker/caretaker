@@ -109,13 +109,13 @@ abstract class tx_caretaker_NodeResult {
 	 */
 	public function getStateInfo (){
 		switch ($this->state){
-			case TX_CARETAKER_STATE_OK:
+			case tx_caretaker_Constants::state_ok:
 				return 'OK';
-			case TX_CARETAKER_STATE_ERROR:
+			case tx_caretaker_Constants::state_error:
 				return 'ERROR';
-			case TX_CARETAKER_STATE_WARNING:
+			case tx_caretaker_Constants::state_warning:
 				return 'WARNING';
-			case TX_CARETAKER_STATE_UNDEFINED:
+			case tx_caretaker_Constants::state_undefined:
 				return 'UNDEFINED';
 		}
 	}

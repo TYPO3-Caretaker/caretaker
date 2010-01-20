@@ -80,8 +80,8 @@ class tx_caretaker_NotificationService implements tx_caretaker_NotificationServi
 	 * @param tx_caretaKer_TestResult $lastResult
 	 */
 	public function addNotification ( $event, $node, $result = NULL, $lastResult = NULL ){
-		
-		// var_dump($node->getProperty('notification_strategy'));
+		$nodeType = $node->getType();
+		// var_dump($nodeType);
 		
 	}
 

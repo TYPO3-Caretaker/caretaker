@@ -157,7 +157,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 		$nodesErrors    = array();
 		$nodesWarnings  = array();
 
-		$worst_state       = TX_CARETAKER_STATE_OK;
+		$worst_state       = tx_caretaker_Constants::state_ok;
 		$worst_state_info  = '';
 
 		$num_error = 0;
@@ -178,22 +178,22 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 
 				// count node states info
 			switch ( $testState ) {
-				case TX_CARETAKER_STATE_ERROR:
+				case tx_caretaker_Constants::state_error:
 					$num_error ++;
 					break;
-				case TX_CARETAKER_STATE_WARNING:
+				case tx_caretaker_Constants::state_warning:
 					$num_warning ++;
 					break;
-				case TX_CARETAKER_STATE_OK:
+				case tx_caretaker_Constants::state_ok:
 					$num_ok ++;
 					break;
-				case TX_CARETAKER_STATE_UNDEFINED:
+				case tx_caretaker_Constants::state_undefined:
 					$num_undefined ++;
 					break;
 			}
 
 				// aggreate infos about warnings and errors
-			if ( $testNodeState > TX_CARETAKER_STATE_OK ) {
+			if ( $testNodeState > tx_caretaker_Constants::state_ok ) {
 				
 				$instance  = $testNode->getInstance();
 				$nodeInfo = Array (
@@ -213,11 +213,11 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 
 					// save info
 				switch ( $testNodeState ) {
-					case TX_CARETAKER_STATE_ERROR:
+					case tx_caretaker_Constants::state_error:
 						$nodesErrors[] = $nodeInfo;
 						$num_error ++;
 						break;
-					case TX_CARETAKER_STATE_WARNING:
+					case tx_caretaker_Constants::state_warning:
 						$nodesWarnings[] = $nodeInfo;
 						$num_warning ++;
 						break;

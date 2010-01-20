@@ -258,10 +258,10 @@ class tx_caretaker_NodeInfo {
 					);
 
 					switch ( $testResult->getState() ){
-						case TX_CARETAKER_STATE_WARNING:
+						case tx_caretaker_Constants::state_warning:
 							$nodeWarnings[] = $nodeInfo;
 							break;
-						case TX_CARETAKER_STATE_ERROR:
+						case tx_caretaker_Constants::state_error:
 							$nodeErrors[] = $nodeInfo;
 							break;
 					}
