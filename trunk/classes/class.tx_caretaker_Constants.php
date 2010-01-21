@@ -51,11 +51,35 @@ class tx_caretaker_Constants {
 	const state_undefined = -1;
 
 		/* node types */
-	const nodeType_Root = 'Root';
-	const nodeType_Instancegroup = 'Instancegroup';
-	const nodeType_Instance = 'Instance';
-	const nodeType_Testgroup = 'Testgroup';
-	const nodeType_Test = 'Test';
+	const nodeType_Root =			'Root';
+	const nodeType_Instancegroup =	'Instancegroup';
+	const nodeType_Instance =		'Instance';
+	const nodeType_Testgroup =		'Testgroup';
+	const nodeType_Test =			'Test';
+
+		/* tables */
+		/* foreign tables */
+	const table_Addresses = 'tt_address';
+
+		/* data tables */
+	const table_Instances =			'tx_caretaker_instance';
+	const table_Instancegroups =	'tx_caretaker_instancegroup';
+	const table_Testgroups =		'tx_caretaker_testgroup';
+	const table_Tests =				'tx_caretaker_test';
+	const table_Testresults =		'tx_caretaker_testresult';
+	const table_Lasttestresults =	'tx_caretaker_lasttestresult';
+	const table_Aggregatorresults = 'tx_caretaker_aggregatorresult';
+	const table_Roles =				'tx_caretaker_roles';
+	const table_Exitponts =			'tx_caretaker_exitpoints';
+	const table_Strategies =		'tx_caretaker_strategies';
+
+		/* relation tables */
+	const relationTable_Node2Address =		 'tx_caretaker_node_address_mm';
+	const relationTable_Node2Strategy =		 'tx_caretaker_node_strategy_mm';
+	const relationTable_Test2Roles =		 'tx_caretaker_test_roles_mm';
+	const relationTable_Instance2Testgroup = 'tx_caretaker_instance_testgroup_mm';
+	const relationTable_Testgroup2Test =	 'tx_caretaker_testgroup_test_mm';
+	const relationTable_Instance2Test =		 'tx_caretaker_instance_test_mm';
 
 }
 

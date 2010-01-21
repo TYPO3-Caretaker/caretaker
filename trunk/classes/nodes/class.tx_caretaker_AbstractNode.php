@@ -328,5 +328,72 @@ abstract class tx_caretaker_AbstractNode {
 			$notificationService->addNotification( $event, $this, $result, $lastResult );
 		}
 	}
+
+	/**
+	 * Returns all contacts that are set for this node. With default settings it will return the contacts
+	 * of the first node found in the rootline. The alternative behavior is to return all from all nodes
+	 * in the rootline.
+	 *
+	 * Please note that only instances and instance_groups can have contacts! You can call it for every
+	 * node though.
+	 *
+	 * @param array		$roles: A set of requested roles. The field "id" is used for selection!
+	 * @param boolean	$returnFirst: If set to true, the first found set of contacts will be returned
+	 *
+	 * @return array with contacts
+	 */
+	public function findContacts(array $roles = array(), $returnFirst = true) {
+		$contacts = array();
+		
+			// fetch ids of requested roles
+		$roleSelect = '';
+
+		if (count($roles) > 0) {
+			$rolesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,id', tx_caretaker_Constants::table_Roles, 'id IN (\''.implode('\',\'', $roles).'\') AND hidden=0 AND deleted=0');
+		} else {
+			$rolesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,id', tx_caretaker_Constants::table_Roles, 'hidden=0 AND deleted=0');
+		}
+
+		$roles = array();
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rolesRes)) {
+			$roles[$row['uid']] = $row['id'];
+		}
+		
+		if (count($roles) > 0) {
+			$roleSelect = 'role IN ('.implode(',', array_keys($roles)).') AND ';
+		}
+
+		$processedNodeList = array();
+
+		$node = $this;
+		while ($node) {
+			$nodeType = $node->getType();
+			$nodeUid = $node->getUid();
+
+			if ($nodeType == tx_caretaker_Constants::nodeType_Instance || $nodeType == tx_caretaker_Constants::nodeType_Instancegroup) {
+					// which table?
+				switch ($nodeType) {
+					case tx_caretaker_Constants::nodeType_Instance: $nodeTable = tx_caretaker_Constants::table_Instances; break;
+					case tx_caretaker_Constants::nodeType_Instancegroup: $nodeTable = tx_caretaker_Constants::table_Instancegroups; break;
+				}
+
+					// select relations and store them internally
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::relationTable_Node2Address, 'uid_node='.$nodeUid.' AND '.$roleSelect.'node_table=\''.$nodeTable.'\'');
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+						// don't add relations if we only interested in the first one in rootline
+					if ($returnFirst && isset($relations[$row['role']]) && in_array($nodeUid, $processedNodeList)) continue;
+					
+						// fetch address and add to return structure
+					$address = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', tx_caretaker_Constants::table_Addresses, 'uid='.$row['uid_address'], '', '', 1);
+					$contacts[$roles[$row['role']]][$row['uid_address']] = $address[0];
+				}
+			}
+
+			$processedNodeList[] = $nodeUid;
+			$node = $node->getParent();
+		}
+
+		return $contacts;
+	}
 }
 ?>
