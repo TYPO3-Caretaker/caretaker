@@ -52,6 +52,13 @@ class tx_caretaker_NotificationService implements tx_caretaker_NotificationServi
 	private $enabled = false;
 
 	/**
+	 * Internal data structure to collect all notofications
+	 * 
+	 * @var array
+	 */
+	private $notifications = array();
+
+	/**
 	 * Constructor
 	 * reads the service configuration
 	 */
@@ -80,16 +87,67 @@ class tx_caretaker_NotificationService implements tx_caretaker_NotificationServi
 	 * @param tx_caretaKer_TestResult $lastResult
 	 */
 	public function addNotification ( $event, $node, $result = NULL, $lastResult = NULL ){
-		$nodeType = $node->getType();
-		// var_dump($nodeType);
+		if ($result == null) return true;
 		
+		$nodeType = $node->getType();
+		$nodeId = $node->getCaretakerNodeId();
+
+		switch ($nodeType) {
+				// store the result for instances and instance groups
+			case tx_caretaker_Constants::nodeType_Instance:
+			case tx_caretaker_Constants::nodeType_Instancegroup:
+				$this->notifications[$nodeType][$node->getUid()]['result'] = $result;
+				$this->notifications[$nodeType][$node->getUid()]['node'] = $node;
+				break;
+
+				// add nodeId to testlist of all higher entities as long as they are instances or instancegroups
+			case tx_caretaker_Constants::nodeType_Test:
+				$nodeParent = $node;
+				while ($nodeParent && $nodeParent = $nodeParent->getParent()) {
+					$nodeParentType = $nodeParent->getType();
+					if ($nodeParentType != tx_caretaker_Constants::nodeType_Instance && $nodeParentType != tx_caretaker_Constants::nodeType_Instancegroup) continue;
+					$this->notifications[$nodeParentType][$nodeParent->getUid()]['tests'][$nodeId] = $nodeId;
+				}
+				
+				break;
+		}
 	}
 
 	/**
-	 * Send the aggregated Notifications
+	 * This is the main method for sending the notifications.
+	 * All general information has been collected at this point. We have the aggregated results for each instance and instancegroup with all
+	 * tests that where executed for that specific instance.
 	 *
 	 * nothing happens here since all Informations are already sent to cli
 	 */
-	public function sendNotifications(){}
+	public function sendNotifications() {
+		$parser = t3lib_div::makeInstance('t3lib_TSparser');
+
+		foreach ($this->notifications as $nodeType => $nodeList) {
+			foreach ($nodeList as $nodeData) {
+				
+				$strategyCount = intval($nodeData['node']->getProperty('notification_strategies'));
+				if ($strategyCount <= 0) continue;
+
+					// select strategies from database
+				$strategies = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					's.*',
+					tx_caretaker_Constants::table_Strategies.' s,'.tx_caretaker_Constants::relationTable_Node2Strategy.' rel',
+					'rel.uid_node='.$nodeData['node']->getUid().' AND rel.node_table=\''.$nodeData['node']->getStorageTable().'\' AND rel.uid_strategy=s.uid');
+
+				$contacts = $nodeData['node']->findContacts();
+
+				foreach ($strategies as $strategyRow) {
+					if (empty($strategyRow['config'])) continue;
+
+					$parser->parse($strategyRow['config']);
+					$strategy = $parser->setup['behaviors.'];
+
+
+					// TODO: process strategy
+				}
+			}
+		}
+	}
 }
 ?>
