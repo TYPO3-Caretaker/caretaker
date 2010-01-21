@@ -50,7 +50,7 @@
 class tx_caretaker_RootNode extends tx_caretaker_AggregatorNode {
 
 	public function __construct( $hidden=false) {
-		parent::__construct(0, 'Caretaker Root', false, tx_caretaker_Constants::nodeType_Root, $hidden);
+		parent::__construct(0, 'Caretaker Root', false, null, tx_caretaker_Constants::nodeType_Root, $hidden);
 	}
 
 	/**

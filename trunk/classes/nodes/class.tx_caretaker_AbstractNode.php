@@ -98,6 +98,13 @@ abstract class tx_caretaker_AbstractNode {
 	 * @var array
 	 */
 	protected $dbRow = NULL;
+
+	/**
+	 * The table where this node is stored
+	 *
+	 * @var string
+	 */
+	protected $storageTable = '';
 	
 	/**
 	 * Constructor
@@ -108,11 +115,12 @@ abstract class tx_caretaker_AbstractNode {
 	 * @param string $type
 	 * @param string $hidden
 	 */
-	public function __construct( $uid, $title, $parent, $type='', $hidden = false ){
+	public function __construct( $uid, $title, $parent, $storageTable, $type='', $hidden = false ){
 		$this->uid    = $uid;
 		$this->title  = $title;
 		$this->parent = $parent;
 		$this->type   = $type;
+		$this->storageTable = $storageTable;
 		if ($parent && $parent->getHidden()){
 			$this->hidden = true;
 		} else {
@@ -148,6 +156,15 @@ abstract class tx_caretaker_AbstractNode {
 	 */
 	public function getParent(){
 		return $this->parent;
+	}
+
+	/**
+	 * Returns the tablename where this type of node is stored
+	 * 
+	 * @return string
+	 */
+	public function getStorageTable() {
+		return $this->storageTable;
 	}
 
 	/**
@@ -372,13 +389,10 @@ abstract class tx_caretaker_AbstractNode {
 
 			if ($nodeType == tx_caretaker_Constants::nodeType_Instance || $nodeType == tx_caretaker_Constants::nodeType_Instancegroup) {
 					// which table?
-				switch ($nodeType) {
-					case tx_caretaker_Constants::nodeType_Instance: $nodeTable = tx_caretaker_Constants::table_Instances; break;
-					case tx_caretaker_Constants::nodeType_Instancegroup: $nodeTable = tx_caretaker_Constants::table_Instancegroups; break;
-				}
-
+				$storageTable = $this->getStorageTable();
+								
 					// select relations and store them internally
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::relationTable_Node2Address, 'uid_node='.$nodeUid.' AND '.$roleSelect.'node_table=\''.$nodeTable.'\'');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::relationTable_Node2Address, 'uid_node='.$nodeUid.' AND '.$roleSelect.'node_table=\''.$storageTable.'\'');
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 						// don't add relations if we only interested in the first one in rootline
 					if ($returnFirst && isset($relations[$row['role']]) && in_array($nodeUid, $processedNodeList)) continue;

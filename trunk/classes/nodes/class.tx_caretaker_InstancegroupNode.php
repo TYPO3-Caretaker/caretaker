@@ -48,8 +48,6 @@
  * @subpackage caretaker
  */
 class tx_caretaker_InstancegroupNode extends tx_caretaker_AggregatorNode {
-
-		
 	/**
 	 * Constructor 
 	 * 
@@ -59,7 +57,7 @@ class tx_caretaker_InstancegroupNode extends tx_caretaker_AggregatorNode {
 	 * @param boolean $hidden
 	 */
 	public function __construct( $uid, $title, $parent, $hidden=0) {
-		parent::__construct($uid, $title, $parent, tx_caretaker_Constants::nodeType_Instancegroup, $hidden);
+		parent::__construct($uid, $title, $parent, tx_caretaker_Constants::table_Instancegroups, tx_caretaker_Constants::nodeType_Instancegroup, $hidden);
 	}
 
 	/**

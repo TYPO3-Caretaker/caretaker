@@ -54,7 +54,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 	 * @var array
 	 */
 	protected $child_nodes = NULL;
-	
+
 	/**
 	 * Get the Childnodes of this Node (cached)
 	 * @param $show_hidden
@@ -323,6 +323,20 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 			$overlayConfig = $this->parent->getTestConfigurationOverlayForTestUid($testUid);
 		}
 		return $overlayConfig;
+	}
+
+	/**
+	 * Fetches all assigned strategies and returns them in an array
+	 *
+	 * @return array
+	 */
+	public function getStrategies() {
+		$strategies = array();
+
+		$nodeType = $this->getType();
+
+
+		return $strategies;
 	}
 	
 }

@@ -118,7 +118,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 			}
 		}
 
-		parent::__construct($uid, $title, $parent_node, tx_caretaker_Constants::nodeType_Test, $hidden);
+		parent::__construct($uid, $title, $parent_node, tx_caretaker_Constants::table_Tests, tx_caretaker_Constants::nodeType_Test, $hidden);
 
 			// create Test Service
 		if ($service_type){

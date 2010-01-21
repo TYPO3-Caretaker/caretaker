@@ -43,10 +43,10 @@
  * @subpackage caretaker
  */
 interface tx_caretaker_NotificationExitPointInterface {
-
+	
 	public function init(array $config);
 
-	public function setData($data);
+	public function setContacts($contacts);
 
 	public function execute();
 
