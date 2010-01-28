@@ -35,7 +35,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_pingTestService.php');
+require_once (t3lib_extMgm::extPath('caretaker').'classes/services/tests/class.tx_caretaker_pingTestService.php');
 
 
 class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase  {

@@ -35,7 +35,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_httpTestService.php');
+require_once (t3lib_extMgm::extPath('caretaker').'classes/services/tests/class.tx_caretaker_httpTestService.php');
 
 /**
  * Stub class to expose protected methods for testing
