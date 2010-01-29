@@ -124,7 +124,7 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 
 	/**
 	 * Return number of children with state UNDEFINED
-	 * @return unknown_type
+	 * @return integer
 	 */
 	public function getNumUNDEFINED(){
 		return $this->num_UNDEFINED;
@@ -132,7 +132,7 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 	
 	/**
 	 * Return number of children with state OK
-	 * @return unknown_type
+	 * @return integer
 	 */
 	public function getNumOK(){
 		return $this->num_OK;
@@ -140,7 +140,7 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 
 	/**
 	 * Return number of children with state WARNING
-	 * @return unknown_type
+	 * @return integer
 	 */
 	public function getNumWARNING(){
 		return $this->num_WARNING;
@@ -148,10 +148,20 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 	
 	/**
 	 * Return number of children with state ERROR
-	 * @return unknown_type
+	 * @return integer
 	 */	
 	public function getNumERROR(){
 		return $this->num_ERROR;
+	}
+
+	/**
+	 * Returns the number of children with state that fits the given name.
+	 * @param string $stateName state name (valid values: UNDEFINED, OK, WARNING, ERROR)
+	 * @return integer
+	 */
+	public function getNumGENERIC($stateName) {
+		$variableName = 'num_'.strtoupper($stateName);
+		return $this->$variableName;
 	}
 
 
