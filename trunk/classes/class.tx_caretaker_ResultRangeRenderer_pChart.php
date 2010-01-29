@@ -590,7 +590,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			$abs_str = (string)round(abs($number));
 			$significance = pow(10 , (int)strlen( $abs_str ) );
 		} else if ( $value == 0) {
-			$significance = 1;
+			return 1;
 		} else {
 			$abs_str = (string)abs($number);
 			$pos = 0;
