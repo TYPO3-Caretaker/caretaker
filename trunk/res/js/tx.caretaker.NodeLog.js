@@ -31,7 +31,10 @@ tx.caretaker.NodeLog = Ext.extend( Ext.grid.GridPanel , {
 		this.renderMessage = function(  value, metaData, record, rowIndex, colIndex, store ){
 
 			var lines = value.split( "\n" );
-			return '<div class="x-grid3-cell-inner" ext:qtitle="' + lines[0]  + '" ext:qtip="' +  lines.join('<br/>')  + '" >' + lines[0]  + '</div>';
+			var title = lines[0]
+			var message  = lines.splice( 1 );
+
+			return '<div class="x-grid3-cell-inner" ext:qtitle="' + title  + '" ext:qtip="' +  message.join('<br/>')  + '" >' + title  + '</div>';
 			
 		}
 
