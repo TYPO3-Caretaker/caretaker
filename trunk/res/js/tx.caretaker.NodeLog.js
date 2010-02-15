@@ -2,8 +2,6 @@
 
 Ext.namespace('tx','tx.caretaker');
 
-Ext.QuickTips.init();
-
 tx.caretaker.NodeLog = Ext.extend( Ext.grid.GridPanel , {
 
     constructor: function(config) {
@@ -30,11 +28,13 @@ tx.caretaker.NodeLog = Ext.extend( Ext.grid.GridPanel , {
 
 		this.renderMessage = function(  value, metaData, record, rowIndex, colIndex, store ){
 
-			var lines = value.split( "\n" );
-			var title = lines[0]
-			var message  = lines.splice( 1 );
+			var values = value.replace( /"/g , '&quot;' ).replace( /</g , '&lt;').replace( />/g , '&gt;').replace( /&/g , '&amp;' );
 
-			return '<div class="x-grid3-cell-inner" ext:qtitle="' + title  + '" ext:qtip="' +  message.join('<br/>')  + '" >' + title  + '</div>';
+			var lines = values.split( "\n" );
+			var title = lines[0];
+			var message  = lines.splice( 1 ).join( '<br/>' );
+
+			return '<div class="x-grid3-cell-inner" ext:qtitle="' + title  + '" ext:qtip="' +  message  + '" >' + title  + '</div>';
 			
 		}
 

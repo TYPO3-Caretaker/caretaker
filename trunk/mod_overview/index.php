@@ -105,6 +105,8 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 				Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 				Ext.namespace("tx","tx.caretaker");
 
+				Ext.QuickTips.init();
+
 				Ext.onReady( function() {
 
 					var back_path   = "'.$this->doc->backPath.'";
