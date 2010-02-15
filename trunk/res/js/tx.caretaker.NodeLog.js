@@ -2,6 +2,8 @@
 
 Ext.namespace('tx','tx.caretaker');
 
+Ext.QuickTips.init();
+
 tx.caretaker.NodeLog = Ext.extend( Ext.grid.GridPanel , {
 
     constructor: function(config) {
@@ -26,6 +28,13 @@ tx.caretaker.NodeLog = Ext.extend( Ext.grid.GridPanel , {
 			})
 		});
 
+		this.renderMessage = function(  value, metaData, record, rowIndex, colIndex, store ){
+
+			var lines = value.split( "\n" );
+			return '<div class="x-grid3-cell-inner" ext:qtitle="' + lines[0]  + '" ext:qtip="' +  lines.join('<br/>')  + '" >' + lines[0]  + '</div>';
+			
+		}
+
 		config = Ext.apply({
 
 			collapsed        : true,
@@ -43,13 +52,19 @@ tx.caretaker.NodeLog = Ext.extend( Ext.grid.GridPanel , {
 			// grid columns
 			columns:[{
 				header: "Time",
-				dataIndex: 'timestamp'
+				dataIndex: 'timestamp',
+				format: 'd.m.y H:i:s',
+				fixed: true,
+				width: 275
 			},{
 				header: "State",
-				dataIndex: 'stateinfo_ll'
+				dataIndex: 'stateinfo_ll',
+				fixed: true,
+				width: 75
 			},{
 				header:'Message',
-				dataIndex: 'message_ll'
+				dataIndex: 'message_ll',
+				renderer:{ fn: this.renderMessage, scope: this }
 			}],
 
 			// customize view config
