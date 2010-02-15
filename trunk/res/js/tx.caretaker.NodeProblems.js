@@ -34,15 +34,10 @@ tx.caretaker.NodeProblems = Ext.extend( Ext.grid.GridPanel , {
 
 			var values = value.replace( /"/g , '&quot;' ).replace( /</g , '&lt;').replace( />/g , '&gt;').replace( /&/g , '&amp;' );
 
-			console.debug(values);
-
 			var lines = values.split( "\n" );
 			var title = lines[0];
 			var message  = lines.splice( 1 ).join( '<br/>' );
 
-			console.debug(title);
-			console.debug(message);
-	console.debug("---");
 			return '<div class="x-grid3-cell-inner" ext:qtitle="' + title  + '" ext:qtip="' +  message  + '" >' + title  + '</div>';
 
 		}
