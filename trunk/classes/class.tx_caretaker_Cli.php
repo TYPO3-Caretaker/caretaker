@@ -61,7 +61,7 @@ class tx_caretaker_Cli extends t3lib_cli {
         $this->cli_help['synopsis'] = 'update|get|update-extension-list|help ###OPTIONS###';
         $this->cli_help['description'] = 'Class with basic functionality for CLI scripts';
         $this->cli_help['examples'] = '/.../cli_dispatch.phpsh caretaker update -i 6 -g 4';
-        $this->cli_help['author'] = 'Martin Ficzel, (c) 2008';
+        $this->cli_help['author'] = 'Martin Ficzel, (c) 2008-2010';
 
         $this->cli_options[]=array('--root', 'update all beginning with Root Node');
         $this->cli_options[]=array('-R', 'Same as --root');
@@ -103,7 +103,7 @@ class tx_caretaker_Cli extends t3lib_cli {
         	
         	if ($node) {
 
-				echo ( 'node '.$node->getCaretakerNodeId().chr(10) );
+				$this->cli_echo ( 'node '.$node->getCaretakerNodeId().chr(10) );
 				
 	       		$result = FALSE;
 				
@@ -113,7 +113,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 						$lockObj = t3lib_div::makeInstance('t3lib_lock', 'tx_caretaker_update_'.$node->getCaretakerNodeId() , $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode'] );
 						$lockIsAquired = $lockObj->acquire();
 					} catch (Exception $e){
-						echo ( 'lock '.'tx_caretaker_update_'.$node->getCaretakerNodeId() . ' could not be aquired!'.chr(10).$e->getMessage() );
+						$this->cli_echo ( 'lock '.'tx_caretaker_update_'.$node->getCaretakerNodeId() . ' could not be aquired!'.chr(10).$e->getMessage() );
 						exit;
 					}
 
@@ -122,7 +122,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 						$lockObj->release();
 					} else {
 						$result = false;
-						echo ( 'node '.$node->getCaretakerNodeId() . ' is locked because of other running update processes!'.chr(10) );
+						$this->cli_echo ( 'node '.$node->getCaretakerNodeId() . ' is locked because of other running update processes!'.chr(10) );
 						exit;
 					}
 
@@ -130,8 +130,8 @@ class tx_caretaker_Cli extends t3lib_cli {
 	        	
 	        	if ($task == 'get') {
 					$result = $node->getTestResult();
-					echo ( $node->getTitle().' ['.$node->getCaretakerNodeId().']'.$infotext.' '.$event.chr(10) );
-					echo ( $result->getLocallizedStateInfo().' '.$event.' ['.$node->getCaretakerNodeId().']'.chr(10) );
+					$this->cli_echo ( $node->getTitle().' ['.$node->getCaretakerNodeId().']'.$infotext.' '.$event.chr(10) );
+					$this->cli_echo ( $result->getLocallizedStateInfo().' '.$event.' ['.$node->getCaretakerNodeId().']'.chr(10) );
 	        	}
 				
 					// send aggregated notifications
@@ -147,12 +147,12 @@ class tx_caretaker_Cli extends t3lib_cli {
 	        	}
 				
         	} else {
-        		echo( 'Node not found or inactive'.chr(10) );
+        		$this->cli_echo( 'Node not found or inactive'.chr(10) );
         		exit;
         	}
         } elseif ($task == 'update-extension-list') {
         	$result = tx_caretaker_ExtensionManagerHelper::updateExtensionList();
-        	echo( 'Extension list update result: ' . $result.chr(10) );
+        	$this->cli_echo( 'Extension list update result: ' . $result.chr(10) );
         	exit;
         }
         
