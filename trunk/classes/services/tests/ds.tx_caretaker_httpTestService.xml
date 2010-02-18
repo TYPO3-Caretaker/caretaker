@@ -17,6 +17,8 @@
 	<meta>
 		<langDisable>1</langDisable>
 	</meta>
+	<sheets>
+		<sDEF>
 			<ROOT>
 				<TCEforms>
 						<sheetTitle>Request</sheetTitle>
@@ -32,6 +34,62 @@
 							</config>
 						</TCEforms>
 					</request_query>
+
+					<max_time_warning>
+						<TCEforms>
+							<label>Milliseconds for warning</label>
+							<config>
+								<type>input</type>
+								<size>10</size>
+								<eval>int</eval>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</max_time_warning>
+					
+					<max_time_error>
+						<TCEforms>
+							<label>Milliseconds for error</label>
+							<config>
+								<type>input</type>
+								<size>10</size>
+								<eval>int</eval>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</max_time_error>
+					
+					
+				</el>
+			</ROOT>
+		</sDEF>
+
+		<sRequest>
+			<ROOT>
+				<TCEforms>
+						<sheetTitle>Advanced Request Setting</sheetTitle>
+					</TCEforms>
+				<type>array</type>
+				<el>
+					
+					<request_username>
+						<TCEforms>
+							<label>Request Username</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</request_username>
+					
+					<request_password>
+						<TCEforms>
+							<label>Request Password</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</request_password>
+
 					<request_method>
 						<TCEforms>
 							<label>Request Method</label>
@@ -59,6 +117,7 @@
 							</config>
 						</TCEforms>
 					</request_method>
+
 					<request_port>
 						<TCEforms>
 							<label>Request Port</label>
@@ -67,6 +126,7 @@
 							</config>
 						</TCEforms>
 					</request_port>
+
 					<request_data>
 						<TCEforms>
 							<label>Request Data</label>
@@ -78,44 +138,40 @@
 							</config>
 						</TCEforms>
 					</request_data>
-					<request_username>
+
+				</el>
+			</ROOT>
+		</sRequest>
+
+		<sProxy>
+			<ROOT>
+				<TCEforms>
+						<sheetTitle>Proxy</sheetTitle>
+					</TCEforms>
+				<type>array</type>
+				<el>
+					
+					<request_proxy>
 						<TCEforms>
-							<label>Request Username</label>
+							<label>Request Proxy</label>
 							<config>
 								<type>input</type>
 							</config>
 						</TCEforms>
-					</request_username>
-					<request_password>
-						<TCEforms>
-							<label>Request Password</label>
-							<config>
-								<type>input</type>
-							</config>
-						</TCEforms>
-					</request_password>
-					<max_time_warning>
-						<TCEforms>
-							<label>Milliseconds for warning</label>
-							<config>
-								<type>input</type>
-								<size>10</size>
-								<eval>int</eval>
-								<default>0</default>
-							</config>
-						</TCEforms>
-					</max_time_warning>>
-					<max_time_error>
-						<TCEforms>
-							<label>Milliseconds for error</label>
-							<config>
-								<type>input</type>
-								<size>10</size>
-								<eval>int</eval>
-								<default>0</default>
-							</config>
-						</TCEforms>
-					</max_time_error>
+					</request_proxy>
+
+				</el>
+			</ROOT>
+		</sProxy>
+
+		<sResponse>
+			<ROOT>
+				<TCEforms>
+						<sheetTitle>Response</sheetTitle>
+					</TCEforms>
+				<type>array</type>
+				<el>
+
 					<expected_status>
 						<TCEforms>
 							<label>expected HTTP status code</label>
@@ -127,6 +183,7 @@
 							</config>
 						</TCEforms>
 					</expected_status>
+
 					<expected_date_age>
 						<TCEforms>
 							<label>expected Age of Date-Header in seconds</label>
@@ -137,6 +194,7 @@
 							</config>
 						</TCEforms>
 					</expected_date_age>
+
 					<expected_modified_age>
 						<TCEforms>
 							<label>expected Age of Modified-Header in seconds</label>
@@ -156,6 +214,10 @@
 							</config>
 						</TCEforms>
 					</expected_headers>
+
 				</el>
 			</ROOT>
+		</sResponse>
+		
+	</sheets>
 </T3DataStructure>
