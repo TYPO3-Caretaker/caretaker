@@ -153,12 +153,21 @@
 					
 					<request_proxy>
 						<TCEforms>
-							<label>Request Proxy</label>
+							<label>Proxy-URL</label>
 							<config>
 								<type>input</type>
 							</config>
 						</TCEforms>
 					</request_proxy>
+
+					<request_proxyport>
+						<TCEforms>
+							<label>Proxy-Port</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</request_proxyport>
 
 				</el>
 			</ROOT>

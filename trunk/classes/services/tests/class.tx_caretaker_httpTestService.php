@@ -84,7 +84,8 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		$requestPassword = $this->getRequestPassword();
 		$requestPort     = $this->getRequestPort();
 		$requestProxy    = $this->getRequestProxy();
-		
+		$requestProxyport= $this->getRequestProxyport();
+
 			// response
 		$expectedStatus  = $this->getExpectedReturnCode();
 		$expectedHeaders = $this->getExpectedHeaders();
@@ -119,7 +120,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		}
 
 			// execute query
-		list ($time, $response, $info, $headers) = $this->executeCurlRequest($request_url, $timeError * 3, $requestPort, $requestMethod, $requestUsername, $requestPassword, $requestData, $requestProxy);
+		list ($time, $response, $info, $headers) = $this->executeCurlRequest($request_url, $timeError * 3, $requestPort, $requestMethod, $requestUsername, $requestPassword, $requestData, $requestProxy, $requestProxyport);
 		
 		$submessages = array();
 
@@ -349,7 +350,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @return integer
 	 */
 	protected function getExpectedReturnCode(){
-		return intval($this->getConfigValue('expected_status' , 'sResponse' ) );
+		return intval($this->getConfigValue('expected_status' , false ,'sResponse' ) );
 	}
 
 	/**
@@ -357,7 +358,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @return integer
 	 */
 	protected function getExpectedDateAge(){
-		return intval($this->getConfigValue('expected_date_age' , 'sResponse' ));
+		return intval($this->getConfigValue('expected_date_age' , false , 'sResponse' ));
 	}
 
 	/**
@@ -365,7 +366,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @return integer
 	 */
 	protected function getExpectedModifiedAge(){
-		return intval($this->getConfigValue('expected_modified_age' , 'sResponse' ));
+		return intval($this->getConfigValue('expected_modified_age' , false , 'sResponse' ));
 	}
 
 	/**
@@ -374,7 +375,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 */
 	protected function getExpectedHeaders(){
 		$expectedHeaders = array();
-		$expectedHeadersConfiguration = $this->getConfigValue('expected_headers' , 'sResponse' );
+		$expectedHeadersConfiguration = $this->getConfigValue('expected_headers' , false , 'sResponse' );
 		if ($expectedHeadersConfiguration){
 			$configurationLines = explode (chr(10), $expectedHeadersConfiguration);
 			foreach ($configurationLines as $configurationLine){
@@ -402,7 +403,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @return string
 	 */
 	protected function getRequestMethod(){
-		return $this->getConfigValue('request_method' , 'sRequest');
+		return $this->getConfigValue('request_method' , false , 'sRequest');
 	}
 
 	/**
@@ -410,7 +411,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @return string
 	 */
 	protected function getRequestPort(){
-		return $this->getConfigValue('request_port' , 'sRequest');
+		return $this->getConfigValue('request_port' , false , 'sRequest');
 	}
 
 	/**
@@ -418,7 +419,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @return string
 	 */
 	protected function getRequestUsername(){
-		return $this->getConfigValue('request_username' , 'sRequest' );
+		return $this->getConfigValue('request_username' , false , 'sRequest' );
 	}
 
 	/**
@@ -426,7 +427,15 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @return string
 	 */
 	protected function getRequestPassword(){
-		return $this->getConfigValue('request_password' , 'sRequest');
+		return $this->getConfigValue('request_password' , false , 'sRequest');
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	protected function getRequestData(){
+		return $this->getConfigValue('request_data' , false , 'sRequest');
 	}
 
 	/**
@@ -434,17 +443,17 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @return string
 	 */
 	protected function getRequestProxy(){
-		return $this->getConfigValue('request_proxy' , 'sProxy');
+		return $this->getConfigValue('request_proxy' , false , 'sProxy');
 	}
-	
+
 	/**
-	 * 
+	 * Get the Proxy for the HTTP-request
 	 * @return string
 	 */
-	protected function getRequestData(){
-		return $this->getConfigValue('request_data' , 'sRequest');
+	protected function getRequestProxyport(){
+		return $this->getConfigValue('request_proxyport' , false , 'sProxy');
 	}
-			
+
 	/**
 	 * 
 	 * @return string
@@ -473,7 +482,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @param string $request_proxy 
 	 * @return array time in seconds and status information im associatie arrays
 	 */
-	protected function executeCurlRequest($request_url , $timeout=0, $request_port=false, $request_method='GET', $request_username='', $request_password='', $request_data='' , $requestProxy = false ){
+	protected function executeCurlRequest($request_url , $timeout=0, $request_port=false, $request_method='GET', $request_username='', $request_password='', $request_data='' , $requestProxy = false , $request_proxyport = false){
 
 		$curl = curl_init();
 		
@@ -495,8 +504,9 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		}
 		
 			// proxy server
-		if ( $request_proxy ) {
+		if ( $request_proxy && $request_proxyport ) {
 			curl_setopt($curl, CURLOPT_PROXY, $request_proxy );
+			curl_setopt($curl, CURLOPT_PROXYPORT, $request_proxyport );
 		}
 
 			// handle request method
