@@ -187,25 +187,27 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		$childnode_titles_warning   = array();
 		$childnode_titles_error     = array();
 
-		foreach($test_results as $test_result){
-			switch ( $test_result['result']->getState() ){
-				default:
-				case tx_caretaker_Constants::state_undefined:
-					$num_undefined ++;
-					$childnode_titles_undefined[] = $test_result['node']->getTitle();
-					break;
-				case tx_caretaker_Constants::state_ok:
-					$num_ok ++;
-					$childnode_titles_ok[] = $test_result['node']->getTitle();
-					break;
-				case tx_caretaker_Constants::state_warning:
-					$num_warnings ++;
-					$childnode_titles_warning[] = $test_result['node']->getTitle();
-					break;
-				case tx_caretaker_Constants::state_error:
-					$num_errors ++;
-					$childnode_titles_error[] = $test_result['node']->getTitle();
-					break;				
+		if (is_array($test_results)) {
+			foreach($test_results as $test_result){
+				switch ( $test_result['result']->getState() ){
+					default:
+					case tx_caretaker_Constants::state_undefined:
+						$num_undefined ++;
+						$childnode_titles_undefined[] = $test_result['node']->getTitle();
+						break;
+					case tx_caretaker_Constants::state_ok:
+						$num_ok ++;
+						$childnode_titles_ok[] = $test_result['node']->getTitle();
+						break;
+					case tx_caretaker_Constants::state_warning:
+						$num_warnings ++;
+						$childnode_titles_warning[] = $test_result['node']->getTitle();
+						break;
+					case tx_caretaker_Constants::state_error:
+						$num_errors ++;
+						$childnode_titles_error[] = $test_result['node']->getTitle();
+						break;
+				}
 			}
 		}
 
@@ -306,14 +308,15 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 				'data/sDEF/lDEF/testconfigurations/el',
 				$this->testConfigurationOverlay
 			);
-
-			foreach ($tests as $key => $el) {
-				if ($tests[$key]['test']['el']['test_service']['vDEF'] == $testUid) {
-					$overlayConfig = $tests[$key]['test']['el']['test_conf']['vDEF'];
-					$overlayConfig['hidden'] = $tests[$key]['test']['el']['test_hidden']['vDEF'];
-					$overlayConfig['overwritten_in']['title'] = $this->title;
-					$overlayConfig['overwritten_in']['uid'] = $this->uid;
-					$overlayConfig['overwritten_in']['id'] = $this->getCaretakerNodeId();
+			if (is_array($tests)) {
+				foreach ($tests as $key => $el) {
+					if ($tests[$key]['test']['el']['test_service']['vDEF'] == $testUid) {
+						$overlayConfig = $tests[$key]['test']['el']['test_conf']['vDEF'];
+						$overlayConfig['hidden'] = $tests[$key]['test']['el']['test_hidden']['vDEF'];
+						$overlayConfig['overwritten_in']['title'] = $this->title;
+						$overlayConfig['overwritten_in']['uid'] = $this->uid;
+						$overlayConfig['overwritten_in']['id'] = $this->getCaretakerNodeId();
+					}
 				}
 			}
 		}
