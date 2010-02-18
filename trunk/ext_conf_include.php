@@ -42,6 +42,7 @@ include_once(t3lib_extMgm::extPath('caretaker').'classes/helpers/class.tx_careta
 	// register Test-Services
 tx_caretaker_ServiceHelper::registerCaretakerTestService ($_EXTKEY , 'classes/services/tests' , 'tx_caretaker_ping',  'Ping' , 'Retrieves System Informations' );
 tx_caretaker_ServiceHelper::registerCaretakerTestService ($_EXTKEY , 'classes/services/tests' , 'tx_caretaker_http',  'HTTP' , 'Call an URI and check the HTTP-Status' );
+tx_caretaker_ServiceHelper::registerCaretakerTestService ($_EXTKEY , 'classes/services/tests' , 'tx_caretaker_touch',  'Touch' , 'Write a timestamp in a local file' );
 
 	//register Notification-Services
 tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'SimpleMailNotificationService', 'classes/services/notifications/class.tx_caretaker_SimpleMailNotificationService.php', 'tx_caretaker_SimpleMailNotificationService' );

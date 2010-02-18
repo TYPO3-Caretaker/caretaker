@@ -64,6 +64,8 @@
 
 			<label index="http_no_query">No HTTP-Code or no query was set</label>
 
+			<label index="touch_service_description">Touch Test</label>
+			<label index="touch_service_configuration">Touch file: ###TIMESTAMP_FILENAME###</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="test">Test</label>
