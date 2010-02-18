@@ -82,6 +82,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		$requestData     = $this->getRequestData();
 		$requestUsername = $this->getRequestUsername();
 		$requestPassword = $this->getRequestPassword();
+		$requestPort     = $this->getRequestPort();
 
 			// response
 		$expectedStatus  = $this->getExpectedReturnCode();
@@ -92,8 +93,13 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		
 		$url           = $this->getInstanceUrl();
 		$parsed_url    = parse_url($url);
+
 		if ($parsed_url['path'] == '') {
 			$parsed_url['path'] = '/';
+		}
+		
+		if ($parsed_url['port'] && !$requestPort ){
+			$requestPort = $parsed_url['port'];
 		}
 
 		if ($parsed_url['user'] && !$requestUsername) {
@@ -112,7 +118,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		}
 
 			// execute query
-		list ($time, $response, $info, $headers) = $this->executeCurlRequest($request_url, $timeError * 3, $requestMethod, $requestUsername, $requestPassword, $requestData);
+		list ($time, $response, $info, $headers) = $this->executeCurlRequest($request_url, $timeError * 3, $requestPort, $requestMethod, $requestUsername, $requestPassword, $requestData);
 		
 		$submessages = array();
 
@@ -399,13 +405,20 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	}
 
 	/**
+	 * Get the port for the HTTP-request
+	 * @return string
+	 */
+	protected function getRequestPort(){
+		return $this->getConfigValue('request_port');
+	}
+
+	/**
 	 * Get the username for the HTTP-request
 	 * @return string
 	 */
 	protected function getRequestUsername(){
 		return $this->getConfigValue('request_username');
 	}
-
 
 	/**
 	 * Get the password for the HTTP-request
@@ -442,13 +455,15 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	/**
 	 * 
 	 * @param string $request_url
+	 * @param integer $timeout curl http-timeout
+ 	 * @param mixed  $request_port curl request http-port 
 	 * @param string $request_method
 	 * @param string $request_username
 	 * @param string $request_password
 	 * @param string $request_data
 	 * @return array time in seconds and status information im associatie arrays
 	 */
-	protected function executeCurlRequest($request_url , $timeout=0, $request_method='GET', $request_username='', $request_password='', $request_data='' ){
+	protected function executeCurlRequest($request_url , $timeout=0, $request_port=false, $request_method='GET', $request_username='', $request_password='', $request_data='' ){
 
 		$curl = curl_init();
 		
@@ -462,6 +477,11 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		if ( $request_username && $request_password ) {
 			curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY );
 			curl_setopt($curl, CURLOPT_USERPWD, $request_username . ':' . $request_password );
+		}
+
+			// port
+		if ( $request_port &&  $request_port != '' ) {
+			curl_setopt($curl, CURLOPT_PORT, $request_port );
 		}
 		
 			// handle request method

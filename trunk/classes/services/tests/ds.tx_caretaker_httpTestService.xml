@@ -59,6 +59,14 @@
 							</config>
 						</TCEforms>
 					</request_method>
+					<request_port>
+						<TCEforms>
+							<label>Request Port</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</request_port>
 					<request_data>
 						<TCEforms>
 							<label>Request Data</label>
