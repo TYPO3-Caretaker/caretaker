@@ -482,7 +482,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @param string $request_proxy 
 	 * @return array time in seconds and status information im associatie arrays
 	 */
-	protected function executeCurlRequest($request_url , $timeout=0, $request_port=false, $request_method='GET', $request_username='', $request_password='', $request_data='' , $requestProxy = false , $request_proxyport = false){
+	protected function executeCurlRequest($request_url , $timeout=0, $request_port=false, $request_method='GET', $request_username='', $request_password='', $request_data='' , $request_proxy = false , $request_proxyport = false){
 
 		$curl = curl_init();
 		
