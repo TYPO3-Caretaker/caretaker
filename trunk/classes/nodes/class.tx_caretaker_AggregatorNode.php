@@ -255,8 +255,10 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 
 		if  ($num_errors > 0){
 			return tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_error,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
-		} else if ($num_warnings > 0){
+		} else if ( $num_warnings > 0 ){
 			return tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_warning,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
+		} else if ( $num_undefined == $num_tests ) {
+			return tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_undefined,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
 		} else {
 			return tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_ok,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
 		}
