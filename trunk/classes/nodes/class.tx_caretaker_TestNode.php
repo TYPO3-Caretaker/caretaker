@@ -135,7 +135,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 						throw new Exception('testservice class '.$info['className'].' could not be instanciated');
 					}
 				} else {
-					throw new Exception('testservice '.$service_type.' class file '.$requireFile.' nout found');
+					throw new Exception('testservice '.$service_type.' class file '.$requireFile.' not found');
 				}
 			} else {
 				throw new Exception('caretaker testservice '.$service_type.' not found');
