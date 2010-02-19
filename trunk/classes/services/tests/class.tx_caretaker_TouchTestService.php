@@ -76,9 +76,9 @@ class tx_caretaker_TouchTestService extends tx_caretaker_TestServiceBase {
 		$filename = $this->getTimestampFilename();
 		$time = time();
 		if (file_put_contents($filename, $time) !== FALSE) {
-			return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_OK);
+			return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_ok);
 		} else {
-			return tx_caretaker_TestResult::create(TX_CARETAKER_STATE_ERROR, 0, 'Could not touch file ' . $filename);
+			return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, 'Could not touch file ' . $filename);
 		}
 	}
 
