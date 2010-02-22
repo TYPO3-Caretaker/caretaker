@@ -269,6 +269,9 @@ plugin.tx_caretaker_pi_abstract {
 
 		NUM_OK = TEXT
 		NUM_OK.field = numOk
+
+		NUM_UNDEFINED = TEXT
+		NUM_UNDEFINED.field = numUndefined
 	}
 
 	subparts {
