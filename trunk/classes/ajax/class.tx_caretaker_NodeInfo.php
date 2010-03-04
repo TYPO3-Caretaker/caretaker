@@ -59,6 +59,14 @@ class tx_caretaker_NodeInfo {
 			$local_time = localtime(time(), true);
 			$local_hour = $local_time['tm_hour'];
 
+			$pathnode = $node;
+			$pathparts = array();
+			while ($pathnode){
+				$pathparts[] = $pathnode->getTitle();
+				$pathnode = $pathnode->getParent();
+			}
+			$pathinfo = implode(' -&gt; ' , array_reverse($pathparts)  );
+			
 			switch ( get_class($node) ){
 				// test Node
 				case "tx_caretaker_TestNode":
@@ -87,6 +95,7 @@ class tx_caretaker_NodeInfo {
 					$result = $node->getTestResult();
 					$info = '<div class="tx_caretaker_node_info tx_caretaker_node_info_state_'.$result->getStateInfo().'">'.
 						'Title: '.           $node->getTitle().'<br/>'.
+						'Path: '.            $pathinfo.'<br/>'.
 						'NodeID: '.          $node->getCaretakerNodeId().'<br/>'.
 						'Type: '.            $node->getTypeDescription().'<br/>'.
 						'Interval: '.        $interval_info.'<br/>'.
@@ -104,6 +113,7 @@ class tx_caretaker_NodeInfo {
 					$result = $node->getTestResult();
 					$info = '<div class="tx_caretaker_node_info tx_caretaker_node_info_state_'.$result->getStateInfo().'">'.
 						'Title: '.           $node->getTitle().'<br/>'.
+					    'Path: '.            $pathinfo.'<br/>'.
 						'NodeID: '.          $node->getCaretakerNodeId().'<br/>'.
 						'Description: '.     $node->getDescription().'<br/>'.
 						'Hidden: '.          $node->getHiddenInfo().'<br/>'.						
@@ -227,8 +237,6 @@ class tx_caretaker_NodeInfo {
 				$testChildNodes = array ();
 			}
 
-           
-
 			$nodeErrors   = array();
 			$nodeWarnings = array();
 			$i = 0;
@@ -286,52 +294,59 @@ class tx_caretaker_NodeInfo {
 
         $node_id = t3lib_div::_GP('node');
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
+		
         if ($node_id && $node = $node_repository->id2node($node_id, true) ){
-
+			
 			$contacts = array();
 			$count = 0;
 
-			$resRel = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::relationTable_Node2Address, 'uid_node=' .  $node->getUid() . ' AND node_table=\'' . $node->getStorageTable() . '\'');
-			while ( $contact_relation = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resRel)) {
+			while ( $count < 3 && $node && $node->getType() != tx_caretaker_Constants::nodeType_Root ){
 
-						// get Role
-				if ($contact_relation['role'] > 0){
-					$res  = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,id,name,description', tx_caretaker_Constants::table_Roles, 'uid = ' . $contact_relation['role'] . ' AND hidden=0 AND deleted=0', '', '', 1);
-					$role = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-				} else {
-					$role = array( 'uid'=>'','id'=>'','name'=>'','description'=>'' );
+				$resRel = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::relationTable_Node2Address, 'uid_node=' .  $node->getUid() . ' AND node_table=\'' . $node->getStorageTable() . '\'');
+				while ( $contact_relation = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resRel)) {
+
+							// get Role
+					if ($contact_relation['role'] > 0){
+						$res  = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,id,name,description', tx_caretaker_Constants::table_Roles, 'uid = ' . $contact_relation['role'] . ' AND hidden=0 AND deleted=0', '', '', 1);
+						$role = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+					} else {
+						$role = array( 'uid'=>'','id'=>'','name'=>'','description'=>'' );
+					}
+
+						// get Addresss
+					if ($contact_relation['uid_address'] > 0){
+						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Addresses, 'uid=' . $contact_relation['uid_address'], '', '', 1);
+						$address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+							// add mail md5 for gravatar icons
+						if ($address) $address['email_md5'] = md5($address['email']);
+					}
+
+					$contact = array(
+						'num'          => $count++,
+						'id'           => $node->getCaretakerNodeId(). '_role_' . $role['uid'] . '_address_' . $address['uid'],
+
+						'node_title'   => $node->getTitle(), //. ' par ' . $node->getParent()->getTitle() ,
+						'node_type'    => $node->getType(),
+						'node_type_ll' => $node->getTypeDescription(),
+						'node_id'      => $node->getCaretakerNodeId(),
+
+						'role'         => $role,
+						'address'      => $address
+					);
+
+					foreach ( $address as $key => $value){
+						$contact['address_'.$key] = $value;
+					}
+
+					foreach ( $role as $key => $value){
+						$contact['role_'.$key] = $value;
+					}
+
+					$contacts[] = $contact;
+
 				}
-
-					// get Addresss
-				if ($contact_relation['uid_address'] > 0){
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Addresses, 'uid=' . $contact_relation['uid_address'], '', '', 1);
-					$address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-						// add mail md5 for gravatar icons
-					if ($address) $address['email_md5'] = md5($address['email']);
-				}
-
-				$contact = array(
-					'num'          => $count++,
-					'id'           => $node->getCaretakerNodeId(). '_role_' . $role['uid'] . '_address_' . $address['uid'],
-
-					'node_title'   => $node->getTitle(),
-					'node_type'    => $node->getType(),
-					'node_type_ll' => $node->getTypeDescription(),
-					'node_id'      => $node->getCaretakerNodeId(),
-
-					'role'         => $role,
-					'address'      => $address
-				);
-
-				foreach ( $address as $key => $value){
-					$contact['address_'.$key] = $value;
-				}
-
-				foreach ( $role as $key => $value){
-					$contact['role_'.$key] = $value;
-				}
-
-				$contacts[] = $contact;
+				
+				$node = $node->getParent();
 
 			}
 				

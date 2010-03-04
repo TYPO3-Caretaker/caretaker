@@ -280,6 +280,17 @@ class tx_caretaker_NodeRepository {
 	 * @return tx_caretaker_InstancegroupNode
 	 */
 	private function dbrow2instancegroup($row, $parent){
+
+			// find parent node if it was not already handed over
+		if ($parent == false){
+			if( intval($row['parent_group']) > 0 ){
+				$parent = $this->getInstancegroupByUid( $row['parent_group'],  false);
+			} else {
+				$parent = $this->getRootNode();
+			}
+		}
+		
+			// create instance
 		$instance = new tx_caretaker_InstancegroupNode($row['uid'], $row['title'], $parent, $row['hidden']);
 		if ($row['description'] )   $instance->setDescription( $row['description'] );
 		$instance->setDbRow($row);
@@ -358,6 +369,16 @@ class tx_caretaker_NodeRepository {
 	 * @return tx_caretaker_InstanceNode
 	 */
 	private function dbrow2instance($row, $parent = false){
+
+			// find parent node if it was not already handed over
+		if ($parent == false){
+			if( intval($row['instancegroup']) > 0 ){
+				$parent = $this->getInstancegroupByUid( $row['instancegroup'],  false);
+			} else {
+				$parent = $this->getRootNode();
+			}
+		}
+			// create Node
 		$instance = new tx_caretaker_InstanceNode($row['uid'], $row['title'], $parent, $row['url'], $row['host'], $row['public_key'], $row['hidden']);
 		if ($row['description'] )   $instance->setDescription( $row['description'] );
 		if ($row['testconfigurations']) $instance->setTestConfigurations($row['testconfigurations']);
