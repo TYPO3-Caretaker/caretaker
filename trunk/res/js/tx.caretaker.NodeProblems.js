@@ -75,7 +75,7 @@ tx.caretaker.NodeProblems = Ext.extend( Ext.grid.GridPanel , {
 			}]
 		});
 
-		this.column_view = new Ext.grid.GridView({
+		this.column_view = new Ext.grid.GridView({		
 			enableRowBody: true,
 			showPreview: true,
 			getRowClass: function(record, index) {
@@ -94,6 +94,7 @@ tx.caretaker.NodeProblems = Ext.extend( Ext.grid.GridPanel , {
 		});
 			
 		config = Ext.apply({
+			iconCls: 'tx-caretaker-panel-nodeproblems',
 			autoExpandColumn : 'message',
 			collapsed        : true,
 			collapsible      : true,
@@ -101,6 +102,7 @@ tx.caretaker.NodeProblems = Ext.extend( Ext.grid.GridPanel , {
 			stateEvents      : ['expand','collapse'],
 			stateId          : 'tx.caretaker.NodeProblems',
 			title            :'Problems',
+			titleCollapse    : true,
 			store            : this.json_data_store,
 			trackMouseOver   : false,
 			disableSelection : true,
@@ -120,7 +122,6 @@ tx.caretaker.NodeProblems = Ext.extend( Ext.grid.GridPanel , {
 		this.on('expand', function(){
 			this.json_data_store.load();
 		}, this);
-
 
 	},
 

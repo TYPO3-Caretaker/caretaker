@@ -52,6 +52,7 @@ $TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::noderefresh']  = 'EXT:caretaker/cl
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodegraph']    = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeGraph';
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodelog']      = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeLog';
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodeproblems'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeProblems';
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodecontacts'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeContacts';
 
 
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass'][] = 'EXT:caretaker/classes/hooks/class.tx_caretaker_hooks_tceforms_getSingleFieldClass.php:tx_caretaker_hooks_tceforms_getSingleFieldClass';

@@ -84,7 +84,8 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeLog.js');
 			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeProblems.js');
 			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeToolbar.js');
-			
+			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeContacts.js');
+
 			//$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeOverview.js');
 
 			// Enable debug mode for Ext JS
@@ -140,6 +141,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 								},
 								items    : [
 									{ id: "node-info",     xtype: "caretaker-nodeinfo"     , back_path: back_path , node_id: node_id },
+									{ id: "node-contacts", xtype: "caretaker-nodecontacts" , back_path: back_path , node_id: node_id },
 									{ id: "node-charts",   xtype: "caretaker-nodecharts"   , back_path: back_path , node_id: node_id },
 									{ id: "node-log",      xtype: "caretaker-nodelog"      , back_path: back_path , node_id: node_id },
 									{ id: "node-problems", xtype: "caretaker-nodeproblems" , back_path: back_path , node_id: node_id },

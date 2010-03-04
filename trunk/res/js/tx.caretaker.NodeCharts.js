@@ -5,6 +5,7 @@ tx.caretaker.NodeCharts = Ext.extend(Ext.Panel, {
     constructor: function(config) {
 
 		config = Ext.apply({
+			iconCls: 'tx-caretaker-panel-nodecharts',
 	    	enableTabScroll : true,
 			collapsible     : true,
 			collapsed       : true,
@@ -12,7 +13,8 @@ tx.caretaker.NodeCharts = Ext.extend(Ext.Panel, {
 			stateful        : true,
 			stateEvents     : ['expand','collapse','tabchange'],
 			stateID         : 'tx.caretaker.NodeCharts',
-			title           : "Chart",
+			title           : "Charts",
+			titleCollapse   : true,
 			items:[
 				{
 					xtype		: 'tabpanel',

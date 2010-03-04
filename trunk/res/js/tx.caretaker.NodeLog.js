@@ -39,13 +39,14 @@ tx.caretaker.NodeLog = Ext.extend( Ext.grid.GridPanel , {
 		}
 
 		config = Ext.apply({
-
+			iconCls: 'tx-caretaker-panel-nodelogs',
 			collapsed        : true,
 			collapsible      : true,
 			stateful         : true,
 			stateEvents      : ['expand','collapse'],
 			stateId          : 'tx.caretaker.NodeLog',
 			title            : 'Log',
+			titleCollapse    : true,
 			store            : this.json_data_store,
 			trackMouseOver   : false,
 			disableSelection : true,
