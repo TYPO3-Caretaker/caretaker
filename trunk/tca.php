@@ -141,11 +141,12 @@ $TCA['tx_caretaker_instancegroup'] = array (
 				'foreign_table' => 'tx_caretaker_node_address_mm',
 				'foreign_field' => 'uid_node',
 				'foreign_table_field' => 'node_table',
-				'foreign_selector' => 'uid_address',
 				'appearance' => array (
 					'collapseAll' => true,
 					'expandSingle' => true
 				)
+
+
 			)
 		),
 		'notification_strategies' => array (
@@ -167,7 +168,8 @@ $TCA['tx_caretaker_instancegroup'] = array (
 	'types' => array (
 		'0' => array('showitem' => 'hidden;;1;;1-1-1,title;;1;;1-1-1, parent_group;;;;2-2-2,' .
 					'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.description, description, ' .
-					'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.notifications, contacts, notification_strategies'
+					'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.contacts, contacts, '.
+					'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.notifications, notification_strategies'
 		)
 	),
 	'palettes' => array (
@@ -409,7 +411,8 @@ $TCA['tx_caretaker_instance'] = array (
 		'0' => array('showitem' => 'hidden;;1, title;;;;2-2-2, instancegroup, url;;;;3-3-3, host, public_key,' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.description, description, ' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests, ' .
-			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, contacts, notification_strategies, ' .
+			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.contacts,contacts, '.
+			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, notification_strategies, ' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.testconfigurations, testconfigurations '
 		)
 	),
@@ -428,14 +431,32 @@ $TCA['tx_caretaker_node_address_mm'] = array (
 			'label' => 'LLL:EXT:tt_address/locallang_tca.xml:tt_address',
 			'config' => array (
 				'type' => 'select',
-				'foreign_table' => 'tt_address'
+				'foreign_table' => 'tt_address',
+				'wizards' => Array(
+					'_PADDING' => 1,
+					'_VERTICAL' => 1,
+					'edit' => Array(
+						'type' => 'script',
+						'title' => 'Create new address',
+						'icon' => 'add.gif',
+						'params' => Array(
+							'table'=>'tt_address',
+							'pid' => '0',
+							'setValue' => 'prepend'
+						),
+						'script' => 'wizard_add.php'
+					)
+				)
 			)
 		),
 		'role' => array (
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles',
 			'config' => array (
 				'type' => 'select',
-				'foreign_table' => 'tx_caretaker_roles'
+				'foreign_table' => 'tx_caretaker_roles',
+				'items' => array(
+					Array('',          0),
+				),
 			)
 		)
 	),

@@ -11,6 +11,8 @@
 			<label index="tx_caretaker_instancegroup">Instancegroup</label>
 			<label index="tx_caretaker_instancegroup.tab.description">Description</label>
 			<label index="tx_caretaker_instancegroup.tab.notifications">Notifications</label>
+			<label index="tx_caretaker_instancegroup.tab.contacts">Contacts</label>
+			<label index="tx_caretaker_instancegroup.tab.accounts">Accounts</label>
 
 			<label index="tx_caretaker_instancegroup.title">Title</label>
 			<label index="tx_caretaker_instancegroup.description">Description</label>
@@ -27,6 +29,8 @@
 
 			<label index="tx_caretaker_instance.tab.relations">Groups &amp; Tests</label>
 			<label index="tx_caretaker_instance.tab.notifications">Notifications</label>
+			<label index="tx_caretaker_instance.tab.contacts">Contacts</label>
+			<label index="tx_caretaker_instance.tab.accounts">Accounts</label>
 			<label index="tx_caretaker_instance.tab.testconfigurations">Test Configuration</label>
 			<label index="tx_caretaker_instance.title">Name</label>
 			<label index="tx_caretaker_instance.description">Description</label>
@@ -44,6 +48,8 @@
 			<label index="tx_caretaker_testgroup.tab.description">Description</label>
 			<label index="tx_caretaker_testgroup.tab.relations">Tests</label>
 			<label index="tx_caretaker_testgroup.tab.notifications">Notifications</label>
+			<label index="tx_caretaker_testgroup.tab.contacts">Contacts</label>
+			<label index="tx_caretaker_testgroup.tab.accounts">Accounts</label>
 			<label index="tx_caretaker_testgroup.title">Title</label>
 			<label index="tx_caretaker_testgroup.description">Description</label>
 			<label index="tx_caretaker_testgroup.parent_group">Parent Group</label>
@@ -61,6 +67,8 @@
 			<label index="tx_caretaker_test.tab.description">Description</label>
 			<label index="tx_caretaker_test.tab.notifications">Notifications</label>
 			<label index="tx_caretaker_test.tab.configuration">Test-Configuration</label>
+			<label index="tx_caretaker_test.tab.contacts">Contacts</label>
+			<label index="tx_caretaker_test.tab.accounts">Accounts</label>
 			<label index="tx_caretaker_test.title">Name</label>
 			<label index="tx_caretaker_test.notifiactions">Notifications</label>
 			<label index="tx_caretaker_test.description">Description</label>
