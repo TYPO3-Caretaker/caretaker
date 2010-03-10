@@ -135,7 +135,7 @@ $TCA['tx_caretaker_instancegroup'] = array (
 		),
 		'contacts' => array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.contacts',
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.contacts',
 			'config' => array (
 				'type' => 'inline',
 				'foreign_table' => 'tx_caretaker_node_address_mm',
@@ -411,7 +411,7 @@ $TCA['tx_caretaker_instance'] = array (
 		'0' => array('showitem' => 'hidden;;1, title;;;;2-2-2, instancegroup, url;;;;3-3-3, host, public_key,' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.description, description, ' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests, ' .
-			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.contacts,contacts, '.
+			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.contacts, contacts, '.
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, notification_strategies, ' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.testconfigurations, testconfigurations '
 		)

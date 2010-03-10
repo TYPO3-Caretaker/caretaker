@@ -286,9 +286,10 @@ class tx_caretaker_NodeInfo {
     }
 
 	/**
+	 * Get the contacts for the given node for AJAX
 	 *
-	 * @param <type> $params
-	 * @param <type> $ajaxObj 
+	 * @param array $params
+	 * @param TYPO3AJAX $ajaxObj
 	 */
 	public function ajaxGetNodeContacts ($params, &$ajaxObj){
 
@@ -358,6 +359,5 @@ class tx_caretaker_NodeInfo {
             $ajaxObj->setContentFormat('jsonbody');
         }
     }
-	
 }
 ?>

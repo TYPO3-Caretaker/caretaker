@@ -70,6 +70,12 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 		$PATH_TYPO3 = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
 
 		if ($BE_USER->user["admin"]) {
+
+				// find node
+			$node_repository = tx_caretaker_NodeRepository::getInstance();
+			$node = $node_repository->id2node( $this->node_id , true);
+			if (!$node) $node = $node_repository->getRootNode();
+
 				// Draw the header.
 			$this->doc = t3lib_div::makeInstance("template");
 			$this->doc->backPath = $BACK_PATH;
@@ -79,14 +85,31 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->pageRenderer->loadExtJS();
 			$this->pageRenderer->enableExtJSQuickTips();
 			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.js');
-			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeInfo.js');
-			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeCharts.js');
-			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeLog.js');
-			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeProblems.js');
-			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeToolbar.js');
-			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeContacts.js');
 
-			//$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeOverview.js');
+			$panels = array();
+			foreach( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'] as $extJsBackendPanel ){
+
+					// register JS
+				foreach($extJsBackendPanel['jsIncludes'] as $jsInclude){
+					$filename = t3lib_div::getFileAbsFileName($jsInclude);
+					$filename = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . str_replace( PATH_site, '', $filename  );
+					$this->pageRenderer->addJsFile( $filename );
+				}
+
+					// register CSS
+				foreach($extJsBackendPanel['cssIncludes'] as $cssInclude){
+					$filename = t3lib_div::getFileAbsFileName($cssInclude);
+					$filename = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . str_replace( PATH_site, '', $filename  );
+					$this->pageRenderer->addCssFile( $filename );
+				}
+
+					// add ExtJs Panel
+				$panels[ $extJsBackendPanel['id'] ] = $extJsBackendPanel['xtype'];
+				
+				
+			}
+			
+			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeToolbar.js');
 
 			// Enable debug mode for Ext JS
 			$this->pageRenderer->enableExtJsDebug();
@@ -98,11 +121,12 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			//Add caretaker css
 			$this->pageRenderer->addCssFile('../res/css/tx.caretaker.overview.css');
 
-			$node_repository = tx_caretaker_NodeRepository::getInstance();
-			$node = $node_repository->id2node( $this->node_id , true);
-			if (!$node) $node = $node_repository->getRootNode();
-
-                        $this->pageRenderer->addJsInlineCode('Caretaker_Overview','
+			$pluginItems = array();
+			foreach ($panels as $id=>$xtype){
+				$pluginItems[] = '{ id: "'.$id.'", xtype: "'.$xtype.'" , back_path: back_path , node_id: node_id }';
+			}
+			
+			$this->pageRenderer->addJsInlineCode('Caretaker_Overview','
 				Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 				Ext.namespace("tx","tx.caretaker");
 
@@ -140,11 +164,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 									node_hidden: node_hidden
 								},
 								items    : [
-									{ id: "node-info",     xtype: "caretaker-nodeinfo"     , back_path: back_path , node_id: node_id },
-									{ id: "node-contacts", xtype: "caretaker-nodecontacts" , back_path: back_path , node_id: node_id },
-									{ id: "node-charts",   xtype: "caretaker-nodecharts"   , back_path: back_path , node_id: node_id },
-									{ id: "node-log",      xtype: "caretaker-nodelog"      , back_path: back_path , node_id: node_id },
-									{ id: "node-problems", xtype: "caretaker-nodeproblems" , back_path: back_path , node_id: node_id },
+									'. implode( chr(10).',' , $pluginItems ). chr(10) . '
 								]
 						}
 					 });
@@ -152,7 +172,6 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 				});
 			');
 	
-
 			$this->content .= $this->doc->startPage($LANG->getLL("title"));
 			$this->doc->form = '';
 		} else {

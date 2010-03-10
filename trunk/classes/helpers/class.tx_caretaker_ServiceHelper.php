@@ -218,5 +218,31 @@ class tx_caretaker_ServiceHelper {
 			$TCA['tx_caretaker_exitpoints']['columns']['config']['config']['ds'][$key] = 'FILE:EXT:'.$extKey.'/'.$path.'/'.( $flexform ? $flexform:'ds.'.$key.'ExitPoint.xml');
 		}
 	}
+
+	/**
+	 * Register ExtJsPlugin Panel
+	 * 
+	 * @param string $extKey
+	 * @param string $path
+	 * @param string $classname
+	 * @param string $order
+	 */
+	public static function registerExtJsBackendPanel ( $id, $xtype, $cssIncludes, $jsIncludes, $extKey ){
+		if ( !$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels']) {
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'] = array();
+		}
+
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'][$id] = array(
+			'extKey'      => $extKey,
+			'id'          => $id,
+			'xtype'       => $xtype,
+			'cssIncludes' => $cssIncludes,
+			'jsIncludes'  => $jsIncludes
+		);
+
+		// order by ids
+		
+	}
+
 }
 ?>

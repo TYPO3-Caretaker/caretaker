@@ -31,9 +31,14 @@ tx.caretaker.NodeContacts = Ext.extend( Ext.grid.GridPanel , {
 			var role = '';
 
 			if ( record.data.role_name       )  role += ' ' + record.data.role_name ;
-			if ( record.data.address_first_name  )  role += ' [' + record.data.node_title + ']' ;
 
 			return role;
+		}
+
+		this.renderNode = function( value, metaData, record, rowIndex, colIndex, store ){
+			var nodeTitle = value;
+			nodeTitle += ' [' + record.data.node_type + ']' ;
+			return nodeTitle;
 		}
 		
 		this.renderName  = function ( value, metaData, record, rowIndex, colIndex, store ){
@@ -93,6 +98,10 @@ tx.caretaker.NodeContacts = Ext.extend( Ext.grid.GridPanel , {
 				header: "Role",
 				dataIndex: 'role_name',
 				renderer:{ fn: this.renderRole, scope: this }
+			},{
+				header: "Node",
+				dataIndex: 'node_title',
+				renderer:{ fn: this.renderNode, scope: this }
 			},{
 				header: 'Name',
 				dataIndex: 'address_first_name',

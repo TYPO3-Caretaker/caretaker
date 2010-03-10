@@ -16,6 +16,7 @@
 .icon-caretaker-type-instancegroup-hidden { background-image: url(../icons/instancegroup__h.png) !important; }
 
 .tx-caretaker-panel-nodecontacts { background-image: url(../icons/contacts.png) !important; }
+.tx-caretaker-panel-nodeaccounts { background-image: url(../icons/accounts.png) !important; }
 .tx-caretaker-panel-nodecharts { background-image: url(../icons/charts.png) !important; }
 .tx-caretaker-panel-nodelogs { background-image: url(../icons/logs.png) !important; }
 .tx-caretaker-panel-nodeproblems { background-image: url(../icons/problems.png) !important; }

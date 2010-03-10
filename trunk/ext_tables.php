@@ -116,6 +116,10 @@ $TCA['tx_caretaker_testgroup'] = array (
 	)
 );
 
+/*
+ * Register contact related tables
+ */
+
 $TCA['tx_caretaker_roles'] = array (
 	'ctrl' => array (
 		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles',
@@ -151,6 +155,10 @@ $TCA['tx_caretaker_node_address_mm'] = array (
 		'fe_admin_fieldList' => '',
 	),
 );
+
+/*
+ * Register strategy tables
+ */
 
 $TCA['tx_caretaker_node_strategy_mm'] = array (
 	'ctrl' => array (
