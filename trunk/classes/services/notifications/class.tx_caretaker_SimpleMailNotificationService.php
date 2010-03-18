@@ -55,6 +55,12 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 	private $recipients_messages = array();
 
 	/**
+	 * The addresses for the recipients
+	 * @var array 
+	 */
+	private $recipients_addresses = array();
+
+	/**
 	 * Notification Email from Address
 	 * @var string
 	 */
@@ -80,16 +86,35 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 	
 
 	/**
+	 * IDs of roles which are recieving mails
+	 * @var array
+	 */
+	private $mail_roles = array();
+
+	/**
 	 * Constructor
 	 * reads the service configuration
 	 */
 	public function __construct (){
+
+		$contactRepository = tx_caretaker_ContactRepository::getInstance();
+		
 		$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
 
 		$this->mail_from      = $confArray['notifications.']['simple_mail.']['mail_from'];
 		$this->mail_subject   = $confArray['notifications.']['simple_mail.']['mail_subject'];
 		$this->mail_link      = $confArray['notifications.']['simple_mail.']['mail_link'];
 		$this->mail_link      = $confArray['notifications.']['simple_mail.']['mail_link'];
+
+		$this->mail_roles     = array();
+		$role_ids = explode ( ',' , $confArray['notifications.']['simple_mail.']['role_ids'] );
+		foreach ($role_ids as $role_id){
+			$role = $contactRepository->getContactRoleById($role_id);
+			if ( $role ) {
+				$this->mail_roles[] = $role;
+			}
+		}
+		
 		$this->enabled        = (bool)$confArray['notifications.']['simple_mail.']['enabled'];
 	}
 
@@ -111,6 +136,7 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 	 */
 	public function addNotification ($event, $node, $result = NULL, $lastResult = NULL ){
 
+
 			// stop if event is not updatedTestResult of a TestNode
 		if ( $event != 'updatedTestResult' && is_a( $node, 'tx_caretaker_TestNode' ) == false ){
 			return;
@@ -128,16 +154,27 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 
 			// collect the recipients fron the node rootline
 		$recipientIds = array();
-		$node = $test;
-		while ($node) {
-			$nodeNotificationIds = $node->getProperty('notifications');
-			if ($nodeNotificationIds) {
-				$recipientIds = array_merge ( $recipientIds, explode( ',', $nodeNotificationIds ) );
-			}
-			$node = $node->getParent();
-		}
-		$recipientIds = array_unique ($recipientIds);
+
 		
+		if ( count ($this->mail_roles) ){
+			$contacts = array();
+			foreach ( $this->mail_roles as $role){
+			$contacts = array_merge($contacts, $node->getContacts( $role ) );
+			}
+		} else {
+			$contacts = $node->getContacts();
+		}
+
+		foreach ($contacts as $contact ){
+			$address = $contact->getAddress();
+			if ( ! $this->recipients_addresses[ $address['uid'] ] ){
+				$this->recipients_addresses[ $address['uid'] ] = $address;
+			}
+			$recipientIds[] = $address['uid'];
+		}
+
+		$recipientIds = array_unique ($recipientIds);
+
 			// store the notifications for the recipients
 		foreach ($recipientIds as $recipientId){
 			if (!isset($this->recipients_messages[$recipientId]) ){
@@ -156,9 +193,9 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 					break;
 			}
 			array_unshift( $this->recipients_messages[$recipientId]['messages'] ,
-				'* '.$result->getLocallizedStateInfo().' :: '.$test->getTitle().':'.$test->getInstance()->getTitle().' ['.$test->getCaretakerNodeId().'] *'.chr(10).chr(10).
+				'* '.$result->getLocallizedStateInfo().' :: '.$node->getTitle().':'.$node->getInstance()->getTitle().' ['.$node->getCaretakerNodeId().'] *'.chr(10).chr(10).
 				$result->getLocallizedInfotext().chr(10).
-				str_replace('###', $test->getCaretakerNodeId(),  $this->mail_link  ).chr(10)
+				str_replace('###', $node->getCaretakerNodeId(),  $this->mail_link  ).chr(10)
 			);
 		}		
 	}
@@ -167,12 +204,10 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 	 * Send the aggregated Notifications
 	 */
 	public function sendNotifications(){
-
+		
 		foreach ($this->recipients_messages as $recipientID => $recipientInfo){
-				
-				// read address
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tt_address', 'uid='.(int)$recipientID.' AND deleted=0 AND hidden=0');
-			$recipient = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+							
+			$recipient = $this->recipients_addresses[ $recipientID ] ;
 
 				// prepare mail
 			if ($recipient && $recipient['email'] ){

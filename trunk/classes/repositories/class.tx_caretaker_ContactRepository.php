@@ -66,7 +66,7 @@ class tx_caretaker_ContactRepository {
 	/**
 	 * Get the Singleton Object
 	 *
-	 * @return tx_caretaker_TestResultRepository
+	 * @return tx_caretaker_ContactRepository
 	 */
 	public function getInstance(){
 		if (!self::$instance) {
