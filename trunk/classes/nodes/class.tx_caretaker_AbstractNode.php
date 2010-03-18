@@ -347,6 +347,49 @@ abstract class tx_caretaker_AbstractNode {
 	}
 
 	/**
+	 * Get the contacts for the node
+	 * 
+	 * @param tx_caretaker_ContactRole $role
+	 * @param boolean $firstResultsOnly
+	 * @param boolean $recursiveSearch
+	 */
+	public function getContacts( $role = NULL , $firstResultsOnly = false, $recursiveSearch = true ){
+
+		$contactRepository = tx_caretaker_ContactRepository::getInstance();
+		$contacts = array();
+
+		$node = $this;
+		while ( $node ){
+
+			if ($role != NULL){
+				$node_contacts = $contactRepository->getContactsByNodeAndRole( $node, $role );
+			} else {
+				$node_contacts = $contactRepository->getContactsByNode( $node );
+			}
+
+			$contacts = array_merge($contacts, $node_contacts);
+
+				// return only first found results if selected
+			if ( count($contacts)>0 && $firstResultsOnly == true ){
+				return $contacts;
+			}
+
+				// go up the nodetree if recursiveSearch is set
+			if ($recursiveSearch == true){
+				$node = $node->getParent();
+			} else {
+				break;
+			}
+
+		}
+
+		return $contacts;
+		
+	}
+
+	
+
+	/**
 	 * Returns all contacts that are set for this node. With default settings it will return the contacts
 	 * of the first node found in the rootline. The alternative behavior is to return all from all nodes
 	 * in the rootline.
@@ -358,6 +401,10 @@ abstract class tx_caretaker_AbstractNode {
 	 * @param boolean	$returnFirst: If set to true, the first found set of contacts will be returned
 	 *
 	 * @return array with contacts
+	 *
+	 * @deprecated use getContacts instead
+	 * @see getContacts
+	 * @todo remove this method
 	 */
 	public function findContacts(array $roles = array(), $returnFirst = true) {
 		$contacts = array();

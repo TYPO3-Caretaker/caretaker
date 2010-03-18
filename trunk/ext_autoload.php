@@ -51,6 +51,7 @@ return array(
 	'tx_caretaker_aggregatorresultrepository' => t3lib_extMgm::extPath('caretaker', 'classes/repositories/class.tx_caretaker_AggregatorResultRepository.php'),
 	'tx_caretaker_testresultrepository'       => t3lib_extMgm::extPath('caretaker', 'classes/repositories/class.tx_caretaker_TestResultRepository.php'),
 	'tx_caretaker_noderepository'             => t3lib_extMgm::extPath('caretaker', 'classes/repositories/class.tx_caretaker_NodeRepository.php'),
+	'tx_caretaker_contactrepository'          => t3lib_extMgm::extPath('caretaker', 'classes/repositories/class.tx_caretaker_ContactRepository.php'),
 
 		/* results */
 	'tx_caretaker_noderesult'	         => t3lib_extMgm::extPath('caretaker', 'classes/results/class.tx_caretaker_NodeResult.php'),
@@ -61,8 +62,13 @@ return array(
 	'tx_caretaker_testresultrange'	     => t3lib_extMgm::extPath('caretaker', 'classes/results/class.tx_caretaker_TestResultRange.php'),
 	'tx_caretaker_resultmessage'         => t3lib_extMgm::extPath('caretaker', 'classes/results/class.tx_caretaker_ResultMessage.php'),
 
+		/* contacts */
+	'tx_caretaker_contact'               => t3lib_extMgm::extPath('caretaker', 'classes/contacts/class.tx_caretaker_Contact.php'),
+	'tx_caretaker_contactrole'           => t3lib_extMgm::extPath('caretaker', 'classes/contacts/class.tx_caretaker_ContactRole.php'),
+
 		/* services */
 	'tx_caretaker_testservicebase'	     => t3lib_extMgm::extPath('caretaker', 'classes/services/tests/class.tx_caretaker_TestServiceBase.php'),
+
 
 );
 ?>
