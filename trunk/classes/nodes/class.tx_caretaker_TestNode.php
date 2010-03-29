@@ -288,8 +288,8 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 			}
 
 				// save to repository after reading the previous result
-			$lastTestResult = $this->getTestResult();
-			$resultRepository = tx_caretaker_TestResultRepository::getInstance();
+			$resultRepository  = tx_caretaker_TestResultRepository::getInstance();
+			$lastTestResult    = $resultRepository->getLatestByNode($this);
 			$resultRepository->saveTestResultForNode( $this, $result );
 			
 				// trigger notification
@@ -345,7 +345,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		}
 
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$result    = $test_result_repository->getLatestByNode($this);
+		
 
 		return $result;
 	}
