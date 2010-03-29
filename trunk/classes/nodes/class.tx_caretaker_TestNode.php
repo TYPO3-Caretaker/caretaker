@@ -345,7 +345,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		}
 
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		
+		$result = $test_result_repository->getLatestByNode($this);
 
 		return $result;
 	}
