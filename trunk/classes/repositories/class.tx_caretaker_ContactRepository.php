@@ -179,7 +179,7 @@ class tx_caretaker_ContactRepository {
 		
 		$address = false;
 		if ( $row['uid_address'] ){
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Addresses, 'uid='.$row['uid_address'], '', '', 1);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Addresses, 'uid='.$row['uid_address'] . ' AND hidden=0  AND deleted=0' , '', '', 1);
 			$address_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			if ( $address_row ) {
 				$address = $address_row;
