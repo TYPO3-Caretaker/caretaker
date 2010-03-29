@@ -287,10 +287,8 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 				$result->addSubMessage( new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:retry_info' , array( 'number'=>$round )  ) );
 			}
 
-				// save to repository if the result differs from the last one
-			$resultRepository = tx_caretaker_TestResultRepository::getInstance();
-			$lastTestResult = $resultRepository->getLatestByNode($this);
-
+				// save to repository after reading the previous result
+			$lastTestResult = $this->getTestResult();
 			$resultRepository->saveTestResultForNode( $this, $result );
 			
 				// trigger notification
@@ -345,7 +343,6 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 			return $result;
 		}
 
-		$instance  = $this->getInstance();
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$result    = $test_result_repository->getLatestByNode($this);
 
