@@ -194,7 +194,7 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 					break;
 			}
 			array_unshift( $this->recipients_messages[$recipientId]['messages'] ,
-				'* '. ( $lastResult ? ' lastState:'.$lastResult->getLocallizedStateInfo().'>>' :  'Unknown>>' ) . $result->getLocallizedStateInfo().' :: '.$node->getTitle().':'.$node->getInstance()->getTitle().' ['.$node->getCaretakerNodeId().'] *'.chr(10).chr(10).
+				'* '. ( $lastResult ? $lastResult->getLocallizedStateInfo().'->' :  '' ) . $result->getLocallizedStateInfo().' :: '.$node->getTitle().':'.$node->getInstance()->getTitle().' ['.$node->getCaretakerNodeId().'] *'.chr(10).chr(10).
 				$result->getLocallizedInfotext() . chr(10).
 				str_replace('###', $node->getCaretakerNodeId(),  $this->mail_link  ).chr(10)
 			);
