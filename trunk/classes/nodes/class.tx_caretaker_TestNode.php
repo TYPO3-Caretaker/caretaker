@@ -289,6 +289,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 				// save to repository after reading the previous result
 			$lastTestResult = $this->getTestResult();
+			$resultRepository = tx_caretaker_TestResultRepository::getInstance();
 			$resultRepository->saveTestResultForNode( $this, $result );
 			
 				// trigger notification
