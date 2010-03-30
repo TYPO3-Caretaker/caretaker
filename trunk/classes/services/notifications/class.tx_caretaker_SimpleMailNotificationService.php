@@ -143,11 +143,6 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 			return;
 		}
 
-			// check that the state is not ok or undefined
-		if ( $result->getState() <= tx_caretaker_Constants::state_ok ){
-			return;
-		}
-
 			// Check that the result is not equal to the previous one
 		if ( $lastResult && $result->getState() == $lastResult->getState() ){
 			return;
@@ -181,11 +176,19 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 			if (!isset($this->recipients_messages[$recipientId]) ){
 				$this->recipients_messages[$recipientId] = array(
 					'messages'=>array(),
+					'num_undfined'=>0,
+					'num_ok'=>0,
 					'num_warning'=>0,
-					'num_error'=>0,
+					'num_error'=>0
 				);
 			}
 			switch ( $result->getState() ){
+				case tx_caretaker_Constants::state_undefined:
+					$this->recipients_messages[$recipientId]['num_undfined'] ++;
+					break;
+				case tx_caretaker_Constants::state_ok:
+					$this->recipients_messages[$recipientId]['num_ok'] ++;
+					break;
 				case tx_caretaker_Constants::state_warning:
 					$this->recipients_messages[$recipientId]['num_warning'] ++;
 					break;
@@ -222,10 +225,17 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 
 				$subject = $this->mail_subject;
 
+				$subject .= ' Statechange: ';
+
+				if ($recipientInfo['num_undefined'] > 0)
+					$subject .= ' ' .$recipientInfo['num_undefined'].' Undefined';
+				if ($recipientInfo['num_ok'] > 0)
+					$subject .= ' ' .$recipientInfo['num_ok'].' OK';
 				if ($recipientInfo['num_error'] > 0)
 					$subject .= ' ' .$recipientInfo['num_error'].' Errors';
 				if ($recipientInfo['num_warning'] > 0)
 					$subject .= ' ' .$recipientInfo['num_warning'].' Warnings';
+
 
 				$this->sendMail($subject, $recipient['email'], $this->mail_from, $message  );
 			}
