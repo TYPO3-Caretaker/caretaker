@@ -301,24 +301,5 @@ if (TYPO3_MODE=="BE")	{
 	
 }
 
-	// Register caretaker testservice
-t3lib_extMgm::addService(
-	'caretaker',
-	'caretaker_test_service',
-	'tx_caretaker_dummy',
-	array(
-		'title' => 'Dummy Test Service',
-		'description' => 'a very basic test implementation',
-		'subtype' => 'tx_caretaker_dummy',
-		'available' => TRUE,
-		'priority' => 50,
-		'quality' => 50,
-		'os' => '',
-		'exec' => '',
-		'classFile' => t3lib_extMgm::extPath('caretaker').'services/class.tx_caretaker_TestNodeDummy.php',
-		'className' => 'tx_caretaker_TestNodeDummy',
-	)
-);
-
 require(t3lib_extMgm::extPath('caretaker').'/ext_conf_include.php');
 ?>
