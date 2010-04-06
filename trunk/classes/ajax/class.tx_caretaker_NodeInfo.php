@@ -144,6 +144,12 @@ class tx_caretaker_NodeInfo {
 		} else {
 			echo "please give a valid node id";
 		}
+		
+			// send aggregated notifications
+		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
+		foreach ( $notificationServices as $notificationService ){
+			$notificationService->sendNotifications();
+		}
 	}
 
 	public function ajaxGetNodeGraph($params, &$ajaxObj){
