@@ -276,6 +276,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 				// retry if not ok and retrying is enabled
 			if ($result->getState() != 0 && $this->test_retry > 0){
 				$round = 0;
+				sleep(1);
 				while ( $round < $this->test_retry && $result->getState() != 0 ){
 					try {
 						$result = $this->test_service->runTest();
