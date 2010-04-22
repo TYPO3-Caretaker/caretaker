@@ -109,7 +109,7 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 		$this->mail_roles     = array();
 		$role_ids = explode ( ',' , $confArray['notifications.']['simple_mail.']['role_ids'] );
 		foreach ($role_ids as $role_id){
-			$role = $contactRepository->getContactRoleById( trim($role_id) ;
+			$role = $contactRepository->getContactRoleById( trim($role_id) );
 			if ( $role ) {
 				$this->mail_roles[] = $role;
 			}
