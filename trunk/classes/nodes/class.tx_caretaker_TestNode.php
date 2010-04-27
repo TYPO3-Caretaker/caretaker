@@ -263,7 +263,8 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 				}
 			}
 		}
-		
+
+			// else check wether the test can be executed
 		if($this->test_service && $this->test_service->isExecutable()) {
 			
 				// try to execute test
@@ -299,6 +300,8 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		} else {
 			
 			$result = $test_result_repository->getLatestByNode($this);
+			$result->addSubMessage( new tx_caretaker_ResultMessage( 'test service was not excutable this time so the cached result is used' ) );
+			
 			$this->notify( 'cachedTestResult', $result, $lastTestResult );
 		}
 		
