@@ -253,28 +253,15 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 	 * @return unknown_type
 	 */
 	private function sendMail($subject, $recipient, $from, $message ){
+		$mail = new t3lib_htmlmail();
+		$mail->charset = 'utf-8';
+ 		$mail->start();
+		$mail->from_email = $from;
+		$mail->returnPath = $from;
+		$mail->subject = $subject;
+		$mail->setPlain($mail->encodeMsg($message));
 
-		$mailbody_plain = '';
-		$mailbody_plain .= $message."\n\n" ;
-
-		$mailbody_html = '';
-		$mailbody_html .= '<p>'.nl2br($message).'</p>' ;
-
-		$boundary = md5(uniqid(time()));
-
-		$headers  = 'From: '. $from . "\n";
-		$headers .= 'To: ' . $recipient. "\n";
-		$headers .= 'Return-Path: ' .$from. "\n";
-		$headers .= 'MIME-Version: 1.0' ."\n";
-		$headers .= 'Content-Type: text/plain; charset=utf-8' ."\n";
-		$headers .= 'Content-Transfer-Encoding: base64'. "\n\n";
-		$headers .= base64_encode($mailbody_plain). "\n";
-
-		$subject = "=?UTF-8?B?".base64_encode($subject)."?=\n";
-
-		$res = mail('', $subject, '', $headers);
-
-		return ($mailbody_plain."res:".$res);
+		return $mail->send($recipient);
 	}
 	
 }
