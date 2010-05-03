@@ -182,7 +182,10 @@ plugin.tx_caretaker_pi_singleview {
 		
 		LABEL_VALUE = TEXT
 		LABEL_VALUE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:value
-				
+
+		LABEL_ROOTLINE = TEXT
+		LABEL_ROOTLINE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:rootline
+		
 		LABEL_CHILDREN = TEXT
 		LABEL_CHILDREN.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:children
 
@@ -204,7 +207,12 @@ plugin.tx_caretaker_pi_singleview {
 		TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
 		TITLE.typolink.additionalParams.field = link_parameters
 		TITLE.typolink.target = _self
-		
+		TITLE.append = TEXT
+		TITLE.append {
+			field = node_type
+			noTrimWrap = | [|]|
+		}
+
 		DESCRIPTION = TEXT
 		DESCRIPTION.value = {field:type}: {field:state_msg}
 		DESCRIPTION.insertData = 1
@@ -221,11 +229,6 @@ plugin.tx_caretaker_pi_singleview {
 		TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
 		TITLE.typolink.additionalParams.field = link_parameters
 		TITLE.typolink.target = _self
-		TITLE.append = TEXT
-		TITLE.append {
-			field = node_type
-			noTrimWrap = | [|]|
-		}
 
 		DESCRIPTION = TEXT
 		DESCRIPTION.value = {field:type}: {field:state_msg}

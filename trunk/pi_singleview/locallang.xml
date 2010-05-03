@@ -11,6 +11,7 @@
 			<label index="value">Value</label>
 			<label index="message">Message</label>
 			<label index="children">Children</label>
+			<label index="rootline">Rootline</label>
 			<label index="1hour">1 hour</label>
 			<label index="3hours">3 hours</label>
 			<label index="12hours">12 hours</label>
@@ -40,6 +41,7 @@
 			<label index="lastRun">Datum</label>
 			<label index="value">Messwert</label>
 			<label index="message">Meldung</label>
+			<label index="rootline">Pfad</label>
 			<label index="children">Gruppenelemente</label>
 			<label index="1hour">1 Stunde</label>
 			<label index="3hours">3 Stunden</label>

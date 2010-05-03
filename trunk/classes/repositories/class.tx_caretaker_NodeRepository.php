@@ -74,11 +74,31 @@ class tx_caretaker_NodeRepository {
 			$instance = $this->getInstanceByUid($instanceId, false, $show_hidden);
 			if ($instance) {
 				if ($testgroupId>0){
-					$group = $this->getTestgroupByUid($testgroupId, $instance, $show_hidden);
-					if ($group) return $group;
+						// find the instance testgroups
+					$instance_testgroups = $this->getTestgroupsByInstanceUidRecursive($instance->getUid(), $instance, $show_hidden);
+					foreach($instance_testgroups as $instance_testgroup){
+						if ($instance_testgroup->getUid() == $testgroupId ){
+							return $instance_testgroup;
+						}
+					}
 	    		} else if ($testId>0) {
-					$test = $this->getTestByUid($testId, $instance, $show_hidden);
-					if ($test) return $test;
+						// find find directly assigned tests
+					$instance_tests = $this->getTestsByInstanceUid($instance->getUid(), $instance, $show_hidden);
+					foreach ($instance_tests as $instance_test){
+						if ($instance_test->getUid() == $testId ){
+							return $instance_test;
+						}
+					}
+						// find tests assigned to groups or subgroups
+					$instance_testgroups = $this->getTestgroupsByInstanceUidRecursive($instance->getUid(), $instance, $show_hidden);
+					foreach($instance_testgroups as $instance_testgroup){
+						$testgroup_tests = $this->getTestsByGroupUid( $instance_testgroup->getUid(), $instance_testgroup, $show_hidden);
+						foreach ($testgroup_tests as $testgroup_test){
+							if ($testgroup_test->getUid() == $testId ){
+								return $testgroup_test;
+							}
+						}
+					}
 	    		} else {
 					return $instance;
 				}
@@ -432,7 +452,25 @@ class tx_caretaker_NodeRepository {
 		}
 				
 		return $result;
-	} 
+	}
+
+	/**
+	 * Get all Testgroups of Instance X all subgroups are included recursively
+	 *
+	 * @param <type> $instanceId
+	 * @param <type> $parent
+	 * @param <type> $show_hidden 
+	 */
+	public function getTestgroupsByInstanceUidRecursive($instanceId, $parent = false , $show_hidden = FALSE){
+			// direct assigned results
+		$testgroups = $this->getTestgroupsByInstanceUid($instanceId, $parent, $show_hidden);
+			// include subresults
+		foreach ($testgroups as $testgroup){
+			$subgroups = $this->getTestgroupsByParentGroupUidRecursive( $testgroup->getUid() , $testgroup, $show_hidden);
+			$testgroups = array_merge ($testgroups, $subgroups);
+		}
+		return $testgroups;
+	}
 	
 	/**
 	 * Get Testgroup of UID X
@@ -477,6 +515,25 @@ class tx_caretaker_NodeRepository {
 			$result[] = $this->dbrow2testgroup($row, $parent);
 		} 
 		return $result;
+	}
+
+
+		/**
+	 * Get all Testgroups of Instance X all subgroups are included recursively
+	 *
+	 * @param <type> $groupId
+	 * @param <type> $parent
+	 * @param <type> $show_hidden
+	 */
+	public function getTestgroupsByParentGroupUidRecursive($groupId, $parent = false , $show_hidden = FALSE){
+			// direct assigned results
+		$testgroups = $this->getTestgroupsByParentGroupUid($groupId, $parent, $show_hidden);
+			// include subresults
+		foreach ($testgroups as $testgroup){
+			$subgroups = $this->getTestgroupsByParentGroupUidRecursive( $testgroup->getUid() , $testgroup, $show_hidden);
+			$testgroups = array_merge ($testgroups, $subgroups);
+		}
+		return $testgroups;
 	}
 
 	/**
@@ -579,11 +636,19 @@ class tx_caretaker_NodeRepository {
 	 * @return tx_caretaker_TestNode
 	 */
 	private function dbrow2test($row, $parent = false){
-		$instance = new tx_caretaker_TestNode( $row['uid'], $row['title'], $parent, $row['test_service'], $row['test_conf'], $row['test_interval'], $row['test_retry'], $row['test_interval_start_hour'], $row['test_interval_stop_hour'] , $row['hidden']);
-		if ($row['description'] )   $instance->setDescription( $row['description'] );
-		$instance->setDbRow($row);
-		return $instance; 
+
+		if (!$parent){
+			return false;
+		}
+		
+		$test = new tx_caretaker_TestNode( $row['uid'], $row['title'], $parent, $row['test_service'], $row['test_conf'], $row['test_interval'], $row['test_retry'], $row['test_interval_start_hour'], $row['test_interval_stop_hour'] , $row['hidden']);
+		if ($row['description'] )   $test->setDescription( $row['description'] );
+		$test->setDbRow($row);
+		return $test;
+
 	}
+
+	
 }
 
 ?>
