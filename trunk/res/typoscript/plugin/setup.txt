@@ -156,6 +156,11 @@ plugin.tx_caretaker_pi_singleview {
 		TITLE = TEXT
 		TITLE.field =  title
 		TITLE.insertData = 1
+		TITLE.append = TEXT
+		TITLE.append {
+			field = node_type
+			noTrimWrap = | [|]|
+		}
 		
 		DESCRIPTION = TEXT
 		DESCRIPTION.field = description
@@ -203,7 +208,29 @@ plugin.tx_caretaker_pi_singleview {
 		DESCRIPTION = TEXT
 		DESCRIPTION.value = {field:type}: {field:state_msg}
 		DESCRIPTION.insertData = 1
-	} 	
+	}
+
+	rootlineMarkers {
+		STATE = TEXT
+		STATE.field = state_info
+		STATE.case = lower
+
+		TITLE = TEXT
+		TITLE.value = {field:title}
+		TITLE.insertData = 1
+		TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
+		TITLE.typolink.additionalParams.field = link_parameters
+		TITLE.typolink.target = _self
+		TITLE.append = TEXT
+		TITLE.append {
+			field = node_type
+			noTrimWrap = | [|]|
+		}
+
+		DESCRIPTION = TEXT
+		DESCRIPTION.value = {field:type}: {field:state_msg}
+		DESCRIPTION.insertData = 1
+	}
 }
 
 plugin.tx_caretaker_pi_graphreport{

@@ -131,6 +131,35 @@ div.caretaker_singleview h2 {
 	
 }
 
+div.caretaker_singleview ul.rootline {
+	margin:10px 0;
+	padding:0;
+}
+
+div.caretaker_singleview ul.rootline li {
+	margin:0;
+	padding:0 0 0 20px ;
+	display:inline;
+	background-repeat: no-repeat;
+	background-position: 5px 2px;
+}
+
+div.caretaker_singleview ul.rootline li a{ text-decoration:none; }
+div.caretaker_singleview ul.rootline li a:hover{ text-decoration:underline; }
+
+div.caretaker_singleview ul.rootline li.state_ok{  background-image:url(../img/state_ok.gif); }
+div.caretaker_singleview ul.rootline li.state_ok a{ color:green; }
+
+div.caretaker_singleview ul.rootline li.state_warning{  background-image:url(../img/state_warning.gif);}
+div.caretaker_singleview ul.rootline li.state_warning a{ color:orange;}
+
+div.caretaker_singleview ul.rootline li.state_error{  background-image:url(../img/state_error.gif);}
+div.caretaker_singleview ul.rootline li.state_error a{ color:red; }
+
+div.caretaker_singleview ul.rootline li.state_undefined{  }
+div.caretaker_singleview ul.rootline li.state_undefined a{ color:grey ; }
+
+
 div.caretaker_singleview h3 {
 	margin:0;	
 }

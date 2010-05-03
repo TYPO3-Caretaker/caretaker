@@ -61,8 +61,29 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 			$child_infos = '';
 		}
 		
-		// $template = $this->cObj->substituteMarkerArray($template, $markers);
+			// render Rootline
+		$rootline_subpart  = $this->cObj->getSubpart($template, '###ROOTLINE_ITEM###');
+		$rootline_items    = array();
+		$rootline_node     = $node;
+		do{
+			$data  = $this->getNodeData($rootline_node);
+			$lcObj = t3lib_div::makeInstance('tslib_cObj');
+			$lcObj->start($data);
+			$node_markers = array();
+			if ($this->conf['rootlineMarkers.']) {
+				foreach (array_keys($this->conf['rootlineMarkers.']) as $key){
+					if (  substr($key, -1) != '.'){
+						$mark = $lcObj->cObjGetSingle($this->conf['rootlineMarkers.'][$key], $this->conf['rootlineMarkers.'][$key.'.']);
+						$node_markers['###'.$key.'###'] = $mark;
+					}
+				}
+				$rootline_items[] = $this->cObj->substituteMarkerArray($rootline_subpart,$node_markers);
+			}
+		} while ( $rootline_node = $rootline_node->getParent() );
 		
+		$rootline_items = array_reverse( $rootline_items );
+		$template =  $this->cObj->substituteSubpart($template,'###ROOTLINE###', implode('', $rootline_items) );
+
 			// render Node Infos
 		$data  = $this->getNodeData($node);
 		$lcObj = t3lib_div::makeInstance('tslib_cObj');
@@ -78,6 +99,8 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 			
 			$template = $this->cObj->substituteMarkerArray($template,$node_markers);
 		}
+
+
 		return $template;
 	}
 	
