@@ -71,6 +71,12 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TerupdateTask
 	'description'      => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:terupdateTask.description',
 	'additionalFields' => 'tx_caretaker_TerupdateTask_AdditionalFieldProvider'
 );
+	// Register scheduler tasks for caretaker
+$TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_Typo3versionnumbersupdateTask'] = array(
+	'extension'        => $_EXTKEY,
+	'title'            => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:typo3versionnumbersupdateTask.name',
+	'description'      => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:typo3versionnumbersupdateTask.description'
+);
 
 require(t3lib_extMgm::extPath('caretaker').'/ext_conf_include.php');
 
