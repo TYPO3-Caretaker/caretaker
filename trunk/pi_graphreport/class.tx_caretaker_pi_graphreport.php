@@ -59,7 +59,7 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 	function getData(){
 		$data = $this->cObj->data;
 		
-		$range = 24;
+		$range = $this->conf['defaultRange'] ? (int)$this->conf['defaultRange'] : 24;
 		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
 		
 		$nodes = $this->getNodes();
