@@ -50,7 +50,7 @@ class tx_caretaker_Typo3versionnumbersupdateTask extends tx_scheduler_Task {
 		$success = false;
 		$content = file_get_contents('https://svn.typo3.org/TYPO3v4/Core/tags/');
 
-		if (empty($content) {
+		if (empty($content)) {
 			return false;
 		}
 
