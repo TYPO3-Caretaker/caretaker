@@ -36,6 +36,10 @@
  * $Id$
  */
 
+if (!defined ('TYPO3_MODE')) {
+	die('Access denied.');
+}
+
 	// load Service Helper
 include_once(t3lib_extMgm::extPath('caretaker').'classes/helpers/class.tx_caretaker_ServiceHelper.php');
 
