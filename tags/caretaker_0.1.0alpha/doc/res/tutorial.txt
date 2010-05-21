@@ -1,0 +1,65 @@
+Caretaker Installation Tutorial
+
+Setup Caretaker Base System
+===========================
+
+Step 1 : Get TYPO3 up and running
+---------------------------------
+
+You are about to install a TYPO3 Monitoring System. I really hope you know how to setup TYPO3. The only thing you probably want to know is that caretaker does not run under php4. So go for php5.
+
+Step 2 : Install the Prerequisites (tt_address and css_styled_content)
+----------------------------------------------------------------------
+
+Before installing caretaker you have to install the TYPO3-Extensions css_styled_content (For content display) and tt_address for the management of notifications. 
+
+Step 3: Install Extension Caretaker (Checkout from SVN)
+-------------------------------------------------------
+
+Step 4: Create a Sysfolder for the caretaker Records
+----------------------------------------------------
+
+Step 5: Create some Records to configure Caretaker
+--------------------------------------------------
+
+- Instances 
+ 
+An Instance represents a monitored TYPO3-Installation. So you have to add an Instance Record for each Site you want to monitor. You have to fill in the url and the hostname of the instance. Optionaly you can manage your instances by grouping (instancegroups).
+
+- Tests 
+
+Tests are the also created as TYPO3 Records. You first select the Type of Test you want to execute (Depends on the installed TestServices) and the desirec Test-Execution-Interval. After a reaload you will see a form with the configuration for your selected Testtype. Like Instances Tests can also be grouped by using Testgroup Records. A Test and a Testgroup can be assigned to n Instances. You can manage typical sets of tests by creating dedicated testgroups wich are assigned to all affected instances. 
+
+Step 6: Check out the caretaker Backend Module
+----------------------------------------------
+
+You can select each node view the state and trigger an update. If you use the force update button the test will be executed even if the expiration time since the last run isnt over yet.
+
+Please notice that there is no update of parent nodes yet and the treeview will also stay the same. This will change in the future.
+
+Step 7: Setup Cronjob
+---------------------
+
+Add php -f [your caretaker installation path]/typo3/cli_dispatch.phpsh caretaker update -A to your crontab. Use an execution interval of 1 or 5 Minutes. Caretaker will decide on it's own wich tests are due to execution this time.
+
+Setup Caretaker Instance Monitoring
+===================================
+
+Step 1: Serverside Setup
+
+  - install caretaker_instance
+  - create keypair by Using "Update!" in Extension Manager 
+
+Step 2: Clienstside Setuo
+
+  - install caretaker_instance
+  - create keypair by Using "Update!" in Extension Manager 
+
+Step 3: Enter Client Public Key in Instance Record on Server
+
+Step 4: Enter Server Public Key in Client Extension Configutration
+
+ATTENTION: There is a field for the Client IP-Address. Currently this should be empty because of some bugs.
+
+Step 5: Create Tests on the Server and run
+

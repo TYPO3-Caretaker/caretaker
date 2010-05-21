@@ -1,0 +1,28 @@
+<div class="caretaker_status caretaker_status_###STATE###" >
+
+	<h2>###TITLE### (###NODE_TITLE###)</h2>
+	<div class="caretaker_status_box">
+
+		<dl class="caretaker_status_infos">
+			<dt>Errors</dt><dd class="error">###NUM_ERROR###</dd>
+			<dt>Warnings</dt><dd class="warning">###NUM_WARNING###</dd>
+			<dt>OK</dt><dd class="ok" >###NUM_OK###</dd>
+			<dt>Undefined</dt><dd class="undefined" >###NUM_UNDEFINED###</dd>
+		</dl>
+		
+		<ul class="caretaker_children">
+			<!-- ###CARETAKER-CHILDREN### begin -->
+
+				<!-- ###CARETAKER-CHILD-ERROR### begin -->
+				<li class="state_###STATE###" >###TITLE### : ###INFO###</li>
+				<!-- ###CARETAKER-CHILD-ERROR### end -->
+
+				<!-- ###CARETAKER-CHILD-WARNING### begin -->
+				<li class="state_###STATE###" >###TITLE### : ###INFO###</li>
+				<!-- ###CARETAKER-CHILD-WARNING### end -->
+
+			<!-- ###CARETAKER-CHILDREN### end -->
+		</ul>
+		
+	</div>
+</div>

@@ -1,0 +1,49 @@
+@CHARSET "UTF-8";
+
+
+/*--------- Allgemeine Styles ---------*/
+
+body {
+	color: #333;
+	font-family: Trebuchet,Arial,Helvetica,sans-serif;
+	font-size: 14px;
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	color: #333;
+	font-size: 22px;
+	font-weight:normal;
+}
+
+
+h2 {
+	color: #333;
+	font-weight:normal;
+	font-size: 16px;
+}
+
+
+.cleardiv { clear: both; }
+
+/*--------- header---------*/
+
+#header {
+	background-color: #aaa;
+	background-image:url(../img/caretaker-header-02.jpg);
+	background-repeat:no-repeat;
+	background-position:center bottom;
+	border-bottom:1px dotted #666;
+	height: 95px;
+	padding: 0 60px 0 0;
+	position: relative;
+}
+
+
+/*--------- content ---------*/
+
+#content {
+	margin: 20px auto;
+	width: 802px;
+}

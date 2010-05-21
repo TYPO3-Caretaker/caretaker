@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+
+<!-- 
+/**
+ * This is a file of the caretaker project.
+ * Copyright 2008 by n@work Internet Informationssystem GmbH (www.work.de)
+ * 
+ * @Author	Thomas Hempel 		<thomas@work.de>
+ * @Author	Martin Ficzel		<martin@work.de>
+ * @Author	Patrick Kollodzik	<patrick@work.de>
+ * 
+ * $$Id: ds.tx_caretaker_typo3_extensions.xml 33 2008-06-13 14:00:38Z thomas $$
+ */
+-->
+
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+	<sheets>
+		<sDEF>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:sheet_default</sheetTitle>
+					<cshFile>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml</cshFile>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<request_query>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_query</label>
+							<config>
+								<type>input</type>
+								<size>50</size>
+							</config>
+						</TCEforms>
+					</request_query>
+					
+					<max_time_warning>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:max_time_warning</label>
+							<config>
+								<type>input</type>
+								<size>10</size>
+								<eval>int</eval>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</max_time_warning>
+					
+					<max_time_error>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:max_time_error</label>
+							<config>
+								<type>input</type>
+								<size>10</size>
+								<eval>int</eval>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</max_time_error>
+					
+					
+				</el>
+			</ROOT>
+		</sDEF>
+
+		<sRequest>
+			<ROOT>
+				<TCEforms>
+						<sheetTitle>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:sheet_request</sheetTitle>
+						<cshFile>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml</cshFile>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					
+					<request_username>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_username</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</request_username>
+					
+					<request_password>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_password</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</request_password>
+
+					<request_method>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_method</label>
+							<config>
+								<type>select</type>
+								<items>
+									<numIndex index="0">
+										<numIndex index="0">GET</numIndex>
+										<numIndex index="1">GET</numIndex>
+									</numIndex>
+									<numIndex index="1">
+										<numIndex index="0">PUT</numIndex>
+										<numIndex index="1">PUT</numIndex>
+									</numIndex>
+									<numIndex index="2">
+										<numIndex index="0">POST</numIndex>
+										<numIndex index="1">POST</numIndex>
+									</numIndex>
+									<numIndex index="3">
+										<numIndex index="0">DELETE</numIndex>
+										<numIndex index="1">DELETE</numIndex>
+									</numIndex>
+								</items>
+								<default>GET</default>
+							</config>
+						</TCEforms>
+					</request_method>
+
+					<request_port>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_port</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</request_port>
+
+					<request_data>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_data</label>
+							<displayCond>FIELD:request_method:IN:PUT,POST</displayCond>
+							<config>
+								<type>text</type>
+								<cols>50</cols>
+								<rows>5</rows>
+							</config>
+						</TCEforms>
+					</request_data>
+
+				</el>
+			</ROOT>
+		</sRequest>
+
+		<sProxy>
+			<ROOT>
+				<TCEforms>
+						<sheetTitle>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:sheet_proxy</sheetTitle>
+						<cshFile>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml</cshFile>
+					</TCEforms>
+				<type>array</type>
+				<el>
+					
+					<request_proxy>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_proxy</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</request_proxy>
+
+					<request_proxyport>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_proxyport</label>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</request_proxyport>
+
+				</el>
+			</ROOT>
+		</sProxy>
+
+		<sResponse>
+			<ROOT>
+				<TCEforms>
+						<sheetTitle>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:sheet_response</sheetTitle>
+						<cshFile>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml</cshFile>
+				</TCEforms>
+				<type>array</type>
+				<el>
+
+					<expected_status>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_status</label>
+							<config>
+								<type>input</type>
+								<size>10</size>
+								<eval>int</eval>
+								<default>200</default>
+							</config>
+						</TCEforms>
+					</expected_status>
+
+					<expected_date_age>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_date_age</label>
+							<config>
+								<type>input</type>
+								<size>6</size>
+								<eval>int</eval>
+							</config>
+						</TCEforms>
+					</expected_date_age>
+
+					<expected_modified_age>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_modified_age</label>
+							<config>
+								<type>input</type>
+								<size>6</size>
+								<eval>int</eval>
+							</config>
+						</TCEforms>
+					</expected_modified_age>
+
+					<expected_headers>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_headers</label>
+							<config>
+								<type>text</type>
+							</config>
+						</TCEforms>
+					</expected_headers>
+
+				</el>
+			</ROOT>
+		</sResponse>
+		
+	</sheets>
+</T3DataStructure>

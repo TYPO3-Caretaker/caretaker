@@ -1,0 +1,59 @@
+Caretaker. TYPO3-Website-Monitoring
+
+Abstract ***
+A website is a complex mix of hardware, operating system and applications. In case of complex extendable solutions like TYPO3 also the installed extensions have to be monitored. Because of that it is difficult to completely monitor such a system especially when new security concerns arise or different systems, extensions or partners are interacting. Currently available system-monitoring software, like nagios, can check the hardware state and much more but not the proper setup of TYPO3 and the correct function of the whole website.
+***
+
+For professional web hosting a continuously and complete monitoring of the IT-infrastructure is needed. In complex system setups like TYPO3-Installation which consist of many interdependent parts this is getting very complicated. Usually software like nagios is used to monitor hard- and software. But often the monitored  services depend more on the abilities of the monitoring software than on the needs of the website.
+
+Usually a central monitoring server is communicating with sensors on the monitored system. The state of the hardware and informations about running processes can be easily verified. Sometimes also ping and http reqests are sent to the target machine and the response is checked.
+
+Making the decision wich services are monitored by just taking the features of the monitoring software is dangerous because you can easily overlook some business critical aspects. We recommend to start with analysing the critical services of the website and afterwards define the needs for the monitoring software. 
+
+The following articles line out some general aspects for those decisions:
+
+1. Availability: Is everything working?
+
+The bases oft availability monitoring is always the monitoring of the infrastructure. Wich means hard- and software of the webserver but also network infrastructure and dns. Additionally we recommend automated integration tests for business critical services. Therefore a browser session is recorded and replayed automatically (see SCRUM user stories). Like in Unit testing you have to be careful not to tests too many aspects in a single tests to get meaningful errors if problems occur.
+
+2. Security: Is my website save? 
+
+The monitoring of system security usually checks for security-updates on os-level. But also the cms-software must be included, especially if it can be extended by the cms-admin like TYPO3. So the security monitoring has to include not only the security of the cms-core but also of extensions and the whole configuration. 
+
+3. Performance: Are there any bottlenecks?
+
+Performance monitoring is done by continously recording some performance indicators to detect changes and to be able to react in time. More important than a single value is the chronological development therefore a graphical representation of the recorded data is necessary for interpretation.
+
+Those 3 aspects are highly dynamic so a simple and flexible management of the monitoring is another prerequisite. Additionally a hierarchical structure is needed to remain focused even in complex scenarios with many websites and hundreds of tests. The existing solutions are not very flexible and have no TYPO3 insider knowledge so the TYPO3 agencies n@work/Hamburg and networkteam/Hamburg+Kiel teamed up to create a specific TYPO3 monitoring system.
+
+Development targets:
+1. Easy management of tests (monitoring of a specific function) with the TYPO3-Backend
+2. Secure monitoring of distant TYPO3-installations
+3. Inclusion of integration-tests
+4. Good extendability of the whole System
+ 
+Based on that targets we created the TYPO3-extension caretaker wich is the core of our monitoring-system. Caretaker is responsible for the central management, execution of tests and the storing an aggregation of testresults. For test execution and monitoring of test-states we created a backend module and a cli-interface. Usually the cli intferface will be used to execute the tests on a regular basis via cron. The backend-module will show the state of the system and will allow the administrator to re-execute tests when errors are fixed. For each test the interval and the addresses for error notification can be configured.
+
+{Architekturgrafik}
+{SCREENSHOT/DEMO CARETAKER Backend add a HTTP-Test} 
+{SCREENSHOT/DEMO CARETAKER Frontend}
+{Demo CLI}
+
+The base of system monitoring with caretaker is like with any other monitoring solution the infrastructure monitoring via SNMP (Simple Network Management Protocol), Ping and HTTP. Additionally we'll implement the access of nagios sensors via NRPE (Nagios Remote Plugin Executor) in the near future.
+
+A speciality of monitoring TYPO3-installation with caretaker is the possibility to automate Security checks. After installing the extension caretaler_instance on the remote system you have the option to check the TYPO3-core and extension versions. The extensions tests can be configured to automatically detect extensions wich are not from TER or wich are marked insecure. In future we will also integrate tests for password quality and for the detection of unwanted or inactive user accounts.
+
+It is important to point out that the management of security tests only happens once on the server. Afterwards many TYPO3-installations can be checked with the same rules. To prevent unauthorised access to system informations the whole communication is rsa encrypted with public/private keypairs for each affected system. Additionally the interface will only allow access to some predefined, reviewed and readonly methods.
+ 
+{SCREENSHOT/DEMO Extension Test Konfiguration}
+
+To suport integration tests we integrated the open source project Selenium. Selenium is a Java application wich ist starting a browser with some additional javascript to simulate the user interaction. The Java base enables Selenium to run on all important operating Systems and to remotely control a wide range of Browsers. Even Internet Explorer is supportet in Version 6,7 and 8. The extension caretaker_selenium integrates Selenium into caretaker defines an interface for test managing. Important is that those tests are based only on the DOM and so cannot detect Layout errors.
+
+{SCREENSHOT/DEMO SELENIUM-Config}
+
+All available test-methods are implemented as TYPO3-services. The service list can be easily extended by TYPO3-extensions. That's why the caretaker base only contains simple tests for HTTP and PING. Adding new test-services is simple. You only have to implement a single Method (runTest) and provide a flexform configuration file. 
+
+===============
+
+Hinweis zum Schluss (für den Vortrag, nicht für einen Artikel): 
+It is important that for a good customer relationship to establish the understandig that failing test are a feature. Otherwise you probably will have more trouble than before.
