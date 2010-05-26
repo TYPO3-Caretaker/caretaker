@@ -32,7 +32,7 @@
  * n@work GmbH - http://www.work.de
  * networkteam GmbH - http://www.networkteam.com/
  *
- * $Id: class.tx_caretaker_ExtensionManagerHelper.php 27092 2009-11-27 22:30:42Z martoro $
+ * $Id$
  */
 
 /**
