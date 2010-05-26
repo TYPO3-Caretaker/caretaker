@@ -155,7 +155,7 @@ class tx_caretaker_Cli extends t3lib_cli {
         	$this->cli_echo( 'Extension list update result: ' . $result.chr(10) );
         	exit;
         } elseif  ($task == 'update-typo3-latest-version-list'){
-        	$result = tx_caretaker_LatestTypo3VersionsHelper::updateLatestTypo3VersionRegistry();
+        	$result = tx_caretaker_LatestVersionsHelper::updateLatestTypo3VersionRegistry();
         	$this->cli_echo( 'TYPO3 latest version list update result: ' . $result.chr(10) );
         } 
         

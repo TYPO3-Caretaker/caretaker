@@ -48,7 +48,7 @@ class tx_caretaker_Typo3versionnumbersupdateTask extends tx_scheduler_Task {
 
 	public function execute() {
 		
-		$success = tx_caretaker_LatestTypo3VersionsHelper::updateLatestTypo3VersionRegistry();
+		$success = tx_caretaker_LatestVersionsHelper::updateLatestTypo3VersionRegistry();
 		return $success;
 		
 	}

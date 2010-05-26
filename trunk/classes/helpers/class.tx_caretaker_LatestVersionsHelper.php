@@ -46,7 +46,7 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_LatestTypo3VersionsHelper {
+class tx_caretaker_LatestVersionsHelper {
 	
 	public static function updateLatestTypo3VersionRegistry() {
 		
