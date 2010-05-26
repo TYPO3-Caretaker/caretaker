@@ -12,6 +12,7 @@ return array(
 	'tx_caretaker_servicehelper'           => t3lib_extMgm::extPath('caretaker', 'classes/helpers/class.tx_caretaker_ServiceHelper.php'),
 	'tx_caretaker_locallizationhelper'     => t3lib_extMgm::extPath('caretaker', 'classes/helpers/class.tx_caretaker_LocallizationHelper.php'),
 	'tx_caretaker_extensionmanagerhelper'  => t3lib_extMgm::extPath('caretaker', 'classes/helpers/class.tx_caretaker_ExtensionManagerHelper.php'),
+	'tx_caretaker_latesttypo3versionshelper'  => t3lib_extMgm::extPath('caretaker', 'classes/helpers/class.tx_caretaker_LatestTypo3VersionsHelper.php'),
 
 		/* plugins */
 	'tx_caretaker_pibase' => t3lib_extMgm::extPath('caretaker', '/pi_base/class.tx_caretaker_pibase.php'),

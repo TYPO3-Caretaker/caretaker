@@ -47,34 +47,12 @@ class tx_caretaker_Typo3versionnumbersupdateTask extends tx_scheduler_Task {
 
 
 	public function execute() {
-		$success = false;
-		$content = file_get_contents('https://svn.typo3.org/TYPO3v4/Core/tags/');
-
-		if (empty($content)) {
-			return false;
-		}
-
-		preg_match_all('/TYPO3_(4-[0-9]{1,2}-[0-9]{1,2}((alpha|beta|RC)[^\/]{0,2})?)\//', $content, $matches);
-
-		if (!is_array($matches[1]) || count($matches[1]) == 0) {
-			return false;
-		}
 		
-		$max = array();
-		foreach ($matches[1] as $key => $version) {
-			$versionDigits = explode('-', $version, 3);	
-			if ($max[$versionDigits[0] . '.' . $versionDigits[1]][2] < $versionDigits[2]) {
-				$max[$versionDigits[0] . '.' . $versionDigits[1]] = $versionDigits;
-			}
-		}
-
-		foreach ($max as $key => $value) {
-			$max[$key] = implode('.', $value);
-		}
-		t3lib_div::makeInstance('t3lib_Registry')->set('tx_caretaker', 'TYPO3versions', $max);
+		$success = tx_caretaker_LatestTypo3VersionsHelper::updateLatestTypo3VersionRegistry();
+		return $success;
 		
-		return true;
 	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_typo3versionnumbersupdatetask.php'])	{

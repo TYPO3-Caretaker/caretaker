@@ -58,7 +58,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 
        		// Setting help texts:
         $this->cli_help['name'] = 'Caretaker CLI-Testrunner';        
-        $this->cli_help['synopsis'] = 'update|get|update-extension-list|help ###OPTIONS###';
+        $this->cli_help['synopsis'] = 'update|get|update-extension-list|update-typo3-latest-version-list|help ###OPTIONS###';
         $this->cli_help['description'] = 'Class with basic functionality for CLI scripts';
         $this->cli_help['examples'] = '/.../cli_dispatch.phpsh caretaker update -i 6 -g 4';
         $this->cli_help['author'] = 'Martin Ficzel, (c) 2008-2010';
@@ -154,7 +154,10 @@ class tx_caretaker_Cli extends t3lib_cli {
         	$result = tx_caretaker_ExtensionManagerHelper::updateExtensionList();
         	$this->cli_echo( 'Extension list update result: ' . $result.chr(10) );
         	exit;
-        }
+        } elseif  ($task == 'update-typo3-latest-version-list'){
+        	$result = tx_caretaker_LatestTypo3VersionsHelper::updateLatestTypo3VersionRegistry();
+        	$this->cli_echo( 'TYPO3 latest version list update result: ' . $result.chr(10) );
+        } 
         
         if ($task == 'help') {
         	$this->cli_validateArgs();
