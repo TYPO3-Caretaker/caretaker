@@ -283,14 +283,18 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		);
 		
 		// draw average and median 
-		$DataSet->SetSerieName(
-			$test_result_range->getMedianValue() . ' Median Value' 
-			,"Value_Median"
-		);
-		$DataSet->SetSerieName(
-			$test_result_range->getAverageValue() . ' Average Value' 
-			,"Value_Average"
-		);
+		$median  = $test_result_range->getMedianValue();
+		$average = $test_result_range->getAverageValue();
+		if ($median > 0 || $average > 0 ) {
+			$DataSet->SetSerieName(
+				number_format( $median , 2) . ' Median Value' 
+				,"Value_Median"
+			);
+			$DataSet->SetSerieName(
+				number_format( $average,2 ) . ' Average Value' 
+				,"Value_Average"
+			);
+		}
 		
 		$Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);
 		$Graph->Render($filename);
