@@ -287,11 +287,11 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$average = $test_result_range->getAverageValue();
 		if ($median > 0 || $average > 0 ) {
 			$DataSet->SetSerieName(
-				number_format( $median , 2) . ' Median Value' 
+				'Median: ' . number_format( $median , 2)  
 				,"Value_Median"
 			);
 			$DataSet->SetSerieName(
-				number_format( $average,2 ) . ' Average Value' 
+				'Average:' . number_format( $average,2 ) 
 				,"Value_Average"
 			);
 		}
