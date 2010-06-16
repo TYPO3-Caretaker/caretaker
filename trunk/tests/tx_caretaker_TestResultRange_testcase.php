@@ -12,31 +12,31 @@ class tx_caretaker_TestResultRange_testcase extends tx_phpunit_testcase  {
 		$this->test_result_range = new tx_caretaker_TestResultRange(500, 1000);
 		
 		$this->test_result_range->addResult(
-			new tx_caretaker_TestResult(500, tx_caretaker_Constants::state_ok, 0, '')
+			new tx_caretaker_TestResult(500, tx_caretaker_Constants::state_ok, 2, '')
 		);
 		
 		$this->test_result_range->addResult(
-			new tx_caretaker_TestResult(600, tx_caretaker_Constants::state_error, 0, '')
+			new tx_caretaker_TestResult(600, tx_caretaker_Constants::state_error, 2, '')
 		);
 		
 		$this->test_result_range->addResult(
-			new tx_caretaker_TestResult(650, tx_caretaker_Constants::state_ok, 0, '')
+			new tx_caretaker_TestResult(650, tx_caretaker_Constants::state_ok, 3, '')
 		);
 		
 		$this->test_result_range->addResult(
-			new tx_caretaker_TestResult(800, tx_caretaker_Constants::state_warning, 0, '')
+			new tx_caretaker_TestResult(800, tx_caretaker_Constants::state_warning, 10, '')
 		);
 		
 		$this->test_result_range->addResult(
-			new	tx_caretaker_TestResult(900, tx_caretaker_Constants::state_ok, 0, '')
+			new	tx_caretaker_TestResult(900, tx_caretaker_Constants::state_ok, 1, '')
 		);
 		
 		$this->test_result_range->addResult(
-			new tx_caretaker_TestResult(930, tx_caretaker_Constants::state_undefined, 0, '')
+			new tx_caretaker_TestResult(930, tx_caretaker_Constants::state_undefined, 50, '')
 		);
 		
 		$this->test_result_range->addResult(
-			new tx_caretaker_TestResult(950, tx_caretaker_Constants::state_ok, 0, '')
+			new tx_caretaker_TestResult(950, tx_caretaker_Constants::state_ok, 1, '')
 		);
 		
 	}
@@ -75,7 +75,86 @@ class tx_caretaker_TestResultRange_testcase extends tx_phpunit_testcase  {
 		$this->assertEquals( $this->test_result_range->getLength(), 7 );
 	}
 	
+	function test_getMedianValue(){
+		
+		$tr = new tx_caretaker_TestResultRange(500, 1000);
+		$tr->addResult( new tx_caretaker_TestResult(500, tx_caretaker_Constants::state_ok, 12,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(600, tx_caretaker_Constants::state_ok, 5,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(700, tx_caretaker_Constants::state_ok, 7,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(800, tx_caretaker_Constants::state_ok, 8,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(900, tx_caretaker_Constants::state_ok, 5, '') );
+		
+		$this->assertEquals( $tr->getMedianValue(), 7 , 'median fails for odd numbers of results' );
+		
+		$tr = new tx_caretaker_TestResultRange(500, 1000);
+		$tr->addResult( new tx_caretaker_TestResult(500, tx_caretaker_Constants::state_ok, 5,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(600, tx_caretaker_Constants::state_ok, 7,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(700, tx_caretaker_Constants::state_ok, 8, '') );
+		$tr->addResult( new tx_caretaker_TestResult(800, tx_caretaker_Constants::state_ok, 12, '') );
+		
+		$this->assertEquals( $tr->getMedianValue(), 7.5 , 'median fails for even numbers of results' );
+
+		$tr = new tx_caretaker_TestResultRange(500, 1000);
+		$this->assertEquals( $tr->getMedianValue(), 0 , 'median fails for 0 numbers of results' );
+		
+		$tr = new tx_caretaker_TestResultRange(500, 1000);
+		$tr->addResult( new tx_caretaker_TestResult(500, tx_caretaker_Constants::state_ok, 5,  '') );
+		
+		$this->assertEquals( $tr->getMedianValue(), 5 , 'median fails for single result' );
+		
+		$tr = new tx_caretaker_TestResultRange(500, 1000);
+		$tr->addResult( new tx_caretaker_TestResult(500, tx_caretaker_Constants::state_ok, 5,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(600, tx_caretaker_Constants::state_ok, 7,  '') );
+		
+		$this->assertEquals( $tr->getMedianValue(), 6 , 'median fails for to results' );
+		
+		$tr = new tx_caretaker_TestResultRange(500, 1000);
+		$tr->addResult( new tx_caretaker_TestResult(500, tx_caretaker_Constants::state_ok, 5,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(600, tx_caretaker_Constants::state_ok, 7,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(700, tx_caretaker_Constants::state_ok, 8,  '') );
+		
+		$this->assertEquals( $tr->getMedianValue(), 7 , 'median fails for three results' );
+		
+		
+	}
 	
+	function test_getAverageValue(){
+		
+		$tr = new tx_caretaker_TestResultRange(500,1000);
+		$tr->addResult( new tx_caretaker_TestResult(500, tx_caretaker_Constants::state_ok, 10,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(750, tx_caretaker_Constants::state_ok, 20,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(1000, tx_caretaker_Constants::state_ok, 20,  '') );
+		
+		$this->assertEquals( $tr->getAverageValue(500,1000), 15 , 'average value fails' );
+		
+		$tr = new tx_caretaker_TestResultRange(500,1000 );
+		$tr->addResult( new tx_caretaker_TestResult(500, tx_caretaker_Constants::state_ok, 10,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(750, tx_caretaker_Constants::state_ok, 20,  '') );
+		
+		$this->assertEquals( $tr->getAverageValue(), 10 , 'average value fails' );
+		
+		$tr = new tx_caretaker_TestResultRange(500,1000 );
+		$tr->addResult( new tx_caretaker_TestResult(800, tx_caretaker_Constants::state_ok, 10,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(900, tx_caretaker_Constants::state_ok, 20,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(1000, tx_caretaker_Constants::state_ok, 20,  '') );
+		
+		$this->assertEquals( $tr->getAverageValue(), 15 , 'average value fails' );
+		
+		
+		$tr = new tx_caretaker_TestResultRange(500,1000);
+		$tr->addResult( new tx_caretaker_TestResult(500, tx_caretaker_Constants::state_ok, 10,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(900, tx_caretaker_Constants::state_ok, 20,  '') );
+		$tr->addResult( new tx_caretaker_TestResult(1000, tx_caretaker_Constants::state_ok, 20,  '') );
+		
+		$this->assertEquals( $tr->getAverageValue(), 12 , 'average value fails' );
+		
+		
+		$tr = new tx_caretaker_TestResultRange(500,1000);
+		$tr->addResult( new tx_caretaker_TestResult(750, tx_caretaker_Constants::state_ok, 10,  '') );
+		
+		$this->assertEquals( $tr->getAverageValue(), 0 , 'average value fails' );
+		
+	}
 	
 }
 ?>

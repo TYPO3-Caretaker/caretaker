@@ -238,7 +238,6 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	}	
 	
 		// Iterator methods
-		
 	/**
 	 * Reset the counter and return the first result
 	 */
@@ -266,7 +265,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	 * Go to the next result and return it
 	 */
 	public function next() {
-		next($this->array);
+		return next($this->array);
 	}
 
 	/**

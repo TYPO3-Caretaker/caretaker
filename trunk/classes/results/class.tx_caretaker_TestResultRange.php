@@ -91,6 +91,82 @@
 	public function getMaxValue(){
 		return $this->max_value;
 	}
+	
+	/**
+	 * Get the median value of the given result-set
+	 * undefined values are ignored
+	 * @return float
+	 */
+	public function getMedianValue(){
+		$values = array();
+		foreach ( $this as $result ){
+			$state = $result->getState();
+			if ($state >= tx_caretaker_Constants::state_ok ) {
+				$values[] = $result->getValue();
+			}
+		}
+		sort( $values );
+		$num = count($values);
+		if ( $num > 0 ){
+			if  ( $num % 2 == 1  ){
+				return ( $values[ (int)($num-1)/2 ] );
+			} else {
+				return ( ($values[ (int)$num/2 ] + $values[ (int)($num/2-1) ]) / 2.0 );
+			}
+		} else {
+			return 0;
+		}
+	}
+	
+	/**
+	 * Get the average value over the time 
+	 * undefined values are ignored
+	 * @return float
+	 */
+	public function getAverageValue(){
+		
+		$value_area  = 0;
+		$value_range = 0;
+		$currentResult = NULL;
+		$nextResult    = NULL;
+		$length = $this->getLength();
+		
+
+		
+		// $currentResult = $this->
+		$this->rewind();
+		$currentResult = $this->current();
+		$nextResult    = $this->next();
+		$index = 0;
+		$length = $this->count();
+		while ( $currentResult ){
+				// start
+			if ( $currentResult && $nextResult ){
+				$tstart = $currentResult->getTstamp();
+				$tstop  = $nextResult->getTstamp();
+				$value  = $currentResult->getValue();
+				$trange = $tstop - $tstart;
+				$state  = $currentResult->getState();
+				if ( $state  >= tx_caretaker_Constants::state_ok ) {
+					$value_area  += $trange * $value;
+					$value_range += $trange;
+				}
+				
+			}
+			
+			
+			$index ++;
+			$currentResult = $nextResult;
+			$nextResult    = $this->next();
+		}
+		
+	
+		if ($value_range > 0){ 
+			return ( $value_area / $value_range);
+		} else {
+			return 0;
+		}
+	}
 			
 }
 
