@@ -291,7 +291,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 				,"Value_Median"
 			);
 			$DataSet->SetSerieName(
-				'Average:' . number_format( $average,2 ) 
+				'Average: ' . number_format( $average,2 ) 
 				,"Value_Average"
 			);
 		}
