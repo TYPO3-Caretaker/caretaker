@@ -37,3 +37,10 @@
 .caretaker-state-3 .x-tree-node-anchor span {
 	color: gray;
 }
+
+.x-panel-header {
+	background-color:#CCCCCC;
+	background-image:none;
+	border-color:#BBBB;
+	color: #333333;
+}

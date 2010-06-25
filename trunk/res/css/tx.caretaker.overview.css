@@ -4,6 +4,13 @@
 	color: #333333;
 }
 
+.x-panel-header {
+	background-color:#CCCCCC;
+	background-image:none;
+	border-color: #BBBB;
+	color: #333333;
+}
+
 .icon-caretaker-root { background-image: url(../icons/caretaker.gif) !important; }
 .icon-caretaker-type-root { background-image: url(../icons/caretaker.gif) !important; }
 .icon-caretaker-type-test { background-image: url(../icons/test.png) !important; }
