@@ -278,7 +278,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 				$LANG = t3lib_div::makeInstance('language');
 				$LANG->init($language_key);
 
-				return $LANG->getLLL($locallang_key, $LANG->readLLfile(t3lib_div::getFileAbsFileName( $locallang_file )));
+				return $LANG->getLLL($locallang_key, t3lib_div::readLLfile(t3lib_div::getFileAbsFileName( $locallang_file )));
 
 			default :
 
