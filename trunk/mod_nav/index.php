@@ -76,16 +76,14 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->pageRenderer = $this->doc->getPageRenderer();
 
 			// Include Ext JS
-			$this->pageRenderer->loadExtJS();
+			$this->pageRenderer->loadExtJS(true, true);
 			$this->pageRenderer->enableExtJSQuickTips();
-			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.js');
-			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeTree.js');
-
-			// Enable debug mode for Ext JS
 			$this->pageRenderer->enableExtJsDebug();
+			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.js', 'text/javascript', FALSE , FALSE);
+			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeTree.js', 'text/javascript', FALSE, FALSE );
 
 			//Add caretaker css
-			$this->pageRenderer->addCssFile('../res/css/tx.caretaker.nodetree.css');
+			$this->pageRenderer->addCssFile('../res/css/tx.caretaker.nodetree.css', 'stylesheet' , 'all' , '' , FALSE);
 
 			// storage Pid
 			$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
@@ -94,6 +92,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->pageRenderer->addJsInlineCode('Caretaker_Nodetree',
 			'
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+			Ext.ns("tx.caretaker");
 			Ext.onReady(function() {
 				tx.caretaker.view = new Ext.Viewport({
 					layout: "fit",

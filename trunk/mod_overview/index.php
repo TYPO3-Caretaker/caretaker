@@ -93,14 +93,14 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 				foreach($extJsBackendPanel['jsIncludes'] as $jsInclude){
 					$filename = t3lib_div::getFileAbsFileName($jsInclude);
 					$filename = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . str_replace( PATH_site, '', $filename  );
-					$this->pageRenderer->addJsFile( $filename );
+					$this->pageRenderer->addJsFile( $filename,  'text/javascript', FALSE , FALSE );
 				}
 
 					// register CSS
 				foreach($extJsBackendPanel['cssIncludes'] as $cssInclude){
 					$filename = t3lib_div::getFileAbsFileName($cssInclude);
 					$filename = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . str_replace( PATH_site, '', $filename  );
-					$this->pageRenderer->addCssFile( $filename );
+					$this->pageRenderer->addCssFile( $filename, 'stylesheet' , 'all' , '' , FALSE );
 				}
 
 					// add ExtJs Panel
@@ -109,7 +109,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 				
 			}
 			
-			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeToolbar.js');
+			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeToolbar.js',  'text/javascript', FALSE , FALSE );
 
 			// Enable debug mode for Ext JS
 			$this->pageRenderer->enableExtJsDebug();
