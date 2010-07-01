@@ -81,7 +81,7 @@ class tx_caretaker_LocallizationHelper {
 					$LANG = t3lib_div::makeInstance('language');
 					$LANG->init($language_key);
 
-					$result = $LANG->getLLL($locallang_key, t3lib_div::readLLfile(t3lib_div::getFileAbsFileName( $locallang_file )));
+					$result = $LANG->getLLL($locallang_key, t3lib_div::readLLfile(t3lib_div::getFileAbsFileName( $locallang_file) , $LANG->lang, $LANG->charSet ) );
 					break;
 
 				default :
