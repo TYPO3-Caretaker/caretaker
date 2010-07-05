@@ -186,10 +186,11 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 					
 			// initialize custom colors
 		$Graph->setColorPalette(999,0,0,0);
-		$Graph->setColorPalette(0,178,255,178);  //OK
+		$Graph->setColorPalette(0,178,255,178); //OK
 		$Graph->setColorPalette(1,255,255,178); // WARNING
 		$Graph->setColorPalette(2,255,178,178); // ERROR
-		$Graph->setColorPalette(3,83,83,255); // GRAPH
+		$Graph->setColorPalette(3,83,83,255);   // GRAPH
+		$Graph->setColorPalette(4,83,83,83);   // UNDEFINED
 		
 		$Graph->setColorPalette(998,50,50,255); // Graph
 		
@@ -281,6 +282,12 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			round(($info['PercentERROR']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_error')
 			,"Values_ERROR"
 		);
+		
+		$DataSet->SetSerieName(
+			round(($info['PercentUNDEFINED']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_undefined')
+			,"Values_UNDEFINED"
+		);
+		
 		
 		// draw average and median 
 		$median  = $test_result_range->getMedianValue();
