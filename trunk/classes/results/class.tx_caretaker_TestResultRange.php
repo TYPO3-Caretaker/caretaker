@@ -101,7 +101,8 @@
 		$values = array();
 		foreach ( $this as $result ){
 			$state = $result->getState();
-			if ($state >= tx_caretaker_Constants::state_ok ) {
+			$value = $result->getValue();
+			if ( in_array( $state, array( tx_caretaker_Constants::state_ok, tx_caretaker_Constants::state_warning, tx_caretaker_Constants::state_error) ) && $value > 0 ) {
 				$values[] = $result->getValue();
 			}
 		}
@@ -142,18 +143,17 @@
 		while ( $currentResult ){
 				// start
 			if ( $currentResult && $nextResult ){
-				$tstart = $currentResult->getTstamp();
-				$tstop  = $nextResult->getTstamp();
-				$value  = $currentResult->getValue();
-				$trange = $tstop - $tstart;
-				$state  = $currentResult->getState();
-				if ( $state  >= tx_caretaker_Constants::state_ok ) {
-					$value_area  += $trange * $value;
-					$value_range += $trange;
+				$timeStart = $currentResult->getTstamp();
+				$timeStop  = $nextResult->getTstamp();
+				$value     = $currentResult->getValue();
+				$state     = $currentResult->getState();
+				$timeRange = $timeStop - $timeStart;
+				if ( in_array( $state, array( tx_caretaker_Constants::state_ok, tx_caretaker_Constants::state_warning, tx_caretaker_Constants::state_error) ) && $value > 0 ) {
+					$value_area  += $timeRange * $value;
+					$value_range += $timeRange;
 				}
 				
 			}
-			
 			
 			$index ++;
 			$currentResult = $nextResult;
