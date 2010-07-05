@@ -186,9 +186,9 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 					
 			// initialize custom colors
 		$Graph->setColorPalette(999,0,0,0);
-		$Graph->setColorPalette(0,178,255,178); //OK
-		$Graph->setColorPalette(1,255,255,178); // WARNING
-		$Graph->setColorPalette(2,255,178,178); // ERROR
+		$Graph->setColorPalette(0,0,255,0);     // OK
+		$Graph->setColorPalette(1,255,255,0);   // WARNING
+		$Graph->setColorPalette(2,255,0,0);     // ERROR
 		$Graph->setColorPalette(3,83,83,83);    // UNDEFINED
 		$Graph->setColorPalette(4,255,255,255); // Median
 		$Graph->setColorPalette(5,255,255,255); // Average
