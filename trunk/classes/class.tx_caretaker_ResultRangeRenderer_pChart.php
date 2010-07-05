@@ -189,7 +189,10 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$Graph->setColorPalette(0,178,255,178); //OK
 		$Graph->setColorPalette(1,255,255,178); // WARNING
 		$Graph->setColorPalette(2,255,178,178); // ERROR
-		$Graph->setColorPalette(4,83,83,83);    // UNDEFINED
+		$Graph->setColorPalette(3,83,83,83);    // UNDEFINED
+		$Graph->setColorPalette(4,255,255,255); // Median
+		$Graph->setColorPalette(5,255,255,255); // Average
+				
 		$Graph->setColorPalette(998,50,50,255); // Graph
 		
 		$Graph->drawFilledRoundedRectangle(7,7,$width-7,$height-7,5,240,240,240);     
