@@ -189,9 +189,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$Graph->setColorPalette(0,178,255,178); //OK
 		$Graph->setColorPalette(1,255,255,178); // WARNING
 		$Graph->setColorPalette(2,255,178,178); // ERROR
-		$Graph->setColorPalette(3,83,83,255);   // GRAPH
-		$Graph->setColorPalette(4,83,83,83);   // UNDEFINED
-		
+		$Graph->setColorPalette(4,83,83,83);    // UNDEFINED
 		$Graph->setColorPalette(998,50,50,255); // Graph
 		
 		$Graph->drawFilledRoundedRectangle(7,7,$width-7,$height-7,5,240,240,240);     
@@ -262,46 +260,44 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 
 
 			// Finish the graph
-		$info = $test_result_range->getInfos();
-
+		$info    = $test_result_range->getInfos();
+		$median  = $test_result_range->getMedianValue();
+		$average = $test_result_range->getAverageValue();
+		
 			// Title
 		$Graph->drawTitle(50,22, $title.' '.round(($info['PercentAVAILABLE']*100),2 )."% ".$this->getLL('available'),50,50,50,585);  
 
 			// Legend
 		$DataSet->SetSerieName(
-			round(($info['PercentOK']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_ok')
+			number_format(($info['PercentOK']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_ok')
 			,"Values_OK"
 		);
 		
 		$DataSet->SetSerieName(
-			round(($info['PercentWARNING']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_warning')
+			number_format(($info['PercentWARNING']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_warning')
 			,"Values_WARNING"
 		);
 		
 		$DataSet->SetSerieName(
-			round(($info['PercentERROR']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_error')
+			number_format(($info['PercentERROR']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_error')
 			,"Values_ERROR"
 		);
 		
 		$DataSet->SetSerieName(
-			round(($info['PercentUNDEFINED']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_undefined')
+			number_format( ($info['PercentUNDEFINED']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_undefined')
 			,"Values_UNDEFINED"
 		);
 		
+			// draw average and median values 
+		$DataSet->SetSerieName( 
+			'Median: ' . number_format( $median , 2 ) ,  
+			"Value_Median"
+		);
 		
-		// draw average and median 
-		$median  = $test_result_range->getMedianValue();
-		$average = $test_result_range->getAverageValue();
-		if ($median > 0 || $average > 0 ) {
-			$DataSet->SetSerieName(
-				'Median: ' . number_format( $median , 2)  
-				,"Value_Median"
-			);
-			$DataSet->SetSerieName(
-				'Average: ' . number_format( $average,2 ) 
-				,"Value_Average"
-			);
-		}
+		$DataSet->SetSerieName(
+			'Average: ' . number_format( $average, 2 ) ,  
+			"Value_Average"
+		);
 		
 		$Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);
 		$Graph->Render($filename);
