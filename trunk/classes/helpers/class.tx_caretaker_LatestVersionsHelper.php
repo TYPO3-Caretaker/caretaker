@@ -83,7 +83,7 @@ class tx_caretaker_LatestVersionsHelper {
 		
 	}
 	
-	private function curlRequest($requestUrl = false) {
+	private function curlRequest($requestUrl = false) {	
 		$curl = curl_init();
         if ($curl === false || $requestUrl === false) {
         	return false;
@@ -94,6 +94,8 @@ class tx_caretaker_LatestVersionsHelper {
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
 		curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, true);
 
 		$headers = array(
             "Cache-Control: no-cache",
