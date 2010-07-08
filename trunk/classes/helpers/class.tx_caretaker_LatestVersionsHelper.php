@@ -50,8 +50,9 @@ class tx_caretaker_LatestVersionsHelper {
 	
 	public static function updateLatestTypo3VersionRegistry() {
 		
-		$success = false;
-		$content = file_get_contents('https://svn.typo3.org/TYPO3v4/Core/tags/');
+		$success = false;		
+
+		$content = self::curlRequest('https://svn.typo3.org/TYPO3v4/Core/tags/');
 
 		if (empty($content)) {
 			return false;
@@ -59,14 +60,15 @@ class tx_caretaker_LatestVersionsHelper {
 
 		preg_match_all('/TYPO3_(4-[0-9]{1,2}-[0-9]{1,2}((alpha|beta|RC)[^\/]{0,2})?)\//', $content, $matches);
 
-		if (!is_array($matches[1]) || count($matches[1]) == 0) {
+		if (!is_array($matches[1]) || count($matches[1]) === 0) {
 			return false;
 		}
 		
 		$max = array();
 		foreach ($matches[1] as $key => $version) {
-			$versionDigits = explode('-', $version, 3);	
-			if ($max[$versionDigits[0] . '.' . $versionDigits[1]][2] < $versionDigits[2]) {
+			$versionDigits = explode('-', $version, 3);
+
+			if ($max[$versionDigits[0] . '.' . $versionDigits[1]][2] < $versionDigits[2] && preg_match('/alpha|beta|RC/',$version) === 0) {
 				$max[$versionDigits[0] . '.' . $versionDigits[1]] = $versionDigits;
 			}
 		}
@@ -74,10 +76,35 @@ class tx_caretaker_LatestVersionsHelper {
 		foreach ($max as $key => $value) {
 			$max[$key] = implode('.', $value);
 		}
+		
 		t3lib_div::makeInstance('t3lib_Registry')->set('tx_caretaker', 'TYPO3versions', $max);
 		
 		return true;
 		
+	}
+	
+	private function curlRequest($requestUrl = false) {
+		$curl = curl_init();
+        if ($curl === false || $requestUrl === false) {
+        	return false;
+        }
+
+		curl_setopt($curl, CURLOPT_URL, $requestUrl);
+		curl_setopt($curl, CURLOPT_HEADER, 0);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
+		curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+
+		$headers = array(
+            "Cache-Control: no-cache",
+            "Pragma: no-cache"
+        );
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+		$response = curl_exec($curl);
+		curl_close($curl);
+		
+		return $response;
 	}
 	
 }
