@@ -125,9 +125,9 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	public function getConfigValue($key, $default=false, $sheet=false){
 		
 		$result = false;
-		if ($this->flexform_configuration){
+		if ($this->flexform_configuration && is_array( $this->flexform_configuration ) ){
 			if (!$sheet) $sheet = 'sDEF';
-			if (isset($this->flexform_configuration['data'][$sheet]['lDEF'][$key]['vDEF']) ){
+			if ( isset($this->flexform_configuration['data'][$sheet]['lDEF'][$key]['vDEF'] ) ){
 				$result = $this->flexform_configuration['data'][$sheet]['lDEF'][$key]['vDEF'];
 			}
 		} else if ($this->array_configuration){
