@@ -30,6 +30,9 @@
 			<label index="state_due">Due to execution</label>
 			<label index="state_ack">Acknowledged</label>
 			
+			<label index="message_due">node was set to Due state by user: ###VALUE_USERNAME###</label>
+			<label index="message_ack">node was set to Acknowledged state by user: ###VALUE_USERNAME###</label>
+			
 			
 			<label index="available">available</label>
 			<label index="description">Description</label>
