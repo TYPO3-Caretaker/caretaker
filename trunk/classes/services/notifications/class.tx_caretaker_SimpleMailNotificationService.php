@@ -179,7 +179,9 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 					'num_undfined'=>0,
 					'num_ok'=>0,
 					'num_warning'=>0,
-					'num_error'=>0
+					'num_error'=>0,
+					'num_ack'=>0,
+					'num_due'=>0
 				);
 			}
 			switch ( $result->getState() ){
@@ -194,6 +196,12 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 					break;
 				case tx_caretaker_Constants::state_error:
 					$this->recipients_messages[$recipientId]['num_error'] ++;
+					break;
+				case tx_caretaker_Constants::state_ack:
+					$this->recipients_messages[$recipientId]['num_ack'] ++;
+					break;
+				case tx_caretaker_Constants::state_due:
+					$this->recipients_messages[$recipientId]['num_due'] ++;
 					break;
 			}
 			array_unshift( $this->recipients_messages[$recipientId]['messages'] ,
@@ -235,6 +243,10 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 					$subject .= ' ' .$recipientInfo['num_error'].' Errors';
 				if ($recipientInfo['num_warning'] > 0)
 					$subject .= ' ' .$recipientInfo['num_warning'].' Warnings';
+				if ($recipientInfo['num_ack'] > 0)
+					$subject .= ' ' .$recipientInfo['num_ack'].' Acknowledged';
+				if ($recipientInfo['num_due'] > 0)
+					$subject .= ' ' .$recipientInfo['num_due'].' Due';		
 
 
 				$this->sendMail($subject, $recipient['email'], $this->mail_from, $message  );
