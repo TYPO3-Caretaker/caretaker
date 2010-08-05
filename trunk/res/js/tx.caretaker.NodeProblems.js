@@ -79,17 +79,9 @@ tx.caretaker.NodeProblems = Ext.extend( Ext.grid.GridPanel , {
 			enableRowBody: true,
 			showPreview: true,
 			getRowClass: function(record, index) {
-				var state = parseInt( record.get('state') );
-				switch (state) {
-					case 0:
-						return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_OK';
-					case 1:
-						return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_WARNING';
-					case 2:
-						return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_ERROR';
-					default:
-						return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_UNDEFINED';
-				}
+				var state = record.get('stateinfo');
+				return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_' + state.toLowerCase() ;
+
 			}
 		});
 			

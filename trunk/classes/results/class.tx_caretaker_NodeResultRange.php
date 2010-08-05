@@ -193,6 +193,8 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 		$SecondsOK        = 0;
 		$SecondsWARNING   = 0;
 		$SecondsERROR     = 0;
+		$SecondsACK       = 0;
+		$SecondsDUE       = 0;
 		
 		$lastTS    = NULL;
 		$lastSTATE = NULL;
@@ -202,16 +204,22 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 				$range = $ts - $lastTS;
 				
 				switch ($lastSTATE){
-					case -1:
+					case tx_caretaker_Constants::state_due :
+						$SecondsDUE += $range;
+						break;
+					case tx_caretaker_Constants::state_ack :
+						$SecondsACK += $range;
+						break;	
+					case tx_caretaker_Constants::state_undefined :
 						$SecondsUNDEFINED += $range;
 						break;
-					case 0:
+					case tx_caretaker_Constants::state_ok :
 						$SecondsOK += $range;
 						break;
-					case 1:
+					case tx_caretaker_Constants::state_warning:
 						$SecondsWARNING += $range;
 						break;
-					case 2:
+					case tx_caretaker_Constants::state_error:
 						$SecondsERROR += $range;
 						break;
 				}
@@ -227,12 +235,16 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 			'SecondsOK'         =>$SecondsOK,
 			'SecondsWARNING'    =>$SecondsWARNING,
 			'SecondsERROR'      =>$SecondsERROR,
+			'SecondsACK'        =>$SecondsACK,
+			'SecondsDUE'        =>$SecondsACK,
 		
 			'PercentAVAILABLE'  => ($SecondsTotal - $SecondsERROR - $SecondsWARNING - $SecondsUNDEFINED )/$SecondsTotal,
 			'PercentUNDEFINED'  => $SecondsUNDEFINED/$SecondsTotal,
 			'PercentOK'         => $SecondsOK/$SecondsTotal,
 			'PercentWARNING'    => $SecondsWARNING/$SecondsTotal,
 			'PercentERROR'      => $SecondsERROR/$SecondsTotal,
+			'PercentACK'        => $SecondsACK/$SecondsTotal,
+			'PercentDUE'        => $SecondsDUE/$SecondsTotal,
  		);
 		
 	}	

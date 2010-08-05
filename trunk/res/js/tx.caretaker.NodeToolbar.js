@@ -9,18 +9,43 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 			layout : "toolbar",
             items :  [
                     {
-                            text    : "Refresh",
-                            icon    : "../res/icons/arrow_refresh_small.png",
-                            handler : this.refreschNode,
+                          text    : "Refresh",
+                          icon    : "../res/icons/arrow_refresh_small.png",
+                          handler : this.refreschNode,
 							scope   : this
                     },
                     {
-                            text    : "Refresh forced",
-                            icon    : "../res/icons/arrow_refresh.png",
-                            handler : this.refreschNodeForced,
-							scope   : this
+                          text    : "Actions",
+                          xtype   : 'tbbutton',
+                          icon    : "../res/icons/arrow_refresh_small.png",
+                          menu    : [
+                                
+                                 {
+                                     text    : "Refresh forced",
+                                     icon    : "../res/icons/arrow_refresh.png",
+                                     handler : this.refreschNodeForced,
+             						 scope   : this
+                                 },
+                                 {
+                                     text    : "Acknowledge Problem",
+                                     icon    : "../res/icons/wip.png",
+                                     handler : this.setAck,
+                                     id      : 'tx_caretaker_NodeToolbar_Ack',
+                                     disabled  : ( config.node_type == "test" && config.node_state_info == "ACK") ? true:false,
+                                     hidden  : ( config.node_type != "test") ? true:false,
+             						scope   : this
+             	                },
+             	                {
+                                     text    : "Set Due to Execution",
+                                     icon    : "../res/icons/wip.png",
+                                     handler : this.setDue,
+                                     id      : 'tx_caretaker_NodeToolbar_Due',
+                                     disabled  : ( config.node_type == "test" && config.node_state_info == "DUE") ? true:false,
+                                     hidden  : ( config.node_type != "test") ? true:false,
+             						 scope   : this
+             	                },
+                                    ]
                     },
-                    "-",
                     {
                             text    : "Edit",
                             icon    : "../res/icons/pencil.png",
@@ -82,8 +107,6 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 		}, config);
 
 		this.addUrl = config.add_url;
-
-		
 
 		tx.caretaker.NodeToolbar.superclass.constructor.call(this, config);
 
@@ -249,11 +272,65 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
             }
         });
     },
+    
+    setAck : function (){
+        Ext.Ajax.request({
+			url: this.back_path + 'ajax.php',
+			success: this.refreschSuccess,
+			failure: this.refreschFailure,
+			scope  : this,
+			params: {
+               ajaxID: 'tx_caretaker::nodeSetAck',
+               node:   this.node_id,
+               force:  0
+			}
+        });
+    },
+    
+    setDue : function (){
+        Ext.Ajax.request({
+			url: this.back_path + 'ajax.php',
+			success: this.refreschSuccess,
+			failure: this.refreschFailure,
+			scope  : this,
+			params: {
+               ajaxID: 'tx_caretaker::nodeSetDue',
+               node:   this.node_id,
+               force:  0
+			}
+        });
+    },
 
     refreschSuccess : function (response, opts){
+    	
+    	var	result = Ext.decode(response.responseText);
+    	
+    	var ack = Ext.getCmp( 'tx_caretaker_NodeToolbar_Ack' );
+    	var due = Ext.getCmp( 'tx_caretaker_NodeToolbar_Due' );
+    	
+    	if ( ack && this.node_type == 'test' ){ 
+	    	if (result['state_info'] != 'ACK' ){
+	    		ack.enable();
+	    	} else {
+	    		ack.disable();
+	    	}
+    	}
+    	
+    	if ( due && this.node_type == 'test' ){ 
+	    	if (result['state_info'] != 'DUE' ){
+	    		due.enable();
+	    	} else {
+	    		due.disable();
+	    	}
+    	}
+	    	
         var node_info_panel = Ext.getCmp('node-info');
         node_info_panel.load( this.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + this.node_id);
-        this.refreshTree();
+      
+        if ( parent.nav_frame && parent.nav_frame.tx_caretaker_updateTreeById ) {
+			parent.nav_frame.tx_caretaker_updateTreeById( this.node_id );
+		}
+        
     },
 
     refreschFailure : function (response, opts){

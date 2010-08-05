@@ -92,7 +92,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$DataSet   = new pData;
 		
 		$lastState = tx_caretaker_Constants::state_ok;
-		$lastState= -2;
+		$lastState = NULL;
 		
 		$rangesUndefined = array();
 		$rangesOk		 = array(array(0)); // adds the zero to start the ok range at the left border,
@@ -100,6 +100,8 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 											// beginning
 		$rangesWarning   = array();
 		$rangesError     = array();
+		$rangesAck       = array(); 
+		$rangesDue       = array(); 
 		
 		$lastValue = false;
 		
@@ -107,36 +109,48 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			$DataSet->AddPoint($result->getValue(),"Values");  
 		    $DataSet->AddPoint($result->getTstamp(),"Times");
 		    
-		    $state     = $result->getState();
+		    $state = $result->getState();
 		    
-		    if ($state != $lastState){
+		    if ($state !== $lastState){
 		    	switch ( $lastState ){
-		    		case -1:
+		    		case tx_caretaker_Constants::state_due :
+			    		$rangesDue[count($rangesDue)-1][1]= $result->getTstamp();
+			    		break;
+			    	case tx_caretaker_Constants::state_ack :
+			    		$rangesAck[count($rangesAck)-1][1]= $result->getTstamp();
+			    		break;	
+		    		case tx_caretaker_Constants::state_undefined :
 			    		$rangesUndefined[count($rangesUndefined)-1][1]= $result->getTstamp();
 			    		break;
-		    		case 0:
+		    		case tx_caretaker_Constants::state_ok :
 		    			// array count must not be negative
 		    			$rangesOk[count($rangesOk)-1 > -1 ? count($rangesOk)-1 : 0][1]= $result->getTstamp();
 		    			break;
-			    	case 1:
+			    	case tx_caretaker_Constants::state_warning :
 			    		$rangesWarning[count($rangesWarning)-1][1]= $result->getTstamp();
 			    		break;
-			    	case 2:
+			    	case tx_caretaker_Constants::state_error :
 			    		$rangesError[count($rangesError)-1][1]= $result->getTstamp();
 			    		break;
 		    	}
 		    	
 		    	switch ( $state ){
-		    		case -1:
+		    		case tx_caretaker_Constants::state_due :
+			    		$rangesDue[]= Array($result->getTstamp());
+			    		break;
+		    		case tx_caretaker_Constants::state_ack :
+			    		$rangesAck[]= Array($result->getTstamp());
+			    		break;
+		    		case tx_caretaker_Constants::state_undefined :
 			    		$rangesUndefined[]= Array($result->getTstamp());
 			    		break;
-			    	case 0:
+			    	case tx_caretaker_Constants::state_undefined :
 		    			$rangesOk[] = Array($result->getTstamp());
 		    			break;
-			    	case 1:
+			    	case tx_caretaker_Constants::state_warning :
 			    		$rangesWarning[]= Array($result->getTstamp());
 			    		break;
-			    	case 2:
+			    	case tx_caretaker_Constants::state_error :
 			    		$rangesError[]= Array($result->getTstamp());
 			    		break;		
 		    	}
@@ -148,16 +162,22 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		if ($lastResult) {
 			
 			switch ( $lastResult->getState() ){
-				case -1:
+				case tx_caretaker_Constants::state_ack :
+		    		$rangesAck[count($rangesAck)-1][1]= $lastResult->getTstamp();
+		    		break;
+		    	case tx_caretaker_Constants::state_due :
+		    		$rangesDue[count($rangesDue)-1][1]= $lastResult->getTstamp();
+		    		break;	
+				case tx_caretaker_Constants::state_undefined :
 		    		$rangesUndefined[count($rangesUndefined)-1][1]= $lastResult->getTstamp();
 		    		break;
-				case 0:
+				case tx_caretaker_Constants::state_ok :
 					$rangesOk[count($rangesOk) - 1][1] = $lastResult->getTstamp();
 					break;
-		    	case 1:
+		    	case tx_caretaker_Constants::state_warning :
 		    		$rangesWarning[count($rangesWarning)-1][1]= $lastResult->getTstamp();
 		    		break;
-		    	case 2:
+		    	case tx_caretaker_Constants::state_error :
 		    		$rangesError[count($rangesError)-1][1]= $lastResult->getTstamp();
 		    		break;		
 	    	}
@@ -186,14 +206,14 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 					
 			// initialize custom colors
 		$Graph->setColorPalette(999,0,0,0);
-		$Graph->setColorPalette(0,0,255,0);     // OK
-		$Graph->setColorPalette(1,255,255,0);   // WARNING
-		$Graph->setColorPalette(2,255,0,0);     // ERROR
-		$Graph->setColorPalette(3,83,83,83);    // UNDEFINED
-		$Graph->setColorPalette(4,255,255,255); // Median
-		$Graph->setColorPalette(5,255,255,255); // Average
-				
-		$Graph->setColorPalette(998,50,50,255); // Graph
+		$Graph->setColorPalette(0,0,255,0);           // OK        : green
+		$Graph->setColorPalette(1,255,255,0);         // WARNING   : yellow
+		$Graph->setColorPalette(2,255,0,0);           // ERROR     : red
+		$Graph->setColorPalette(3,83,83,83);          // UNDEFINED : grey
+		$Graph->setColorPalette(4,0,0,255);           // ACK       : blue
+		$Graph->setColorPalette(5,238,130,238);       // DUE       : violet
+		
+		$Graph->setColorPalette(998,50,50,255);        // Graph
 		
 		$Graph->drawFilledRoundedRectangle(7,7,$width-7,$height-7,5,240,240,240);     
 		$Graph->drawRoundedRectangle(5,5,$width-5,$height-5,5,230,230,230);     
@@ -256,6 +276,26 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 				$Graph->drawFilledRectangle($X1,$Y1,$X2,$Y2,255,0,0,$DrawBorder=FALSE,$Alpha=30,$NoFallBack=FALSE);
 			}
 		}
+		
+		foreach($rangesAck as $range){
+			if (isset($range[0]) && isset($range[1]) ) {
+				$X1 = $Graph->GArea_X1 + (($range[0]-$Graph->VXMin) * $Graph->XDivisionRatio);
+				$X2 = $Graph->GArea_X1 + (($range[1]-$Graph->VXMin) * $Graph->XDivisionRatio);
+				$Y1 = $Graph->GArea_Y1;
+				$Y2 = $Graph->GArea_Y2;
+				$Graph->drawFilledRectangle($X1,$Y1,$X2,$Y2,0,0,255,$DrawBorder=FALSE,$Alpha=30,$NoFallBack=FALSE);
+			}
+		}
+		
+		foreach($rangesDue as $range){
+			if (isset($range[0]) && isset($range[1]) ) {
+				$X1 = $Graph->GArea_X1 + (($range[0]-$Graph->VXMin) * $Graph->XDivisionRatio);
+				$X2 = $Graph->GArea_X1 + (($range[1]-$Graph->VXMin) * $Graph->XDivisionRatio);
+				$Y1 = $Graph->GArea_Y1;
+				$Y2 = $Graph->GArea_Y2;
+				$Graph->drawFilledRectangle($X1,$Y1,$X2,$Y2,238,130,238,$DrawBorder=FALSE,$Alpha=30,$NoFallBack=FALSE);
+			}
+		}
 
 			// draw background lines
 		$this->drawXAxis($Graph, $test_result_range->getMinTstamp(),  $test_result_range->getMaxTstamp() );
@@ -267,8 +307,13 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		$median  = $test_result_range->getMedianValue();
 		$average = $test_result_range->getAverageValue();
 		
+		
 			// Title
-		$Graph->drawTitle(50,22, $title.' '.round(($info['PercentAVAILABLE']*100),2 )."% ".$this->getLL('available'),50,50,50,585);  
+		$title = $title.' '.round(($info['PercentAVAILABLE']*100),2 )."% " . $this->getLL('available') ;
+		if ( $median != 0 || $average != 0 ){
+			$title .= ' [Median: ' . number_format( $median , 2 ) . ', Average: ' . number_format( $average, 2 ) . ']';
+		}
+		$Graph->drawTitle(50,22, $title,50,50,50,585 );  
 
 			// Legend
 		$DataSet->SetSerieName(
@@ -291,15 +336,14 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			,"Values_UNDEFINED"
 		);
 		
-			// draw average and median values 
-		$DataSet->SetSerieName( 
-			'Median: ' . number_format( $median , 2 ) ,  
-			"Value_Median"
-		);
-		
 		$DataSet->SetSerieName(
-			'Average: ' . number_format( $average, 2 ) ,  
-			"Value_Average"
+			number_format( ($info['PercentACK']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_ack')
+			,"Values_ACK"
+		);
+
+		$DataSet->SetSerieName(
+			number_format( ($info['PercentDUE']*100),2 ).'% '.tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_due')
+			,"Values_DUE"
 		);
 		
 		$Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);
@@ -528,7 +572,7 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 		
 			// Finish the graph
 		$info = $test_result_range->getInfos();
-		$Graph->drawTitle(50,22, $title.' '.round(($info['PercentAVAILABLE']*100),2 )."% ".$this->getLL('available'),50,50,50,585);  
+		$Graph->drawTitle(50,22, $title.' '.round(( $info['PercentAVAILABLE']*100),2 )."% ".$this->getLL('available'),50,50,50,585);  
 
 			// Legend
 		$DataSet->SetSerieName(
@@ -551,9 +595,8 @@ class tx_caretaker_ResultRangeRenderer_pChart implements tx_caretaker_ResultRang
 			,"Values_UNDEFINED"
 		);
 
-
 				
-		$Graph->drawLegend($width-140,30,$DataSet->GetDataDescription(),255,255,255);  
+		$Graph->drawLegend($width-140,30, $DataSet->GetDataDescription() ,255,255,255);  
 		
 		$Graph->Render($filename);
 		

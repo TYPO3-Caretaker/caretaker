@@ -29,15 +29,17 @@
 .tx-caretaker-panel-nodeproblems { background-image: url(../icons/problems.png) !important; }
 
 .tx_caretaker_node_info {padding:5px;}
-.tx_caretaker_node_info_state_OK        { color:green; }
-.tx_caretaker_node_info_state_WARNING   { color:orange; }
-.tx_caretaker_node_info_state_ERROR     { color:red; }
-.tx_caretaker_node_info_state_UNDEFINED { color:gray; }
-
+.tx_caretaker_node_info_state_ok        { color:green; }
+.tx_caretaker_node_info_state_warning   { color:orange; }
+.tx_caretaker_node_info_state_error     { color:red; }
+.tx_caretaker_node_info_state_undefined { color:gray; }
+.tx_caretaker_node_info_state_ack       { color:blue; }
+.tx_caretaker_node_info_state_due       { color:violet; }
 
 .tx_caretaker_node_logrow {}
-.tx_caretaker_node_logrow_OK        .x-grid3-cell-inner{color:green;}
-.tx_caretaker_node_logrow_WARNING   .x-grid3-cell-inner{color:orange;}
-.tx_caretaker_node_logrow_ERROR     .x-grid3-cell-inner{color:red;}
-.tx_caretaker_node_logrow_UNDEFINED .x-grid3-cell-inner{color:grey;}
-
+.tx_caretaker_node_logrow_ok        .x-grid3-cell-inner{color:green;}
+.tx_caretaker_node_logrow_warning   .x-grid3-cell-inner{color:orange;}
+.tx_caretaker_node_logrow_error     .x-grid3-cell-inner{color:red;}
+.tx_caretaker_node_logrow_undefined .x-grid3-cell-inner{color:grey;}
+.tx_caretaker_node_logrow_ack       .x-grid3-cell-inner{color:blue;}
+.tx_caretaker_node_logrow_due       .x-grid3-cell-inner{color:violet;}

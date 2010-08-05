@@ -1104,7 +1104,7 @@
    function drawTextBox($X1,$Y1,$X2,$Y2,$Text,$Angle=0,$R=255,$G=255,$B=255,$Align=ALIGN_LEFT,$Shadow=TRUE,$BgR=-1,$BgG=-1,$BgB=-1,$Alpha=100)
     {
      $Position   = imageftbbox($this->FontSize,$Angle,$this->FontName,$Text);
-	 debug($Position);
+	 // debug($Position);
      $TextWidth  = $Position[2]-$Position[0];
      $TextHeight = $Position[5]-$Position[3];
      $AreaWidth  = $X2 - $X1;
@@ -1123,7 +1123,7 @@
      if ( $Align == ALIGN_BOTTOM_CENTER ) { $X = $X1+($AreaWidth/2)-($TextWidth/2); $Y = $Y2-1; }
      if ( $Align == ALIGN_BOTTOM_RIGHT )  { $X = $X2-$TextWidth-1; $Y = $Y2-1; }
      if ( $Align == 666 )     {
-		 debug( array($Y1, $Y2, $TextHeight) ) ;
+		 // debug( array($Y1, $Y2, $TextHeight) ) ;
 		 $X = $X2-$TextWidth-1; $Y = $Y1 - $TextHeight ;
 
 		 }

@@ -100,15 +100,16 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 				}
 				$groupResult = $this->getAggregatedResult($testResults);
 			} else {
+				
 				$groupResult = tx_caretaker_AggregatorResult::undefined( 'No children were found');
 			}
-
 				// save to repository if the result differs from the last one
 			$resultRepository = tx_caretaker_AggregatorResultRepository::getInstance();
 			$lastGroupResult = $resultRepository->getLatestByNode($this);
 			if ($lastGroupResult->isDifferent($groupResult) ){
 				$resultRepository->addNodeResult($this,$groupResult);
 			}
+			
 		}
 
 		$this->notify( 'updateAggregatorNode' , $groupResult, $lastGroupResult);
@@ -181,19 +182,34 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		$num_ok        = 0;
 		$num_warnings  = 0;
 		$num_errors	   = 0;
-
+		$num_due	   = 0;
+		$num_ack	   = 0;
+		
 		$childnode_titles_undefined = array();
 		$childnode_titles_ok        = array();
 		$childnode_titles_warning   = array();
 		$childnode_titles_error     = array();
+		$childnode_titles_ack       = array();
+		$childnode_titles_due       = array();
+		
 
-		if (is_array($test_results)) {
-			foreach($test_results as $test_result){
+		if ( is_array( $test_results ) ) {
+			foreach( $test_results as $test_result ){
 				switch ( $test_result['result']->getState() ){
 					default:
 					case tx_caretaker_Constants::state_undefined:
 						$num_undefined ++;
 						$childnode_titles_undefined[] = $test_result['node']->getTitle();
+						break;
+					case tx_caretaker_Constants::state_ack:
+						$num_ack ++;
+						$num_undefined ++;
+						$childnode_titles_ack[] = $test_result['node']->getTitle();
+						break;	
+					case tx_caretaker_Constants::state_due:
+						$num_due ++;
+						$num_undefined ++;
+						$childnode_titles_due[] = $test_result['node']->getTitle();
 						break;
 					case tx_caretaker_Constants::state_ok:
 						$num_ok ++;
@@ -216,7 +232,9 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 			'num_ok'=>$num_ok,
 			'num_warning'=>$num_warnings,
 			'num_error'=>$num_errors,
-			'num_undefined'=>$num_undefined
+			'num_undefined'=>$num_undefined,
+			'num_ack'=>$num_undefined,
+			'num_due'=>$num_undefined
 		);
 
 		$message = new tx_caretaker_ResultMessage( 
@@ -226,6 +244,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 
 			// create Submessages
 		$submessages = array();
+		
 		if ($num_errors > 0){
 			foreach ($childnode_titles_error as $childTitle){
 				$submessages[] = new tx_caretaker_ResultMessage(
@@ -248,6 +267,24 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 			foreach ($childnode_titles_undefined as $childTitle){
 				$submessages[] = new tx_caretaker_ResultMessage(
 					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_undefined',
+					array('title'=>$childTitle)
+				);
+			}
+		}
+		
+		if ($num_ack > 0){
+			foreach ($childnode_titles_ack as $childTitle){
+				$submessages[] = new tx_caretaker_ResultMessage(
+					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_ack',
+					array('title'=>$childTitle)
+				);
+			}
+		}
+		
+		if ($num_due > 0){
+			foreach ($childnode_titles_due as $childTitle){
+				$submessages[] = new tx_caretaker_ResultMessage(
+					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_due',
 					array('title'=>$childTitle)
 				);
 			}

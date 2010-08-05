@@ -58,7 +58,13 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 			
 			$childTemplate = $this->cObj->getSubpart($template,  '###'.$this->conf['childSubpartWarning'].'###' );
 			$renderData['renderedWarningNodes']   = $this->renderNodeList( $data['testResults']['warning']   , $childTemplate);
-
+			
+			$childTemplate = $this->cObj->getSubpart($template,  '###'.$this->conf['childSubpartAck'].'###' );
+			$renderData['renderedAckNodes']   = $this->renderNodeList( $data['testResults']['ack']   , $childTemplate);
+			
+			$childTemplate = $this->cObj->getSubpart($template,  '###'.$this->conf['childSubpartDue'].'###' );
+			$renderData['renderedDueNodes']   = $this->renderNodeList( $data['testResults']['due']   , $childTemplate);
+			
 			$lcObj = t3lib_div::makeInstance('tslib_cObj');
 			$lcObj->start($renderData);
 
@@ -156,7 +162,11 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 			
 		$nodesErrors    = array();
 		$nodesWarnings  = array();
-
+		$nodesAck       = array();
+		$nodesDue       = array();
+		$nodesOk        = array();
+		$nodesUndefined = array();
+		
 		$worst_state       = tx_caretaker_Constants::state_ok;
 		$worst_state_info  = '';
 
@@ -164,8 +174,10 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 		$num_warning = 0;
 		$num_ok = 0;
 		$num_undefined = 0;
-
-		foreach ($testChildNodes as $testNode) {
+		$num_ack = 0;
+		$num_due = 0;
+		
+		foreach ( $testChildNodes as $testNode ) {
 
 			$testResult = $testNode->getTestResult();
 			$testNodeState     = $testResult->getState();
@@ -176,53 +188,51 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 				$worst_state_info = $testResult->getStateInfo();
 			}
 
-				// count node states info
-			switch ( $testState ) {
+				// aggreate infos about nodes and errors
+			$instance  = $testNode->getInstance();
+			$nodeInfo = Array (
+				'title'           => $instance->getTitle().' '.$testNode->getTitle() ,
+				'node_title'      => $testNode->getTitle() ,
+				'instance_title'  => $instance->getTitle() ,
+				'node_id'         => $testNode->getCaretakerNodeId(),
+				'link_parameters' => '&tx_caretaker_pi_singleview[id]='.$testNode->getCaretakerNodeId(),
+
+				'timestamp'    => $testResult->getTimestamp(),
+				'stateinfo'    => $testResult->getStateInfo(),
+				'stateinfo_ll' => $testResult->getLocallizedStateInfo(),
+				'message'      => $testResult->getMessage(),
+				'message_ll'   => $testResult->getLocallizedInfotext(),
+				'state'        => $testResult->getState(),
+			);
+
+				// save info
+			switch ( $testNodeState ) {
 				case tx_caretaker_Constants::state_error:
+					$nodesErrors[] = $nodeInfo;
 					$num_error ++;
 					break;
 				case tx_caretaker_Constants::state_warning:
+					$nodesWarnings[] = $nodeInfo;
 					$num_warning ++;
 					break;
+				case tx_caretaker_Constants::state_ack:
+					$nodesAck[] = $nodeInfo;
+					$num_ack ++;
+					break;
+				case tx_caretaker_Constants::state_due:
+					$nodesDue[] = $nodeInfo;
+					$num_due ++;
+					break;	
 				case tx_caretaker_Constants::state_ok:
+					$nodesOk[] = $nodeInfo;
 					$num_ok ++;
 					break;
 				case tx_caretaker_Constants::state_undefined:
+					$nodesUndefined[] = $nodeInfo;
 					$num_undefined ++;
-					break;
+					break;	
 			}
-
-				// aggreate infos about warnings and errors
-			if ( $testNodeState > tx_caretaker_Constants::state_ok ) {
-				
-				$instance  = $testNode->getInstance();
-				$nodeInfo = Array (
-					'title'           => $instance->getTitle().' '.$testNode->getTitle() ,
-					'node_title'      => $testNode->getTitle() ,
-					'instance_title'  => $instance->getTitle() ,
-					'node_id'         => $testNode->getCaretakerNodeId(),
-					'link_parameters' => '&tx_caretaker_pi_singleview[id]='.$testNode->getCaretakerNodeId(),
-
-					'timestamp'    => $testResult->getTimestamp(),
-					'stateinfo'    => $testResult->getStateInfo(),
-					'stateinfo_ll' => $testResult->getLocallizedStateInfo(),
-					'message'      => $testResult->getMessage(),
-					'message_ll'   => $testResult->getLocallizedInfotext(),
-					'state'        => $testResult->getState(),
-				);
-
-					// save info
-				switch ( $testNodeState ) {
-					case tx_caretaker_Constants::state_error:
-						$nodesErrors[] = $nodeInfo;
-						$num_error ++;
-						break;
-					case tx_caretaker_Constants::state_warning:
-						$nodesWarnings[] = $nodeInfo;
-						$num_warning ++;
-						break;
-				}
-			}
+			
 		}
 
 		$data = array(
@@ -230,6 +240,8 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 				'numError'     => $num_error,
 				'numWarning'   => $num_warning,
 				'numUndefined' => $num_undefined,
+				'numDue'       => $num_due,
+				'numAck'       => $num_ack,
 				'numOk'        => $num_ok,
 				'nodeTitle'    => $node->getTitle(),
 				'state'        => $worst_state,
@@ -237,7 +249,9 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 			),
 			'testResults' => array(
 				'error'     => $nodesErrors,
-				'warning'   => $nodesWarnings
+				'warning'   => $nodesWarnings,
+				'ack'       => $nodesAck,
+				'due'       => $nodesDue
 			)
 		);
 		

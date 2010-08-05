@@ -117,6 +117,11 @@ abstract class tx_caretaker_NodeResult {
 				return 'WARNING';
 			case tx_caretaker_Constants::state_undefined:
 				return 'UNDEFINED';
+			case tx_caretaker_Constants::state_ack:
+				return 'ACK';	
+			case tx_caretaker_Constants::state_due:
+				return 'DUE';	
+				
 		}
 	}
 	

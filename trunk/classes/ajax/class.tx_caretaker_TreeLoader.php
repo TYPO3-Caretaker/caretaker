@@ -81,8 +81,8 @@ class tx_caretaker_TreeLoader {
 		$id = $node->getCaretakerNodeId();
 		
 		$testResult = $node->getTestResult();
-		$resultClass = 'caretaker-state-' . $testResult->getState();
-		$typeClass = 'caretaker-type-' . strtolower($node->getType());
+		$resultClass = 'caretaker-state-' . strtolower( $testResult->getStateInfo() );
+		$typeClass = 'caretaker-type-' . strtolower( $node->getType() );
 	
 		$result['type'] = strtolower($node->getType());
 		$result['id'] = $id;
@@ -94,9 +94,9 @@ class tx_caretaker_TreeLoader {
 		
 			// show subitems of tx_caretaker_AggregatorNodes
 		if (is_a($node, 'tx_caretaker_AggregatorNode')) {
-			$result['leaf'] = FALSE;
+			$children = $node->getChildren(true);
+			$result['leaf'] = (count($children) == 0) ? true:false;
 			if ($depth > 0){
-				$children = $node->getChildren(true);
 				$result['children'] = array();
 				foreach($children as $child){
 					$result['children'][] = $this->nodeToArray($child, $depth - 1 ) ;

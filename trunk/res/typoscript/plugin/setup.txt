@@ -302,6 +302,13 @@ plugin.tx_caretaker_pi_abstract {
 
 		NUM_UNDEFINED = TEXT
 		NUM_UNDEFINED.field = numUndefined
+		
+		NUM_ACK = TEXT
+		NUM_ACK.field = numAck
+		
+		NUM_DUE = TEXT
+		NUM_DUE.field = numDue
+		
 	}
 
 	subparts {
@@ -312,11 +319,21 @@ plugin.tx_caretaker_pi_abstract {
 
 			30 = TEXT
 			30.field = renderedWarningNodes
+			
+			40 = TEXT
+			40.field = renderedAckNodes
+			
+			50 = TEXT
+			50.field = renderedDueNodes
+			
 		}
 	}
 
-	childSubpartError = CARETAKER-CHILD-ERROR
-	childSubpartWarning = CARETAKER-CHILD-WARNING
+	childSubpartError   = CARETAKER-CHILD
+	childSubpartWarning = CARETAKER-CHILD
+	childSubpartAck     = CARETAKER-CHILD
+	childSubpartDue     = CARETAKER-CHILD
+	
 	childMarkers {
 
 		STATE = TEXT

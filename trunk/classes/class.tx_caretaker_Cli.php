@@ -58,7 +58,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 
        		// Setting help texts:
         $this->cli_help['name'] = 'Caretaker CLI-Testrunner';        
-        $this->cli_help['synopsis'] = 'update|get|update-extension-list|update-typo3-latest-version-list|help ###OPTIONS###';
+        $this->cli_help['synopsis'] = 'update|get|wip|update-extension-list|update-typo3-latest-version-list|help ###OPTIONS###';
         $this->cli_help['description'] = 'Class with basic functionality for CLI scripts';
         $this->cli_help['examples'] = '/.../cli_dispatch.phpsh caretaker update -i 6 -g 4';
         $this->cli_help['author'] = 'Martin Ficzel, (c) 2008-2010';
@@ -88,7 +88,7 @@ class tx_caretaker_Cli extends t3lib_cli {
             exit;
         } 
         
-        if ($task == 'update' || $task == 'get') {
+        if ($task == 'update' || $task == 'get' || $task == 'ack' || $task == 'due' ) {
 			
         	$force           = (boolean)$this->readArgument('--force','-f');
         	$return_status   = (boolean)$this->readArgument('-r');
@@ -107,7 +107,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 				
 	       		$result = FALSE;
 				
-	        	if ($task == 'update') {
+	        	if ($task == 'update' || $task == 'ack' || $task == 'due' ) {
 
 					try {
 						$lockObj = t3lib_div::makeInstance('t3lib_lock', 'tx_caretaker_update_'.$node->getCaretakerNodeId() , $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode'] );
@@ -118,7 +118,13 @@ class tx_caretaker_Cli extends t3lib_cli {
 					}
 
 					if($lockIsAquired) {
-			        	$result = $node->updateTestResult($force);
+						if ($task == 'update' ) {
+			        		$result = $node->updateTestResult($force);
+						} else if ($task == 'ack' && is_a( $node, 'tx_caretaker_TestNode' ) ) {
+							$result = $node->setModeAck();
+						} else if ($task == 'due' && is_a( $node, 'tx_caretaker_TestNode' ) ) {
+							$result = $node->setModeDue();
+						}
 						$lockObj->release();
 					} else {
 						$result = false;

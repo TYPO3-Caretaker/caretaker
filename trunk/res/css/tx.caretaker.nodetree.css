@@ -22,20 +22,24 @@
 	font-weight: bold;
 }
 
-.caretaker-state--1 .x-tree-node-anchor span {
+.caretaker-state-due .x-tree-node-anchor span {
+	color: violet;
+}
+
+.caretaker-state-ack .x-tree-node-anchor span {
+	color: blue;
+}
+.caretaker-state-undefined .x-tree-node-anchor span {
 	color: gray;
 }
-.caretaker-state-0 .x-tree-node-anchor span {
+.caretaker-state-ok .x-tree-node-anchor span {
 	color: green;
 }
-.caretaker-state-1 .x-tree-node-anchor span {
+.caretaker-state-warning .x-tree-node-anchor span {
 	color: orange;
 }
-.caretaker-state-2 .x-tree-node-anchor span {
+.caretaker-state-error .x-tree-node-anchor span {
 	color: red;
-}
-.caretaker-state-3 .x-tree-node-anchor span {
-	color: gray;
 }
 
 .x-panel-header {

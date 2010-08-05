@@ -337,17 +337,31 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 	},
 	
 	reloadTree: function() {
-		var state = this.getState();
-		this.root.reload();
-		this.applyState(state);
+		this.temp_state = this.getState();
+		this.root.reload( function(){ this.applyState( this.temp_state ); },  this  );
 	},
+	
 	reloadTreeDeferred: function(defer){
 		if (defer){
 			this.reloadTree.defer(defer, this);
 		}else{
 			this.reloadTree();
 		}
-	}
+	}, 
+	
+	reloadTreePartial: function ( id ){
+		var node = this.getNodeById( id );
+		if (node ) {
+			var parentNode = node.parentNode;
+			this.temp_state = this.getState();
+			if ( parentNode && parentNode.reload ) {
+				parentNode.reload( function(){ this.applyState( this.temp_state ); },  this );
+				return;
+			}
+		}
+		this.reloadTree();
+	} 
+	
 });
 
 Ext.reg('caretaker-nodetree', tx.caretaker.NodeTree);

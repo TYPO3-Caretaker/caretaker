@@ -143,7 +143,9 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 					var node_hidden = "'.$node->getHidden().'";
 					var node_uid    = "'.$node->getUid().'";
 					var node_title  = "'.htmlspecialchars( $node->getTitle() ? $node->getTitle() : '[no title]' ).'( '.( $node->getTypeDescription() ? htmlspecialchars($node->getTypeDescription()) : $node->getType() ).' )" ;
-
+					var node_state  = "'.$node->getTestResult()->getState().'" ;
+					var node_state_info  = "'.$node->getTestResult()->getStateInfo().'" ;
+					
 					tx.caretaker.view = new Ext.Viewport({
 						layout: "fit",
 						items: {
@@ -161,7 +163,9 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 									node_id: node_id,
 									node_type: node_type,
 									node_uid: node_uid,
-									node_hidden: node_hidden
+									node_hidden: node_hidden,
+									node_state: node_state,
+									node_state_info: node_state_info
 								},
 								items    : [
 									'. implode( chr(10).',' , $pluginItems ). chr(10) . '

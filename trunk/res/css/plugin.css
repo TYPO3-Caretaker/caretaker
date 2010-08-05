@@ -91,6 +91,13 @@ div.caretaker_overview_error ul.caretaker_children{ background-color:#FFDDDD;  b
 div.caretaker_overview_undefined h2{	background-color:grey;}
 div.caretaker_overview_undefined ul.caretaker_children{	background-color:#EEEEEE;  border-color:grey;}
 
+div.caretaker_overview_ack h2{	background-color:blue;}
+div.caretaker_overview_ack ul.caretaker_children{	background-color:#EEEEEE;  border-color:blue;}
+
+
+div.caretaker_overview_due h2{	background-color:violet;}
+div.caretaker_overview_eue ul.caretaker_children{	background-color:#EEEEEE;  border-color:violet;}
+
 div.caretaker_overview ul.caretaker_children li{
 		list-style:none;
 		padding: 2px 2px 2px 20px;
@@ -112,6 +119,12 @@ div.caretaker_overview ul.caretaker_children li.state_error a{ color:red; }
 
 div.caretaker_overview ul.caretaker_children li.state_undefined{  }
 div.caretaker_overview ul.caretaker_children li.state_undefined a{ color:grey ; }
+
+div.caretaker_overview ul.caretaker_children li.state_ack{ background-image:url(../img/state_attention.gif); }
+div.caretaker_overview ul.caretaker_children li.state_ack a{ color:blue ; }
+
+div.caretaker_overview ul.caretaker_children li.state_due{ background-image:url(../img/state_attention.gif);}
+div.caretaker_overview ul.caretaker_children li.state_due a{ color:violet ; }
 
 /*
 ############################
@@ -157,8 +170,13 @@ div.caretaker_singleview ul.rootline li.state_error{  background-image:url(../im
 div.caretaker_singleview ul.rootline li.state_error a{ color:red; }
 
 div.caretaker_singleview ul.rootline li.state_undefined{  }
-div.caretaker_singleview ul.rootline li.state_undefined a{ color:grey ; }
+div.caretaker_singleview ul.rootline li.state_undefined a { color:grey ; }
 
+div.caretaker_singleview ul.rootline li.state_ack{  background-image:url(../img/state_attention.gif);}
+div.caretaker_singleview ul.rootline li.state_ack a{ color:blue ; }
+
+div.caretaker_singleview ul.rootline li.state_due{  background-image:url(../img/state_attention.gif);}
+div.caretaker_singleview ul.rootline li.state_due a{ color:violet ; }
 
 div.caretaker_singleview h3 {
 	margin:0;	
@@ -168,6 +186,8 @@ div.caretaker_singleview_ok          h2{ background-color:green; }
 div.caretaker_singleview_warning     h2{ background-color:orange; }
 div.caretaker_singleview_error       h2{	background-color:red;}
 div.caretaker_singleview_undefined   h2{	background-color:grey;}
+div.caretaker_singleview_ack         h2{	background-color:blue;}
+div.caretaker_singleview_due         h2{	background-color:violet;}
 
 
 
@@ -197,6 +217,12 @@ div.caretaker_singleview ul.caretaker_children li.state_error a{ color:red; }
 
 div.caretaker_singleview ul.caretaker_children li.state_undefined{  }
 div.caretaker_singleview ul.caretaker_children li.state_undefined a{ color:grey ; }
+
+div.caretaker_singleview ul.caretaker_children li.state_ack{ background-image:url(../img/state_attention.gif);  }
+div.caretaker_singleview ul.caretaker_children li.state_ack a{ color:blue; }
+
+div.caretaker_singleview ul.caretaker_children li.state_due {  background-image:url(../img/state_attention.gif);  }
+div.caretaker_singleview ul.caretaker_children li.state_due a{ color:violet ; }
 
 div.caretaker_singleview table.status {
 	font-size:1em;
@@ -388,6 +414,10 @@ div.caretaker_status_undefined h2{	background-color:grey;}
 div.caretaker_status_undefined div.caretaker_status_box{	background-color:#EEEEEE;  border-color:grey;}
 
 
+div.caretaker_status_wip h2{	background-color:grey;}
+div.caretaker_status_wip div.caretaker_status_box{	background-color:#EEEEEE;  border-color:grey;}
+
+
 div.caretaker_status ul.caretaker_children li{
 		list-style:none;
 		padding: 2px 2px 2px 20px;
@@ -412,7 +442,15 @@ div.caretaker_status ul.caretaker_children li.state_error a{ color:red; }
 div.caretaker_status ul.caretaker_children li.state_undefined{  }
 div.caretaker_status ul.caretaker_children li.state_undefined a{ color:grey ; }
 
+div.caretaker_status ul.caretaker_children li.state_undefined{  }
+div.caretaker_status ul.caretaker_children li.state_undefined a{ color:grey ; }
 
+div.caretaker_status ul.caretaker_children li.state_ack{ background-image:url("../img/state_attention.gif"); }
+div.caretaker_status ul.caretaker_children li.state_ack a{ color:blue ; }
+
+div.caretaker_status ul.caretaker_children li.state_due{ background-image:url("../img/state_attention.gif"); }
+div.caretaker_status ul.caretaker_children li.state_due a{ color:violet ; }
+	
 div.caretaker_status dl.caretaker_status_infos{
 	clear: both;
 	height: 40px;
@@ -441,4 +479,11 @@ div.caretaker_status dl.caretaker_status_infos dd.warning{
 }
 div.caretaker_status dl.caretaker_status_infos dd.ok{
 	color: green;
+}
+
+div.caretaker_status dl.caretaker_status_infos dd.ack{
+	color: blue;
+}
+div.caretaker_status dl.caretaker_status_infos dd.due{
+	color: violet;
 }

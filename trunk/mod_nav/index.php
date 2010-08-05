@@ -107,6 +107,13 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 						unhideUrl: "' . $PATH_TYPO3 . 'tce_db.php?&data[tx_caretaker_###NODE_TYPE###][###NODE_UID###][hidden]=0"
 					}
 				});
+				
+				
+				
+				tx_caretaker_updateTreeById = function( id ){
+					tx_caretaker_tree = Ext.getCmp("cartaker-tree");
+					tx_caretaker_tree.reloadTreePartial( id );
+				}
 			});
 			');
 

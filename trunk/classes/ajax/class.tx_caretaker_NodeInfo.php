@@ -93,7 +93,7 @@ class tx_caretaker_NodeInfo {
 					}
 
 					$result = $node->getTestResult();
-					$info = '<div class="tx_caretaker_node_info tx_caretaker_node_info_state_'.$result->getStateInfo().'">'.
+					$info = '<div class="tx_caretaker_node_info tx_caretaker_node_info_state_'.strtolower( $result->getStateInfo() ).'">'.
 						'Title: '.           $node->getTitle().'<br/>'.
 						'Path: '.            $pathinfo.'<br/>'.
 						'NodeID: '.          $node->getCaretakerNodeId().'<br/>'.
@@ -102,7 +102,7 @@ class tx_caretaker_NodeInfo {
 						'Description: '.     $node->getDescription().'<br/>'.
 						'Configuration: '.   $node->getConfigurationInfo().'<br/>'.
 						'Hidden: '.          $node->getHiddenInfo() .'<br/>'.
-						'last Change: '.     strftime('%x %X',$result->getTimestamp()).'<br/>'.
+						'last Run: '.        strftime('%x %X',$result->getTimestamp()).'<br/>'.
 						'State: '.           $result->getLocallizedStateInfo().'<br/>'.
 						'Value: '.           $result->getValue().'<br/>'.
 						'Message: '.         '<br/>'.nl2br( $result->getLocallizedInfotext() ) .'<br/>'.
@@ -111,12 +111,13 @@ class tx_caretaker_NodeInfo {
 				default:
 					// aggregator Node
 					$result = $node->getTestResult();
-					$info = '<div class="tx_caretaker_node_info tx_caretaker_node_info_state_'.$result->getStateInfo().'">'.
+					$info = '<div class="tx_caretaker_node_info tx_caretaker_node_info_state_'.strtolower( $result->getStateInfo() ).'">'.
 						'Title: '.           $node->getTitle().'<br/>'.
 					    'Path: '.            $pathinfo.'<br/>'.
 						'NodeID: '.          $node->getCaretakerNodeId().'<br/>'.
 						'Description: '.     $node->getDescription().'<br/>'.
-						'Hidden: '.          $node->getHiddenInfo().'<br/>'.						
+						'Hidden: '.          $node->getHiddenInfo().'<br/>'.	
+						'last Run: '.        strftime('%x %X',$result->getTimestamp()).'<br/>'.
 						'State: '.           $result->getLocallizedStateInfo().'<br/>'.
 						'Message:'.          '<br/>'.nl2br( $result->getLocallizedInfotext() ).'<br/>'.
 						'</div>';
@@ -139,8 +140,16 @@ class tx_caretaker_NodeInfo {
 
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
 		if ($node_id && $node = $node_repository->id2node($node_id, true) ){
-			$node->updateTestResult($force);
-			echo "updated node ".$node->getCaretakerNodeId();
+			$result = $node->updateTestResult($force);
+			$content = array(
+				'state' => $result->getState(),
+				'state_info' => $result->getStateInfo(),
+				'timestamp'  => $result->getTimestamp(),
+				'message'    => $result->getLocallizedInfotext()
+			 );
+            $ajaxObj->setContent($content);
+            $ajaxObj->setContentFormat('jsonbody');
+            
 		} else {
 			echo "please give a valid node id";
 		}
@@ -152,6 +161,68 @@ class tx_caretaker_NodeInfo {
 		}
 	}
 
+	public function ajaxNodeSetAck($params, &$ajaxObj){
+
+		$node_id = t3lib_div::_GP('node');
+
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
+		if ($node_id && $node = $node_repository->id2node($node_id, true) ){
+			if ( is_a( $node, 'tx_caretaker_TestNode' ) ){
+				$result = $node->setModeAck();
+				$content = array(
+					'state' => $result->getState(),
+					'state_info' => $result->getStateInfo(),
+					'timestamp'  => $result->getTimestamp(),
+					'message'    => $result->getLocallizedInfotext()
+				 );
+	 			
+	            $ajaxObj->setContent($content);
+	            $ajaxObj->setContentFormat('jsonbody');
+			} else {
+				echo "please give a testnode id" . $node_id;
+			}   
+		} else {
+			echo "please give a valid node id";
+		}
+		
+			// send aggregated notifications
+		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
+		foreach ( $notificationServices as $notificationService ){
+			$notificationService->sendNotifications();
+		}
+	}
+	
+	public function ajaxNodeSetDue($params, &$ajaxObj){
+
+		$node_id = t3lib_div::_GP('node');
+
+		$node_repository = tx_caretaker_NodeRepository::getInstance();
+		if ($node_id && $node = $node_repository->id2node($node_id, true) ) {
+			if ( is_a( $node, 'tx_caretaker_TestNode' ) ){
+				$result = $node->setModeDue();
+				$content = array(
+					'state' => $result->getState(),
+					'state_info' => $result->getStateInfo(),
+					'timestamp'  => $result->getTimestamp(),
+					'message'    => $result->getLocallizedInfotext()
+	 			);
+	 			
+	            $ajaxObj->setContent($content);
+	            $ajaxObj->setContentFormat('jsonbody');
+			} else {
+				echo "please give a testnode id" . $node_id;
+			}
+		} else {
+			echo "please give a valid node id" . $node_id;
+		}
+		
+			// send aggregated notifications
+		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
+		foreach ( $notificationServices as $notificationService ){
+			$notificationService->sendNotifications();
+		}
+	}
+	
 	public function ajaxGetNodeGraph($params, &$ajaxObj){
 
 		$node_id    = t3lib_div::_GP('node');
@@ -243,15 +314,19 @@ class tx_caretaker_NodeInfo {
 				$testChildNodes = array ();
 			}
 
-			$nodeErrors   = array();
-			$nodeWarnings = array();
+			$nodeErrors    = array();
+			$nodeWarnings  = array();
+			$nodeUndefined = array();
+			$nodeAck       = array();
+			$nodeDue       = array();
+			
 			$i = 0;
             foreach ($testChildNodes as $testNode){
 
 				$testResult = $testNode->getTestResult();
 				$instance  = $testNode->getInstance();
 
-				if ( $testResult->getState() > 0 ){
+				if ( $testResult->getState() != 0 ){
 
 					$nodeInfo = Array (
 						'num'          => $i++ ,
@@ -278,12 +353,21 @@ class tx_caretaker_NodeInfo {
 						case tx_caretaker_Constants::state_error:
 							$nodeErrors[] = $nodeInfo;
 							break;
+						case tx_caretaker_Constants::state_undefined:
+							$nodeUndefined[] = $nodeInfo;
+							break;
+						case tx_caretaker_Constants::state_ack:
+							$nodeAck[] = $nodeInfo;
+							break;
+						case tx_caretaker_Constants::state_due:
+							$nodeDue[] = $nodeInfo;
+							break;			
 					}
 				}
             }
 			
 			$content = Array();
-			$content['nodeProblems'] = array_merge($nodeErrors, $nodeWarnings);
+			$content['nodeProblems'] = array_merge($nodeErrors, $nodeWarnings, $nodeAck, $nodeDue, $nodeUndefined);
 			$content['totalCount']   = count($content['nodeProblems']);
 
             $ajaxObj->setContent($content);

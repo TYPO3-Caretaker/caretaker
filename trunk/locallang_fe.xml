@@ -27,6 +27,10 @@
 			<label index="state_warning">Warning</label>
 			<label index="state_error">Error</label>
 			<label index="state_undefined">Undefined</label>
+			<label index="state_due">Due to execution</label>
+			<label index="state_ack">Acknowledged</label>
+			
+			
 			<label index="available">available</label>
 			<label index="description">Description</label>
 			<label index="lastRunHeader">Last run:</label>
@@ -39,6 +43,8 @@
 			<label index="aggregator_result_submessage_error">Error in subnode ###VALUE_TITLE###</label>
 			<label index="aggregator_result_submessage_warning">Warnig in subnode ###VALUE_TITLE###</label>
 			<label index="aggregator_result_submessage_undefined">Undefined state in subnode ###VALUE_TITLE###</label>
+			<label index="aggregator_result_submessage_ack">Subnode ###VALUE_TITLE### has an acknowledged problem</label>
+			<label index="aggregator_result_submessage_due">Subnode ###VALUE_TITLE### is Due to execution</label>
 
 			<label index="ping_service_description">Ping Test</label>
 			<label index="ping_service_configuration">Warning: ###MAX_TIME_WARNING### Ms Error: ###MAX_TIME_ERROR### Ms</label>

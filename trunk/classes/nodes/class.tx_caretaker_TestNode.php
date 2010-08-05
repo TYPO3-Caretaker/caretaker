@@ -229,6 +229,66 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		return $this->stop_hour;
 	}
 	
+	/**
+	 * set the testnode into acknoledeged State
+	 * @param integer $seconds duration of sceduled work
+	 * @param string $message the message for the caretaker system
+	 */
+	public function setModeAck( ){
+		
+		$info = array(
+			'username'   => 'unkown',
+			'realName'   => 'unkown',
+			'email'      => 'unkown'
+		);
+		
+		if ( TYPO3_MODE=="BE" ){
+			$info['username'] = $GLOBALS['BE_USER']->user['username'];
+			$info['realName'] = $GLOBALS['BE_USER']->user['realName'];
+			$info['email']    = $GLOBALS['BE_USER']->user['email'];
+		}
+
+		$resultRepository  = tx_caretaker_TestResultRepository::getInstance();
+		$latestTestResult = $resultRepository->getLatestByNode( $this );
+		
+		$message = new tx_caretaker_ResultMessage( 'node was set to ACK state by user: ###VALUE_USERNAME###', $info  );
+		$result = tx_caretaker_TestResult::create( tx_caretaker_Constants::state_ack, 0 , $message );
+		$resultRepository->saveTestResultForNode( $this, $result );
+		
+		$this->notify( 'updatedTestResult', $result, $latestTestResult );
+		
+		return $result;
+	}
+	
+	/**
+	 * end the wip state by running a forced update
+	 */
+	public function setModeDue(){
+		
+		$info = array(
+			'username'   => 'unkown',
+			'realName'   => 'unkown',
+			'email'      => 'unkown'
+		);
+		
+		if ( TYPO3_MODE=="BE" ){
+			$info['username'] = $GLOBALS['BE_USER']->user['username'];
+			$info['realName'] = $GLOBALS['BE_USER']->user['realName'];
+			$info['email']    = $GLOBALS['BE_USER']->user['email'];
+		}
+
+		$resultRepository  = tx_caretaker_TestResultRepository::getInstance();
+		$latestTestResult = $resultRepository->getLatestByNode( $this );
+		
+		$message = new tx_caretaker_ResultMessage( 'node was set to DUE state by user: ###VALUE_USERNAME###', $info  );
+		$result = tx_caretaker_TestResult::create( tx_caretaker_Constants::state_due, 0 , $message );
+		$resultRepository->saveTestResultForNode( $this, $result );
+		
+		$this->notify( 'updatedTestResult', $result, $latestTestResult );
+		
+		return $result;
+	}
+	
 	/** 
 	 * Update TestResult and store in DB. If the Test is not due the result is fetched from the cache.
 	 *
@@ -239,28 +299,36 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 */
 	public function updateTestResult($force_update = false){
 		
+			// is node hidden
 		if ( $this->getHidden() == true ){
 			$result = tx_caretaker_TestResult::undefined('Node is disabled');
-			$this->notify( 'cachedTestResult' , $result );
+			$this->notify( 'disabledTestResult' , $result );
 			return $result;
 		}
-		
+
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$instance = $this->getInstance();
-		
+		$latestTestResult = $test_result_repository->getLatestByNode( $this );
+			
 			// check cache and return
-		if (!$force_update ){
-			$result = $test_result_repository->getLatestByNode( $this );
-			if ($result && $result->getTstamp() > time()-$this->test_interval ) {
-				$this->notify( 'cachedTestResult', $result );
-				return $result;
-			} else if ($this->start_hour > 0 || $this->stop_hour > 0 ) {
+		if ( !$force_update ){
+				// test is not yet due
+			if ( $latestTestResult && $latestTestResult->getState() != tx_caretaker_Constants::state_due && $latestTestResult->getTstamp() > time()-$this->test_interval ) {
+				$this->notify( 'cachedTestResult', $latestTestResult );
+				return $latestTestResult;
+			}
+				// test should not run this hour 
+			else if ( $this->start_hour > 0 || $this->stop_hour > 0 ) {
 				$local_time = localtime(time(), true);
 				$local_hour = $local_time['tm_hour'];
 				if ($local_hour < $this->start_hour || $local_hour >= $this->stop_hour ){
-					$this->notify( 'cachedTestResult', $result );
-					return $result;	
+					$this->notify( 'cachedTestResult', $latestTestResult );
+					return $latestTestResult;	
 				}
+			}
+				// test is in maintenance mode  
+			else  if ( $latestTestResult && $latestTestResult->getState() == tx_caretaker_Constants::state_ack ){
+				$this->notify( 'cachedTestResult', $latestTestResult );
+				return $latestTestResult;
 			}
 		}
 
@@ -271,7 +339,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 			try {
 				$result = $this->test_service->runTest();
 			} catch ( Exception $e ) {
-				$result = new tx_caretaker_TestResult( tx_caretaker_Constants::state_error , 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}'.$e->getMessage  );
+				$result = tx_caretaker_TestResult::create( tx_caretaker_Constants::state_error , 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}'.$e->getMessage  );
 			}
 			
 				// retry if not ok and retrying is enabled
@@ -282,7 +350,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 					try {
 						$result = $this->test_service->runTest();
 					} catch ( Exception $e ) {
-						$result = new tx_caretaker_TestResult( tx_caretaker_Constants::state_error , 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}'.$e->getMessage  );
+						$result = tx_caretaker_TestResult::create( tx_caretaker_Constants::state_error , 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}'.$e->getMessage  );
 					}
 					$round ++;
 				}
@@ -291,21 +359,20 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 				// save to repository after reading the previous result
 			$resultRepository  = tx_caretaker_TestResultRepository::getInstance();
-			$lastTestResult    = $resultRepository->getLatestByNode($this);
 			$resultRepository->saveTestResultForNode( $this, $result );
 			
 				// trigger notification
-			$this->notify( 'updatedTestResult', $result, $lastTestResult );
-	
+			$this->notify( 'updatedTestResult', $result, $latestTestResult );
+			
+			return $result;
+			
 		} else {
-			
-			$result = $test_result_repository->getLatestByNode($this);
 			$result->addSubMessage( new tx_caretaker_ResultMessage( 'test service was not excutable this time so the cached result is used' ) );
-			
 			$this->notify( 'cachedTestResult', $result, $lastTestResult );
+			return $latestTestResult;
 		}
 		
-		return $result;
+		
 		
 	}
 	
