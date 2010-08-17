@@ -91,16 +91,14 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 
 					// register JS
 				foreach($extJsBackendPanel['jsIncludes'] as $jsInclude){
-					$filename = t3lib_div::getFileAbsFileName($jsInclude);
-					$filename = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . str_replace( PATH_site, '', $filename  );
-					$this->pageRenderer->addJsFile( $filename,  'text/javascript', FALSE , FALSE );
+					$filename = $BACK_PATH . '../' . str_replace( PATH_site, '' , t3lib_div::getFileAbsFileName($jsInclude) );
+					$this->pageRenderer->addJsFile( $filename );
 				}
 
 					// register CSS
 				foreach($extJsBackendPanel['cssIncludes'] as $cssInclude){
-					$filename = t3lib_div::getFileAbsFileName($cssInclude);
-					$filename = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . str_replace( PATH_site, '', $filename  );
-					$this->pageRenderer->addCssFile( $filename, 'stylesheet' , 'all' , '' , FALSE );
+					$filename = $BACK_PATH . '../' . str_replace( PATH_site, '' , t3lib_div::getFileAbsFileName($cssInclude) );
+					$this->pageRenderer->addCssFile( $filename  );
 				}
 
 					// add ExtJs Panel
@@ -109,7 +107,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 				
 			}
 			
-			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeToolbar.js',  'text/javascript', FALSE , FALSE );
+			$this->pageRenderer->addJsFile( $BACK_PATH . t3lib_extMgm::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeToolbar.js' );
 
 			// Enable debug mode for Ext JS
 			$this->pageRenderer->enableExtJsDebug();
@@ -119,7 +117,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$storagePid = (int)$confArray['storagePid'];
 			
 			//Add caretaker css
-			$this->pageRenderer->addCssFile('../res/css/tx.caretaker.overview.css');
+			$this->pageRenderer->addCssFile( $BACK_PATH . t3lib_extMgm::extRelPath('caretaker') .  'res/css/tx.caretaker.overview.css' );
 
 			$pluginItems = array();
 			foreach ($panels as $id=>$xtype){
