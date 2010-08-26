@@ -91,6 +91,14 @@
 							    				<numIndex index="0">CURLOPT_INTERFACE</numIndex>
 											<numIndex index="1">CURLOPT_INTERFACE</numIndex>
 							    			  </numIndex>
+										  <numIndex index="5">
+							    				<numIndex index="0">CURLOPT_USERPWD (user:password)</numIndex>
+											<numIndex index="1">CURLOPT_USERPWD</numIndex>
+							    			  </numIndex>
+										  <numIndex index="6">
+							    				<numIndex index="0">CURLOPT_HTTPAUTH</numIndex>
+											<numIndex index="1">CURLOPT_HTTPAUTH</numIndex>
+							    			  </numIndex>
 										</items>
 									</config>
 									<onChange>reload</onChange>
@@ -141,6 +149,55 @@
 									</config>
 								</TCEforms>
 							</value_ip>
+							<value_string>
+								<TCEforms>
+									<displayCond>FIELD:option:IN:CURLOPT_USERPWD</displayCond>
+									<label>Value</label>
+									<config>
+										<type>input</type>
+										<size>50</size>
+										<default></default>
+									</config>
+								</TCEforms>
+							</value_string>
+							<value_httpauth>
+								<TCEforms>
+									<displayCond>FIELD:option:IN:CURLOPT_HTTPAUTH</displayCond>
+									<label>HttpAuth</label>
+									<config>
+										<type>select</type>
+										<size>1</size>
+										<max>1</max>
+										<items>
+										  <numIndex index="0">
+							    				<numIndex index="0">CURLAUTH_ANY</numIndex>
+											<numIndex index="1">-17</numIndex>
+							    			  </numIndex>
+										  <numIndex index="1">
+							    				<numIndex index="0">CURLAUTH_ANYSAFE</numIndex>
+											<numIndex index="1">-18</numIndex>
+							    			  </numIndex>
+										  <numIndex index="2">
+							    				<numIndex index="0">CURLAUTH_BASIC</numIndex>
+											<numIndex index="1">1</numIndex>
+							    			  </numIndex>
+										  <numIndex index="3">
+							    				<numIndex index="0">CURLAUTH_DIGEST</numIndex>
+											<numIndex index="1">2</numIndex>
+							    			  </numIndex>
+										  <numIndex index="4">
+							    				<numIndex index="0">CURLAUTH_GSSNEGOTIATE</numIndex>
+											<numIndex index="1">4</numIndex>
+							    			  </numIndex>
+										  <numIndex index="5">
+							    				<numIndex index="0">CURLAUTH_NTLM</numIndex>
+											<numIndex index="1">8</numIndex>
+							    			  </numIndex>
+										</items>
+										<default>true</default>
+									</config>
+								</TCEforms>
+							</value_httpauth>
 						</el>
 					</curl_option>
 				</el>

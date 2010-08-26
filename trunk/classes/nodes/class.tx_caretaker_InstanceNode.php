@@ -170,6 +170,14 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 						case 'CURLOPT_INTERFACE':
 							$value = (string) $currentEl['value_ip']['vDEF'];
 							break;
+
+						case 'CURLOPT_USERPWD':
+							$value = (string) $currentEl['value_string']['vDEF'];
+							break;
+
+						case 'CURLOPT_HTTPAUTH':
+							$value = intval($currentEl['value_httpauth']['vDEF']);
+							break;
 					}
 					$curl_options[constant($currentEl['option']['vDEF'])] = $value;
 				}
