@@ -166,6 +166,10 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 						case 'CURLOPT_TIMEOUT_MS':
 							$value = intval($currentEl['value_int']['vDEF']);
 							break;
+
+						case 'CURLOPT_INTERFACE':
+							$value = (string) $currentEl['value_ip']['vDEF'];
+							break;
 					}
 					$curl_options[constant($currentEl['option']['vDEF'])] = $value;
 				}

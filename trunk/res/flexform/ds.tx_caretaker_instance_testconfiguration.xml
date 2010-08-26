@@ -87,6 +87,10 @@
 							    				<numIndex index="0">CURLOPT_TIMEOUT_MS</numIndex>
 											<numIndex index="1">CURLOPT_TIMEOUT_MS</numIndex>
 							    			  </numIndex>
+										  <numIndex index="4">
+							    				<numIndex index="0">CURLOPT_INTERFACE</numIndex>
+											<numIndex index="1">CURLOPT_INTERFACE</numIndex>
+							    			  </numIndex>
 										</items>
 									</config>
 									<onChange>reload</onChange>
@@ -126,6 +130,17 @@
 									</config>
 								</TCEforms>
 							</value_bool>
+							<value_ip>
+								<TCEforms>
+									<displayCond>FIELD:option:IN:CURLOPT_INTERFACE</displayCond>
+									<label>Outgoing IP</label>
+									<config>
+										<type>input</type>
+										<size>20</size>
+										<default></default>
+									</config>
+								</TCEforms>
+							</value_ip>
 						</el>
 					</curl_option>
 				</el>
