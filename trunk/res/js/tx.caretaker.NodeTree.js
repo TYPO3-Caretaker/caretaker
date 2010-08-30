@@ -146,7 +146,29 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 	            		this.addInstancegroup(node);
 	            	},
                     scope: this
-                }]
+                },
+                '-',
+				{
+					id: 'tree-contextmenu-open-instance-url',
+					text: 'Open Instance URL',
+					iconCls: 'icon-instance',
+					handler: function(){
+	                	var node = this.getSelectionModel().getSelectedNode();
+						window.open(node.attributes.url);
+					},
+					scope: this
+				},
+				{
+					id: 'tree-contextmenu-open-instance-url-typo3',
+					text: 'Open Instance TYPO3 Login',
+					iconCls: 'icon-instance',
+					handler: function(){
+						var node = this.getSelectionModel().getSelectedNode();
+						window.open(node.attributes.url + '/typo3/');
+					},
+					scope: this
+				}
+		]
             }); 
         }
 
@@ -190,6 +212,16 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 			} else {
 				addInstance.disable();
 				addInstancegroup.disable();
+			}
+				// open url
+			var openInstanceUrl = Ext.getCmp('tree-contextmenu-open-instance-url');
+			var openInstanceUrlTypo3 = Ext.getCmp('tree-contextmenu-open-instance-url-typo3');
+			if ( node.attributes.type == 'instance' ) {
+				openInstanceUrl.enable();
+				openInstanceUrlTypo3.enable();
+			} else {
+				openInstanceUrl.disable();
+				openInstanceUrlTypo3.disable();
 			}
 
         	this.contextMenu.showAt(eventObj.getXY());
