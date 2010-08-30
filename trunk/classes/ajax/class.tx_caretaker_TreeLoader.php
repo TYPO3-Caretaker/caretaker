@@ -91,6 +91,12 @@ class tx_caretaker_TreeLoader {
 		$result['text'] = $title ? $title : '[no title]';
 		$result['cls'] = $resultClass . ' ' . $typeClass;
 		$result['iconCls'] = 'icon-' . $typeClass . ($hidden ? '-hidden' : '');
+		if(strtolower($node->getType()) == 'instance'){
+			$result['url'] = $node->getUrl();
+		} else {
+			$result['url'] = false;
+		}
+		
 		
 			// show subitems of tx_caretaker_AggregatorNodes
 		if (is_a($node, 'tx_caretaker_AggregatorNode')) {
