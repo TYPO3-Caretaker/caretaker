@@ -297,13 +297,13 @@ $TCA['tx_caretaker_instance'] = array (
 			'size'          => 5,
 			'autoSizeMax'   => 25,
 			'minitems'      => 0,
-			'maxitems'      => 50,
+			'maxitems'      => 10000,
 			'MM'            => 'tx_caretaker_instance_test_mm',
 	   		'MM_opposite_field' => 'instances',
 				'size'          => 5,
 				'autoSizeMax'   => 10,
 				'minitems'      => 0,
-				'maxitems'      => 99,
+				'maxitems'      => 10000,
 				'wizards' => Array( 
 					'_PADDING' => 1, 
 					'_VERTICAL' => 1, 
@@ -590,9 +590,9 @@ $TCA['tx_caretaker_testgroup'] = array (
 				'MM'            => 'tx_caretaker_instance_testgroup_mm',
 				'MM_opposite_field' => 'group',
 				'size'          => 5,
-				'autoSizeMax'   => 10,
+				'autoSizeMax'   => 25,
 				'minitems'      => 0,
-				'maxitems'      => 99,
+				'maxitems'      => 10000,
  			)
 		),
 		'tests' => Array (
@@ -604,9 +604,9 @@ $TCA['tx_caretaker_testgroup'] = array (
 				'MM'            => 'tx_caretaker_testgroup_test_mm',
 				'MM_opposite_field' => 'groups',
 				'size'          => 5,
-				'autoSizeMax'   => 10,
+				'autoSizeMax'   => 25,
 				'minitems'      => 0,
-				'maxitems'      => 99,
+				'maxitems'      => 10000,
 				'wizards' => Array( 
 					'_PADDING' => 1, 
 					'_VERTICAL' => 1, 
@@ -839,7 +839,7 @@ $TCA['tx_caretaker_test'] = array (
 				'size'          => 5,
 				'autoSizeMax'   => 25,
 				'minitems'      => 0,
-				'maxitems'      => 50,
+				'maxitems'      => 10000,
 				'MM'            => 'tx_caretaker_instance_test_mm',
 			)
 		)
@@ -1027,4 +1027,3 @@ $TCA['tx_caretaker_strategies'] = array (
 	)
 );
 
-?>
