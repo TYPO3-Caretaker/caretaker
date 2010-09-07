@@ -308,30 +308,53 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
 		$latestTestResult = $test_result_repository->getLatestByNode( $this );
-			
+		$returnLatestResult = false;
+		 	
 			// check cache and return
 		if ( !$force_update ){
-				// test is not yet due
-			if ( $latestTestResult && $latestTestResult->getState() != tx_caretaker_Constants::state_due && $latestTestResult->getTstamp() > time()-$this->test_interval ) {
-				$this->notify( 'cachedTestResult', $latestTestResult );
-				return $latestTestResult;
+			
+			if ( $latestTestResult ) {
+					// test is not in due state so retry
+				switch ( $latestTestResult->getState()  ){
+					case tx_caretaker_Constants::state_due : 
+						$returnLatestResult = false;
+						break;
+					case tx_caretaker_Constants::state_ack : 
+						$returnLatestResult = true;
+						break;
+					case tx_caretaker_Constants::state_ok :
+					case tx_caretaker_Constants::state_undefined :
+					case tx_caretaker_Constants::state_warning :
+					case tx_caretaker_Constants::state_error :
+					default:	
+							// set retry if it is set
+						if ( $latestTestResult->getState() != tx_caretaker_Constants::state_ok && $this->test_retry == -1){
+							$returnLatestResult = false;
+						}
+							// handle interval 
+						else if ( $latestTestResult->getTstamp() > time()-$this->test_interval ){
+							$returnLatestResult = true;
+						}
+						break;
+				}
 			}
+		
 				// test should not run this hour 
-			else if ( $this->start_hour > 0 || $this->stop_hour > 0 ) {
+			if ( $returnLatestResult == false && ( $this->start_hour > 0 || $this->stop_hour > 0 ) ) {
 				$local_time = localtime(time(), true);
 				$local_hour = $local_time['tm_hour'];
 				if ($local_hour < $this->start_hour || $local_hour >= $this->stop_hour ){
-					$this->notify( 'cachedTestResult', $latestTestResult );
-					return $latestTestResult;	
+					$returnLatestResult = true;
 				}
-			}
-				// test is in maintenance mode  
-			else  if ( $latestTestResult && $latestTestResult->getState() == tx_caretaker_Constants::state_ack ){
-				$this->notify( 'cachedTestResult', $latestTestResult );
-				return $latestTestResult;
 			}
 		}
 
+			// return the cached result
+		if ($returnLatestResult){ 
+			$this->notify( 'cachedTestResult', $latestTestResult );
+			return $latestTestResult;
+		}		
+		
 			// else check wether the test can be executed
 		if($this->test_service && $this->test_service->isExecutable()) {
 			
