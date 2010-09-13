@@ -48,6 +48,7 @@
  */
 interface tx_caretaker_NotificationServiceInterface {
 
+	public function setId($id);
 
 	/**
 	 * Check weather the notificationService is enabled
@@ -64,7 +65,7 @@ interface tx_caretaker_NotificationServiceInterface {
 	 * @param tx_caretaker_TestResult $result
 	 * @param tx_caretaKer_TestResult $lastResult
 	 */
-	public function addNotification ( $event, $node, $result=NULL, $lastResult=NULL);
+	public function addNotification ($event, $node, $result = NULL, $lastResult = NULL);
 
 	/**
 	 * Send the aggregated Notifications

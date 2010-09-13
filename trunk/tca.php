@@ -273,20 +273,20 @@ $TCA['tx_caretaker_instance'] = array (
 			)
 		),
 		'groups' => Array (
-	      'exclude' => 1,
-	      'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.groups',
-	      'config' => Array (
-			'type'          => 'select',
-			'form_type'     => 'user',
-			'userFunc'      => 'tx_ttaddress_treeview->displayGroupTree',
-			'treeView'      => 1,
-			'foreign_table' => 'tx_caretaker_testgroup',
-			'size'          => 5,
-			'autoSizeMax'   => 25,
-			'minitems'      => 0,
-			'maxitems'      => 50,
-			'MM'            => 'tx_caretaker_instance_testgroup_mm',
-	      )
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.groups',
+			'config' => Array (
+				'type'          => 'select',
+				'form_type'     => 'user',
+				'userFunc'      => 'tx_ttaddress_treeview->displayGroupTree',
+				'treeView'      => 1,
+				'foreign_table' => 'tx_caretaker_testgroup',
+				'size'          => 5,
+				'autoSizeMax'   => 25,
+				'minitems'      => 0,
+				'maxitems'      => 50,
+				'MM'            => 'tx_caretaker_instance_testgroup_mm',
+			)
 	    ),
 	    'tests' => Array (
 	      'exclude' => 1,
@@ -650,7 +650,7 @@ $TCA['tx_caretaker_testgroup'] = array (
 $TCA['tx_caretaker_test'] = array (
 	'ctrl' => $TCA['tx_caretaker_test']['ctrl'],
 	'interface' => array (
-		'showRecordFieldList' => 'hidden,exec_interval,testservice,testconf,name,last_exec'
+		'showRecordFieldList' => 'hidden,roles,exec_interval,testservice,testconf,name,last_exec'
 	),
 	'feInterface' => $TCA['tx_caretaker_test']['feInterface'],
 	'columns' => Array (
@@ -817,6 +817,19 @@ $TCA['tx_caretaker_test'] = array (
 				'default' => 0
 			)
 		),
+		'roles' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.roles',
+			'config' => array (
+				'type' => 'select',
+				'foreign_table' => 'tx_caretaker_roles',
+				'size' => 5,
+				'autoSizeMax' => 25,
+				'minitems' => 0,
+				'maxitems' => 100,
+				'MM' => 'tx_caretaker_test_roles_mm'
+			)
+		),
 		'groups' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.groups',
@@ -847,7 +860,8 @@ $TCA['tx_caretaker_test'] = array (
 	),
 	'types' => array (
 		'0' => array('showitem' => 'test_service;;;;1-1-1, hidden;;1;;2-2-2, title;;3;;3-3-3,test_interval;;2, test_retry;;;;3-3-3, test_conf;;;;4-4-4,
-					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.description, description'
+					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.description, description,
+					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.notifications, roles'
 					)
 	),
 	'palettes' => array (
@@ -987,7 +1001,7 @@ $TCA['tx_caretaker_strategies'] = array (
 	'columns' => Array (
 		'hidden' => Array (
 			'exclude' => 1,
-			'label'   => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+			'label'   => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
 			'config'  => Array (
 				'type'    => 'check',
 				'default' => '0'
@@ -1016,15 +1030,15 @@ $TCA['tx_caretaker_strategies'] = array (
 			'config' => Array (
 				'type' => 'text',
 				'cols' => 50,
-				'rows' => 10
+				'rows' => 50
 			)
 		)
 	),
 	'types' => array (
-		'0' => array('showitem' => 'id;;;;1-1-1, name, description, config')
+		'0' => array('showitem' => 'hidden;;;;1-1-1, id;;;;1-1-1, name, description, config')
 	),
 	'palettes' => array (
-		'1' => array('showitem' => 'hidden')
+		'1' => array()
 	)
 );
 

@@ -51,7 +51,7 @@ tx_caretaker_ServiceHelper::registerCaretakerTestService ($_EXTKEY , 'classes/se
 	//register Notification-Services
 tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'SimpleMailNotificationService', 'classes/services/notifications/class.tx_caretaker_SimpleMailNotificationService.php', 'tx_caretaker_SimpleMailNotificationService' );
 tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'CliNotificationService', 'classes/services/notifications/class.tx_caretaker_CliNotificationService.php', 'tx_caretaker_CliNotificationService' );
-tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'NotificationService', 'classes/services/notifications/escalation/class.tx_caretaker_NotificationService.php', 'tx_caretaker_NotificationService' );
+tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'AdvancedNotificationService', 'classes/services/notifications/advanced/class.tx_caretaker_AdvancedNotificationService.php', 'tx_caretaker_AdvancedNotificationService' );
 
 	// register ExitPoint services
 tx_caretaker_ServiceHelper::registerNotificationExitPoint($_EXTKEY, 'classes/services/notifications/escalation/exitpoints', 'tx_caretaker_NotificationMail', 'E-Mail', 'Sends an e-mail');

@@ -46,35 +46,10 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_CliNotificationService implements tx_caretaker_NotificationServiceInterface  {
-	/**
-	 * Service is enabled or not
-	 * 
-	 * @var boolean
-	 */
-	private $enabled = false;
-	
-	/**
-	 * Constructor
-	 * reads the service configuration
-	 */
-	public function __construct (){
-		$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+class tx_caretaker_CliNotificationService extends tx_caretaker_AbstractNotificationService  {
 
-		$this->enabled = (bool)$confArray['notifications.']['cli.']['enabled'];
-	}
-
-	/**
-	 * Check weather the notificationService is enabled
-	 *
-	 * @return boolean
-	 */
-	public function isEnabled(){
-		if ( $this->enabled === true && TYPO3_MODE == 'BE' && $GLOBALS["BE_USER"]->user['username'] == '_cli_caretaker'){
-			return true;
-		} else {
-			return false;
-		}
+	public function  __construct() {
+		parent::__construct('cli');
 	}
 
     /**
@@ -86,19 +61,19 @@ class tx_caretaker_CliNotificationService implements tx_caretaker_NotificationSe
 	 * @param tx_caretaKer_TestResult $lastResult
 	 */
 	public function addNotification ( $event, $node, $result = NULL, $lastResult = NULL ){
-
+		
 		$indent = $this->getCliIndentation($node);
 
 		if ( is_a ($node, 'tx_caretaker_TestNode' )  ) {
 			$infotext = $result->getLocallizedInfotext();
 			$msg  = $indent.'--+ '.$node->getTitle().' ['.$node->getCaretakerNodeId().']';
 			$msg  .= str_replace( chr(10), chr(10).$indent.'  | ' , chr(10).$infotext );
-			$msg  .= chr(10).$indent.'  |-> '.$result->getLocallizedStateInfo().' ('.$event.')';
+			$msg  .= chr(10).$indent.'  +-> '.$result->getLocallizedStateInfo().' ('.$event.')';
 		} else {
 			if ( $result == NULL ){
 				$msg = $indent.'--+ '.$node->getTitle().' ['.$node->getCaretakerNodeId().']'.$infotext.' '.$event;
 			} else {
-				$msg = $indent.'  |-> '.$result->getLocallizedStateInfo().' '.$event.' ['.$node->getCaretakerNodeId().']';
+				$msg = $indent.'  +-> '.$result->getLocallizedStateInfo().' '.$event.' ['.$node->getCaretakerNodeId().']';
 			}
 		}
 
@@ -107,19 +82,12 @@ class tx_caretaker_CliNotificationService implements tx_caretaker_NotificationSe
 	}
 
 	/**
-	 * Send the aggregated Notifications
-	 *
-	 * nothing happens here since all Informations are already sent to cli
-	 */
-	public function sendNotifications(){}
-
-	/**
 	 * Get the prefix string for each line in the cli based on the current hirarchy depth
 	 *
 	 * @param tx_caretaker_AbstractNode $node
 	 * @return string
 	 */
-	private function getCliIndentation( $node ){
+	protected function getCliIndentation( $node ){
 		$indentation = '';
 		while ( $node && $node = $node->getParent() ){
 			$indentation .= '  |';

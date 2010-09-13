@@ -79,7 +79,7 @@
 			<label index="tx_caretaker_test.test_conf">Test Configuration</label>
 			<label index="tx_caretaker_test.test_mode">Test Mode</label>
 			<label index="tx_caretaker_test.test_retry">Retry if Result is not OK</label>
-			<label index="tx_caretaker_test.test_retry_0">don'nt retry (wait for next interval)</label>
+			<label index="tx_caretaker_test.test_retry_0">don't retry (wait for next interval)</label>
 			<label index="tx_caretaker_test.test_retry_-1">retry on next run</label>
 			<label index="tx_caretaker_test.test_retry_1">retry once immediately</label>
 			<label index="tx_caretaker_test.test_retry_2">retry twice immediately</label>

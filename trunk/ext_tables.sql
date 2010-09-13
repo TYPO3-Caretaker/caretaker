@@ -144,8 +144,26 @@ CREATE TABLE tx_caretaker_test (
 	groups int(11) DEFAULT '0' NOT NULL,
 	instances int(11) DEFAULT '0' NOT NULL,
 
+	roles int(11) DEFAULT '0' NOT NULL,
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
+);
+
+#
+# Table strcuture for table 'tx_caretaker_test_role_mm'
+#
+CREATE TABLE tx_caretaker_test_roles_mm (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	uid_local int(11) DEFAULT '0' NOT NULL,
+	uid_foreign int(11) DEFAULT '0' NOT NULL,
+	tablenames varchar(30) DEFAULT '' NOT NULL,
+	sorting int(11) DEFAULT '0' NOT NULL,
+	sorting_foreign int(11) DEFAULT '0' NOT NULL,
+	PRIMARY KEY (uid),
+	KEY uid_local (uid_local),
+	KEY uid_foreign (uid_foreign)
 );
 
 #
@@ -223,7 +241,7 @@ CREATE TABLE tx_caretaker_testresult (
 );
 
 #
-# Table structure for table 'tx_caretaker_testresult'
+# Table structure for table 'tx_caretaker_lasttestresult'
 #
 CREATE TABLE tx_caretaker_lasttestresult (
 	uid int(11) NOT NULL auto_increment,

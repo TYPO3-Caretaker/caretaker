@@ -43,16 +43,10 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_NotificationService implements tx_caretaker_NotificationServiceInterface  {
-	/**
-	 * Service is enabled or not
-	 *
-	 * @var boolean
-	 */
-	private $enabled = false;
+class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNotificationService  {
 
 	/**
-	 * Internal data structure to collect all notofications
+	 * Internal data structure to collect all notifications
 	 * 
 	 * @var array
 	 */
@@ -77,18 +71,7 @@ class tx_caretaker_NotificationService implements tx_caretaker_NotificationServi
 	 * reads the service configuration
 	 */
 	public function __construct (){
-		$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
-
-		$this->enabled = (bool)$confArray['notifications.']['escalating.']['enabled'];
-	}
-
-	/**
-	 * Check weather the notificationService is enabled
-	 *
-	 * @return boolean
-	 */
-	public function isEnabled(){
-		return $this->enabled;
+		parent::__construct('advanced');
 	}
 
     /**
@@ -100,31 +83,8 @@ class tx_caretaker_NotificationService implements tx_caretaker_NotificationServi
 	 * @param tx_caretaker_TestResult $result
 	 * @param tx_caretaKer_TestResult $lastResult
 	 */
-	public function addNotification ( $event, $node, $result = NULL, $lastResult = NULL ){
-		if ($result == null) return true;
-		
-		$nodeType = $node->getType();
-		$nodeId = $node->getCaretakerNodeId();
-
-		switch ($nodeType) {
-				// store the result for instances and instance groups
-			case tx_caretaker_Constants::nodeType_Instance:
-			case tx_caretaker_Constants::nodeType_Instancegroup:
-				$this->notifications[$nodeType][$node->getUid()]['result'] = $result;
-				$this->notifications[$nodeType][$node->getUid()]['node'] = $node;
-				break;
-
-				// add nodeId to testlist of all higher entities as long as they are instances or instancegroups
-			case tx_caretaker_Constants::nodeType_Test:
-				$nodeParent = $node;
-				while ($nodeParent && $nodeParent = $nodeParent->getParent()) {
-					$nodeParentType = $nodeParent->getType();
-					if ($nodeParentType != tx_caretaker_Constants::nodeType_Instance && $nodeParentType != tx_caretaker_Constants::nodeType_Instancegroup) continue;
-					$this->notifications[$nodeParentType][$nodeParent->getUid()]['tests'][$node->getInstance()->getUid()][$node->getUid()] = $nodeId;
-				}
-				
-				break;
-		}
+	public function addNotification($event, $node, $result = NULL, $lastResult = NULL){
+		$this->addNotificationToQueue($node->getTitle(), $node->getCaretakerNodeId());
 	}
 
 	/**
@@ -135,43 +95,7 @@ class tx_caretaker_NotificationService implements tx_caretaker_NotificationServi
 	 * nothing happens here since all Informations are already sent to cli
 	 */
 	public function sendNotifications() {
-		$parser = t3lib_div::makeInstance('t3lib_TSparser');
-		$constantReflectionClass = new ReflectionClass('tx_caretaker_Constants');
-
-		/*
-		foreach ($this->notifications as $nodeType => $nodeList) {
-			foreach ($nodeList as $nodeData) {
-				$strategies = $nodeData['node']->getStrategies();
-				$contacts = $nodeData['node']->findContacts();
-
-				foreach ($strategies as $strategyRow) {
-					if (empty($strategyRow['config'])) continue;
-
-					$results = array();
-
-					$parser->parse($strategyRow['config']);
-					$triggers = $parser->setup['reactOn.'];
-
-					foreach ($triggers as $triggerKey => $triggerSetup) {
-						$trigger = strtolower(substr($triggerKey, 0, -1));
-						$resultCount = $nodeData['result']->getNumGENERIC($trigger);
-
-						$triggerState = $constantReflectionClass->getConstant('state_'.$trigger);
-
-							// TODO: take message interval into account
-
-						foreach ($triggerSetup['ruleSets.'] as $ruleSet) {
-							$this->processRuleSet($ruleSet, $resultCount, $contacts, $nodeData, $triggerState);
-						}
-
-					}
-
-					// TODO: process strategy
-					// $this->callExitPoint('log', $resultData, $contacts);
-				}
-			}
-		}
-		*/
+		var_dump($this->getNotificationQueue());
 	}
 
 	/**

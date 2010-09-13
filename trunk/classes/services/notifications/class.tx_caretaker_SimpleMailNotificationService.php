@@ -46,7 +46,7 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_NotificationServiceInterface  {
+class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNotificationService {
 
 	/**
 	 * The notification storage 
@@ -77,14 +77,7 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 	 * @var string URL with a ### marker which is replaced by the caretakerNodId
 	 */
 	private $mail_link;
-
-	/**
-	 * Testservice is enabled
-	 * @var boolean
-	 */
-	private $enabled = TRUE;
 	
-
 	/**
 	 * IDs of roles which are recieving mails
 	 * @var array
@@ -95,36 +88,24 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 	 * Constructor
 	 * reads the service configuration
 	 */
-	public function __construct (){
+	public function __construct () {
+		parent::__construct('simple_mail');
 
 		$contactRepository = tx_caretaker_ContactRepository::getInstance();
 		
-		$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
-
-		$this->mail_from      = $confArray['notifications.']['simple_mail.']['mail_from'];
-		$this->mail_subject   = $confArray['notifications.']['simple_mail.']['mail_subject'];
-		$this->mail_link      = $confArray['notifications.']['simple_mail.']['mail_link'];
-		$this->mail_link      = $confArray['notifications.']['simple_mail.']['mail_link'];
+		$this->mail_from      = $this->getConfigValue('mail_from');
+		$this->mail_subject   = $this->getConfigValue('mail_subject');
+		$this->mail_link      = $this->getConfigValue('mail_link');
+		$this->mail_link      = $this->getConfigValue('mail_link');
 
 		$this->mail_roles     = array();
-		$role_ids = explode ( ',' , $confArray['notifications.']['simple_mail.']['role_ids'] );
+		$role_ids = explode(',' , $this->getConfigValue('role_ids'));
 		foreach ($role_ids as $role_id){
 			$role = $contactRepository->getContactRoleById( trim($role_id) );
 			if ( $role ) {
 				$this->mail_roles[] = $role;
 			}
 		}
-		
-		$this->enabled        = (bool)$confArray['notifications.']['simple_mail.']['enabled'];
-	}
-
-	/**
-	 * Check weather the notificationService is enabled
-	 *
-	 * @return boolean
-	 */
-	public function isEnabled(){
-		return $this->enabled;
 	}
 
    	/**
@@ -136,7 +117,7 @@ class tx_caretaker_SimpleMailNotificationService implements tx_caretaker_Notific
 	 * @param tx_caretaKer_TestResult $lastResult
 	 */
 	public function addNotification ($event, $node, $result = NULL, $lastResult = NULL ){
-
+		// var_dump($event, $node, $result, $lastResult);
 
 			// stop if event is not updatedTestResult of a TestNode
 		if ( $event != 'updatedTestResult' || is_a( $node, 'tx_caretaker_TestNode' ) == false ){

@@ -53,14 +53,14 @@ class tx_caretaker_Cli extends t3lib_cli {
 	 */
     public function __construct () {
 
-       		// Running parent class constructor
+			// Running parent class constructor
         parent::t3lib_cli();
 
-       		// Setting help texts:
+			// Setting help texts:
         $this->cli_help['name'] = 'Caretaker CLI-Testrunner';        
         $this->cli_help['synopsis'] = 'update|get|wip|update-extension-list|update-typo3-latest-version-list|help ###OPTIONS###';
         $this->cli_help['description'] = 'Class with basic functionality for CLI scripts';
-        $this->cli_help['examples'] = '/.../cli_dispatch.phpsh caretaker update -i 6 -g 4';
+        $this->cli_help['examples'] = '../cli_dispatch.phpsh caretaker update --root';
         $this->cli_help['author'] = 'Martin Ficzel, (c) 2008-2010';
 
         $this->cli_options[]=array('--root', 'update all beginning with Root Node');
@@ -80,13 +80,13 @@ class tx_caretaker_Cli extends t3lib_cli {
      * @return    string
      */
 	public function cli_main($argv) {
-        $task = (string)$this->cli_args['_DEFAULT'][1];
+		$task = (string)$this->cli_args['_DEFAULT'][1];
 		
          if (!$task) {
             $this->cli_validateArgs();
             $this->cli_help();
             exit;
-        } 
+        }
         
         if ($task == 'update' || $task == 'get' || $task == 'ack' || $task == 'due' ) {
 			
@@ -133,7 +133,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 					}
 
 	        	}
-	        	
+
 	        	if ($task == 'get') {
 					$result = $node->getTestResult();
 					$this->cli_echo ( $node->getTitle().' ['.$node->getCaretakerNodeId().']'.$infotext.' '.$event.chr(10) );

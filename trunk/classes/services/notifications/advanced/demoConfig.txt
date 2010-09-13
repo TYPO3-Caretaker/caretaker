@@ -1,0 +1,89 @@
+
+reactOnState {
+	#  [due|ack|undefined|ok|warning|error]
+	error {
+		withRuleSets {
+
+			logAll {
+				useExpitpoints {
+					file = typo3temp/test.log
+				}
+			}
+
+			sendMailToAdmin {
+				conditions {
+					threshold {
+						min = 1
+						max = 10
+					}
+				}
+
+				useExitpoints {
+					email {
+						toRoles = admin
+						generalSchedule {
+							start = 7
+							end = 18
+						}
+
+						withSpecialSchedulesFor {
+							saturday {
+								0 {
+									start = 8
+									end = 16
+								}
+							}
+							sunday = none
+						}
+					}
+
+					sms {
+						toRoles = admin
+						generalSchedule {
+							start = 18
+							end = 7
+						}
+						withSpecialSchedulesFor {
+							saturday {
+								0 {
+									start = 16
+									end = 8
+								}
+							}
+							sunday = all
+						}
+					}
+
+				}
+			}
+
+
+			escalateMail {
+				conditions {
+					threshold {
+						min = 11
+					}
+				}
+				useExpitpoints {
+					sms.toRoles = admin,developer
+				}
+			}
+		}
+	}
+
+	ok {
+		withRulesets {
+			calmDown {
+				conditions {
+					threshold {
+						min = 1
+
+					}
+				}
+				useExitpoints {
+					email.toRoles = all
+				}
+			}
+		}
+	}
+}
