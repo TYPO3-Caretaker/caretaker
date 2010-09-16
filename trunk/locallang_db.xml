@@ -80,13 +80,12 @@
 			<label index="tx_caretaker_test.test_mode">Test Mode</label>
 			<label index="tx_caretaker_test.test_retry">Retry if Result is not OK</label>
 			<label index="tx_caretaker_test.test_retry_0">don't retry (wait for next interval)</label>
-			<label index="tx_caretaker_test.test_retry_-1">retry on next run</label>
 			<label index="tx_caretaker_test.test_retry_1">retry once immediately</label>
 			<label index="tx_caretaker_test.test_retry_2">retry twice immediately</label>
 			<label index="tx_caretaker_test.test_retry_3">retry immediately 3 times</label>
 			<label index="tx_caretaker_test.test_retry_4">retry immediately 4 times</label>
 			<label index="tx_caretaker_test.test_retry_5">retry immediately 5 times</label>
-			
+			<label index="tx_caretaker_test.test_due">Test is due if the last result was not OK</label>			
 			<label index="tx_caretaker_test.test_mode.group">run once for group</label>
 			<label index="tx_caretaker_test.instances">Include Test for those Instances</label>
 			<label index="tx_caretaker_test.groups">Include Test for those Testgroups</label>

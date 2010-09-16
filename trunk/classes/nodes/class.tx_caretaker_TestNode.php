@@ -79,6 +79,13 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @var integer
 	 */
 	protected $test_retry = 0;
+	
+	/**
+	 * Set the due mode 
+	 * @var integer
+	 */
+	protected $test_due = 0;
+	
 
 	/**
 	 * The test shall be executed only after this hour
@@ -107,7 +114,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @param boolean $hidden
 	 * @return tx_caretaker_TestNode
 	 */
-	public function __construct($uid, $title, $parent_node, $service_type, $service_configuration, $interval = 86400, $retry=0, $start_hour=false, $stop_hour=false, $hidden=FALSE ){
+	public function __construct($uid, $title, $parent_node, $service_type, $service_configuration, $interval = 86400, $retry=0, $due=0, $start_hour=false, $stop_hour=false, $hidden=FALSE ){
 
 		// overwrite default test configuration
 		$configurationOverlay = $parent_node->getTestConfigurationOverlayForTestUid($uid);
@@ -145,6 +152,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		$this->test_service_configuration = $service_configuration;
 		$this->test_interval = $interval;
 		$this->test_retry    = $retry;
+		$this->test_due      = $due;
 		$this->start_hour    = $start_hour;
 		$this->stop_hour     = $stop_hour;
 		
@@ -323,12 +331,15 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 						$returnLatestResult = true;
 						break;
 					case tx_caretaker_Constants::state_ok :
+						if ( $latestTestResult->getTstamp() > time()-$this->test_interval ){
+							$returnLatestResult = true;
+						}
+						break;
 					case tx_caretaker_Constants::state_undefined :
 					case tx_caretaker_Constants::state_warning :
 					case tx_caretaker_Constants::state_error :
-					default:	
-							// set retry if it is set
-						if ( $latestTestResult->getState() != tx_caretaker_Constants::state_ok && $this->test_retry == -1){
+							// if due mode is 1 retry
+						if ( $this->due == 1 ){
 							$returnLatestResult = false;
 						}
 							// handle interval 

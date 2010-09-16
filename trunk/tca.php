@@ -650,7 +650,7 @@ $TCA['tx_caretaker_testgroup'] = array (
 $TCA['tx_caretaker_test'] = array (
 	'ctrl' => $TCA['tx_caretaker_test']['ctrl'],
 	'interface' => array (
-		'showRecordFieldList' => 'hidden,roles,exec_interval,testservice,testconf,name,last_exec'
+		'showRecordFieldList' => 'hidden,starttime,endtime,fe_group,title,description,test_interval,test_interval_start_hour,test_interval_stop_hour,test_service,test_conf,test_retry,test_due,roles,groups,instances'
 	),
 	'feInterface' => $TCA['tx_caretaker_test']['feInterface'],
 	'columns' => Array (
@@ -805,7 +805,6 @@ $TCA['tx_caretaker_test'] = array (
 				'type'          => 'select',
 				'items' => array (
 					0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_0', 0),
-					1 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_-1', -1),
 					2 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_1', 1),
 					3 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_2', 2),
 					4 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_3', 3),
@@ -815,6 +814,12 @@ $TCA['tx_caretaker_test'] = array (
 				'size' => 1,
 				'maxitems' => 1,
 				'default' => 0
+			)
+		),
+		'test_due' =>Array(
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_due',
+			'config' => Array (
+				'type'          => 'check'
 			)
 		),
 		'roles' => array (
@@ -859,15 +864,15 @@ $TCA['tx_caretaker_test'] = array (
 		)
 	),
 	'types' => array (
-		'0' => array('showitem' => 'test_service;;;;1-1-1, hidden;;1;;2-2-2, title;;3;;3-3-3,test_interval;;2, test_retry;;;;3-3-3, test_conf;;;;4-4-4,
+		'0' => array('showitem' => 'test_service;;;;1-1-1, hidden;;1;;2-2-2, title;;3;;3-3-3,test_interval;;2,test_retry, test_due, test_conf;;;;4-4-4,
 					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.description, description,
 					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.notifications, roles'
 					)
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'starttime,endtime,fe_group'),
-		'2' => array('showitem' => 'test_interval_start_hour,test_interval_stop_hour'),
-		'3' => array('showitem' => 'groups,instances'),
+		'2' => array('showitem' => 'test_interval_start_hour,test_interval_stop_hour,test_retry'),
+		'3' => array('showitem' => 'groups,instances')
 	)
 );
 

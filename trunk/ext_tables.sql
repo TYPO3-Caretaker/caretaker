@@ -140,6 +140,7 @@ CREATE TABLE tx_caretaker_test (
 	test_service varchar(255) DEFAULT '' NOT NULL,
 	test_conf text NOT NULL,
 	test_retry int(11) DEFAULT '0' NOT NULL,
+	test_due int(11) DEFAULT '0' NOT NULL,
 
 	groups int(11) DEFAULT '0' NOT NULL,
 	instances int(11) DEFAULT '0' NOT NULL,

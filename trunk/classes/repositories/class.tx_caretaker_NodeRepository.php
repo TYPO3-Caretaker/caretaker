@@ -641,7 +641,7 @@ class tx_caretaker_NodeRepository {
 			return false;
 		}
 		
-		$test = new tx_caretaker_TestNode( $row['uid'], $row['title'], $parent, $row['test_service'], $row['test_conf'], $row['test_interval'], $row['test_retry'], $row['test_interval_start_hour'], $row['test_interval_stop_hour'] , $row['hidden']);
+		$test = new tx_caretaker_TestNode( $row['uid'], $row['title'], $parent, $row['test_service'], $row['test_conf'], $row['test_interval'], $row['test_retry'], $row['test_due'], $row['test_interval_start_hour'], $row['test_interval_stop_hour'] , $row['hidden']);
 		if ($row['description'] )   $test->setDescription( $row['description'] );
 		$test->setDbRow($row);
 		return $test;
