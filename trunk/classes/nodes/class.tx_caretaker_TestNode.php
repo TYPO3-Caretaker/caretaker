@@ -339,7 +339,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 					case tx_caretaker_Constants::state_warning :
 					case tx_caretaker_Constants::state_error :
 							// if due mode is 1 retry
-						if ( $this->due == 1 ){
+						if ( $this->test_due == 1 ){
 							$returnLatestResult = false;
 						}
 							// handle interval 
