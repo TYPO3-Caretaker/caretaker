@@ -50,6 +50,13 @@ div.tx-caretaker-pi-graphreport h2 {
 	              
 }
 
+div.tx-caretaker-pi-abstract    h2 a,
+div.tx-caretaker-pi-overview    h2 a,
+div.tx-caretaker-pi-singleview  h2 a,
+div.tx-caretaker-pi-graphreport h2 a {
+	color:#FFF;
+}
+
 div.tx-caretaker-pi-abstract    h2.error,
 div.tx-caretaker-pi-overview    h2.error,
 div.tx-caretaker-pi-singleview  h2.error,
