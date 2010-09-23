@@ -52,31 +52,23 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 
 			$renderData = $data['nodeInfo'];
 
-				// render childnodes
-			$childTemplate = $this->cObj->getSubpart($template,  '###'.$this->conf['childSubpartError'].'###' );
-			$renderData['renderedErrorNodes']     = $this->renderNodeList( $data['testResults']['error']     , $childTemplate);
-			
-			$childTemplate = $this->cObj->getSubpart($template,  '###'.$this->conf['childSubpartWarning'].'###' );
-			$renderData['renderedWarningNodes']   = $this->renderNodeList( $data['testResults']['warning']   , $childTemplate);
-			
-			$childTemplate = $this->cObj->getSubpart($template,  '###'.$this->conf['childSubpartAck'].'###' );
-			$renderData['renderedAckNodes']   = $this->renderNodeList( $data['testResults']['ack']   , $childTemplate);
-			
-			$childTemplate = $this->cObj->getSubpart($template,  '###'.$this->conf['childSubpartDue'].'###' );
-			$renderData['renderedDueNodes']   = $this->renderNodeList( $data['testResults']['due']   , $childTemplate);
+				// substitute subparts
+			foreach ( array('error' , 'warning', 'ack') as $key){
+				$subpartMark = '###CARETAKER-CHILDREN-' . strtoupper($key) . '###';
+				if ( count(  $data['testResults'][$key] ) == 0  ){
+					$template = $this->cObj->substituteSubpart($template, $subpartMark, '');
+				} else {
+					$partTemplate = $this->cObj->getSubpart($template,  $subpartMark );
+					$childTemplate = $this->cObj->getSubpart($partTemplate,  '###CARETAKER-CHILD###' );
+					$renderedChildren = $this->renderNodeList( $data['testResults'][$key], $childTemplate);
+					$partTemplate = $this->cObj->substituteSubpart($partTemplate,  '###CARETAKER-CHILD###' , $renderedChildren );
+					$template = $this->cObj->substituteSubpart($template, $subpartMark, $partTemplate);
+				}
+			}
 			
 			$lcObj = t3lib_div::makeInstance('tslib_cObj');
 			$lcObj->start($renderData);
-
-				// substitute subparts
-			if ($this->conf['subparts.']) {
-				foreach (array_keys($this->conf['subparts.']) as $key){
-					if (  substr($key, -1) != '.'){
-						$subpart  = $lcObj->cObjGetSingle($this->conf['subparts.'][$key], $this->conf['subparts.'][$key.'.']);
-						$template = $this->cObj->substituteSubpart($template, $key, $subpart);
-					}
-				}
-			}
+			
 
 				// substitute markers
 			if ($this->conf['markers.']) {

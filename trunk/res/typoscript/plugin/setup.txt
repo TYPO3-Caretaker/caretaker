@@ -28,6 +28,9 @@ plugin.tx_caretaker_pi_overview{
 		TYPE = TEXT
 		TYPE.field = type
 		TYPE.case = lower
+		
+		NODE = TEXT
+		NODE.field = node_id
 	} 
 	
 	childMarkers {
@@ -61,6 +64,9 @@ plugin.tx_caretaker_pi_overview{
 		DESCRIPTION.stdWrap.override = {field:state_msg}
 		DESCRIPTION.stdWrap.override.insertData = 1
 		DESCRIPTION.htmlSpecialChars = 1
+		
+		NODE = TEXT
+		NODE.field = node_id
 	} 	
 	
 	stdWrap.wrap = <div style="clear:both;"><!-- --></div>
@@ -271,7 +277,7 @@ plugin.tx_caretaker_pi_graphreport{
 		
 		CHART = HTML
 		CHART.value.field = chart
-	}	
+	}
 }
 
 plugin.tx_caretaker_pi_abstract {
@@ -329,11 +335,6 @@ plugin.tx_caretaker_pi_abstract {
 		}
 	}
 
-	childSubpartError   = CARETAKER-CHILD
-	childSubpartWarning = CARETAKER-CHILD
-	childSubpartAck     = CARETAKER-CHILD
-	childSubpartDue     = CARETAKER-CHILD
-	
 	childMarkers {
 
 		STATE = TEXT

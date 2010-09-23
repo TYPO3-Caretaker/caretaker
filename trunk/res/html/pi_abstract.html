@@ -1,26 +1,74 @@
-<div class="caretaker_status caretaker_status_###STATE###" >
+<div class="caretaker_container caretaker_abstract" >
 
-	<h2>###TITLE### (###NODE_TITLE###)</h2>
-	<div class="caretaker_status_box">
-
-		<dl class="caretaker_status_infos">
-			<dt>Errors</dt><dd class="error">###NUM_ERROR###</dd>
-			<dt>Warnings</dt><dd class="warning">###NUM_WARNING###</dd>
-			<dt>OK</dt><dd class="ok" >###NUM_OK###</dd>
-			<dt>Undefined</dt><dd class="undefined" >###NUM_UNDEFINED###</dd>
-			<dt>Acknowledged</dt><dd class="ack" >###NUM_ACK###</dd>
-			<dt>Due</dt><dd class="due" >###NUM_DUE###</dd>
-		</dl>
+	<h2 class="###STATE###">###TITLE### (###NODE_TITLE###)</h2>
+	<div class="caretaker_status_content">
 		
-		<ul class="caretaker_children">
-			<!-- ###CARETAKER-CHILDREN### begin -->
-
-				<!-- ###CARETAKER-CHILD### begin -->
-				<li class="state_###STATE###" >###TITLE### : ###INFO###</li>
-				<!-- ###CARETAKER-CHILD### end -->
-
-			<!-- ###CARETAKER-CHILDREN### end -->
-		</ul>
+		<div class="caretaker_status_infoliste">
+			<ul>
+				<li class="caretaker_status caretaker_status_error">	
+					<h3>Errors</h3>
+					<p>###NUM_ERROR###</p>		
+				</li>
+				<li class="caretaker_status caretaker_status_warning">	
+					<h3>Warnings</h3>
+					<p>###NUM_WARNING###</p>		
+				</li>
+				<li class="caretaker_status caretaker_status_ok">	
+					<h3>OK</h3>
+					<p>###NUM_OK###</p>	
+				</li>
+				<li class="caretaker_status caretaker_status_undefined">	
+					<h3>Undefined</h3>
+					<p>###NUM_UNDEFINED###</p>		
+				</li>
+				<li class="caretaker_status caretaker_status_ack">	
+					<h3>Acknowledged</h3>
+					<p>###NUM_ACK###</p>		
+				</li>
+											
+			</ul>
+			<div class="cleardiv"><!-- --></div>
+		</div>
+							
+		<div class="caretaker_children">
+		
+			<!-- ###CARETAKER-CHILDREN-ERROR### begin -->
+				<h3 class="error">Error:</h3>
+				<ul class="error">
+					<!-- ###CARETAKER-CHILD### begin -->
+					<li>	
+						<h4>###TITLE###</h4>
+						<p>###INFO###</p>	
+					</li>
+					<!-- ###CARETAKER-CHILD### end -->
+				</ul>
+			<!-- ###CARETAKER-CHILDREN-ERROR### begin -->
+			
+			<!-- ###CARETAKER-CHILDREN-WARNING### begin -->
+				<h3 class="warning">Warning:</h3>
+				<ul class="warning">
+					<!-- ###CARETAKER-CHILD### begin -->
+					<li>	
+						<h4>###TITLE###</h4>
+						<p>###INFO###</p>	
+					</li>
+					<!-- ###CARETAKER-CHILD### end -->
+				</ul>
+			<!-- ###CARETAKER-CHILDREN-WARNING### begin -->
+			
+			<!-- ###CARETAKER-CHILDREN-ACK### begin -->
+				<h3 class="ack">Ack:</h3>
+				<ul class="ack">
+					<!-- ###CARETAKER-CHILD### begin -->
+					<li>	
+						<h4>###TITLE###</h4>
+						<p>###INFO###</p>	
+					</li>
+					<!-- ###CARETAKER-CHILD### end -->
+				</ul>
+			<!-- ###CARETAKER-CHILDREN-ACK### begin -->
+			
+		</div>
 		
 	</div>
 </div>
