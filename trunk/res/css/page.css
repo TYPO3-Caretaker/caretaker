@@ -89,6 +89,10 @@ body #page #menu_main ul li{
 	border:1px solid white;
 	-moz-border-radius: 4px;
 	-moz-box-shadow: 1px 1px 2px grey;
+	-webkit-border-radius: 4px;
+	-webkit-box-shadow: 1px 1px 2px grey;
+	border-radius: 4px;
+	box-shadow: 1px 1px 2px grey;
 	
 }
 

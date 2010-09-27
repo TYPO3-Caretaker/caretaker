@@ -47,7 +47,7 @@ div.tx-caretaker-pi-graphreport h2 {
 	border:1px solid grey;
 	-moz-border-radius: 10px 10px 0 0;
 	-webkit-border-radius: 10px 10px 0 0;
-	              
+	border-radius: 10px 10px 0 0;	              
 }
 
 div.tx-caretaker-pi-abstract    h2 a,
@@ -96,6 +96,12 @@ div.tx-caretaker-pi-graphreport div.caretaker_container {
 	float:left;
 	-moz-border-radius: 10px;
 	-moz-box-shadow: 0 0 3px  #b8b8b8;
+	-webkit-border-radius: 10px;
+	-webkit-box-shadow: 0 0 3px  #b8b8b8;
+	border-radius: 10px;
+	box-shadow: 0 0 3px  #b8b8b8;
+	border-radius: 10px;
+	box-shadow: 0 0 3px  #b8b8b8;
 	margin:0 20px 20px 0;
 	padding:0;
 }
@@ -133,6 +139,10 @@ div.tx-caretaker-pi-abstract div.caretaker_status_infoliste ul li.caretaker_stat
 	border: 1px solid #fff;
 	-moz-border-radius: 10px;
 	-moz-box-shadow: 0 0 4px  #bfbfbf;
+	-webkit-border-radius: 10px;
+	-webkit-box-shadow: 0 0 4px  #bfbfbf;
+	border-radius: 10px;
+	box-shadow: 0 0 4px  #bfbfbf;
 }
 
 div.tx-caretaker-pi-abstract div.caretaker_status_infoliste ul li.caretaker_status_error {	    color:#ad0f21;}
@@ -386,7 +396,10 @@ div.caretaker_singleview ul.chart_links li {
 	margin:0 10px 0 0;
 	-moz-border-radius-topright:10px;
 	-moz-border-radius-topleft:10px;
-	
+	-webkit-border-radius-topright:10px;
+	-webkit-border-radius-topleft:10px;
+	border-radius-topright:10px;
+	border-radius-topleft:10px;
 	background-color:#eeeeee;
 	font-size:12px;
 }
@@ -415,6 +428,12 @@ div.caretaker_singleview div.caretaker_singleview_diagram img{
 	-moz-border-radius-topright:7px;
 	-moz-border-radius-bottomleft:7px;
 	-moz-border-radius-bottomright:7px;
+	-webkit-border-radius-topright:7px;
+	-webkit-border-radius-bottomleft:7px;
+	-webkit-border-radius-bottomright:7px;
+	border-radius-topright:7px;
+	border-radius-bottomleft:7px;
+	border-radius-bottomright:7px;
 }
 
 /*
@@ -445,7 +464,10 @@ div.caretaker_graphreport div.caretaker_graphreport_content ul.chart_links li {
 	margin:0 10px 0 0;
 	-moz-border-radius-topright:10px;
 	-moz-border-radius-topleft:10px;
-	
+	-webkit-border-radius-topright:10px;
+	-webkit-border-radius-topleft:10px;
+	border-radius-topright:10px;
+	border-radius-topleft:10px;
 	background-color:#eeeeee;
 	font-size:12px;
 }
@@ -474,4 +496,10 @@ div.caretaker_graphreport div.caretaker_graphreport_content img{
 	-moz-border-radius-topright:7px;
 	-moz-border-radius-bottomleft:7px;
 	-moz-border-radius-bottomright:7px;
+	-webkit-border-radius-topright:7px;
+	-webkit-border-radius-bottomleft:7px;
+	-webkit-border-radius-bottomright:7px;
+	border-radius-topright:7px;
+	border-radius-bottomleft:7px;
+	border-radius-bottomright:7px;
 }
