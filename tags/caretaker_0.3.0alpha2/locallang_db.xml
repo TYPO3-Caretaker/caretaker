@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'caretaker'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_caretaker_general.notification_strategies">Notification strategies</label>
+			
+			<label index="tx_caretaker_instancegroup">Instancegroup</label>
+			<label index="tx_caretaker_instancegroup.tab.description">Description</label>
+			<label index="tx_caretaker_instancegroup.tab.notifications">Notifications</label>
+			<label index="tx_caretaker_instancegroup.tab.contacts">Contacts</label>
+
+			<label index="tx_caretaker_instancegroup.title">Title</label>
+			<label index="tx_caretaker_instancegroup.contacts">Contacts</label>
+			<label index="tx_caretaker_instancegroup.description">Description</label>
+			<label index="tx_caretaker_instancegroup.parent_group">Parent Group</label>
+
+			<label index="tx_caretaker_instance_test_rel">Instance-Test Relation</label>
+			<label index="tx_caretaker_instance_test_rel.instance_id">Instance</label>
+			<label index="tx_caretaker_instance_test_rel.test_id">Test</label>
+			<label index="tx_caretaker_instance_test_rel.instance_sorting">Instance Sorting</label>
+			<label index="tx_caretaker_instance_test_rel.test_sorting">Test Sorting</label>
+
+			<label index="tx_caretaker_instance">Instance</label>
+			<label index="tx_caretaker_instance.tab.description">Description</label>
+			<label index="tx_caretaker_instance.tab.relations">Groups &amp; Tests</label>
+			<label index="tx_caretaker_instance.tab.notifications">Notifications</label>
+			<label index="tx_caretaker_instance.tab.contacts">Contacts</label>
+			<label index="tx_caretaker_instance.tab.testconfigurations">Test Configuration</label>
+			<label index="tx_caretaker_instance.title">Name</label>
+			<label index="tx_caretaker_instance.contacts">Contacts</label>
+
+			<label index="tx_caretaker_instance.description">Description</label>
+			<label index="tx_caretaker_instance.instancegroup">Instancegroup</label>
+			<label index="tx_caretaker_instance.url">Instance URL (http://www.domain.com)</label>
+			<label index="tx_caretaker_instance.host">Hostname (www.domain.com)</label>
+			<label index="tx_caretaker_instance.groups">Testgroups assigned to this instance</label>
+			<label index="tx_caretaker_instance.tests">Tests assigned to this instance</label>
+			<label index="tx_caretaker_instance.public_key">Public Key of Instance</label>
+			<label index="tx_caretaker_instance.notifications">Notifications</label>
+			<label index="tx_caretaker_instance.contacts">Contacts</label>
+			<label index="tx_caretaker_instance.testconfigurations">Overwrite Test Configuration</label>
+
+			<label index="tx_caretaker_testgroup">Testgroup</label>
+			<label index="tx_caretaker_testgroup.tab.description">Description</label>
+			<label index="tx_caretaker_testgroup.tab.relations">Tests</label>
+			<label index="tx_caretaker_testgroup.tab.notifications">Notifications</label>
+			<label index="tx_caretaker_testgroup.tab.contacts">Contacts</label>
+			<label index="tx_caretaker_testgroup.title">Title</label>
+			<label index="tx_caretaker_testgroup.description">Description</label>
+			<label index="tx_caretaker_testgroup.parent_group">Parent Group</label>
+			<label index="tx_caretaker_testgroup.instances">Instances</label>
+			<label index="tx_caretaker_testgroup.tests">Tests</label>
+			<label index="tx_caretaker_testgroup_test_rel">Group-Test Relation</label>
+			<label index="tx_caretaker_testgroup_test_rel.group_id">Instance</label>
+			<label index="tx_caretaker_testgroup_test_rel.test_id">Test</label>
+			<label index="tx_caretaker_testgroup_test_rel.group_sorting">Instance Sorting</label>
+			<label index="tx_caretaker_testgroup_test_rel.test_sorting">Test Sorting</label>
+			<label index="tx_caretaker_testgroup.notifications">Notifications</label>
+			
+			<label index="tx_caretaker_test">Test</label>
+			<label index="tx_caretaker_test.tab.relations">Instances &amp; Groups</label>
+			<label index="tx_caretaker_test.tab.description">Description</label>
+			<label index="tx_caretaker_test.tab.notifications">Notifications</label>
+			<label index="tx_caretaker_test.tab.configuration">Test-Configuration</label>
+			<label index="tx_caretaker_test.tab.contacts">Contacts</label>
+			<label index="tx_caretaker_test.title">Name</label>
+			<label index="tx_caretaker_test.notifiactions">Notifications</label>
+			<label index="tx_caretaker_test.description">Description</label>
+			<label index="tx_caretaker_test.test_service.select_service">Please select a test</label>
+			<label index="tx_caretaker_test.test_service">Test Service</label>
+			<label index="tx_caretaker_test.test_interval">Test Interval</label>
+			<label index="tx_caretaker_test.test_interval_start_hour">Run after this Hour</label>
+			<label index="tx_caretaker_test.test_interval_stop_hour">Run before this Hour</label>
+			<label index="tx_caretaker_test.test_service">Test Service</label>
+			<label index="tx_caretaker_test.test_conf">Test Configuration</label>
+			<label index="tx_caretaker_test.test_mode">Test Mode</label>
+			<label index="tx_caretaker_test.test_retry">Retry if Result is not OK</label>
+			<label index="tx_caretaker_test.test_retry_0">don't retry (wait for next interval)</label>
+			<label index="tx_caretaker_test.test_retry_1">retry once immediately</label>
+			<label index="tx_caretaker_test.test_retry_2">retry twice immediately</label>
+			<label index="tx_caretaker_test.test_retry_3">retry immediately 3 times</label>
+			<label index="tx_caretaker_test.test_retry_4">retry immediately 4 times</label>
+			<label index="tx_caretaker_test.test_retry_5">retry immediately 5 times</label>
+			<label index="tx_caretaker_test.test_due">Test is due if the last result was not OK</label>			
+			<label index="tx_caretaker_test.test_mode.group">run once for group</label>
+			<label index="tx_caretaker_test.instances">Include Test for those Instances</label>
+			<label index="tx_caretaker_test.groups">Include Test for those Testgroups</label>
+			<label index="tx_caretaker_test.notifications">Notifications</label>
+			<label index="tx_caretaker_test.roles">Belongs to the following roles</label>
+
+			<label index="tx_caretaker_roles">Role</label>
+			<label index="tx_caretaker_roles.id">Unique identifier</label>
+			<label index="tx_caretaker_roles.name">Name</label>
+			<label index="tx_caretaker_roles.description">Description</label>
+
+			<label index="tx_caretaker_exitpoints">Exitpoint</label>
+			<label index="tx_caretaker_exitpoints.id">Unique identifier</label>
+			<label index="tx_caretaker_exitpoints.name">Name</label>
+			<label index="tx_caretaker_exitpoints.description">Description</label>
+			<label index="tx_caretaker_exitpoints.service">Service</label>
+			<label index="tx_caretaker_exitpoints.config">Configuration</label>
+			<label index="tx_caretaker_exitpoints.service.select_exitpoint">Select the Exitpointtype</label>
+
+			<label index="tx_caretaker_strategies">Strategy</label>
+			<label index="tx_caretaker_strategies.name">Name</label>
+			<label index="tx_caretaker_strategies.description">Description</label>
+			<label index="tx_caretaker_strategies.config">Configuration</label>
+
+			<label index="tt_content.list_type_pi_overview">Caretaker Tactical Overview</label>
+			<label index="pi_overview_title">Caretaker Tactical Overview</label>
+			<label index="pi_overview_plus_wiz_description">Show Tactical Overview of selected Caretaker Records</label>
+			
+			<label index="tt_content.list_type_pi_singleview">Caretaker Details</label>
+			<label index="pi_singleview_title">Caretaker Details</label>
+			<label index="pi_singleview_plus_wiz_description">Show Caretaker Node Details</label>
+			
+			<label index="tt_content.list_type_pi_graphreport">Caretaker Graphical Report</label>
+			<label index="pi_graphreport_title">Caretaker Graphical Report</label>
+			<label index="pi_graphreport_plus_wiz_description">Show combined Graphical Report of selected tests.</label>
+			
+			<label index="tt_content.list_type_pi_abstract">Caretaker Abstract</label>
+			<label index="pi_abstract_title">Caretaker Abstract</label>
+			<label index="pi_abstract_plus_wiz_description">Show number and list of all Errors and Warnings.</label>
+
+		</languageKey>
+		<languageKey index="de" type="array">
+
+		</languageKey>
+	</data>
+</T3locallang>

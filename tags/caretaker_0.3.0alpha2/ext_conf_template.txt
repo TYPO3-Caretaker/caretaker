@@ -1,0 +1,29 @@
+# cat=caretaker/storage/sysfolder; type=integer; label=Uid of the caretaker-sysfolder: The uid is used for creating new Records from caretaker be-modules instead of the list-module
+storagePid = 0
+
+# cat=caretaker/enable; type=boolean; label=Advanced notifications: Enables a notification system with escalation strategies. Should be used for systems with more than one administrator.
+notifications.advanced.enabled = 1
+
+# cat=caretaker/enable; type=boolean; label=Mail Notification: Enables a simple notfication system via e-mail. Easy to setup an suitable for small setups.
+notifications.simple_mail.enabled = 0
+
+# cat=caretaker/enable; type=boolean; label=CLI Notifications: Enables a simple notfication system for the CLI interface.
+notifications.cli.enabled = 1
+
+# cat=caretaker/notifications/simple_mail/config; type=string; label=Sender: E-mail address for notification sender (Only used for simple e-mail notifications)
+notifications.simple_mail.mail_from = servermonitoring@example.org
+
+# cat=caretaker/notifications/simple_mail/config; type=string; label=Email Subject: Subject of notification e-mails (Only used for simple e-mail notifications)
+notifications.simple_mail.mail_subject = caretaker
+
+# cat=caretaker/notifications/simple_mail/config; type=string; label=Backlink: Link in notification e-mail. ### is replaced ny NodeID  (Only used for simple e-mail notifications)
+notifications.simple_mail.mail_link = http://caretaker.example.org/index.php?id=123&tx_caretaker_pi_singleview[id]=###
+
+# cat=caretaker/notifications/simple_mail/roles; type=string; label=ContactRole-IDs for which eMails are sent, empty means all (Only used for simple e-mail notifications)
+notifications.simple_mail.role_ids =
+
+# cat=caretaker/notifications/cli/config; type=string; label=CSL of all states that should be included in notification (ok = 0 / warning = 1 / error = 2 / undefined = -1 / ack = -2 / due = -3)
+notifications.send_states = -2,-1,0,1,2
+
+# cat=caretaker/notifications/cli/config; type=string; label=CLI Command used for ping tests: ### is replaced by Hostname.
+ping.cli_command = /sbin/ping -c 1 ### 2>&1

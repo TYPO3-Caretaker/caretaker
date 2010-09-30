@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for plugin caretaker single view</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="state">State</label>
+			<label index="lastRun">Date</label>
+			<label index="value">Value</label>
+			<label index="message">Message</label>
+			<label index="children">Children</label>
+			<label index="rootline">Rootline</label>
+			<label index="1hour">1 hour</label>
+			<label index="3hours">3 hours</label>
+			<label index="12hours">12 hours</label>
+			<label index="24hours">24 hours</label>
+			<label index="3days">3 days</label>
+			<label index="7days">7 days</label>
+			<label index="30days">30 days</label>
+			<label index="3month">3 month</label>
+			<label index="6month">6 month</label>
+			<label index="12month">12 month</label>
+			<label index="times">Times</label>
+			<label index="values">Values</label>
+			<label index="date">Date</label>
+			<label index="ok">OK</label>
+			<label index="warning">Warning</label>
+			<label index="error">Error</label>
+			<label index="available">available</label>
+			<label index="description">Description</label>
+			<label index="lastRunHeader">Last run:</label>
+			<label index="configuration">Configuration</label>
+			<label index="type">Type</label>
+
+
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="state">Status</label>
+			<label index="lastRun">Datum</label>
+			<label index="value">Messwert</label>
+			<label index="message">Meldung</label>
+			<label index="rootline">Pfad</label>
+			<label index="children">Gruppenelemente</label>
+			<label index="1hour">1 Stunde</label>
+			<label index="3hours">3 Stunden</label>
+			<label index="12hours">12 Stunden</label>
+			<label index="24hours">24 Stunden</label>
+			<label index="3days">3 Tage</label>
+			<label index="7days">7 Tage</label>
+			<label index="30days">30 Tage</label>
+			<label index="3month">3 Monate</label>
+			<label index="6month">6 Monate</label>
+			<label index="12month">12 Monate</label>
+			<label index="times">Zeiten</label>
+			<label index="values">Werte</label>
+			<label index="date">Datum</label>
+			<label index="ok">OK</label>
+			<label index="warning">Warnung</label>
+			<label index="error">Fehler</label>
+			<label index="available">verfügbar</label>
+			<label index="description">Beschreibung</label>
+			<label index="lastRunHeader">Letzter Lauf:</label>
+			<label index="configuration">Konfiguration:</label>
+			<label index="type">Typ:</label>
+		</languageKey>
+	</data>
+</T3locallang>

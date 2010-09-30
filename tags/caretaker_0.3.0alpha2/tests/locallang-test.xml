@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>General language labels for extension 'caretaker'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="foo">bar</label>
+			<label index="bar">bam</label>
+		</languageKey>
+	</data>
+</T3locallang>

@@ -1,0 +1,65 @@
+config {
+
+   # doctype
+   doctype = xhtml_strict
+
+   # setup languages
+   language = en
+   sys_language_uid = 0
+   htmlTag_langKey = en-UK
+
+   #disable comments (ie-bugfix)
+   disablePrefixComment = 1
+
+}
+
+[browser = msie]
+	config.doctypeSwitch = 1
+[end]
+
+page = PAGE
+page {
+
+	includeCSS.page = EXT:caretaker/res/css/page.css
+	includeCSS.plugin = EXT:caretaker/res/css/plugin.css 
+
+	10 = TEMPLATE
+	10 {
+		template = FILE
+		template.file = EXT:caretaker/res/html/page_template.html
+		workOnSubpart = DOCUMENT-BODY
+		
+		subparts {
+			
+			
+			LOGO = IMAGE
+			LOGO.file = EXT:caretaker/res/img/logo.gif
+			LOGO.wrap = <a href="/" title="Caretaker">|</a>
+			
+			BRANDING = HTML
+			BRANDING.value = by <a href="http://www.work.de" title="TYPO3 Hamburg">n@work</a> and <a href="http://www.networkteam.de" title="networkteam">networkteam</a>
+			
+			MENU-MAIN = HMENU
+			MENU-MAIN {
+				1 = TMENU
+				1.wrap = <ul>|</ul>
+				1.NO = 1
+				1.NO {
+					allWrap = <li>|</li> 
+				}
+				1.ACT = 1
+				1.ACT {
+					allWrap = <li class="active">|</li> 
+				}
+			}
+			
+			MAIN-CONTENT < styles.content.get
+			
+			FOOTER = TEXT
+			FOOTER.value = Caretaker is a joined effort of n@work-Hamburg and networkteam-Kiel/Hamburg. Caretaker is open source and can be used as it is without any warranty.
+			
+		}
+	}	
+}
+
+ 

@@ -1,0 +1,2 @@
+caretaker.singleLinkID = 25,0
+caretaker.singleLinkParameter = 860x800:scrollbars=1,toolbar=1
