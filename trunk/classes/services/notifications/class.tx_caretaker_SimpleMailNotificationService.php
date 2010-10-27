@@ -102,6 +102,11 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 		$role_ids = explode(',' , $this->getConfigValue('role_ids'));
 		foreach ($role_ids as $role_id){
 			$role = $contactRepository->getContactRoleById( trim($role_id) );
+
+			if (!$role && is_numeric($role_id) ) {
+				$role = $contactRepository->getContactRoleByUid( intval( $role_id ) );
+			}
+			
 			if ( $role ) {
 				$this->mail_roles[] = $role;
 			}
@@ -136,7 +141,7 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 		if ( count ($this->mail_roles) ){
 			$contacts = array();
 			foreach ( $this->mail_roles as $role){
-			$contacts = array_merge($contacts, $node->getContacts( $role ) );
+				$contacts = array_merge($contacts, $node->getContacts( $role ) );
 			}
 		} else {
 			$contacts = $node->getContacts();
