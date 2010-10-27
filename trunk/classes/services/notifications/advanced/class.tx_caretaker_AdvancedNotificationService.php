@@ -95,7 +95,7 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	 * nothing happens here since all Informations are already sent to cli
 	 */
 	public function sendNotifications() {
-		var_dump($this->getNotificationQueue());
+		// var_dump($this->getNotificationQueue());
 	}
 
 	/**
