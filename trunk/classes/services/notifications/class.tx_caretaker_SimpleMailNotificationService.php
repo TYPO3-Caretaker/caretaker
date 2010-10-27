@@ -136,7 +136,6 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 
 			// collect the recipients fron the node rootline
 		$recipientIds = array();
-
 		
 		if ( count ($this->mail_roles) ){
 			$contacts = array();
