@@ -145,7 +145,7 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 		} else {
 			$contacts = $node->getContacts();
 		}
-
+		
 		foreach ($contacts as $contact ){
 			$address = $contact->getAddress();
 			if ( ! $this->recipients_addresses[ $address['uid'] ] ){
@@ -194,7 +194,7 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 				$result->getLocallizedInfotext() . chr(10).
 				str_replace('###', $node->getCaretakerNodeId(),  $this->mail_link  ).chr(10)
 			);
-		}		
+		}
 	}
 
 	/**
@@ -206,7 +206,7 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 							
 			$recipient = $this->recipients_addresses[ $recipientID ] ;
 
-				// prepare mail
+			// prepare mail
 			if ($recipient && $recipient['email'] ){
 
 				$message     = '';
@@ -233,7 +233,6 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 				if ($recipientInfo['num_due'] > 0)
 					$subject .= ' ' .$recipientInfo['num_due'].' Due';		
 
-
 				$this->sendMail($subject, $recipient['email'], $this->mail_from, $message  );
 			}
 		}
@@ -250,6 +249,7 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 	 * @return unknown_type
 	 */
 	private function sendMail($subject, $recipient, $from, $message ){
+		
 		$mail = new t3lib_htmlmail();
 		$mail->charset = 'utf-8';
  		$mail->start();
