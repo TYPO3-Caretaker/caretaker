@@ -139,16 +139,16 @@ class tx_caretaker_Eid {
 			$result['statistics']['count'] = array(
 				'error'     => 0,
 				'warning'   => 0,
+				'ok'        => 0,
 				'undefined' => 0,
-				'unknown'   => 0,
 				'ack'       => 0,
 				'due'       => 0
 			);
 			$result['statistics']['ids'] = array(
 				'error'     => array(),
 				'warning'   => array(),
+				'ok'        => array(),
 				'undefined' => array(),
-				'unknown'   => array(),
 				'ack'       => array(),
 				'due'       => array(),
 			);
@@ -171,8 +171,8 @@ class tx_caretaker_Eid {
 							$result['statistics']['count']['ok'] ++;
 							break;
 						case tx_caretaker_Constants::state_undefined:
-							$result['statistics']['id']['unknown'][] = $test->getCaretakerNodeId();
-							$result['statistics']['count']['unknown'] ++;
+							$result['statistics']['id']['undefined'][] = $test->getCaretakerNodeId();
+							$result['statistics']['count']['undefined'] ++;
 							break;
 						case tx_caretaker_Constants::state_ack:
 							$result['statistics']['id']['ack'][] = $test->getCaretakerNodeId();
