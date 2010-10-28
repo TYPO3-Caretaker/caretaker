@@ -172,10 +172,10 @@ class tx_caretaker_Eid {
 		if (  t3lib_div::_GP('addResult') == 1 ){
 			$nodeResult = $node->getTestResult();
 			$result['result'] = array(
-				'state'   => $nodeResult->getState(),
-				'stateInfo' => $nodeResult->getLocallizedStateInfo(),
-				'message' => $nodeResult->getLocallizedInfotext(),
-				'lastRun' => $nodeResult->getTimestamp()
+				'state'     => $nodeResult->getState(),
+				'info'      => $nodeResult->getLocallizedStateInfo(),
+				'message'   => $nodeResult->getLocallizedInfotext(),
+				'timestamp' => $nodeResult->getTimestamp()
 			);
 		} 
 		
