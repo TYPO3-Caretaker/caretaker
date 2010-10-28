@@ -96,12 +96,10 @@ class tx_caretaker_Eid {
 			case 'array':
 				$result = '';
 				foreach ( $data as $key => $value ){
-					if ($key) {
-						if( is_int($key) ){
-							$result .= '<item index="' . $key . '">' . $this->formatResultDataXml($value). '</item>';		
-						} else {
-							$result .= '<' . $key . '>' . $this->formatResultDataXml($value) . '</' . $key . '>';		
-						}
+					if( is_int($key) ){
+						$result .= '<item index="' . $key . '">' . $this->formatResultDataXml($value). '</item>';		
+					} else {
+						$result .= '<' . $key . '>' . $this->formatResultDataXml($value) . '</' . $key . '>';		
 					}
 				}
 				return $result;
