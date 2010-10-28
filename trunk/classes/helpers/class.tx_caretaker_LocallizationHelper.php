@@ -63,11 +63,21 @@ class tx_caretaker_LocallizationHelper {
 		} else {
 			switch (TYPO3_MODE){
 				case 'FE':
-
-					$lcObj  = t3lib_div::makeInstance('tslib_cObj');
-					$result = $lcObj->TEXT( array( 'data' => $locallangString ) ) ;
+					
+					// FE
+					if ( $GLOBALS['TSFE'] ){
+						$lcObj  = t3lib_div::makeInstance('tslib_cObj');
+						$result = $lcObj->TEXT( array( 'data' => $locallangString ) ) ;
+					} 
+					// eID
+					else { 
+						$LANG = t3lib_div::makeInstance('language');
+						$LANG->init($language_key);
+						$result = $LANG->getLLL($locallang_key, t3lib_div::readLLfile(t3lib_div::getFileAbsFileName( $locallang_file) , $LANG->lang, $LANG->charSet ) );
+					}
+					
 					break;
-				
+					
 				case 'BE':
 
 					$locallangParts = explode (':',$locallangString);

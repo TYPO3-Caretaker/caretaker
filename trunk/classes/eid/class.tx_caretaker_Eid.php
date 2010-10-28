@@ -50,6 +50,8 @@ class tx_caretaker_Eid {
 	public function __construct(){
 		tslib_eidtools::connectDB();
 		tslib_eidtools::initFeUser();
+		tslib_eidtools::initLanguage();
+		tslib_eidtools::initTCA();
 	}
 	
 	/**
@@ -70,24 +72,76 @@ class tx_caretaker_Eid {
 		return $node;
 	}
 	
-	private function formatResultData( $data, $format ){
+	private function sendResultData( $data, $format ){
 		switch ($format){
+			case 'xml':
 			case 'application/xml':
-				return $this->formatResultDataXml($data);
+				header('Cache-Control: no-cache, must-revalidate');
+				header('Content-type: text/xml; charset=UTF-8');
+				echo '<xml>' . $this->formatResultDataXml($data) . '</xml>';
 				break;
+			case 'json':
 			case 'application/json':
 			default:
-				return $this->formatResultDataJson($data);
+				header('Cache-Control: no-cache, must-revalidate');
+				header('Content-type: application/json; charset=UTF-8');
+				echo $this->formatResultDataJson($data);
 				break;
 		}
 	}
 	
 	private function formatResultDataXml( $data ){
 		
+		switch ( gettype($data) ){
+			case 'array':
+				$result = '';
+				foreach ( $data as $key => $value ){
+					if ($key) {
+						if( is_int($key) ){
+							$result .= '<item index="' . $key . '">' . $this->formatResultDataXml($value). '</item>';		
+						} else {
+							$result .= '<' . $key . '>' . $this->formatResultDataXml($value) . '</' . $key . '>';		
+						}
+					}
+				}
+				return $result;
+				break;
+				
+			case 'boolean':
+				if ($data) {
+					return 'true';
+				} else {
+					return 'false';
+				}
+				break;
+				
+			case 'string':
+				return '<![CDATA['.$data.']]>';
+				break;
+				
+			default:
+				if ($data) {
+					return $data;
+				} else {
+					return '';
+				}
+				break;
+				
+				
+		}
+		
 	}
 	
 	private function formatResultDataJson($data ){
 		return json_encode($data);
+	}
+	
+	public function getEidFormat(){
+		 $format = $_SERVER['HTTP_ACCEPT'];
+		 if (  t3lib_div::_GP('format') ) {
+			$format = 	t3lib_div::_GP('format');	 	
+		 } 
+		 return $format;
 	}
 	
 	public function getEidData(){
@@ -110,6 +164,7 @@ class tx_caretaker_Eid {
 				'id' => $node->getCaretakerNodeId(),
 				'title' => $node->getTitle(),
 				'type' => $node->getType(),
+				'description' => $node->getDescription()
 			);
 		} 
 		
@@ -118,7 +173,9 @@ class tx_caretaker_Eid {
 			$nodeResult = $node->getTestResult();
 			$result['result'] = array(
 				'state'   => $nodeResult->getState(),
-				'message' => $nodeResult->getMessage(),
+				'stateInfo' => $nodeResult->getLocallizedStateInfo(),
+				'message' => $nodeResult->getLocallizedInfotext(),
+				'lastRun' => $nodeResult->getTimestamp()
 			);
 		} 
 		
@@ -193,10 +250,9 @@ class tx_caretaker_Eid {
 	}
 	
 	public function processEidRequest(){
-		$data = $this->getEidData();
-		$format = $_SERVER['HTTP_ACCEPT'];
-		echo $this->formatResultData($data,$format);
-		die();
+		$data   = $this->getEidData();
+		$format = $this->getEidFormat();
+		$this->sendResultData($data,$format);
 	}
 	
 }
