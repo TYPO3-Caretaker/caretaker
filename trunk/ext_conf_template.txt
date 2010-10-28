@@ -10,6 +10,9 @@ notifications.simple_mail.enabled = 0
 # cat=caretaker/enable; type=boolean; label=CLI Notifications: Enables a simple notfication system for the CLI interface.
 notifications.cli.enabled = 1
 
+# cat=caretaker/enable; type=boolean; label=Enable eID Script for accessing status informations from outside
+eid.enabled = 0
+
 # cat=caretaker/notifications/simple_mail/config; type=string; label=Sender: E-mail address for notification sender (Only used for simple e-mail notifications)
 notifications.simple_mail.mail_from = servermonitoring@example.org
 
@@ -27,3 +30,4 @@ notifications.send_states = -2,-1,0,1,2
 
 # cat=caretaker/notifications/cli/config; type=string; label=CLI Command used for ping tests: ### is replaced by Hostname.
 ping.cli_command = /sbin/ping -c 1 ### 2>&1
+
