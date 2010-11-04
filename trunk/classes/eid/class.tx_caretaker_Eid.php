@@ -214,23 +214,23 @@ class tx_caretaker_Eid {
 					$testResult = $test->getTestResult();
 					switch ( $testResult->getState() ){
 						case tx_caretaker_Constants::state_error:
-							$result['statistics']['id']['error'][] = $test->getCaretakerNodeId();
+							$result['statistics']['ids']['error'][] = $test->getCaretakerNodeId();
 							$result['statistics']['count']['error'] ++;
 							break;
 						case tx_caretaker_Constants::state_warning:
-							$result['statistics']['id']['warning'][] = $test->getCaretakerNodeId();
+							$result['statistics']['ids']['warning'][] = $test->getCaretakerNodeId();
 							$result['statistics']['count']['warning'] ++;
 							break;
 						case tx_caretaker_Constants::state_ok:
-							$result['statistics']['id']['ok'][] = $test->getCaretakerNodeId();
+							$result['statistics']['ids']['ok'][] = $test->getCaretakerNodeId();
 							$result['statistics']['count']['ok'] ++;
 							break;
 						case tx_caretaker_Constants::state_undefined:
-							$result['statistics']['id']['undefined'][] = $test->getCaretakerNodeId();
+							$result['statistics']['ids']['undefined'][] = $test->getCaretakerNodeId();
 							$result['statistics']['count']['undefined'] ++;
 							break;
 						case tx_caretaker_Constants::state_ack:
-							$result['statistics']['id']['ack'][] = $test->getCaretakerNodeId();
+							$result['statistics']['ids']['ack'][] = $test->getCaretakerNodeId();
 							$result['statistics']['count']['ack'] ++;
 							break;
 						case tx_caretaker_Constants::state_due:
