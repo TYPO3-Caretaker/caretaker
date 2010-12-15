@@ -87,7 +87,9 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
 	 */
 	public function isEnabled() {
 		$enabled = (bool)$this->getConfigValue('enabled');
-		return ($enabled === TRUE && TYPO3_MODE == 'BE' && $GLOBALS["BE_USER"]->user['username'] == '_cli_caretaker');
+		$beUsername  = $GLOBALS["BE_USER"]->user['username'];
+
+		return ($enabled === TRUE && TYPO3_MODE == 'BE' && ( $beUsername == '_cli_caretaker' || $beUsername == '_cli_scheduler' ) );
 	}
 
 	public function addNotification($event, $node, $result = NULL, $lastResult = NULL) {}
