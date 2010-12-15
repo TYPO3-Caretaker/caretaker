@@ -509,6 +509,14 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 			curl_setopt($curl, CURLOPT_PROXYPORT, $request_proxyport );
 		}
 
+			// add instance curl options
+		$instanceCurlOptions = $this->instance->getCurlOptions();
+		if (is_array($instanceCurlOptions)) {
+			foreach ($instanceCurlOptions as $key => $value) {
+				curl_setopt($curl, $key, $value);
+			}
+		}
+
 			// handle request method
 		switch ($request_method){
 			case 'POST':
