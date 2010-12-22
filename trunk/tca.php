@@ -871,7 +871,7 @@ $TCA['tx_caretaker_test'] = array (
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'starttime,endtime,fe_group'),
-		'2' => array('showitem' => 'test_interval_start_hour,test_interval_stop_hour,test_retry'),
+		'2' => array('showitem' => 'test_interval_start_hour,test_interval_stop_hour'),
 		'3' => array('showitem' => 'groups,instances')
 	)
 );
