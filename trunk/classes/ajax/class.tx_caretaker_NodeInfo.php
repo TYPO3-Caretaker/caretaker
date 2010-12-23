@@ -252,10 +252,7 @@ class tx_caretaker_NodeInfo {
 					if ($result){
 						echo $result;
 					}
-
-					if ($renderer->renderTestResultRange(PATH_site.$filename, $result_range , $node->getTitle(), $node->getValueDescription()) !== false) {
-						echo '<img src="'.$base_url.$filename.'?random='.rand().'" />';
-					}
+					
 				} else  if (is_a( $node, 'tx_caretaker_AggregatorNode')){
 					
 					$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
