@@ -71,6 +71,10 @@ return array(
 	'tx_caretaker_contact'               => $caretakerExtPath.'classes/contacts/class.tx_caretaker_Contact.php',
 	'tx_caretaker_contactrole'           => $caretakerExtPath.'classes/contacts/class.tx_caretaker_ContactRole.php',
 
+		/* renderers */
+	'tx_caretaker_chartrendererbase'            => $caretakerExtPath.'classes/renderer/chart/class.tx_caretaker_ChartRendererBase.php',
+	'tx_caretaker_testresultrangechartrenderer' => $caretakerExtPath.'classes/renderer/chart/class.tx_caretaker_TestResultRangeChartRenderer.php',
+
 		/* services */
 	'tx_caretaker_testservicebase'	     => $caretakerExtPath.'classes/services/tests/class.tx_caretaker_TestServiceBase.php',
 

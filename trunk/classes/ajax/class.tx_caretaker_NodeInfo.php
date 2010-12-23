@@ -240,14 +240,25 @@ class tx_caretaker_NodeInfo {
 
 			if ( $result_range->count() ){
 				$filename = 'typo3temp/caretaker/charts/'.$node_id.'_'.$duration.'.png';
-				$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
 				$base_url = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 
 				if (is_a($node, 'tx_caretaker_TestNode' ) ){
+
+					$TestResultRangeChartRenderer = new tx_caretaker_TestResultRangeChartRenderer( );
+					$TestResultRangeChartRenderer->setTitle( $node->getTitle() );
+					$TestResultRangeChartRenderer->setTestResultrange( $result_range );
+					$result = $TestResultRangeChartRenderer->getChartImageTag( $filename, $base_url );
+
+					if ($result){
+						echo $result;
+					}
+
 					if ($renderer->renderTestResultRange(PATH_site.$filename, $result_range , $node->getTitle(), $node->getValueDescription()) !== false) {
 						echo '<img src="'.$base_url.$filename.'?random='.rand().'" />';
 					}
 				} else  if (is_a( $node, 'tx_caretaker_AggregatorNode')){
+					
+					$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
 					if ($renderer->renderAggregatorResultRange(PATH_site.$filename, $result_range , $node->getTitle()) !== false) {
 						echo '<img src="'.$base_url.$filename.'?random='.rand().'" />';
 					}
