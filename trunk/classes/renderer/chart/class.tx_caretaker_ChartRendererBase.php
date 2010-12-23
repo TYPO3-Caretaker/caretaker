@@ -177,8 +177,8 @@ abstract class tx_caretaker_ChartRendererBase {
 		// fill chart area
 		$chartBackgroundColor  = imagecolorallocate($image, 254, 254, 254);
 		$chartLegendColor      = imagecolorallocate($image, 1, 1, 1);
-		$chartLegendColor2     = imagecolorallocatealpha($image, 1, 1, 1, 90 );
-		$chartLegendColor3     = imagecolorallocatealpha($image, 1, 1, 1, 120 );
+		$chartLegendColor2     = imagecolorallocatealpha($image, 1, 1, 1, 60 );
+		$chartLegendColor3     = imagecolorallocatealpha($image, 1, 1, 1, 90 );
 
 
 		imagefilledrectangle( $image , $this->marginLeft ,  $this->marginTop ,  $this->width  - $this->marginRight  , $this->height - $this->marginBottom , $chartBackgroundColor );
@@ -295,34 +295,33 @@ abstract class tx_caretaker_ChartRendererBase {
 
 		$format = '%x';
 
+		// year
 		if  ( $timerange >= 24*60*60*30*6 ){
-
 			$times_super = $this->getYearTimestamps($this->startTimestamp,$this->endTimestamp );
 			$times_major = $this->getMonthTimestamps($this->startTimestamp,$this->endTimestamp );
 			//$times_minor = $this->getWeekTimestamps($this->startTimestamp,$this->endTimestamp );
 		}
-		// 1 Month
-		else if  ( $timerange >= 24*60*60*33 ){
+		// quarter
+		if  ( $timerange >= 24*60*60*30*3 ){
 			$times_super = $this->getYearTimestamps($this->startTimestamp,$this->endTimestamp );
 			$times_major = $this->getMonthTimestamps($this->startTimestamp,$this->endTimestamp );
 			$times_minor = $this->getWeekTimestamps($this->startTimestamp,$this->endTimestamp );
+		}
+		// 1 Month
+		else if  ( $timerange >= 24*60*60*30 ){
+			$times_super = $this->getMonthTimestamps($this->startTimestamp,$this->endTimestamp );
+			$times_major = $this->getWeekTimestamps($this->startTimestamp,$this->endTimestamp );
+			$times_minor = $this->getDayTimestamps($this->startTimestamp,$this->endTimestamp );
 		}
 		// 7 days
 		else if  ( $timerange >= 24*60*60*7 ){
 			$format = '%x';
 			$times_super = $this->getMonthTimestamps($this->startTimestamp,$this->endTimestamp );
 			$times_major = $this->getWeekTimestamps($this->startTimestamp,$this->endTimestamp );
-			$times_minor = $this->getDayTimestamps($this->startTimestamp,$this->endTimestamp );
-		}
-		// 3 day
-		else if ( $timerange > 24*60*60*3 ){
-			$format = '%x';
-			$times_super = $this->getMonthTimestamps($this->startTimestamp,$this->endTimestamp );
-			$times_major = $this->getWeekTimestamps($this->startTimestamp,$this->endTimestamp );
-			$times_minor = $this->getDayTimestamps($this->startTimestamp,$this->endTimestamp );
+			$times_minor = $this->getHalfdayTimestamps($this->startTimestamp,$this->endTimestamp );
 		}
 		// 1 day
-		else if ( $timerange > 24*60*60 ){
+		else if ( $timerange >= 24*60*60*1 ){
 			$format = '%x %H:%M';
 			$times_super = $this->getDayTimestamps($this->startTimestamp,$this->endTimestamp );
 			$times_major = $this->getHalfdayTimestamps($this->startTimestamp,$this->endTimestamp );
