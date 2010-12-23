@@ -59,7 +59,6 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 	var $colorDue;
 	var $colorAck;
 
-
 	public function initChartImage ($image) {
 
 		$this->colorError     = imagecolorallocatealpha($image, 255, 0, 0, 100);
@@ -68,6 +67,7 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 		$this->colorUndefined = imagecolorallocatealpha($image, 100, 100, 100, 100);
 		$this->colorDue       = imagecolorallocatealpha($image, 238,130,238, 100);
 		$this->colorAck       = imagecolorallocatealpha($image, 0,0,255, 100);
+		
 	}
 	
 	/**
@@ -94,11 +94,15 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 		$lastX     = NULL;
 		$lastState = NULL;
 
-		foreach ( $this->testResultRange as $testResult ){
+		$count = $this->testResultRange->count();
+		$step  = 0;
+		foreach ( $this->testResultRange as $key=>$testResult ){
+			$step ++;
+
 			$newX = intval( $this->transformX( $testResult->getTimestamp() ) );
 			$newState = $testResult->getState();
 
-			if( $lastX !== NULL  ){
+			if( $lastX !== NULL ){
 				switch ( $lastState ){
 					case tx_caretaker_Constants::state_ok:
 						$color = $this->colorOk;
@@ -119,14 +123,19 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 						$color = $this->colorUndefined;
 						break;
 				}
-			
-				if ($newX > $lastX ) {
-					imagefilledrectangle( $image, $lastX, $this->marginTop, $newX , $this->height-$this->marginBottom, $color);
-				}
 			}
 			
-			$lastX = $newX;
+			$isLast = ( $step == $count );
+
+			if( $lastX !== NULL && $color && ($newState != $lastState || $isLast ) ){
+				imagefilledrectangle( $image, $lastX, $this->marginTop, $newX , $this->height-$this->marginBottom, $color);
+			}
+
+			if ($newState !== $lastState){
+				$lastX = $newX;
+			}
 			$lastState = $newState;
+			
 		}
 
 	}
