@@ -321,6 +321,13 @@ abstract class tx_caretaker_ChartRendererBase {
 			$times_minor = $this->getHalfdayTimestamps($this->startTimestamp,$this->endTimestamp );
 		}
 		// 1 day
+		else if ( $timerange >= 24*60*60*2 ){
+			$format = '%x';
+			$times_super = $this->getDayTimestamps($this->startTimestamp,$this->endTimestamp );
+			$times_major = $this->getHalfdayTimestamps($this->startTimestamp,$this->endTimestamp );
+			$times_minor = $this->getHourTimestamps($this->startTimestamp,$this->endTimestamp );
+		}
+		// 1 day
 		else if ( $timerange >= 24*60*60*1 ){
 			$format = '%x %H:%M';
 			$times_super = $this->getDayTimestamps($this->startTimestamp,$this->endTimestamp );
