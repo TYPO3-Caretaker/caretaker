@@ -80,12 +80,24 @@ abstract class tx_caretaker_ChartRendererBase {
 		$this->startTimestamp = $startTimestamp;
 	}
 
+	protected function getStartTimestamp (){
+		return $this->startTimestamp;
+	}
+	
 	protected function setEndTimestamp ($endTimestamp){
 		$this->endTimestamp = $endTimestamp;
 	}
 
+	protected function getEndTimestamp (){
+		return $this->endTimestamp;
+	}
+
 	protected function setMinValue( $minValue ){
 		$this->minValue = $minValue;
+	}
+
+	protected function getMinValue (){
+		return $this->minValue;
 	}
 
 	protected function setMaxValue( $maxValue ){
@@ -94,6 +106,10 @@ abstract class tx_caretaker_ChartRendererBase {
 			$maxValue ++;
 		}
 		$this->maxValue = $this->maxValue * 1.05;
+	}
+
+	protected function getMaxValue (){
+		return $this->maxValue;
 	}
 
 	public function setTitle( $title ){
@@ -293,6 +309,13 @@ abstract class tx_caretaker_ChartRendererBase {
 		}
 		// 7 days
 		else if  ( $timerange >= 24*60*60*7 ){
+			$format = '%x';
+			$times_super = $this->getMonthTimestamps($this->startTimestamp,$this->endTimestamp );
+			$times_major = $this->getWeekTimestamps($this->startTimestamp,$this->endTimestamp );
+			$times_minor = $this->getDayTimestamps($this->startTimestamp,$this->endTimestamp );
+		}
+		// 3 day
+		else if ( $timerange > 24*60*60*3 ){
 			$format = '%x';
 			$times_super = $this->getMonthTimestamps($this->startTimestamp,$this->endTimestamp );
 			$times_major = $this->getWeekTimestamps($this->startTimestamp,$this->endTimestamp );
