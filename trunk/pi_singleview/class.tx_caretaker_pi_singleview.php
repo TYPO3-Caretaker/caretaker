@@ -62,46 +62,42 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		
 		$data = parent::getNodeData($node);
 		
-		require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_ResultRangeRenderer_pChart.php');
-		
 		$range = 24;
 		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
 		
 		$id = $node->getCaretakerNodeID();
 		$result_range = $node->getTestResultRange(time()-3600*$range , time() );
 		$filename = 'typo3temp/caretaker/charts/'.$id.'_'.$range.'.png';
+		$filename2 = 'typo3temp/caretaker/charts/'.$id.'_'.$range.'.2.png';
 		$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
-
-		$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance($this->LOCAL_LANG, $this->LLkey);
 		
 		if (is_a($node, 'tx_caretaker_TestNode' ) ){
 			
 			$TestResultRangeChartRenderer = new tx_caretaker_TestResultRangeChartRenderer( );
 			$TestResultRangeChartRenderer->setTitle( $node->getTitle() );
-			$TestResultRangeChartRenderer->setTestResultrange( $result_range );
+			$TestResultRangeChartRenderer->setTestResultRange( $result_range );
 			$result = $TestResultRangeChartRenderer->getChartImageTag( $filename , $base);
 
 			if ($result){
 				$data['chart'] = $result;
 			} else {
-				$data['chart'] = '<strong>Graph 2 Error</strong>';
+				$data['chart'] = 'Graph Error';
 			}
 
 		} else  if (is_a( $node, 'tx_caretaker_AggregatorNode')){
-			
-			$result = $renderer->renderAggregatorResultRange(PATH_site.$filename, $result_range , $node->getTitle());
+
+			$TestResultRangeChartRenderer = new tx_caretaker_AggregatorResultRangeChartRenderer( );
+			$TestResultRangeChartRenderer->setTitle( $node->getTitle() );
+			$TestResultRangeChartRenderer->setAggregatorResultRange( $result_range );
+			$result = $TestResultRangeChartRenderer->getChartImageTag( $filename , $base);
 
 			if ($result){
-				$data['chart'] = '<img src="'.$base.$filename.'" />';
+				$data['chart'] = $result;
 			} else {
-				$data['chart'] = '<strong>Graph Error</strong>';
+				$data['chart'] = 'Graph Error';
 			}
-
+						
 		}	
-		
-		
-
-		
 		
 		$data['range'] = $range/24;
 		

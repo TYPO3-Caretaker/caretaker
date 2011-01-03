@@ -74,6 +74,8 @@ return array(
 		/* renderers */
 	'tx_caretaker_chartrendererbase'            => $caretakerExtPath.'classes/renderer/chart/class.tx_caretaker_ChartRendererBase.php',
 	'tx_caretaker_testresultrangechartrenderer' => $caretakerExtPath.'classes/renderer/chart/class.tx_caretaker_TestResultRangeChartRenderer.php',
+	'tx_caretaker_multipletestresultrangechartrenderer' => $caretakerExtPath.'classes/renderer/chart/class.tx_caretaker_MultipleTestResultRangeChartRenderer.php',
+	'tx_caretaker_aggregatorresultrangechartrenderer' => $caretakerExtPath.'classes/renderer/chart/class.tx_caretaker_AggregatorResultRangeChartRenderer.php',
 
 		/* services */
 	'tx_caretaker_testservicebase'	     => $caretakerExtPath.'classes/services/tests/class.tx_caretaker_TestServiceBase.php',

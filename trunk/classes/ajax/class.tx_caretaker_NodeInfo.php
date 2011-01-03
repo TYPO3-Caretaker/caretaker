@@ -234,8 +234,6 @@ class tx_caretaker_NodeInfo {
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
 		if ($node_id && $node = $node_repository->id2node($node_id, true) ){
 
-			require_once (t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_ResultRangeRenderer_pChart.php');
-
 			$result_range = $node->getTestResultRange($date_start , $date_stop);
 
 			if ( $result_range->count() ){
@@ -246,7 +244,7 @@ class tx_caretaker_NodeInfo {
 
 					$TestResultRangeChartRenderer = new tx_caretaker_TestResultRangeChartRenderer( );
 					$TestResultRangeChartRenderer->setTitle( $node->getTitle() );
-					$TestResultRangeChartRenderer->setTestResultrange( $result_range );
+					$TestResultRangeChartRenderer->setTestResultRange( $result_range );
 					$result = $TestResultRangeChartRenderer->getChartImageTag( $filename, $base_url );
 
 					if ($result){
@@ -254,11 +252,17 @@ class tx_caretaker_NodeInfo {
 					}
 					
 				} else  if (is_a( $node, 'tx_caretaker_AggregatorNode')){
-					
-					$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance();
-					if ($renderer->renderAggregatorResultRange(PATH_site.$filename, $result_range , $node->getTitle()) !== false) {
-						echo '<img src="'.$base_url.$filename.'?random='.rand().'" />';
+
+					$AggregatorResultRangeChartRenderer = new tx_caretaker_AggregatorResultRangeChartRenderer( );
+					$AggregatorResultRangeChartRenderer->setTitle( $node->getTitle() );
+					$AggregatorResultRangeChartRenderer->setAggregatorResultRange( $result_range );
+					$result = $AggregatorResultRangeChartRenderer->getChartImageTag( $filename, $base_url );
+
+					if ($result){
+						echo $result;
 					}
+
+				
 				}
 			} else {
 				echo 'not enough results';

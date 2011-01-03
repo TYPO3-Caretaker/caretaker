@@ -48,58 +48,159 @@
  */
 abstract class tx_caretaker_ChartRendererBase {
 
+	/**
+	 * width of the whole chart
+	 * @var integer
+	 */
 	protected $width  = 800;
+
+	/**
+	 * height of the whole chart
+	 * @var integer
+	 */
 	protected $height = 400;
 
+	/**
+	 * width of the chart area
+	 * @var integer
+	 */
 	protected $chartWidth;
+
+	/**
+	 * height of the chart area
+	 * @var integer
+	 */
 	protected $chartHeight;
 
+	/**
+	 * x scale factor
+	 * @var float
+	 */
 	protected $chartFactorX;
+
+	/**
+	 * y scale factor
+	 * @var float
+	 */
 	protected $chartFactorY;
 
+	/**
+	 * minimal Value
+	 * @var float
+	 */
 	protected $minValue;
+
+	/**
+	 * maximal Value
+	 * @var float
+	 */
 	protected $maxValue;
 
-	protected $startDate;
-	protected $stopDate;
+	/**
+	 * start timestamp
+	 * @var integer
+	 */
+	protected $startTimestamp;
 
+	/**
+	 * emd timestamp
+	 * @var integer
+	 */
+	protected $endTimestamp;
+
+	/**
+	 * Title
+	 * @var string
+	 */
 	protected $title;
 
+	/**
+	 * margin between charting area and border
+	 * @var integer
+	 */
 	protected $marginLeft   = 70;
+
+	/**
+	 * margin between charting area and border
+	 * @var integer
+	 */
 	protected $marginRight  = 150;
+
+	/**
+	 * margin between charting area and border
+	 * @var integer
+	 */
 	protected $marginTop    = 30;
-	protected $marginBottom = 70;
 
+	/**
+	 * margin between charting area and border
+	 * @var integer
+	 */
+	protected $marginBottom = 80;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param integer $width
+	 * @param integer $height
+	 */
 	public function __construct( $width = 800, $height = 400 ){
 		$this->width  = $width;
 		$this->height = $height;
 	}
 
+	/**
+	 * Set the start timestamp for the chart
+	 * @param integer $startTimestamp
+	 */
 	protected function setStartTimestamp( $startTimestamp ){
 		$this->startTimestamp = $startTimestamp;
 	}
 
+	/**
+	 * Get the start timestamp of the chart
+	 * @return integer
+	 */
 	protected function getStartTimestamp (){
 		return $this->startTimestamp;
 	}
-	
+
+	/**
+	 * Set the end timestamp of the chart
+	 * @param integer $endTimestamp
+	 */
 	protected function setEndTimestamp ($endTimestamp){
 		$this->endTimestamp = $endTimestamp;
 	}
 
+	/**
+	 * Get the end timestamp of the chart
+	 * @return integer
+	 */
 	protected function getEndTimestamp (){
 		return $this->endTimestamp;
 	}
 
+	/**
+	 * Set the minimum chart value
+	 * @param float $minValue
+	 */
 	protected function setMinValue( $minValue ){
 		$this->minValue = $minValue;
 	}
 
+	/**
+	 * Get the selected minimum chart value
+	 * @return <type>
+	 */
 	protected function getMinValue (){
 		return $this->minValue;
 	}
 
+	/**
+	 * Set the maximum chart value
+	 * @param float $maxValue
+	 */
 	protected function setMaxValue( $maxValue ){
 		$this->maxValue = $maxValue;
 		if ( $this->maxValue == 0){
@@ -108,25 +209,57 @@ abstract class tx_caretaker_ChartRendererBase {
 		$this->maxValue = $this->maxValue * 1.05;
 	}
 
+	/**
+	 * Get the selected maximum chart value
+	 * @return <type>
+	 */
 	protected function getMaxValue (){
 		return $this->maxValue;
 	}
 
+	/**
+	 * Set the title
+	 * @param string $title
+	 */
 	public function setTitle( $title ){
 		$this->title = $title;
 	}
-	
-	protected function initChartImage( &$image){
-		
+
+	/**
+	 * Get the title
+	 * @return string
+	 */
+	public function getTitle (){
+		return $this->title;
 	}
 
+	/**
+	 * Get the title to display in the chart.
+	 * @return string
+	 */
 	abstract protected function getChartTitle();
-	
+
+	/**
+	 * draw the chart-background into the given chart image
+	 * @param resource $image
+	 */
 	abstract protected function drawChartImageBackground( &$image );
 
+	/**
+	 * draw the chart-foreground into the given chart image
+	 * @param resource $image
+	 */
 	abstract protected function drawChartImageForeground( &$image );
 
+	/**
+	 * draw the chart-legend into the given chart image
+	 * @param resource $image
+	 */
+	abstract protected function drawChartImageLegend ( &$image );
 
+	/**
+	 * init the chart and calculate the scales
+	 */
 	protected function init(){
 		
 		// calculate chart Area
@@ -167,8 +300,6 @@ abstract class tx_caretaker_ChartRendererBase {
 		// create image of width and height
 		$image = imagecreatetruecolor ( $this->width ,  $this->height );
 
-		$this->initChartImage($image);
-		
 		// Make the background transparent
 		$background = imagecolorallocate($image,255,255,255);
 		imagefilledrectangle( $image, 0, 0, $this->width ,  $this->height, $background);
@@ -197,7 +328,7 @@ abstract class tx_caretaker_ChartRendererBase {
 		$this->drawChartImageForeground( $image );
 		
 		// combine with getChartImageLegend
-		$this->drawChartImageLegend( $image, $chartLegendColor );
+		$this->drawChartImageLegend( $image );
 
 		
 		// combine with getChartImageTitle
@@ -207,6 +338,11 @@ abstract class tx_caretaker_ChartRendererBase {
 		return $image;
 	}
 
+	/**
+	 * Get the chart image as a png file
+	 * @param string $filename
+	 * @return string filename of png file
+	 */
 	public function getChartImagePng( $filename ) {
 		$image = $this->getChartImage();
 		imagepng ( $image, PATH_site.$filename );
@@ -215,17 +351,23 @@ abstract class tx_caretaker_ChartRendererBase {
 	}
 
 	/**
-	 * write the chart image and return the appropriate image tag
+	 * Write the chart image and return the appropriate image tag
+	 * @param string $filename
+	 * @param string $baseUrl
+	 * @return string Image Tag
 	 */
 	public function getChartImageTag( $filename, $baseUrl = '' ) {
 		$imagePng = $this->getChartImagePng( $filename );
 		return '<img  src="' . $baseUrl . $imagePng . '" width="' . $this->width . '" height="' . $this->height . '" />';
 	}
 
-
-	
-
-	private function drawChartTitle( &$image, &$chartLegendColor, $title ){
+	/**
+	 * Draw the title of the chart
+	 * @param resource $image
+	 * @param <type> $chartLegendColor
+	 * @param <type> $title
+	 */
+	private function drawChartTitle( &$image, $title ){
 		$font  = t3lib_extMgm::extPath('caretaker').'/lib/Fonts/tahoma.ttf';
 		$size  = 9;
 		$angle = 0;
@@ -234,9 +376,8 @@ abstract class tx_caretaker_ChartRendererBase {
 		$TextWidth  = abs($Position[2])-abs($Position[0]);
 		$TextHeight = abs($Position[1])-abs($Position[3]);
 
-		$color = imagecolorallocate  ($image  ,255 ,1 ,1 );
-
-		imagettftext( $image, $size, $angle, $this->marginLeft + floor($this->chartWidth/2) - $TextWidth / 2, 20, $chartLegendColor, $font, $title);
+		$color = imagecolorallocate  ($image ,1 ,1 ,1 );
+		imagettftext( $image, $size, $angle, $this->marginLeft + floor($this->chartWidth/2) - $TextWidth / 2, 20, $color, $font, $title);
 
 	}
 
@@ -315,21 +456,20 @@ abstract class tx_caretaker_ChartRendererBase {
 		}
 		// 7 days
 		else if  ( $timerange >= 24*60*60*7 ){
-			$format = '%x';
 			$times_super = $this->getMonthTimestamps($this->startTimestamp,$this->endTimestamp );
 			$times_major = $this->getWeekTimestamps($this->startTimestamp,$this->endTimestamp );
-			$times_minor = $this->getHalfdayTimestamps($this->startTimestamp,$this->endTimestamp );
+			$times_minor = $this->getDayTimestamps($this->startTimestamp,$this->endTimestamp );
 		}
-		// 1 day
+		// 2 days
 		else if ( $timerange >= 24*60*60*2 ){
-			$format = '%x';
+			$format = '%x (%H)';
 			$times_super = $this->getDayTimestamps($this->startTimestamp,$this->endTimestamp );
 			$times_major = $this->getHalfdayTimestamps($this->startTimestamp,$this->endTimestamp );
 			$times_minor = $this->getHourTimestamps($this->startTimestamp,$this->endTimestamp );
 		}
 		// 1 day
 		else if ( $timerange >= 24*60*60*1 ){
-			$format = '%x %H:%M';
+			$format = '%H:%M';
 			$times_super = $this->getDayTimestamps($this->startTimestamp,$this->endTimestamp );
 			$times_major = $this->getHalfdayTimestamps($this->startTimestamp,$this->endTimestamp );
 			$times_minor = $this->getHourTimestamps($this->startTimestamp,$this->endTimestamp );
@@ -397,7 +537,11 @@ abstract class tx_caretaker_ChartRendererBase {
 	}
 
 
-	
+	/**
+	 * round a decimal value to show 2 significant numbers
+	 * @param <type> $value
+	 * @return <type>
+	 */
 
 	private function ceilDecimal($value){
 
@@ -427,7 +571,12 @@ abstract class tx_caretaker_ChartRendererBase {
 	}
 
 	
-
+	/**
+	 * Get all news-year timestamps in the given range
+	 * @param intger $min_timestamp
+	 * @param integer $max_timstamp
+	 * @return array
+	 */
 	private function getYearTimestamps($min_timestamp, $max_timstamp){
 		$result = array();
 		$startdate_info = getdate($min_timestamp);
@@ -439,6 +588,12 @@ abstract class tx_caretaker_ChartRendererBase {
 		return $result;
 	}
 
+	/**
+	 * Get all month yimestamps in the given range
+	 * @param intger $min_timestamp
+	 * @param integer $max_timstamp
+	 * @return array
+	 */
 	private function getMonthTimestamps($min_timestamp, $max_timstamp){
 		$result = array();
 		$startdate_info = getdate($min_timestamp);
@@ -451,6 +606,12 @@ abstract class tx_caretaker_ChartRendererBase {
 		return $result;
 	}
 
+	/**
+	 * Get all week(sunday noon) timestamps in the given range
+	 * @param intger $min_timestamp
+	 * @param integer $max_timstamp
+	 * @return array
+	 */
 	private function getWeekTimestamps($min_timestamp, $max_timstamp){
 		$result = array();
 		$startdate_info = getdate($min_timestamp);
@@ -465,6 +626,12 @@ abstract class tx_caretaker_ChartRendererBase {
 		return $result;
 	}
 
+	/**
+	 * Get all half day timestamps in the given range
+	 * @param intger $min_timestamp
+	 * @param integer $max_timstamp
+	 * @return array
+	 */
 	private function getHalfdayTimestamps($min_timestamp, $max_timstamp){
 		$result = array();
 		$startdate_info = getdate($min_timestamp);
@@ -479,6 +646,12 @@ abstract class tx_caretaker_ChartRendererBase {
 		return $result;
 	}
 
+	/**
+	 * Get all full day timestamps in the given range
+	 * @param intger $min_timestamp
+	 * @param integer $max_timstamp
+	 * @return array
+	 */
 	private function getDayTimestamps($min_timestamp, $max_timstamp){
 		$result = array();
 		$startdate_info = getdate($min_timestamp);
@@ -492,6 +665,12 @@ abstract class tx_caretaker_ChartRendererBase {
 		return $result;
 	}
 
+	/**
+	 * Get all quarter hour timestamps in the given range
+	 * @param intger $min_timestamp
+	 * @param integer $max_timstamp
+	 * @return array
+	 */
 	private function getQuarterTimestamps($min_timestamp, $max_timstamp){
 		$result = array();
 		$startdate_info = getdate($min_timestamp);
@@ -507,8 +686,12 @@ abstract class tx_caretaker_ChartRendererBase {
 		return $result;
 	}
 
-
-
+	/**
+	 * Get all full hour timestamps in the given range
+	 * @param intger $min_timestamp
+	 * @param integer $max_timstamp
+	 * @return array
+	 */
 	private function getHourTimestamps($min_timestamp, $max_timstamp){
 		$result = array();
 		$startdate_info = getdate($min_timestamp);
@@ -523,6 +706,32 @@ abstract class tx_caretaker_ChartRendererBase {
 		}
 		return $result;
 	}
+
+	/**
+	 * Get an color RBG Value for the given key
+	 *
+	 * @param string $key
+	 * @return array RGB integer
+	 */
+
+	protected function getColorRgbByKey ( $key = '' ){
+		switch ( strtoupper($key) ){
+			case "ERROR" :
+				return array( 255,   0,   0 );
+			case "WARNING" :
+				return array( 255, 255,   0 );
+			case "OK" :
+				return array(   0, 255,   0 );
+			case "DUE":
+				return array( 238, 130, 238 );
+			case "ACK" :
+				return array(   0,   0, 255 );
+			case "UNDEFINED" :
+			default:
+				return array( 100, 100, 100 );
+		}
+	}
+
 
 }
 ?>

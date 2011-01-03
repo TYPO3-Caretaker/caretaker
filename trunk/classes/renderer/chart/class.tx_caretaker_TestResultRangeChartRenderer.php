@@ -47,34 +47,36 @@
  */
 class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRendererBase {
 
+	/**
+	 * the test result range to render
+	 * @var tx_caretaker_TestResultRange
+	 */
 	var $testResultRange;
+
+	/**
+	 * information about the test result range
+	 * @var array
+	 */
 	var $testResultRangeInfos;
+
+	/**
+	 * median result value
+	 * @var float
+	 */
 	var $testResultRangeMedian;
+
+	/**
+	 * average result value
+	 * @var float
+	 */
 	var $testResultRangeAverage;
 
-	var $colorError;
-	var $colorWarning;
-	var $colorOk;
-	var $colorUndefined;
-	var $colorDue;
-	var $colorAck;
-
-	public function initChartImage ($image) {
-
-		$this->colorError     = imagecolorallocatealpha($image, 255, 0, 0, 100);
-		$this->colorWarning   = imagecolorallocatealpha($image, 255, 255, 0, 100);
-		$this->colorOk        = imagecolorallocatealpha($image, 0, 255, 0, 100);
-		$this->colorUndefined = imagecolorallocatealpha($image, 100, 100, 100, 100);
-		$this->colorDue       = imagecolorallocatealpha($image, 238,130,238, 100);
-		$this->colorAck       = imagecolorallocatealpha($image, 0,0,255, 100);
-		
-	}
-	
 	/**
-	 * 
+	 * Set the test result range
 	 * @param tx_caretaker_TestResultRange $testResultRange 
 	 */
-	public function setTestResultrange( tx_caretaker_TestResultRange $testResultRange ){
+	public function setTestResultRange( tx_caretaker_TestResultRange $testResultRange ){
+		
 		$this->testResultRange = $testResultRange;
 		$this->testResultRangeInfos   = $this->testResultRange->getInfos();
 		$this->testResultRangeMedian  = $this->testResultRange->getMedianValue();
@@ -89,6 +91,10 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 		$this->init();
 	}
 
+	/**
+	 * draw the chart-background into the given chart image
+	 * @param resource $image
+	 */
     protected function drawChartImageBackground( &$image ){
 		
 		$lastX     = NULL;
@@ -105,30 +111,31 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 			if( $lastX !== NULL ){
 				switch ( $lastState ){
 					case tx_caretaker_Constants::state_ok:
-						$color = $this->colorOk;
+						$colorRGB = $this->getColorRgbByKey("OK");
 						break;
 					case tx_caretaker_Constants::state_warning:
-						$color = $this->colorWarning;
+						$colorRGB = $this->getColorRgbByKey("WARNING");
 						break;
 					case tx_caretaker_Constants::state_error:
-						$color = $this->colorError;
+						$colorRGB = $this->getColorRgbByKey("ERROR");
 						break;
 					case tx_caretaker_Constants::state_due:
-						$color = $this->colorDue;
+						$colorRGB = $this->getColorRgbByKey("DUE");
 						break;
 					case tx_caretaker_Constants::state_ack:
-						$color = $this->colorAck;
+						$colorRGB = $this->getColorRgbByKey("ACK");
 						break;
 					default:
-						$color = $this->colorUndefined;
+						$colorRGB = $this->getColorRgbByKey("UNDEFINED");
 						break;
 				}
+				$backgroundColor =  imagecolorallocatealpha( $image, $colorRGB[0], $colorRGB[1], $colorRGB[2], 100 );
 			}
 			
 			$isLast = ( $step == $count );
 
-			if( $lastX !== NULL && $color && ($newState != $lastState || $isLast ) ){
-				imagefilledrectangle( $image, $lastX, $this->marginTop, $newX , $this->height-$this->marginBottom, $color);
+			if( $lastX !== NULL && $backgroundColor && ($newState != $lastState || $isLast ) ){
+				imagefilledrectangle( $image, $lastX, $this->marginTop, $newX , $this->height-$this->marginBottom, $backgroundColor);
 			}
 
 			if ($newState !== $lastState){
@@ -140,9 +147,15 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 
 	}
 
+	/**
+	 * draw the chart-foreground into the given chart image
+	 * @param resource $image
+	 */
 	protected function drawChartImageForeground( &$image ){
+
 		$lastX = NULL;
 		$lastY = NULL;
+
 		$color = imagecolorallocate($image, 0, 0, 255);
 
 		foreach ( $this->testResultRange as $testResult ){
@@ -159,6 +172,10 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 		
 	}
 
+	/**
+	 * Get the title to display in the chart.
+	 * @return string
+	 */
 	protected function getChartTitle (){
 		
 		$title = $this->title.' '.round(($this->testResultRangeInfos['PercentAVAILABLE']*100),2 )."% available" ;
@@ -168,32 +185,41 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 		return $title;		
 
 	}
-	
-	protected function drawChartImageLegend( &$image, &$chartLegendColor ){
+
+	/**
+	 * draw the chart-legend into the given chart image
+	 * @param resource $image
+	 */
+	protected function drawChartImageLegend( &$image ){
+
+		$chartLegendColor = imagecolorallocate( $image, 1, 1, 1 );
+		
 		$legendItems = array(
-			
-			array($this->colorOk,         $this->testResultRangeInfos['PercentOK'],        'OK'),
-			array($this->colorWarning,    $this->testResultRangeInfos['PercentWARNING'],   'Warning' ),
-			array($this->colorError,      $this->testResultRangeInfos['PercentERROR'],     'Error' ),
-			array($this->colorUndefined,  $this->testResultRangeInfos['PercentUNDEFINED'], 'Undefined'),
-			array($this->colorAck,        $this->testResultRangeInfos['PercentACK'],       'ACK'),
-			array($this->colorDue,        $this->testResultRangeInfos['PercentDUE'],       'DUE' ),
+			'OK'        => $this->testResultRangeInfos['PercentOK'],
+			'Warning'   => $this->testResultRangeInfos['PercentWARNING'],
+			'Error'     => $this->testResultRangeInfos['PercentERROR'],
+			'Undefined' => $this->testResultRangeInfos['PercentUNDEFINED'],
+			'ACK'       => $this->testResultRangeInfos['PercentACK'],
+			'DUE'       => $this->testResultRangeInfos['PercentDUE']
 		);
 
 		$offset = $this->marginTop + 10 ;
 
-		foreach (  $legendItems as $legendItem ){
-			
+		foreach (  $legendItems as $key => $value ){
+
+			$colorRGB  = $this->getColorRgbByKey( $key );
+			$itemColor = imagecolorallocate($image, $colorRGB[0], $colorRGB[1], $colorRGB[2] );
+
 			$x = $this->width - $this->marginRight + 20;
 			$y = $offset;
 
+			imagefilledrectangle( $image , $x-5,  $y-8, $x, $y-3, $itemColor );
 			imagerectangle (  $image ,  $x-5,  $y-8, $x, $y-3, $chartLegendColor);
-			imagefilledrectangle( $image , $x-5,  $y-8, $x, $y-3, $legendItem[0] );
 
 			$font  = t3lib_extMgm::extPath('caretaker').'/lib/Fonts/tahoma.ttf';
 			$size  = 9;
 			$angle = 0;
-			imagettftext( $image, $size, $angle, $x + 10, $y, $chartLegendColor, $font, $legendItem[2] );
+			imagettftext( $image, $size, $angle, $x + 10, $y, $chartLegendColor, $font, $key . ' ' . number_format( $value * 100 , 2  ). ' %' );
 			
 			$offset += 18;
 		}
@@ -201,6 +227,7 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 		
 	}
 
+	
 
 }
 ?>

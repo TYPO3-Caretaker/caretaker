@@ -27,8 +27,6 @@
  * @author	 <>
  */
 
-require_once(t3lib_extMgm::extPath('caretaker').'/classes/class.tx_caretaker_ResultRangeRenderer_pChart.php');
-
 class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 	var $prefixId = 'tx_caretaker_pi_graphreport';		// Same as class name
 	var $scriptRelPath = 'pi_graphreport/class.tx_caretaker_pi_graphreport.php';	// Path to this script relative to the extension dir.
@@ -64,7 +62,9 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 		
 		$nodes = $this->getNodes();
 		$titles = array();
+		
 		if (count($nodes)>0){
+
 			$content = '';
 			$result_ranges = array();
 			$id = '';
@@ -79,13 +79,22 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 			if (count($result_ranges)>0){
 				
 				$filename = 'typo3temp/caretaker/charts/report_'.$id.'_'.$range.'.png';
+				$base     = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+
+
+				$MultipleTestResultRangeChartRenderer = new tx_caretaker_MultipleTestResultRangeChartRenderer( );
+				$MultipleTestResultRangeChartRenderer->setTitle( $node->getTitle() );
+
+				foreach ($result_ranges as $key=>$range){
+					$MultipleTestResultRangeChartRenderer->addTestResultrange( $range, $titles[$key] );
+				}
 				
-				$renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance($this->LOCAL_LANG, $this->LLkey);
-				$result   = $renderer->renderMultipleTestResultRanges(PATH_site.$filename, $result_ranges, $titles );
-				
-				$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
-				
-				$data['chart'] = '<img src="'.$base.$filename.'" />';;
+				$result = $MultipleTestResultRangeChartRenderer->getChartImageTag( $filename , $base);
+				$data['chart'] = $result;
+
+				// $renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance($this->LOCAL_LANG, $this->LLkey);
+				// $result   = $renderer->renderMultipleTestResultRanges(PATH_site.$filename, $result_ranges, $titles );
+				// $data['chart'] .= '<img src="'.$base.$filename.'" />';;
 			} else {
 				$data['chart'] = 'please select one or more test-nodes';
 			}
