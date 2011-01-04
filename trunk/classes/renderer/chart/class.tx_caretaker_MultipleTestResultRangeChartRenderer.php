@@ -173,19 +173,16 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 	protected function getChartIndexColor( $index ){
 		
 		$chartColors = array(
-			array( 255 ,   0 ,   0 ),
-			array( 255 ,   0 , 255 ),
-			array(   0 ,   0 , 255 ),
-			array(   0 , 255 , 255 ),
-			array(   0 , 255 ,   0 ),
-			array( 255 , 255 ,   0 ),
-			array( 127 ,   0 ,   0 ),
-			array( 127 ,   0 , 127 ),
-			array(   0 ,   0 , 127 ),
-			array(   0 , 127 , 127 ),
-			array(   0 , 127 ,   0 ),
-			array( 127 , 127 ,   0 )
-
+			array( 248 , 139 ,   0 ),
+			array(   0 ,   0 , 248 ),
+			array( 248 ,   0 , 248 ),
+			array( 248 ,   0 ,   0 ),
+			array( 248 , 248 ,   0 ),
+			array(   0 , 248 ,   0 ),
+			array(   0 , 248 , 248 ),
+			array( 123 , 248 ,   0 ),
+			array( 135 ,   0 ,  72 ),
+			array( 102 , 135 ,   0 )
 		);
 
 		$colorCount = count( $chartColors ) ;
