@@ -299,7 +299,8 @@ abstract class tx_caretaker_ChartRendererBase {
 
 		// create image of width and height
 		$image = imagecreatetruecolor ( $this->width ,  $this->height );
-
+		imageantialias ( $image , true );
+		
 		// Make the background transparent
 		$background = imagecolorallocate($image,255,255,255);
 		imagefilledrectangle( $image, 0, 0, $this->width ,  $this->height, $background);
@@ -326,7 +327,7 @@ abstract class tx_caretaker_ChartRendererBase {
 
 		// combine with getChartImageForeground
 		$this->drawChartImageForeground( $image );
-		
+
 		// combine with getChartImageLegend
 		$this->drawChartImageLegend( $image );
 
