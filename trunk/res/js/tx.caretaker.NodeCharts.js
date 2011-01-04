@@ -34,8 +34,11 @@ tx.caretaker.NodeCharts = Ext.extend(Ext.Panel, {
 						title:'48 h',
 						autoLoad  : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + config.node_id + '&duration= ' +  (60*60*48)
 					},{
-						title:'7 Days',
+						title:'1 Week',
 						autoLoad  : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + config.node_id + '&duration= ' +  (60*60*24*7)
+					},{
+						title:'2 Weeks',
+						autoLoad  : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + config.node_id + '&duration= ' +  (60*60*24*14)
 					},{
 						title:'1 Month',
 						autoLoad  : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + config.node_id + '&duration= ' +  (60*60*24*31)
