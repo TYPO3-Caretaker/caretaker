@@ -332,7 +332,7 @@ abstract class tx_caretaker_ChartRendererBase {
 
 		
 		// combine with getChartImageTitle
-		$this->drawChartTitle( $image , $chartLegendColor, $this->getChartTitle() );
+		$this->drawChartTitle( $image , $this->getChartTitle() );
 		
 
 		return $image;
