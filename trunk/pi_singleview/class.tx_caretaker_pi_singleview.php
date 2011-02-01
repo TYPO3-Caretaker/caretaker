@@ -58,30 +58,41 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		return $node;
 	}
 	
-	function getNodeData($node){
+	function getNodeData( $node ){
 		
 		$data = parent::getNodeData($node);
+
+		$range = 24;
+		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
+		$data['range'] = $range/24;
+		
+		return $data;
+	}
+
+	function getNodeChart($node){
+
+		$chart = false;
 		
 		$range = 24;
 		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
-		
+
 		$id = $node->getCaretakerNodeID();
 		$result_range = $node->getTestResultRange(time()-3600*$range , time() );
 		$filename = 'typo3temp/caretaker/charts/'.$id.'_'.$range.'.png';
 		$filename2 = 'typo3temp/caretaker/charts/'.$id.'_'.$range.'.2.png';
 		$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
-		
+
 		if (is_a($node, 'tx_caretaker_TestNode' ) ){
-			
+
 			$TestResultRangeChartRenderer = new tx_caretaker_TestResultRangeChartRenderer( );
 			$TestResultRangeChartRenderer->setTitle( $node->getTitle() );
 			$TestResultRangeChartRenderer->setTestResultRange( $result_range );
 			$result = $TestResultRangeChartRenderer->getChartImageTag( $filename , $base);
 
 			if ($result){
-				$data['chart'] = $result;
+				$chart = $result;
 			} else {
-				$data['chart'] = 'Graph Error';
+				$chart = 'Graph Error';
 			}
 
 		} else  if (is_a( $node, 'tx_caretaker_AggregatorNode')){
@@ -92,16 +103,14 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 			$result = $TestResultRangeChartRenderer->getChartImageTag( $filename , $base);
 
 			if ($result){
-				$data['chart'] = $result;
+				$chart = $result;
 			} else {
-				$data['chart'] = 'Graph Error';
+				$chart = 'Graph Error';
 			}
-						
-		}	
-		
-		$data['range'] = $range/24;
-		
-		return $data;
+
+		}
+
+		return $chart;
 	}
 }
 

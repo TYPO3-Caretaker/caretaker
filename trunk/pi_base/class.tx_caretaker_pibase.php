@@ -67,7 +67,7 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		$rootline_node     = $node;
 		do{
 			$data  = $this->getNodeData($rootline_node);
-			$lcObj = t3lib_div::makeInstance('tslib_cObj');
+ 			$lcObj = t3lib_div::makeInstance('tslib_cObj');
 			$lcObj->start($data);
 			$node_markers = array();
 			if ($this->conf['rootlineMarkers.']) {
@@ -85,7 +85,8 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		$template =  $this->cObj->substituteSubpart($template,'###ROOTLINE###', implode('', $rootline_items) );
 
 			// render Node Infos
-		$data  = $this->getNodeData($node);
+		$data  = $this->getNodeData($node, true);
+		$data['chart'] = $this->getNodeChart($node);
 		$lcObj = t3lib_div::makeInstance('tslib_cObj');
 		$lcObj->start($data);
 		$node_markers = array();

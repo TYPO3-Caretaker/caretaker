@@ -153,23 +153,53 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 	 */
 	protected function drawChartImageForeground( &$image ){
 
+		$colorBg = imagecolorallocatealpha($image, 0, 0, 255, 100);
+		$color   = imagecolorallocate($image, 0, 0, 255);
+
+			
+
 		$lastX = NULL;
 		$lastY = NULL;
 
-		$color = imagecolorallocate($image, 0, 0, 255);
-
+		$bgPoints = array();
+		$feLines = array();
+		
 		foreach ( $this->testResultRange as $testResult ){
 			$newX = intval( $this->transformX( $testResult->getTimestamp() ) );
 			$newY = intval( $this->transformY( $testResult->getValue() ) );
 			if( $lastX !== NULL  ){
-				imageline ( $image , $lastX, $lastY, $newX, $lastY, $color );
-				imageline ( $image , $newX,  $lastY, $newX, $newY,  $color );
-			}
+					// bg
+				$bgPoints[] = $lastX;
+				$bgPoints[] = $lastY;
+				$bgPoints[] = $newX;
+				$bgPoints[] = $lastY;
+				$bgPoints[] = $newX;
+				$bgPoints[] = $newY;
 
+					// fe
+				$feLines[] = array($lastX,$lastY,$newX,$lastY);
+				$feLines[] = array($newX,$lastY,$newX,$newY);
+
+			}
 			$lastX = $newX;
 			$lastY = $newY;
 		}
 		
+		$bgPoints[] = intval( $this->transformX( $this->testResultRange->getLast()->getTimestamp() ) );
+		$bgPoints[] = intval( $this->transformY( 0 ) );
+		$bgPoints[] = intval( $this->transformX( $this->testResultRange->getFirst()->getTimestamp() ) );
+		$bgPoints[] = intval( $this->transformY( 0 ) );
+		
+			// draw filled chart background
+		if ( count($bgPoints) > 7 ){
+			imagefilledpolygon ($image, $bgPoints , count($bgPoints)/2 , $colorBg );
+		}
+			// draw line
+		if ( count($feLines) > 1 ){
+			foreach ($feLines as $line){
+				imageline ( $image , $line[0], $line[1], $line[2], $line[3],  $color );
+			}
+		}		
 	}
 
 	/**
