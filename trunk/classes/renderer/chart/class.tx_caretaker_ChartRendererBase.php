@@ -299,7 +299,7 @@ abstract class tx_caretaker_ChartRendererBase {
 
 		// create image of width and height
 		$image = imagecreatetruecolor ( $this->width ,  $this->height );
-		imageantialias ( $image , true );
+		// imageantialias ( $image , true );
 		
 		// Make the background transparent
 		$background = imagecolorallocate($image,255,255,255);
