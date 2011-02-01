@@ -138,6 +138,15 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		$data['link_parameters'] = '&tx_caretaker_pi_singleview[id]='.$node->getCaretakerNodeId() ;
 		return $data;
 	}
+
+	/**
+	 * Get the chart for the node. Has to be implemented in subclasses
+	 * @return string
+	 */
+	function getNodeChart(){
+		return false;
+	}
+
 	
 }
 	
