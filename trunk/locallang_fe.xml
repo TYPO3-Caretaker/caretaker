@@ -10,7 +10,7 @@
 			<label index="test">Test</label>
 			<label index="testgroup">Testgroup</label>
 			<label index="instance">Instance</label>
-			<label index="instancegroup">Instacegroup</label>
+			<label index="instancegroup">Instancegroup</label>
 
 			<label index="state">State</label>
 			<label index="lastRun">Date</label>
