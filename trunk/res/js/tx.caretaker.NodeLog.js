@@ -27,10 +27,9 @@ tx.caretaker.NodeLog = Ext.extend( Ext.grid.GridPanel , {
 		});
 
 		this.renderMessage = function(  value, metaData, record, rowIndex, colIndex, store ){
+			// var values = value.replace( /"/g , '&quot;' ).replace( /</g , '&lt;').replace( />/g , '&gt;').replace( /&/g , '&amp;' );
 
-			var values = value.replace( /"/g , '&quot;' ).replace( /</g , '&lt;').replace( />/g , '&gt;').replace( /&/g , '&amp;' );
-
-			var lines = values.split( "\n" );
+			var lines = value.split( "\n" );
 			var title = lines[0];
 			var message  = lines.splice( 1 ).join( '<br/>' );
 
