@@ -31,7 +31,7 @@
  * n@work GmbH - http://www.work.de
  * networkteam GmbH - http://www.networkteam.com/
  *
- * $Id: class.tx_caretaker_NodeInfo.php 41726 2011-01-03 12:16:11Z martoro $
+ * $Id$
  */
 
 require_once (t3lib_extMgm::extPath('caretaker').'classes/services/tests/class.tx_caretaker_pingTestService.php');

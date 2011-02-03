@@ -31,7 +31,7 @@
  * n@work GmbH - http://www.work.de
  * networkteam GmbH - http://www.networkteam.com/
  *
- * $Id: class.tx_caretaker_NodeInfo.php 41726 2011-01-03 12:16:11Z martoro $
+ * $Id$
  */
 
 class tx_caretaker_LocallizationHelper_testcase extends tx_phpunit_testcase  {
