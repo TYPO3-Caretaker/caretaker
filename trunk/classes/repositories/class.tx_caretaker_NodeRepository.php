@@ -217,11 +217,14 @@ class tx_caretaker_NodeRepository {
 		$hidden = '';
 		if (!$show_hidden) {
 			$hidden = ' AND hidden=0 ';
-		} 
+		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instancegroup', 'deleted=0'.$hidden);
 		$result = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
-			$result[] = $this->dbrow2instancegroup($row, $parent);
+			$item = $this->dbrow2instancegroup($row, $parent);
+			if ($item) {
+				$result[] = $item;
+			}
 		}
 		return $result;
 	}
@@ -265,7 +268,10 @@ class tx_caretaker_NodeRepository {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instancegroup', 'deleted=0 '.$hidden.' AND parent_group='.(int)$parent_group_uid);
 		$result = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
-			$result[] = $this->dbrow2instancegroup($row, $parent);
+			$item = $this->dbrow2instancegroup($row, $parent);
+			if($item) {
+				$result[] = $item;
+			}
 		} 
 		return $result;
 	}
@@ -281,7 +287,7 @@ class tx_caretaker_NodeRepository {
 		$hidden = '';
 		if (!$show_hidden) {
 			$hidden = ' AND hidden=0 ';
-		} 
+		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('parent_group', 'tx_caretaker_instancegroup', 'deleted=0 '.$hidden.' AND uid='.(int)$child_group_uid);
 		$result = array();
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
@@ -299,6 +305,13 @@ class tx_caretaker_NodeRepository {
 	 * @return tx_caretaker_InstancegroupNode
 	 */
 	private function dbrow2instancegroup($row, $parent){
+			// check access
+		if ( TYPO3_MODE == 'FE' ){
+			$result = $GLOBALS['TSFE']->sys_page->checkRecord( 'tx_caretaker_instancegroup' ,$row['uid'] );
+			if ( !$result ) {
+				return false;
+			}
+		}
 
 			// find parent node if it was not already handed over
 		if ($parent == false){
@@ -335,7 +348,10 @@ class tx_caretaker_NodeRepository {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instance', 'deleted=0 '.$hidden);
 		$result = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
-			$result[] = $this->dbrow2instance($row, $parent);
+			$item = $this->dbrow2instance($row, $parent);
+			if ($item){
+				$result[] = $item;
+			}
 		}
 		return $result;
 	}
@@ -375,7 +391,9 @@ class tx_caretaker_NodeRepository {
 		$result = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ){
 			$item = $this->getInstanceByUid($row['uid'], $parent, $show_hidden);
-			if ($item) $result[] = $item;
+			if ($item){
+				$result[] = $item;
+			}
 		}
 		return $result;
 	}
@@ -388,6 +406,14 @@ class tx_caretaker_NodeRepository {
 	 * @return tx_caretaker_InstanceNode
 	 */
 	private function dbrow2instance($row, $parent = false){
+
+			// check access
+		if ( TYPO3_MODE == 'FE' ){
+			$result = $GLOBALS['TSFE']->sys_page->checkRecord( 'tx_caretaker_instance' ,$row['uid'] );
+			if ( !$result ) {
+				return false;
+			}
+		}
 
 			// find parent node if it was not already handed over
 		if ($parent == false){

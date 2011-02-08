@@ -368,3 +368,10 @@ CREATE TABLE tx_caretaker_strategies (
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
+
+#
+# Table structure for table 'fe_users'
+#
+CREATE TABLE fe_users (
+	tx_caretaker_api_key text NOT NULL,
+);

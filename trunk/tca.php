@@ -86,12 +86,15 @@ $TCA['tx_caretaker_instancegroup'] = array (
             'config' => Array (
                 'type' => 'select',
                 'items' => Array (
-                    Array('', 0),
                     Array('LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login', -1),
                     Array('LLL:EXT:lang/locallang_general.xml:LGL.any_login', -2),
                     Array('LLL:EXT:lang/locallang_general.xml:LGL.usergroups', '--div--')
                 ),
-                'foreign_table' => 'fe_groups'
+                'exclusiveKeys' => '-1,-2',
+                'foreign_table' => 'fe_groups',
+				'foreign_table_where' => 'ORDER BY fe_groups.title',
+				'maxitems' => 20,
+				'size' => 7
             )
         ),
         'title' => Array (
@@ -165,15 +168,14 @@ $TCA['tx_caretaker_instancegroup'] = array (
 		)
     ),
 	'types' => array (
-		'0' => array('showitem' => 'hidden;;1;;1-1-1,title;;1;;1-1-1, parent_group;;;;2-2-2,' .
+		'0' => array('showitem' => 'title;;1;;1-1-1, parent_group;;;;2-2-2,' .
 					'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.description, description, ' .
 					'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.contacts, contacts, '.
-					'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.notifications, notification_strategies'
+					'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.notifications, notification_strategies, '.
+					'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.access, hidden, starttime, endtime, fe_group'
 		)
 	),
-	'palettes' => array (
-		'1' => array('showitem' => 'starttime,endtime,fe_group')
-	)
+	'palettes' => array ()
 );
 
 $TCA['tx_caretaker_instance'] = array (
@@ -226,12 +228,15 @@ $TCA['tx_caretaker_instance'] = array (
             'config' => Array (
                 'type' => 'select',
                 'items' => Array (
-                    Array('', 0),
                     Array('LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login', -1),
                     Array('LLL:EXT:lang/locallang_general.xml:LGL.any_login', -2),
                     Array('LLL:EXT:lang/locallang_general.xml:LGL.usergroups', '--div--')
                 ),
-                'foreign_table' => 'fe_groups'
+				'exclusiveKeys' => '-1,-2',
+                'foreign_table' => 'fe_groups',
+				'foreign_table_where' => 'ORDER BY fe_groups.title',
+				'maxitems' => 20,
+				'size' => 7
             )
         ),
         'title' => Array (
@@ -407,17 +412,16 @@ $TCA['tx_caretaker_instance'] = array (
 		)
 	),
 	'types' => array (
-		'0' => array('showitem' => 'hidden;;1, title;;;;2-2-2, instancegroup, url;;;;3-3-3, host, public_key,' .
+		'0' => array('showitem' => 'title;;;;2-2-2, instancegroup, url;;;;3-3-3, host, public_key,' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.description, description, ' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests, ' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.contacts, contacts, '.
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, notification_strategies, ' .
-			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.testconfigurations, testconfigurations '
+			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.testconfigurations, testconfigurations, '.
+			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.access, hidden, starttime, endtime, fe_group'
 		)
 	),
-	'palettes' => array (
-		'1' => array('showitem' => 'starttime,endtime,fe_group')
-	)
+	'palettes' => array ()
 );
 
 $TCA['tx_caretaker_node_address_mm'] = array (
