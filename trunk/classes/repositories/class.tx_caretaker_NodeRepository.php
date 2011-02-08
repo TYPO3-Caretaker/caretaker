@@ -307,7 +307,14 @@ class tx_caretaker_NodeRepository {
 	private function dbrow2instancegroup($row, $parent){
 			// check access
 		if ( TYPO3_MODE == 'FE' ){
-			$result = $GLOBALS['TSFE']->sys_page->checkRecord( 'tx_caretaker_instancegroup' ,$row['uid'] );
+
+			if ( $GLOBALS['TSFE']->sys_page) {
+				$result = $GLOBALS['TSFE']->sys_page->checkRecord( 'tx_caretaker_instancegroup' ,$row['uid'] );
+			} else {
+					// this has to be implemented here
+				$result = true;
+			}
+
 			if ( !$result ) {
 				return false;
 			}
@@ -409,7 +416,12 @@ class tx_caretaker_NodeRepository {
 
 			// check access
 		if ( TYPO3_MODE == 'FE' ){
-			$result = $GLOBALS['TSFE']->sys_page->checkRecord( 'tx_caretaker_instance' ,$row['uid'] );
+			if ( $GLOBALS['TSFE']->sys_page) {
+				$result = $GLOBALS['TSFE']->sys_page->checkRecord( 'tx_caretaker_instance' ,$row['uid'] );
+			} else {
+					// implement check in eID mode here
+				$result = true;
+			}
 			if ( !$result ) {
 				return false;
 			}
