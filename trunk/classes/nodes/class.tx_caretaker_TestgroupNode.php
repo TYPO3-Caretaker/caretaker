@@ -47,46 +47,37 @@
  * @subpackage caretaker
  */
 class tx_caretaker_TestgroupNode extends tx_caretaker_AggregatorNode {
-	
+
 	/**
-	 * Constructor 
-	 * 
+	 * Constructor
+	 *
 	 * @param integer $uid
 	 * @param string $title
 	 * @param tx_caretaker_AbstractNode $parent
 	 * @param boolean $hidden
 	 */
-	public function __construct($uid, $title, $parent, $hidden=0){
-		parent::__construct($uid, $title, $parent, tx_caretaker_Constants::table_Testgroups, tx_caretaker_Constants::nodeType_Testgroup, $hidden );
+	public function __construct($uid, $title, $parent, $hidden = 0) {
+		parent::__construct($uid, $title, $parent, tx_caretaker_Constants::table_Testgroups, tx_caretaker_Constants::nodeType_Testgroup, $hidden);
 	}
 
 	/**
 	 * Get the caretaker node id of this node
-	 * return string
+	 * @return string
 	 */
-	public function getCaretakerNodeId(){
+	public function getCaretakerNodeId() {
 		$instance = $this->getInstance();
-		return 'instance_'.$instance->getUid().'_testgroup_'.$this->getUid();
+		return 'instance_' . $instance->getUid() . '_testgroup_' . $this->getUid();
 	}
 
 	/**
 	 * (non-PHPdoc)
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AggregatorNode#findChildren()
 	 */
-	protected function findChildren ($show_hidden=false){
-		
-			// read subgroups
+	protected function findChildren($show_hidden = FALSE) {
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		$subgroups = $node_repository->getTestgroupsByParentGroupUid($this->uid, $this , $show_hidden );
-			// read instances
+		$subgroups = $node_repository->getTestgroupsByParentGroupUid($this->uid, $this, $show_hidden);
 		$tests = $node_repository->getTestsByGroupUid($this->uid, $this, $show_hidden);
-			// save
-		$children = array_merge($subgroups, $tests);
-		return $children;
+		return array_merge($subgroups, $tests);
 	}
-
-
-
 }
-
 ?>

@@ -84,7 +84,6 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @var integer
 	 */
 	protected $test_due = 0;
-	
 
 	/**
 	 * The test shall be executed only after this hour
@@ -98,7 +97,6 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 */
 	private $stop_hour  = false; 
 
-
 	/**
 	 * Constructor
 	 * 
@@ -108,19 +106,21 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @param string $service_type
 	 * @param string $service_configuration
 	 * @param integer $interval
+	 * @param integer $retry
+	 * @param integer $due
 	 * @param integer $start_hour
 	 * @param integer $stop_hour
 	 * @param boolean $hidden
 	 * @return tx_caretaker_TestNode
 	 */
-	public function __construct($uid, $title, $parent_node, $service_type, $service_configuration, $interval = 86400, $retry=0, $due=0, $start_hour=false, $stop_hour=false, $hidden=FALSE ){
+	public function __construct($uid, $title, $parent_node, $service_type, $service_configuration, $interval = 86400, $retry = 0, $due = 0, $start_hour = FALSE, $stop_hour = FALSE, $hidden = FALSE) {
 
 		// overwrite default test configuration
 		$configurationOverlay = $parent_node->getTestConfigurationOverlayForTestUid($uid);
 		if ($configurationOverlay) {
 			$service_configuration = $configurationOverlay;
 			if ($service_configuration['hidden']) {
-				$hidden = true;
+				$hidden = TRUE;
 			}
 		}
 
@@ -128,60 +128,62 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 			// create Test Service
 		if ($service_type){
-			$info = t3lib_extMgm::findService('caretaker_test_service', $service_type );
-			if ($info && $info['classFile'] ){
+			$info = t3lib_extMgm::findService('caretaker_test_service', $service_type);
+			if ($info && $info['classFile']) {
 				$requireFile = t3lib_div::getFileAbsFileName($info['classFile']);
 				if (@is_file($requireFile)) {
-					t3lib_div::requireOnce ($requireFile);
+					t3lib_div::requireOnce($requireFile);
 					$this->test_service = t3lib_div::makeInstance($info['className']);
 					if ($this->test_service) {
-						$this->test_service->setInstance( $this->getInstance() );
+						$this->test_service->setInstance($this->getInstance());
 						$this->test_service->setConfiguration($service_configuration);
 					} else {
-						throw new Exception('testservice class '.$info['className'].' could not be instanciated');
+						throw new Exception('testservice class ' . $info['className'] . ' could not be instantiated');
 					}
 				} else {
-					throw new Exception('testservice '.$service_type.' class file '.$requireFile.' not found');
+					throw new Exception('testservice ' . $service_type . ' class file ' . $requireFile . ' not found');
 				}
 			} else {
-				throw new Exception('caretaker testservice '.$service_type.' not found');
+				throw new Exception('caretaker testservice ' . $service_type . ' not found');
 			}
 		}
 		$this->test_service_type = $service_type;
 		$this->test_service_configuration = $service_configuration;
 		$this->test_interval = $interval;
-		$this->test_retry    = $retry;
-		$this->test_due      = $due;
-		$this->start_hour    = $start_hour;
-		$this->stop_hour     = $stop_hour;
-		
+		$this->test_retry = $retry;
+		$this->test_due = $due;
+		$this->start_hour = $start_hour;
+		$this->stop_hour = $stop_hour;
 	}
 
 	/**
 	 * Get the caretaker node id of this node
-	 * return string
+	 *
+	 * @return string
 	 */
-	public function getCaretakerNodeId(){
+	public function getCaretakerNodeId() {
 		$instance = $this->getInstance();
-		return 'instance_'.$instance->getUid().'_test_'.$this->getUid();
+		return 'instance_' . $instance->getUid() . '_test_' . $this->getUid();
 	}
 
 	/**
 	 * Get the description of the Testsevice
+	 *
 	 * @return string
 	 */
-	public function getTypeDescription(){
-		if ( $this->test_service ) {
+	public function getTypeDescription() {
+		if ($this->test_service) {
 			return $this->test_service->getTypeDescription();
 		}
 	}
 
 	/**
 	 * Get the description of the Testsevice
+	 *
 	 * @return string
 	 */
 	public function getConfigurationInfo(){
-		if ( $this->test_service ) {
+		if ($this->test_service) {
 			$configurationInfo = $this->test_service->getConfigurationInfo();
 			if (is_array($this->test_service_configuration['overwritten_in'])) {
 				$configurationInfo .= ' (overwritten in ' .
@@ -195,13 +197,16 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		}
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getHiddenInfo(){
 		$hiddenInfo = parent::getHiddenInfo();
-		if ( $this->test_service ) {
+		if ($this->test_service) {
 			if (is_array($this->test_service_configuration['overwritten_in'])
-			 && $this->test_service_configuration['hidden']) {
+					&& $this->test_service_configuration['hidden']) {
 				$hiddenInfo .= ' (hidden in ' .
-					'<span title=" '.
+					'<span title=" ' .
 					$this->test_service_configuration['overwritten_in']['id'] .
 					'">' .
 					$this->test_service_configuration['overwritten_in']['title'] .
@@ -211,9 +216,9 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		return $hiddenInfo;
 	}
 
-
 	/**
-	 * Get the Test Interval 
+	 * Get the Test Interval
+	 *
 	 * @return unknown_type
 	 */
 	public function getInterval(){
@@ -222,6 +227,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	
 	/**
 	 * Get the test start hour
+	 *
 	 * @return unknown_type
 	 */
 	public function getStartHour(){
@@ -230,6 +236,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	
 	/**
 	 * Get the test stop hour
+	 *
 	 * @return unknown_type
 	 */
 	public function getStopHour(){
@@ -237,62 +244,59 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	}
 	
 	/**
-	 * set the testnode into acknoledeged State
-	 * @param integer $seconds duration of sceduled work
-	 * @param string $message the message for the caretaker system
+	 * Set the testnode into acknowledged State
+	 * 
+	 * @return void
 	 */
-	public function setModeAck( ){
-		
+	public function setModeAck() {
 		$info = array(
-			'username'   => 'unkown',
-			'realName'   => 'unkown',
-			'email'      => 'unkown'
+			'username' => 'unkown',
+			'realName' => 'unkown',
+			'email' => 'unkown'
 		);
-		
-		if ( TYPO3_MODE=="BE" ){
+		if (TYPO3_MODE=="BE"){
 			$info['username'] = $GLOBALS['BE_USER']->user['username'];
 			$info['realName'] = $GLOBALS['BE_USER']->user['realName'];
-			$info['email']    = $GLOBALS['BE_USER']->user['email'];
+			$info['email'] = $GLOBALS['BE_USER']->user['email'];
 		}
 
-		$resultRepository  = tx_caretaker_TestResultRepository::getInstance();
-		$latestTestResult = $resultRepository->getLatestByNode( $this );
-		
-		$message = new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:message_ack', $info  );
-		$result = tx_caretaker_TestResult::create( tx_caretaker_Constants::state_ack, 0 , $message );
-		$resultRepository->saveTestResultForNode( $this, $result );
-		
-		$this->notify( 'updatedTestResult', $result, $latestTestResult );
-		
+		$resultRepository = tx_caretaker_TestResultRepository::getInstance();
+		$latestTestResult = $resultRepository->getLatestByNode($this);
+
+		$message = new tx_caretaker_ResultMessage('LLL:EXT:caretaker/locallang_fe.xml:message_ack', $info);
+		$result = tx_caretaker_TestResult::create(tx_caretaker_Constants::state_ack, 0, $message);
+		$resultRepository->saveTestResultForNode($this, $result);
+
+		$this->notify('updatedTestResult', $result, $latestTestResult);
 		return $result;
 	}
 	
 	/**
-	 * end the wip state by running a forced update
+	 * End the wip state by running a forced update
+	 * 
+	 * @return void
 	 */
 	public function setModeDue(){
-		
 		$info = array(
-			'username'   => 'unkown',
-			'realName'   => 'unkown',
-			'email'      => 'unkown'
+			'username' => 'unkown',
+			'realName' => 'unkown',
+			'email' => 'unkown'
 		);
-		
-		if ( TYPO3_MODE=="BE" ){
+		if (TYPO3_MODE=="BE") {
 			$info['username'] = $GLOBALS['BE_USER']->user['username'];
 			$info['realName'] = $GLOBALS['BE_USER']->user['realName'];
-			$info['email']    = $GLOBALS['BE_USER']->user['email'];
+			$info['email'] = $GLOBALS['BE_USER']->user['email'];
 		}
 
-		$resultRepository  = tx_caretaker_TestResultRepository::getInstance();
-		$latestTestResult = $resultRepository->getLatestByNode( $this );
+		$resultRepository = tx_caretaker_TestResultRepository::getInstance();
+		$latestTestResult = $resultRepository->getLatestByNode($this);
 		
-		$message = new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:message_due', $info  );
-		$result = tx_caretaker_TestResult::create( tx_caretaker_Constants::state_due, 0 , $message );
-		$resultRepository->saveTestResultForNode( $this, $result );
-		
-		$this->notify( 'updatedTestResult', $result, $latestTestResult );
-		
+		$message = new tx_caretaker_ResultMessage('LLL:EXT:caretaker/locallang_fe.xml:message_due', $info);
+		$result = tx_caretaker_TestResult::create(tx_caretaker_Constants::state_due, 0, $message);
+		$resultRepository->saveTestResultForNode($this, $result);
+
+		$this->notify('updatedTestResult', $result, $latestTestResult);
+
 		return $result;
 	}
 	
@@ -304,135 +308,119 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @param boolean $force_update Force update of this test
 	 * @return tx_caretaker_NodeResult
 	 */
-	public function updateTestResult($force_update = false){
-		
-			// is node hidden
-		if ( $this->getHidden() == true ){
+	public function updateTestResult($force_update = FALSE){
+		if ($this->getHidden()){
 			$result = tx_caretaker_TestResult::undefined('Node is disabled');
-			$this->notify( 'disabledTestResult' , $result );
+			$this->notify('disabledTestResult', $result );
 			return $result;
 		}
 
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$latestTestResult = $test_result_repository->getLatestByNode( $this );
-		$returnLatestResult = false;
-		 	
-			// check cache and return
-		if ( !$force_update ){
-			
-			if ( $latestTestResult ) {
+		$latestTestResult = $test_result_repository->getLatestByNode($this);
+		$returnLatestResult = FALSE;
+
+		if (!$force_update){
+			if ($latestTestResult) {
 					// test is not in due state so retry
-				switch ( $latestTestResult->getState()  ){
-					case tx_caretaker_Constants::state_due : 
-						$returnLatestResult = false;
+				switch ($latestTestResult->getState()) {
+					case tx_caretaker_Constants::state_due:
+						$returnLatestResult = FALSE;
 						break;
-					case tx_caretaker_Constants::state_ack : 
-						$returnLatestResult = true;
+					case tx_caretaker_Constants::state_ack:
+						$returnLatestResult = TRUE;
 						break;
-					case tx_caretaker_Constants::state_ok :
-						if ( $latestTestResult->getTstamp() > time()-$this->test_interval ){
-							$returnLatestResult = true;
+					case tx_caretaker_Constants::state_ok:
+						if ($latestTestResult->getTstamp() > (time() - $this->test_interval)) {
+							$returnLatestResult = TRUE;
 						}
 						break;
-					case tx_caretaker_Constants::state_undefined :
-					case tx_caretaker_Constants::state_warning :
-					case tx_caretaker_Constants::state_error :
-							// if due mode is 1 retry
-						if ( $this->test_due == 1 ){
-							$returnLatestResult = false;
-						}
-							// handle interval 
-						else if ( $latestTestResult->getTstamp() > time()-$this->test_interval ){
-							$returnLatestResult = true;
+					case tx_caretaker_Constants::state_undefined:
+					case tx_caretaker_Constants::state_warning:
+					case tx_caretaker_Constants::state_error:
+							// if due mode is 1 than retry
+						if ($this->test_due == 1){
+							$returnLatestResult = FALSE;
+						} else if ($latestTestResult->getTstamp() > (time() - $this->test_interval)) {
+							$returnLatestResult = TRUE;
 						}
 						break;
 				}
 			}
-		
+
 				// test should not run this hour 
-			if ( $returnLatestResult == false && ( $this->start_hour > 0 || $this->stop_hour > 0 ) ) {
-				$local_time = localtime(time(), true);
+			if (!$returnLatestResult && ($this->start_hour > 0 || $this->stop_hour > 0)) {
+				$local_time = localtime(time(), TRUE);
 				$local_hour = $local_time['tm_hour'];
 				if ($local_hour < $this->start_hour || $local_hour >= $this->stop_hour ){
-					$returnLatestResult = true;
+					$returnLatestResult = TRUE;
 				}
 			}
 		}
 
 			// return the cached result
-		if ($returnLatestResult){ 
-			$this->notify( 'cachedTestResult', $latestTestResult );
-			return $latestTestResult;
-		}		
-		
-			// else check wether the test can be executed
-		if($this->test_service && $this->test_service->isExecutable()) {
-			
-				// try to execute test
-			try {
-				$result = $this->test_service->runTest();
-			} catch ( Exception $e ) {
-				$result = tx_caretaker_TestResult::create( tx_caretaker_Constants::state_error , 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}'.$e->getMessage  );
-			}
-			
-				// retry if not ok and retrying is enabled
-			if ($result->getState() != 0 && $this->test_retry > 0){
-				$round = 0;
-				sleep(1);
-				while ( $round < $this->test_retry && $result->getState() != 0 ){
-					try {
-						$result = $this->test_service->runTest();
-					} catch ( Exception $e ) {
-						$result = tx_caretaker_TestResult::create( tx_caretaker_Constants::state_error , 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}'.$e->getMessage  );
-					}
-					$round ++;
-				}
-				$result->addSubMessage( new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:retry_info' , array( 'number'=>$round )  ) );
-			}
-
-				// save to repository after reading the previous result
-			$resultRepository  = tx_caretaker_TestResultRepository::getInstance();
-			$resultRepository->saveTestResultForNode( $this, $result );
-			
-				// trigger notification
-			$this->notify( 'updatedTestResult', $result, $latestTestResult );
-			
-			return $result;
-			
-		} else {
-			$result->addSubMessage( new tx_caretaker_ResultMessage( 'test service was not excutable this time so the cached result is used' ) );
-			$this->notify( 'cachedTestResult', $result, $lastTestResult );
+		if ($returnLatestResult) {
+			$this->notify('cachedTestResult', $latestTestResult);
 			return $latestTestResult;
 		}
 		
-		
-		
-	}
-	
+			// else check weather the test can be executed
+		if ($this->test_service && $this->test_service->isExecutable()) {
+			try {
+				$result = $this->test_service->runTest();
+			} catch ( Exception $e ) {
+				$result = tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}' . $e->getMessage);
+			}
 
+				// retry if not ok and retrying is enabled
+			if ($result->getState() != 0 && $this->test_retry > 0) {
+				$round = 0;
+				while ($round < $this->test_retry && $result->getState() != 0) {
+						// TODO make sleep time between retry configurable
+					sleep(1);
+					try {
+						$result = $this->test_service->runTest();
+					} catch ( Exception $e ) {
+						$result = tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}' . $e->getMessage);
+					}
+					$round++;
+				}
+				$result->addSubMessage(new tx_caretaker_ResultMessage('LLL:EXT:caretaker/locallang_fe.xml:retry_info', array('number' => $round)));
+			}
+
+				// save to repository after reading the previous result
+			$resultRepository = tx_caretaker_TestResultRepository::getInstance();
+			$resultRepository->saveTestResultForNode($this, $result);
+
+				// trigger notification
+			$this->notify('updatedTestResult', $result, $latestTestResult);
+			return $result;
+		} else {
+			$result = tx_caretaker_TestResult::undefined();
+			$result->addSubMessage( new tx_caretaker_ResultMessage('test service was not executable this time so the cached result is used'));
+			$this->notify('cachedTestResult', $result, $latestTestResult);
+			return $latestTestResult;
+		}
+	}
 
 	/**
-	 * Get the all tests wich can be found below this node
+	 * Get the all tests which can be found below this node
 	 * @return array
 	 * @deprecated This should be only necessary for aggregator nodes
 	 */
 	public function getTestNodes(){
 		return array($this);
 	}
-	
 
 	/**
 	 * Get the Value Description for this test
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getValueDescription()
 	 */
 	public function getValueDescription() {
-		
-		$test_service = t3lib_div::makeInstanceService('caretaker_test_service',$this->test_service_type);
-		
+		$test_service = t3lib_div::makeInstanceService('caretaker_test_service', $this->test_service_type);
 		if ($test_service){
 			return $test_service->getValueDescription();
 		} else {
-			return 'unknown service '.$this->test_service_type;
+			return 'unknown service ' . $this->test_service_type;
 		}
 	}
 
@@ -440,10 +428,10 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * Get the current Test Result from Cache
 	 *
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResult()
+	 * @return tx_caretaker_TestResult
 	 */
 	public function getTestResult(){
-
-		if ( $this->getHidden() == true ){
+		if ($this->getHidden()){
 			$result = tx_caretaker_TestResult::undefined('Node is disabled');
 			return $result;
 		}
@@ -459,23 +447,24 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 *
 	 * @return integer
 	 */
-	public function getTestResultNumber(){
-		$instance  = $this->getInstance();
+	public function getTestResultNumber() {
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$resultNumber = $test_result_repository->getResultNumberByNode( $this );
+		$resultNumber = $test_result_repository->getResultNumberByNode($this);
 		return $resultNumber;
 	}
 	
 	/**
-	 * Get the TestResultRange for the given Timerange
+	 * Get the TestResultRange for the given time range
 	 * 
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
-	 * @param $graph True by default. Used in the resultrange repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
+	 * @param int $start_timestamp
+	 * @param int $stop_timestamp
+	 * @param boolean $graph True by default. Used in the result range repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
+	 * @return tx_caretaker_TestResultRange
 	 */
-	public function getTestResultRange($start_timestamp, $stop_timestamp, $graph = true){
-		$instance  = $this->getInstance();
+	public function getTestResultRange($start_timestamp, $stop_timestamp, $graph = TRUE) {
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$resultRange = $test_result_repository->getRangeByNode( $this, $start_timestamp, $stop_timestamp, $graph );
+		$resultRange = $test_result_repository->getRangeByNode($this, $start_timestamp, $stop_timestamp, $graph);
 		return $resultRange;
 	}
 
@@ -483,17 +472,14 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * Get the TestResultRange for the Offset and Limit
 	 *
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
-	 * @param $graph True by default. Used in the resultrange repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
+	 * @param int $offset
+	 * @param boolean $graph True by default. Used in the result range repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
+	 * @return tx_caretaker_TestResultRange
 	 */
-	public function getTestResultRangeByOffset($offset=0, $limit=10){
-		$instance  = $this->getInstance();
+	public function getTestResultRangeByOffset($offset = 0, $limit = 10) {
 		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$resultRange = $test_result_repository->getResultRangeByNodeAndOffset( $this, $offset, $limit );
+		$resultRange = $test_result_repository->getResultRangeByNodeAndOffset($this, $offset, $limit);
 		return $resultRange;
 	}
-
-
-
-	
 }
 ?>

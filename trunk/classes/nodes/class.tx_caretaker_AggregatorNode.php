@@ -55,64 +55,60 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 	protected $child_nodes = NULL;
 
 	/**
-	 * Get the Childnodes of this Node (cached)
-	 * @param $show_hidden
-	 * @return unknown_type
+	 * Get the child nodes of this Node (cached)
+	 * @param boolean $show_hidden
+	 * @return array
 	 */
-	public function getChildren($show_hidden=false){
-		if ($this->child_nodes === NULL){
+	public function getChildren($show_hidden = FALSE) {
+		if ($this->child_nodes === NULL) {
 			$this->child_nodes = $this->findChildren($show_hidden);
 		}
 		return $this->child_nodes;
 	}
-	
+
 	/**
 	 * Find the children of this node
-	 *  
+	 *
 	 * @param $hidden
 	 * @return array
 	 */
-	abstract protected function findChildren($show_hidden=false);
-	
+	abstract protected function findChildren($show_hidden = FALSE);
+
 	/**
-	 * Update Node Result and store in DB. 
-	 * 
+	 * Update Node Result and store in DB.
+	 *
 	 * If force is set children will also be forced to update their state.
-	 * 
-	 * @param boolean Force update 
+	 *
+	 * @param boolean Force update
 	 * @return tx_caretaker_AggregatorResult
 	 */
-	public function updateTestResult( $force_update = false){
+	public function updateTestResult($force_update = FALSE) {
+		$this->notify('updateAggregatorNode');
 
-		$this->notify( 'updateAggregatorNode' );
-
-		if ( $this->getHidden() == true ){
+		if ($this->getHidden() == true) {
 			$groupResult = tx_caretaker_AggregatorResult::undefined('Node is disabled');
 		} else {
-				// find children
-			$children  = $this->getChildren();
-			if (count($children)>0){
+			// find children
+			$children = $this->getChildren();
+			if (count($children) > 0) {
 				$testResults = array();
-				foreach($children as $child){
+				foreach ($children as $child) {
 					$testResult = $child->updateTestResult($force_update);
-					$testResults[] = array('node'=>$child, 'result'=>$testResult);
+					$testResults[] = array('node' => $child, 'result' => $testResult);
 				}
 				$groupResult = $this->getAggregatedResult($testResults);
 			} else {
-				
-				$groupResult = tx_caretaker_AggregatorResult::undefined( 'No children were found');
+
+				$groupResult = tx_caretaker_AggregatorResult::undefined('No children were found');
 			}
-				// save to repository if the result differs from the last one
+			// save to repository if the result differs from the last one
 			$resultRepository = tx_caretaker_AggregatorResultRepository::getInstance();
 			$lastGroupResult = $resultRepository->getLatestByNode($this);
-			if ($lastGroupResult->isDifferent($groupResult) ){
-				$resultRepository->addNodeResult($this,$groupResult);
+			if ($lastGroupResult->isDifferent($groupResult)) {
+				$resultRepository->addNodeResult($this, $groupResult);
 			}
-			
 		}
-
-		$this->notify( 'updateAggregatorNode' , $groupResult, $lastGroupResult);
-		
+		$this->notify('updateAggregatorNode', $groupResult, $lastGroupResult);
 		return $groupResult;
 	}
 
@@ -120,106 +116,99 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 	 * Read aggregator node state from DB
 	 * @return tx_caretaker_AggregatorResult
 	 */
-	public function getTestResult(){
-
-		if ( $this->getHidden() == true ){
+	public function getTestResult() {
+		if ($this->getHidden()) {
 			$group_result = tx_caretaker_AggregatorResult::undefined('Node is disabled');
 		} else {
 			$result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
 			$group_result = $result_repository->getLatestByNode($this);
 		}
-		
 		return $group_result;
-		
 	}
 
 	/**
 	 * Get the all tests wich can be found below this node
 	 * @return array
 	 */
-	public function getTestNodes(){
-		
-		$children  = $this->getChildren();
-		$tests     = array();
-		
-		if (count($children)>0){
-			foreach($children as $child){
-				if (is_a( $child , 'tx_caretaker_TestNode' ) ) {
-					$tests[ $child->getCaretakerNodeId() ] = $child;
-				} else if ( is_a( $child , 'tx_caretaker_AggregatorNode' ) ) {
-					$tests = array_merge($child->getTestNodes(), $tests );
+	public function getTestNodes() {
+		$children = $this->getChildren();
+		$tests = array();
+		if (count($children) > 0) {
+			foreach ($children as $child) {
+				if (is_a($child, 'tx_caretaker_TestNode')) {
+					$tests[$child->getCaretakerNodeId()] = $child;
+				} else if (is_a($child, 'tx_caretaker_AggregatorNode')) {
+					$tests = array_merge($child->getTestNodes(), $tests);
 				}
 			}
 		}
 
 		return $tests;
 	}
-	
+
 	/**
-	 * (non-PHPdoc)
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
+	 * @param  $startdate
+	 * @param  $stopdate
+	 * @param bool $distance
+	 * @return tx_caretaker_TestResultRange
 	 */
-	public function getTestResultRange($startdate, $stopdate , $distance=FALSE){
-		
+	public function getTestResultRange($startdate, $stopdate, $distance = FALSE) {
 		$result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
 		$group_results = $result_repository->getRangeByNode($this, $startdate, $stopdate);
 		return $group_results;
-		
+
 	}
-	
+
 	/**
 	 * Aggregate Child-Testresults
-	 * 
-	 * @param tx_caretaker_NodeResult[] Child-Results to aggregate
+	 *
+	 * @param array<tx_caretaker_NodeResult> $test_results Child-Results to aggregate
 	 * @return tx_caretaker_AggregatorResult Aggregated State
 	 */
-	protected function getAggregatedResult($test_results){
-		
+	protected function getAggregatedResult($test_results) {
 		$num_tests = count($test_results);
-		
 		$num_undefined = 0;
-		$num_ok        = 0;
-		$num_warnings  = 0;
-		$num_errors	   = 0;
-		$num_due	   = 0;
-		$num_ack	   = 0;
-		
+		$num_ok = 0;
+		$num_warnings = 0;
+		$num_errors = 0;
+		$num_due = 0;
+		$num_ack = 0;
 		$childnode_titles_undefined = array();
-		$childnode_titles_ok        = array();
-		$childnode_titles_warning   = array();
-		$childnode_titles_error     = array();
-		$childnode_titles_ack       = array();
-		$childnode_titles_due       = array();
-		
+		$childnode_titles_ok = array();
+		$childnode_titles_warning = array();
+		$childnode_titles_error = array();
+		$childnode_titles_ack = array();
+		$childnode_titles_due = array();
 
-		if ( is_array( $test_results ) ) {
-			foreach( $test_results as $test_result ){
-				switch ( $test_result['result']->getState() ){
+		if (is_array($test_results)) {
+			foreach ($test_results as $test_result) {
+				switch ($test_result['result']->getState()) {
 					default:
 					case tx_caretaker_Constants::state_undefined:
-						$num_undefined ++;
+						$num_undefined++;
 						$childnode_titles_undefined[] = $test_result['node']->getTitle();
 						break;
 					case tx_caretaker_Constants::state_ack:
-						$num_ack ++;
-						$num_undefined ++;
+						$num_ack++;
+						$num_undefined++;
 						$childnode_titles_ack[] = $test_result['node']->getTitle();
-						break;	
+						break;
 					case tx_caretaker_Constants::state_due:
-						$num_due ++;
-						$num_undefined ++;
+						$num_due++;
+						$num_undefined++;
 						$childnode_titles_due[] = $test_result['node']->getTitle();
 						break;
 					case tx_caretaker_Constants::state_ok:
-						$num_ok ++;
+						$num_ok++;
 						$childnode_titles_ok[] = $test_result['node']->getTitle();
 						break;
 					case tx_caretaker_Constants::state_warning:
-						$num_warnings ++;
+						$num_warnings++;
 						$childnode_titles_warning[] = $test_result['node']->getTitle();
 						break;
 					case tx_caretaker_Constants::state_error:
-						$num_errors ++;
+						$num_errors++;
 						$childnode_titles_error[] = $test_result['node']->getTitle();
 						break;
 				}
@@ -227,119 +216,121 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		}
 
 		$values = array(
-			'num_tests'=>$num_tests,
-			'num_ok'=>$num_ok,
-			'num_warning'=>$num_warnings,
-			'num_error'=>$num_errors,
-			'num_undefined'=>$num_undefined,
-			'num_ack'=>$num_undefined,
-			'num_due'=>$num_undefined
+			'num_tests' => $num_tests,
+			'num_ok' => $num_ok,
+			'num_warning' => $num_warnings,
+			'num_error' => $num_errors,
+			'num_undefined' => $num_undefined,
+			'num_ack' => $num_undefined,
+			'num_due' => $num_undefined
 		);
 
-		$message = new tx_caretaker_ResultMessage( 
+		$message = new tx_caretaker_ResultMessage(
 			'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_message',
 			$values
 		);
 
-			// create Submessages
+		// create Submessages
 		$submessages = array();
-		
-		if ($num_errors > 0){
-			foreach ($childnode_titles_error as $childTitle){
+
+		if ($num_errors > 0) {
+			foreach ($childnode_titles_error as $childTitle) {
 				$submessages[] = new tx_caretaker_ResultMessage(
 					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_error',
-					array('title'=>$childTitle)
+					array('title' => $childTitle)
 				);
 			}
 		}
 
-		if ($num_warnings > 0){
-			foreach ($childnode_titles_warning as $childTitle){
+		if ($num_warnings > 0) {
+			foreach ($childnode_titles_warning as $childTitle) {
 				$submessages[] = new tx_caretaker_ResultMessage(
 					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_warning',
-					array('title'=>$childTitle)
+					array('title' => $childTitle)
 				);
 			}
 		}
 
-		if ($num_undefined > 0){
-			foreach ($childnode_titles_undefined as $childTitle){
+		if ($num_undefined > 0) {
+			foreach ($childnode_titles_undefined as $childTitle) {
 				$submessages[] = new tx_caretaker_ResultMessage(
 					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_undefined',
-					array('title'=>$childTitle)
+					array('title' => $childTitle)
 				);
 			}
 		}
-		
-		if ($num_ack > 0){
-			foreach ($childnode_titles_ack as $childTitle){
+
+		if ($num_ack > 0) {
+			foreach ($childnode_titles_ack as $childTitle) {
 				$submessages[] = new tx_caretaker_ResultMessage(
 					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_ack',
-					array('title'=>$childTitle)
+					array('title' => $childTitle)
 				);
 			}
 		}
-		
-		if ($num_due > 0){
-			foreach ($childnode_titles_due as $childTitle){
+
+		if ($num_due > 0) {
+			foreach ($childnode_titles_due as $childTitle) {
 				$submessages[] = new tx_caretaker_ResultMessage(
 					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_due',
-					array('title'=>$childTitle)
+					array('title' => $childTitle)
 				);
 			}
 		}
 
-		if  ($num_errors > 0){
-			return tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_error,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
-		} else if ( $num_warnings > 0 ){
-			return tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_warning,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
-		} else if ( $num_undefined == $num_tests ) {
-			return tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_undefined,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
+		if ($num_errors > 0) {
+			return tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_error, $num_undefined, $num_ok, $num_warnings, $num_errors, $message, $submessages);
+		} else if ($num_warnings > 0) {
+			return tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_warning, $num_undefined, $num_ok, $num_warnings, $num_errors, $message, $submessages);
+		} else if ($num_undefined == $num_tests) {
+			return tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_undefined, $num_undefined, $num_ok, $num_warnings, $num_errors, $message, $submessages);
 		} else {
-			return tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_ok,$num_undefined,$num_ok,$num_warnings,$num_errors, $message, $submessages);
+			return tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_ok, $num_undefined, $num_ok, $num_warnings, $num_errors, $message, $submessages);
 		}
-
 	}
 
-        
+
 	/**
-	 * (non-PHPdoc)
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getValueDescription()
+	 * @return string
 	 */
-	public function getValueDescription(){
+	public function getValueDescription() {
 		return 'Number of Tests';
 	}
 
-         /**
-         * Get the number of available Test Results
-         *
-         * @return integer
-         */
-        public function getTestResultNumber(){
-            $aggregator_result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
-            $resultNumber = $aggregator_result_repository->getResultNumberByNode($this);
-            return $resultNumber;
-        }
-
-        /**
-	 * Get the TestResultRange for the Offset and Limit
-         *
-	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
-	 * @param $graph True by default. Used in the resultrange repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
+	/**
+	 * Get the number of available Test Results
+	 *
+	 * @return integer
 	 */
-	public function getTestResultRangeByOffset($offset=0, $limit=10){
-            $aggregator_result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
-            $resultRange = $aggregator_result_repository->getResultRangeByNodeAndOffset($this , $offset, $limit);
-            return $resultRange;
+	public function getTestResultNumber() {
+		$aggregator_result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
+		$resultNumber = $aggregator_result_repository->getResultNumberByNode($this);
+		return $resultNumber;
 	}
-	
+
+	/**
+	 * Get the TestResultRange for the Offset and Limit
+	 *
+	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
+	 * @param int $offset
+	 * @param int $limit
+	 * @return tx_caretaker_TestResultRange
+	 */
+	public function getTestResultRangeByOffset($offset = 0, $limit = 10) {
+		$aggregator_result_repository = tx_caretaker_AggregatorResultRepository::getInstance();
+		$resultRange = $aggregator_result_repository->getResultRangeByNodeAndOffset($this, $offset, $limit);
+		return $resultRange;
+	}
+
 	/**
 	 * Get the test configuration overlay (configuration overwritten in instance)
 	 *
 	 * @param integer $testUid UID of the test
+	 * @return array
 	 */
 	public function getTestConfigurationOverlayForTestUid($testUid) {
-		$overlayConfig = false;
+		$overlayConfig = FALSE;
 		if ($this->testConfigurationOverlay) {
 			$fftools = new t3lib_flexformtools();
 			$tests = $fftools->getArrayValueByPath(
@@ -358,9 +349,9 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 				}
 			}
 		}
-		if (!$overlayConfig 
-		 && $this->parent
-		 && method_exists($this->parent, 'getTestConfigurationOverlayForTestUid')) {
+		if (!$overlayConfig
+				&& $this->parent
+				&& method_exists($this->parent, 'getTestConfigurationOverlayForTestUid')) {
 			$overlayConfig = $this->parent->getTestConfigurationOverlayForTestUid($testUid);
 		}
 		return $overlayConfig;
@@ -375,17 +366,16 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		$strategies = array();
 
 		$strategyCount = intval($this->getProperty('notification_strategies'));
-		if ($strategyCount <= 0) return $strategies;
+		if ($strategyCount <= 0) {
+			return $strategies;
+		}
 
-			// select strategies from database
 		$strategies = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			's.*',
-			tx_caretaker_Constants::table_Strategies.' s,'.tx_caretaker_Constants::relationTable_Node2Strategy.' rel',
-			'rel.uid_node='.$this->getUid().' AND rel.node_table=\''.$this->getStorageTable().'\' AND rel.uid_strategy=s.uid');
-		
+			tx_caretaker_Constants::table_Strategies . ' s,' . tx_caretaker_Constants::relationTable_Node2Strategy . ' rel',
+			'rel.uid_node=' . $this->getUid() . ' AND rel.node_table=\'' . $this->getStorageTable() . '\' AND rel.uid_strategy=s.uid');
+
 		return $strategies;
 	}
-	
 }
-
 ?>

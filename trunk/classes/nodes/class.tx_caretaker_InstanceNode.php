@@ -48,11 +48,11 @@
 class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 
 	/**
-	 * URL to acces this instance
+	 * URL to access this instance
 	 * @var string
 	 */
 	protected $url;
-	
+
 	/**
 	 * Hostname
 	 * @var string
@@ -66,14 +66,14 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	protected $publicKey;
 
 	/**
-	 * test configuration overlay to overwritte tests default configurations
+	 * test configuration overlay to overwrite tests default configurations
 	 * @var array
 	 */
 	protected $testConfigurationOverlay;
-	
+
 	/**
-	 * Constructor 
-	 * 
+	 * Constructor
+	 *
 	 * @param integer $uid
 	 * @param string $title
 	 * @param tx_caretaker_AbstractNode $parent
@@ -82,7 +82,7 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	 * @param string $ip
 	 * @param boolean $hidden
 	 */
-	public function __construct( $uid, $title, $parent, $url='', $hostname='', $publicKey = '', $hidden=0) {
+	public function __construct($uid, $title, $parent, $url = '', $hostname = '', $publicKey = '', $hidden = 0) {
 		parent::__construct($uid, $title, $parent, tx_caretaker_Constants::table_Instances, tx_caretaker_Constants::nodeType_Instance, $hidden);
 		$this->url = $url;
 		$this->hostname = $hostname;
@@ -93,56 +93,60 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	 * Get the caretaker node id of this node
 	 * return string
 	 */
-	public function getCaretakerNodeId(){
-		return 'instance_'.$this->getUid();
+	public function getCaretakerNodeId() {
+		return 'instance_' . $this->getUid();
 	}
 
 	/**
 	 * Get the url
 	 * @return string
 	 */
-	public function getUrl (){
+	public function getUrl() {
 		return $this->url;
 	}
-	
+
 	/**
 	 * Get the hostname
 	 * @return unknown_type
 	 */
-	public function getHostname (){
+	public function getHostname() {
 		return $this->hostname;
 	}
-	
+
 	/**
 	 * Get the public key
 	 * @return string
 	 */
-	public function getPublicKey(){
+	public function getPublicKey() {
 		return $this->publicKey;
 	}
-	
+
 	/**
-	 * (non-PHPdoc)
+	 * Find Child nodes
+	 * @param boolean $show_hidden
+	 * @return array
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AggregatorNode#findChildren()
 	 */
-	public function findChildren ($show_hidden=false){
-		
+	public function findChildren($show_hidden = false) {
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		
 		$testgroups = $node_repository->getTestgroupsByInstanceUid($this->uid, $this, $show_hidden);
-		$tests =      $node_repository->getTestsByInstanceUid($this->uid, $this, $show_hidden);
-		
-		$children = array_merge($testgroups, $tests);
-		return $children;
-	}
-	
-	public function setTestConfigurations($data) {
-		$this->testConfigurationOverlay= t3lib_div::xml2array($data);
+		$tests = $node_repository->getTestsByInstanceUid($this->uid, $this, $show_hidden);
+		return array_merge($testgroups, $tests);
 	}
 
+	/**
+	 * @param string $data XML
+	 * @return void
+	 */
+	public function setTestConfigurations($data) {
+		$this->testConfigurationOverlay = t3lib_div::xml2array($data);
+	}
+
+	/**
+	 * @return array
+	 */
 	public function getCurlOptions() {
 		$curl_options = array();
-
 		if ($this->testConfigurationOverlay) {
 			$fftools = new t3lib_flexformtools();
 			$options = $fftools->getArrayValueByPath(
@@ -159,7 +163,7 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 					}
 					switch ($currentEl['option']['vDEF']) {
 						case 'CURLOPT_SSL_VERIFYPEER':
-							$value = (boolean)($currentEl['value_bool']['vDEF'] != 'false');
+							$value = (boolean) ($currentEl['value_bool']['vDEF'] != 'false');
 							break;
 
 						case 'CURLOPT_TIMEOUT_MS':
@@ -184,7 +188,5 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 		}
 		return $curl_options;
 	}
-
 }
-
 ?>

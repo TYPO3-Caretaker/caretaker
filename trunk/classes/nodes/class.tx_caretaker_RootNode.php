@@ -35,7 +35,7 @@
  */
 
 /**
- * The root of all caretaker-nodes. It has no reprsentation
+ * The root of all caretaker-nodes. It has no representation
  * in the database nor user-settings.
  *
  * @author Martin Ficzel <martin@work.de>
@@ -48,45 +48,50 @@
  */
 class tx_caretaker_RootNode extends tx_caretaker_AggregatorNode {
 
-	public function __construct( $hidden=false) {
-		parent::__construct(0, 'Caretaker Root', false, null, tx_caretaker_Constants::nodeType_Root, $hidden);
+	/**
+	 * @param bool $hidden
+	 */
+	public function __construct($hidden = FALSE) {
+		parent::__construct(0, 'Caretaker Root', FALSE, NULL, tx_caretaker_Constants::nodeType_Root, $hidden);
 	}
 
 	/**
 	 * Get the caretaker node id of this node
-	 * return string
+	 * @return string
 	 */
-	public function getCaretakerNodeId(){
+	public function getCaretakerNodeId() {
 		return 'root';
 	}
 
-
 	/**
-	 * (non-PHPdoc)
+	 * Find Child nodes
+	 * @param boolean $show_hidden
+	 * @return array
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AggregatorNode#findChildren()
-	 */#
-	protected function findChildren ($show_hidden=false){
+	 */
+	protected function findChildren($show_hidden = FALSE) {
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		
-		$root_instancegroups = $node_repository->getInstancegroupsByParentGroupUid(0, $this, $show_hidden );
-		$root_instances = $node_repository->getInstancesByInstancegroupUid(0, $this, $show_hidden );
-		$children = array_merge($root_instancegroups, $root_instances);
-				
-		return $children;
+		$root_instancegroups = $node_repository->getInstancegroupsByParentGroupUid(0, $this, $show_hidden);
+		$root_instances = $node_repository->getInstancesByInstancegroupUid(0, $this, $show_hidden);
+		return array_merge($root_instancegroups, $root_instances);
 	}
-	
+
 	/**
 	 * Find Parent Node
 	 * @return tx_caretaker_AbstractNode
 	 */
-	protected function findParent (){
-		return false;
+	protected function findParent() {
+		return FALSE;
 	}
-	
+
+	/**
+	 * @param int $testUid
+	 * @return bool
+	 */
 	public function getTestConfigurationOverlayForTestUid($testUid) {
-		return false;
+		return FALSE;
 	}
-	
+
 }
 
 ?>

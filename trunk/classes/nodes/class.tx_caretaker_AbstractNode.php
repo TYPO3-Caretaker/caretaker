@@ -51,19 +51,19 @@ abstract class tx_caretaker_AbstractNode {
 	 * UID
 	 * @var integer
 	 */
-	protected $uid       = false;
+	protected $uid = FALSE;
 	
 	/**
 	 * Title
 	 * @var string
 	 */
-	protected $title     = false;
+	protected $title = FALSE;
 	
 	/**
 	 * Type
 	 * @var string
 	 */
-	protected $type      = '';
+	protected $type = '';
 
 	/**
 	 * Description
@@ -75,28 +75,26 @@ abstract class tx_caretaker_AbstractNode {
 	 * Hidden
 	 * @var boolean
 	 */
-	protected $hidden    = false;
+	protected $hidden = FALSE;
 	
 	
 	/**
 	 * Parent Node
 	 * @var tx_caretaker_AbstractNode
 	 */
-	protected $parent    = NULL;
+	protected $parent;
 	
 	/**
-	 * 
-	 * @var unknown_type
+	 * @var array
 	 */
 	protected $notification_address_ids = array();
 
-
 	/**
-	 * Associatiove array ob DB-Row
+	 * Associative array of DB-Row
 	 *
 	 * @var array
 	 */
-	protected $dbRow = NULL;
+	protected $dbRow;
 
 	/**
 	 * The table where this node is stored
@@ -111,17 +109,18 @@ abstract class tx_caretaker_AbstractNode {
 	 * @param integer $uid
 	 * @param string $title
 	 * @param tx_caretaker_AbstractNode $parent
+	 * @param string $storageTable
 	 * @param string $type
-	 * @param string $hidden
+	 * @param string|boolean $hidden
 	 */
-	public function __construct( $uid, $title, $parent, $storageTable, $type='', $hidden = false ){
-		$this->uid    = $uid;
-		$this->title  = $title;
+	public function __construct($uid, $title, $parent, $storageTable, $type = '', $hidden = FALSE) {
+		$this->uid = $uid;
+		$this->title = $title;
 		$this->parent = $parent;
-		$this->type   = $type;
+		$this->type = $type;
 		$this->storageTable = $storageTable;
 		if ($parent && $parent->getHidden()){
-			$this->hidden = true;
+			$this->hidden = TRUE;
 		} else {
 			$this->hidden = (boolean)$hidden;
 		}
@@ -129,36 +128,41 @@ abstract class tx_caretaker_AbstractNode {
 
 	/**
 	 * Set the description
-	 * @param string $decription
+	 * 
+	 * @param string $description
+	 * @return void
 	 */
-	public function setDescription($decription){
-		$this->description = $decription;
+	public function setDescription($description) {
+		$this->description = $description;
 	}
 	
 	/**
 	 * Get the caretaker node id of this node
-	 * return string
+	 *
+	 * @return string
 	 */
 	abstract public function getCaretakerNodeId();
 
 	/**
 	 * Get the uid
-	 * @return integer 
+	 * 
+	 * @return integer
 	 */
-	public function getUid(){
+	public function getUid() {
 		return $this->uid;
 	}
 
 	/**
 	 * Get the parent node
+	 *
 	 * @return tx_caretaker_AbstractNode
 	 */
-	public function getParent(){
+	public function getParent() {
 		return $this->parent;
 	}
 
 	/**
-	 * Returns the tablename where this type of node is stored
+	 * Returns the table name where this type of node is stored
 	 * 
 	 * @return string
 	 */
@@ -167,43 +171,49 @@ abstract class tx_caretaker_AbstractNode {
 	}
 
 	/**
-	 * set hidden state
-	 * @param boolean boolean
+	 * Set hidden state
+	 *
+	 * @param boolean
+	 * @return void
 	 */
-	public function setHidden($hidden = true){
+	public function setHidden($hidden = TRUE) {
 		$this->hidden = (boolean)$hidden;
 	}
 	
 	/**
 	 * Get hidden state
+	 *
 	 * @return boolean
 	 */
-	public function getHidden(){
+	public function getHidden() {
 		return $this->hidden;
 	}
 		
 	/**
 	 * Get the Title
+	 *
 	 * @return string
 	 */
-	public function getTitle(){
+	public function getTitle() {
 		return $this->title;
 	}
 	
 	/**
 	 * Get the Description
+	 *
 	 * @return string
 	 * @deprecated
 	 */
-	public function getDescription(){
+	public function getDescription() {
 		return $this->description;
 	}
 	
 	/**
 	 * Get the node type
+	 *
 	 * @return string
 	 */
-	public function getType(){
+	public function getType() {
 		return $this->type;
 	}	
 
@@ -218,7 +228,7 @@ abstract class tx_caretaker_AbstractNode {
 	 *
 	 * @param array $dbRow
 	 */
-	public function setDbRow($dbRow){
+	public function setDbRow($dbRow) {
 		$this->dbRow = $dbRow;
 	}
 	
@@ -226,31 +236,32 @@ abstract class tx_caretaker_AbstractNode {
 	 * Get a property from node-dbRow
 	 * 
 	 * @param string $fieldname
+	 * @return mixed
 	 */
-	public function getProperty($fieldname){
+	public function getProperty($fieldname) {
 		if (!$this->dbRow || !is_array($this->dbRow)) {
-			return false;
+			return FALSE;
 		}
 
 		if (isset($this->dbRow[$fieldname])){
 			return $this->dbRow[$fieldname];
 		}  else {
-			return false;
+			return FALSE;
 		}
 
 	}
 
 	/**
-	 * Get the description of the Testsevice
+	 * Get the description of the Testservice
 	 * @return string
 	 * @deprecated
 	 */
-	public function getTypeDescription(){
+	public function getTypeDescription() {
 		return '';
 	}
 
 	/**
-	 * Get the configuration infotext
+	 * Get the configuration info text
 	 *
 	 * @return string
 	 * @deprecated
@@ -270,7 +281,7 @@ abstract class tx_caretaker_AbstractNode {
 	}
 	
 	/** 
-	 * Get a Description for the Node Value
+	 * Get a Description for the node value
 	 *
 	 * @return string
 	 * @deprecated
@@ -278,22 +289,21 @@ abstract class tx_caretaker_AbstractNode {
 	abstract public function getValueDescription();
 
 	/**
-	 * Get the current Instance if 
+	 * Get the current instance
 	 * @return tx_caretaker_InstanceNode
 	 */
 	public function getInstance(){
-		
-		if ( is_a($this, 'tx_caretaker_InstanceNode') ){
+		if (is_a($this, 'tx_caretaker_InstanceNode')) {
 			return $this;
-		} else if ($this->parent){
+		} else if ($this->parent) {
 			return $this->parent->getInstance();
 		} else {
-			return false;
+			return FASLE;
 		}
 	}
 	
 	/**
-	 * Update the NodeState (Execute Test)
+	 * Update the Node State (Execute Test)
 	 *
  	 * @param boolean $force_update
 	 * @return tx_caretaker_NodeResult
@@ -308,7 +318,7 @@ abstract class tx_caretaker_AbstractNode {
 	abstract public function getTestResult();
 	
 	/**
-	 * Get ResultRange for specified Time
+	 * Get ResultRange for specified time
 	 *  
 	 * @param integer $startdate
 	 * @param integer $stopdate
@@ -317,8 +327,8 @@ abstract class tx_caretaker_AbstractNode {
 	abstract public function getTestResultRange($startdate, $stopdate);
 
 	/**
-	 * Get the Number of available Testresults
-	 * @return interger
+	 * Get the Number of available test results
+	 * @return integer
 	 */
 	abstract public function getTestResultNumber();
 
@@ -328,20 +338,22 @@ abstract class tx_caretaker_AbstractNode {
 	 *
 	 * @param integer $offset
 	 * @param integer $limit
+	 * @return tx_caretaker_NodeResultRange
 	 */
 	abstract public function getTestResultRangeByOffset($offset=0, $limit=10);
 
 	/**
-	 * Send a notification to all registered notofication services
+	 * Send a notification to all registered notification services
 	 *
 	 * @param tx_caretaker_TestResult $result
 	 * @param tx_caretaker_TestResult $lastResult
+	 * @return void
 	 */
-	public function notify ($event, $result = NULL, $lastResult = NULL ){
+	public function notify ($event, $result = NULL, $lastResult = NULL ) {
 			// find all registered notification services
 		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
-		foreach ( $notificationServices as $notificationService ){
-			$notificationService->addNotification( $event, $this, $result, $lastResult );
+		foreach($notificationServices as $notificationService) {
+			$notificationService->addNotification($event, $this, $result, $lastResult);
 		}
 	}
 
@@ -351,109 +363,42 @@ abstract class tx_caretaker_AbstractNode {
 	 * @param tx_caretaker_ContactRole $role
 	 * @param boolean $firstResultsOnly
 	 * @param boolean $recursiveSearch
+	 * @return array
 	 */
-	public function getContacts( $role = NULL , $firstResultsOnly = false, $recursiveSearch = true ){
-
+	public function getContacts($role = NULL, $firstResultsOnly = FALSE, $recursiveSearch = TRUE) {
 		$contactRepository = tx_caretaker_ContactRepository::getInstance();
 		$contacts = array();
 
 		$node = $this;
-		while ( $node ){
+		while ($node) {
 
-			if ($role != NULL){
-				$node_contacts = $contactRepository->getContactsByNodeAndRole( $node, $role );
+			if ($role !== NULL) {
+				$node_contacts = $contactRepository->getContactsByNodeAndRole($node, $role);
 			} else {
-				$node_contacts = $contactRepository->getContactsByNode( $node );
+				$node_contacts = $contactRepository->getContactsByNode($node);
 			}
 
 			$contacts = array_merge($contacts, $node_contacts);
 
-				// return only first found results if selected
-			if ( count($contacts)>0 && $firstResultsOnly == true ){
+			if (count($contacts) > 0 && $firstResultsOnly) {
 				return $contacts;
 			}
-
-				// go up the nodetree if recursiveSearch is set
-			if ($recursiveSearch == true){
+			if ($recursiveSearch) {
 				$node = $node->getParent();
 			} else {
 				break;
 			}
-
 		}
-
 		return $contacts;
-		
 	}
 
-	
-
 	/**
-	 * Returns all contacts that are set for this node. With default settings it will return the contacts
-	 * of the first node found in the rootline. The alternative behavior is to return all from all nodes
-	 * in the rootline.
-	 *
-	 * Please note that only instances and instance_groups can have contacts! You can call it for every
-	 * node though.
-	 *
-	 * @param array		$roles: A set of requested roles. The field "id" is used for selection!
-	 * @param boolean	$returnFirst: If set to true, the first found set of contacts will be returned
-	 *
-	 * @return array with contacts
-	 *
 	 * @deprecated use getContacts instead
 	 * @see getContacts
 	 * @todo remove this method
 	 */
-	public function findContacts(array $roles = array(), $returnFirst = true) {
-		$contacts = array();
-		
-			// fetch ids of requested roles
-		$roleSelect = '';
-
-		if (count($roles) > 0) {
-			$rolesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,id', tx_caretaker_Constants::table_Roles, 'id IN (\''.implode('\',\'', $roles).'\') AND hidden=0 AND deleted=0');
-		} else {
-			$rolesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,id', tx_caretaker_Constants::table_Roles, 'hidden=0 AND deleted=0');
-		}
-
-		$roles = array();
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rolesRes)) {
-			$roles[$row['uid']] = $row['id'];
-		}
-		
-		if (count($roles) > 0) {
-			$roleSelect = 'role IN ('.implode(',', array_keys($roles)).') AND ';
-		}
-
-		$processedNodeList = array();
-
-		$node = $this;
-		while ($node) {
-			$nodeType = $node->getType();
-			$nodeUid = $node->getUid();
-
-			if ($nodeType == tx_caretaker_Constants::nodeType_Instance || $nodeType == tx_caretaker_Constants::nodeType_Instancegroup) {
-					// which table?
-				$storageTable = $this->getStorageTable();
-								
-					// select relations and store them internally
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::relationTable_Node2Address, 'uid_node='.$nodeUid.' AND '.$roleSelect.'node_table=\''.$storageTable.'\'');
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-						// don't add relations if we only interested in the first one in rootline
-					if ($returnFirst && isset($relations[$row['role']]) && in_array($nodeUid, $processedNodeList)) continue;
-					
-						// fetch address and add to return structure
-					$address = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', tx_caretaker_Constants::table_Addresses, 'uid='.$row['uid_address'], '', '', 1);
-					$contacts[$roles[$row['role']]][$row['uid_address']] = $address[0];
-				}
-			}
-
-			$processedNodeList[] = $nodeUid;
-			$node = $node->getParent();
-		}
-
-		return $contacts;
+	public function findContacts($roles = NULL, $returnFirst = NULL) {
+		throw new Exception('deprecated method: use getContacts instead', 1297445757);
 	}
 }
 ?>

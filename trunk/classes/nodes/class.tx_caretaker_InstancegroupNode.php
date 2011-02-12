@@ -48,14 +48,14 @@
  */
 class tx_caretaker_InstancegroupNode extends tx_caretaker_AggregatorNode {
 	/**
-	 * Constructor 
-	 * 
+	 * Constructor
+	 *
 	 * @param integer $uid
 	 * @param string $title
 	 * @param tx_caretaker_AbstractNode $parent
 	 * @param boolean $hidden
 	 */
-	public function __construct( $uid, $title, $parent, $hidden=0) {
+	public function __construct($uid, $title, $parent, $hidden = 0) {
 		parent::__construct($uid, $title, $parent, tx_caretaker_Constants::table_Instancegroups, tx_caretaker_Constants::nodeType_Instancegroup, $hidden);
 	}
 
@@ -63,39 +63,31 @@ class tx_caretaker_InstancegroupNode extends tx_caretaker_AggregatorNode {
 	 * Get the caretaker node id of this node
 	 * return string
 	 */
-	public function getCaretakerNodeId(){
-		return 'instancegroup_'.$this->getUid();
+	public function getCaretakerNodeId() {
+		return 'instancegroup_' . $this->getUid();
 	}
 
 	/**
-	 * Find Childnodes of this Instancegroup
+	 * Find Child nodes of this Instancegroup
 	 * @param boolean $show_hidden
 	 * @return array
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AggregatorNode#findChildren()
 	 */
-	protected function findChildren ($show_hidden=false){
+	protected function findChildren($show_hidden = FALSE) {
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-			// read subgroups
-		$subgroups = $node_repository->getInstancegroupsByParentGroupUid($this->uid, $this, $show_hidden );
-			// read instances
-		$instances = $node_repository->getInstancesByInstancegroupUid($this->uid, $this, $show_hidden );
-			// save
-		$children = array_merge($subgroups, $instances);
-			// 
-		return $children;
-		
+		$subgroups = $node_repository->getInstancegroupsByParentGroupUid($this->uid, $this, $show_hidden);
+		$instances = $node_repository->getInstancesByInstancegroupUid($this->uid, $this, $show_hidden);
+		return array_merge($subgroups, $instances);
 	}
-	
+
 	/**
 	 * Find Parent Node
 	 * @return tx_caretaker_AbstractNode
 	 */
-	protected function findParent (){
+	protected function findParent() {
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		$parent = $node_repository->getInstancegroupByChildGroupUid($this->uid, $this );
+		$parent = $node_repository->getInstancegroupByChildGroupUid($this->uid, $this);
 		return $parent;
 	}
-	
 }
-
 ?>

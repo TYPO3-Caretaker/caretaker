@@ -163,7 +163,7 @@ class tx_caretaker_TestResultRepository {
 	 * @param integer $start_timestamp
 	 * @param integer $stop_timestamp
 	 * @param boolean $graph By default the result range is created for the graph, so the last result is added again at the end
-	 * @return tx_caretaker_testResultRange
+	 * @return tx_caretaker_TestResultRange
 	 */
 	public function getRangeByNode ( tx_caretaker_TestNode $testNode, $start_timestamp, $stop_timestamp, $graph = true){
 
