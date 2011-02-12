@@ -298,7 +298,7 @@ abstract class tx_caretaker_AbstractNode {
 		} else if ($this->parent) {
 			return $this->parent->getInstance();
 		} else {
-			return FASLE;
+			return FALSE;
 		}
 	}
 	
