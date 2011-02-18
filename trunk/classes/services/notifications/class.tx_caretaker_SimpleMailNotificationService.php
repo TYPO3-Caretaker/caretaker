@@ -48,14 +48,14 @@
 class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNotificationService {
 
 	/**
-	 * The notification storage 
+	 * The notification storage
 	 * @var array
 	 */
 	private $recipients_messages = array();
 
 	/**
 	 * The addresses for the recipients
-	 * @var array 
+	 * @var array
 	 */
 	private $recipients_addresses = array();
 
@@ -76,9 +76,9 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 	 * @var string URL with a ### marker which is replaced by the caretakerNodId
 	 */
 	private $mail_link;
-	
+
 	/**
-	 * IDs of roles which are recieving mails
+	 * IDs of roles which are receiving mails
 	 * @var array
 	 */
 	private $mail_roles = array();
@@ -87,111 +87,106 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 	 * Constructor
 	 * reads the service configuration
 	 */
-	public function __construct () {
+	public function __construct() {
 		parent::__construct('simple_mail');
 
 		$contactRepository = tx_caretaker_ContactRepository::getInstance();
-		
-		$this->mail_from      = $this->getConfigValue('mail_from');
-		$this->mail_subject   = $this->getConfigValue('mail_subject');
-		$this->mail_link      = $this->getConfigValue('mail_link');
-		$this->mail_link      = $this->getConfigValue('mail_link');
 
-		$this->mail_roles     = array();
-		$role_ids = explode(',' , $this->getConfigValue('role_ids'));
-		foreach ($role_ids as $role_id){
-			$role = $contactRepository->getContactRoleById( trim($role_id) );
-
-			if (!$role && is_numeric($role_id) ) {
-				$role = $contactRepository->getContactRoleByUid( intval( $role_id ) );
+		$this->mail_from = $this->getConfigValue('mail_from');
+		$this->mail_subject = $this->getConfigValue('mail_subject');
+		$this->mail_link = $this->getConfigValue('mail_link');
+		$this->mail_link = $this->getConfigValue('mail_link');
+		$this->mail_roles = array();
+		$role_ids = explode(',', $this->getConfigValue('role_ids'));
+		foreach ($role_ids as $role_id) {
+			$role = $contactRepository->getContactRoleById(trim($role_id));
+			if (!$role && is_numeric($role_id)) {
+				$role = $contactRepository->getContactRoleByUid(intval($role_id));
 			}
-			
-			if ( $role ) {
+			if ($role) {
 				$this->mail_roles[] = $role;
 			}
 		}
 	}
 
-   	/**
+	/**
 	 * Notify the service about a test status
 	 *
 	 * @param string $event Event Identifier
 	 * @param tx_caretaker_AbstractNode $node
 	 * @param tx_caretaker_TestResult $result
-	 * @param tx_caretaKer_TestResult $lastResult
+	 * @param tx_caretaker_TestResult $lastResult
 	 */
-	public function addNotification ($event, $node, $result = NULL, $lastResult = NULL ){
-		// var_dump($event, $node, $result, $lastResult);
-
+	public function addNotification($event, $node, $result = NULL, $lastResult = NULL) {
 			// stop if event is not updatedTestResult of a TestNode
-		if ( $event != 'updatedTestResult' || is_a( $node, 'tx_caretaker_TestNode' ) == false ){
+		if ($event != 'updatedTestResult' || is_a($node, 'tx_caretaker_TestNode') == false) {
 			return;
 		}
 
 			// Check that the result is not equal to the previous one
-		if ( $lastResult && $result->getState() == $lastResult->getState() ){
+		if ($lastResult && $result->getState() == $lastResult->getState()) {
 			return;
 		}
 
-			// collect the recipients fron the node rootline
+			// collect the recipients from the node rootline
 		$recipientIds = array();
-		
-		if ( count ($this->mail_roles) ){
+
+		if (count($this->mail_roles) > 0) {
 			$contacts = array();
-			foreach ( $this->mail_roles as $role){
-				$contacts = array_merge($contacts, $node->getContacts( $role ) );
+			foreach ($this->mail_roles as $role) {
+				$contacts = array_merge($contacts, $node->getContacts($role));
 			}
 		} else {
 			$contacts = $node->getContacts();
 		}
-		
-		foreach ($contacts as $contact ){
+
+		foreach ($contacts as $contact) {
 			$address = $contact->getAddress();
-			if ( ! $this->recipients_addresses[ $address['uid'] ] ){
-				$this->recipients_addresses[ $address['uid'] ] = $address;
+			if (!$this->recipients_addresses[$address['uid']]) {
+				$this->recipients_addresses[$address['uid']] = $address;
 			}
 			$recipientIds[] = $address['uid'];
 		}
 
-		$recipientIds = array_unique ($recipientIds);
+		$recipientIds = array_unique($recipientIds);
 
 			// store the notifications for the recipients
-		foreach ($recipientIds as $recipientId){
-			if (!isset($this->recipients_messages[$recipientId]) ){
+		foreach ($recipientIds as $recipientId) {
+			if (!isset($this->recipients_messages[$recipientId])) {
 				$this->recipients_messages[$recipientId] = array(
-					'messages'=>array(),
-					'num_undfined'=>0,
-					'num_ok'=>0,
-					'num_warning'=>0,
-					'num_error'=>0,
-					'num_ack'=>0,
-					'num_due'=>0
+					'messages' => array(),
+					'num_undefined' => 0,
+					'num_ok' => 0,
+					'num_warning' => 0,
+					'num_error' => 0,
+					'num_ack' => 0,
+					'num_due' => 0
 				);
 			}
-			switch ( $result->getState() ){
+			switch ($result->getState()) {
 				case tx_caretaker_Constants::state_undefined:
-					$this->recipients_messages[$recipientId]['num_undfined'] ++;
+					$this->recipients_messages[$recipientId]['num_undefined']++;
 					break;
 				case tx_caretaker_Constants::state_ok:
-					$this->recipients_messages[$recipientId]['num_ok'] ++;
+					$this->recipients_messages[$recipientId]['num_ok']++;
 					break;
 				case tx_caretaker_Constants::state_warning:
-					$this->recipients_messages[$recipientId]['num_warning'] ++;
+					$this->recipients_messages[$recipientId]['num_warning']++;
 					break;
 				case tx_caretaker_Constants::state_error:
-					$this->recipients_messages[$recipientId]['num_error'] ++;
+					$this->recipients_messages[$recipientId]['num_error']++;
 					break;
 				case tx_caretaker_Constants::state_ack:
-					$this->recipients_messages[$recipientId]['num_ack'] ++;
+					$this->recipients_messages[$recipientId]['num_ack']++;
 					break;
 				case tx_caretaker_Constants::state_due:
-					$this->recipients_messages[$recipientId]['num_due'] ++;
+					$this->recipients_messages[$recipientId]['num_due']++;
 					break;
 			}
-			array_unshift( $this->recipients_messages[$recipientId]['messages'] ,
-				'*'. ( $lastResult ? $lastResult->getLocallizedStateInfo().'->' :  '' ) . $result->getLocallizedStateInfo() . ' ' . $node->getInstance()->getTitle() . ':'. $node->getTitle() . '* ' . $node->getCaretakerNodeId() . chr(10) . chr(10).
-				$result->getLocallizedInfotext() . chr(10).
-				str_replace('###', $node->getCaretakerNodeId(),  $this->mail_link  ).chr(10)
+			array_unshift($this->recipients_messages[$recipientId]['messages'],
+					'*' . ($lastResult ? $lastResult->getLocallizedStateInfo() . '->' : '') . $result->getLocallizedStateInfo() . ' ' . $node->getInstance()->getTitle() . ':' . $node->getTitle() . '* ' . $node->getCaretakerNodeId() . chr(10) . chr(10) .
+							$result->getLocallizedInfotext() . chr(10) .
+							str_replace('###', $node->getCaretakerNodeId(), $this->mail_link) . chr(10)
 			);
 		}
 	}
@@ -199,44 +194,33 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 	/**
 	 * Send the aggregated Notifications
 	 */
-	public function sendNotifications(){
-		
-		foreach ($this->recipients_messages as $recipientID => $recipientInfo){
-							
-			$recipient = $this->recipients_addresses[ $recipientID ] ;
-
-			// prepare mail
-			if ($recipient && $recipient['email'] ){
-
-				$message     = '';
-				$count       = 1;
-				$num_error   = 0;
-				$num_warning = 0;
-
-				$message = implode( chr(10).chr(10) , $recipientInfo['messages'] );
+	public function sendNotifications() {
+		foreach ($this->recipients_messages as $recipientID => $recipientInfo) {
+			$recipient = $this->recipients_addresses[$recipientID];
+			if ($recipient && $recipient['email']) {
+				$message = implode(chr(10) . chr(10), $recipientInfo['messages']);
 
 				$subject = $this->mail_subject;
 
 				$subject .= ' Statechange: ';
 
 				if ($recipientInfo['num_undefined'] > 0)
-					$subject .= ' ' .$recipientInfo['num_undefined'].' Undefined';
+					$subject .= ' ' . $recipientInfo['num_undefined'] . ' Undefined';
 				if ($recipientInfo['num_ok'] > 0)
-					$subject .= ' ' .$recipientInfo['num_ok'].' OK';
+					$subject .= ' ' . $recipientInfo['num_ok'] . ' OK';
 				if ($recipientInfo['num_error'] > 0)
-					$subject .= ' ' .$recipientInfo['num_error'].' Errors';
+					$subject .= ' ' . $recipientInfo['num_error'] . ' Errors';
 				if ($recipientInfo['num_warning'] > 0)
-					$subject .= ' ' .$recipientInfo['num_warning'].' Warnings';
+					$subject .= ' ' . $recipientInfo['num_warning'] . ' Warnings';
 				if ($recipientInfo['num_ack'] > 0)
-					$subject .= ' ' .$recipientInfo['num_ack'].' Acknowledged';
+					$subject .= ' ' . $recipientInfo['num_ack'] . ' Acknowledged';
 				if ($recipientInfo['num_due'] > 0)
-					$subject .= ' ' .$recipientInfo['num_due'].' Due';		
+					$subject .= ' ' . $recipientInfo['num_due'] . ' Due';
 
-				$this->sendMail($subject, $recipient['email'], $this->mail_from, $message  );
+				$this->sendMail($subject, $recipient['email'], $this->mail_from, $message);
 			}
 		}
 	}
-
 
 	/**
 	 * Send a Single Notification Mail
@@ -247,11 +231,10 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 	 * @param $message
 	 * @return unknown_type
 	 */
-	private function sendMail($subject, $recipient, $from, $message ){
-		
+	private function sendMail($subject, $recipient, $from, $message) {
 		$mail = new t3lib_htmlmail();
 		$mail->charset = 'utf-8';
- 		$mail->start();
+		$mail->start();
 		$mail->from_email = $from;
 		$mail->returnPath = $from;
 		$mail->subject = $subject;
@@ -259,6 +242,6 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 
 		return $mail->send($recipient);
 	}
-	
 }
+
 ?>
