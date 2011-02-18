@@ -160,13 +160,15 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	public function getConfigurationInfo(){
 		$markers = array();
 		if ($this->flexform_configuration && is_array($this->flexform_configuration['data'])){
-			foreach( $this->flexform_configuration['data']['sDEF']['lDEF'] as $key => $value ){
-				$markers['###'.strtoupper($key).'###'] = $value['vDEF'];
+			foreach($this->flexform_configuration['data'] as $sheetName => $sheet) {
+				foreach( $this->flexform_configuration['data'][$sheetName]['lDEF'] as $key => $value ){
+					$markers['###'.strtoupper($key).'###'] = $value['vDEF'];
+				}
 			}
 		}
 
 		$result = $this->locallizeString(  $this->configurationInfoTemplate );
-		foreach ($markers as $marker=>$content){
+		foreach ($markers as $marker => $content){
 			$result = str_replace( $marker, $content , $result);
 		}
 		return $result;
