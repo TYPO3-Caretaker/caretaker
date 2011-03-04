@@ -1,4 +1,44 @@
-.icon-caretaker-root { background-image: url(../icons/caretaker.gif) !important; }
+
+#ext-caretaker-mod-nav-index-php .x-panel-header {
+	-moz-box-shadow: -2px 0 1px #414141 inset;
+	background-color: #585858;
+	padding: 4px;
+	height: 14px;
+	border: none;
+	color:white;
+}
+
+#ext-caretaker-mod-nav-index-php ul.x-tree-root-ct {
+    padding-left: 5px;
+    padding-top: 15px;
+}
+
+#ext-caretaker-mod-nav-index-php .x-tree .x-panel-body {
+	background-color: #EBEBEB;
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/AMjIyEzIyMizyMjI/zhvCQelaHPPAAAAAElFTkSuQmCC");
+	background-position: right center;
+    background-repeat: repeat-y;
+}
+
+
+#ext-caretaker-mod-nav-index-php .x-tree-node .x-tree-node-el {
+    border-left: 1px solid transparent;
+    border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+}
+
+#ext-caretaker-mod-nav-index-php .x-tree-node .x-tree-node-over,
+#ext-caretaker-mod-nav-index-php .x-tree-node .x-tree-selected {
+    border-bottom: 1px solid #D7D7D7;
+    border-left: 1px solid #D7D7D7;
+    border-top: 1px solid #D7D7D7;
+}
+
+#ext-caretaker-mod-nav-index-php .x-tree-node .x-tree-selected {
+    background-color: #F8F8F8;
+}
+
+.icon-caretaker-root { background-image: url(../icons/caretaker.png) !important; }
 .icon-caretaker-type-test { background-image: url(../icons/test.png) !important; }
 .icon-caretaker-type-test-hidden { background-image: url(../icons/test__h.png) !important; }
 .icon-caretaker-type-testgroup { background-image: url(../icons/group.png) !important; }

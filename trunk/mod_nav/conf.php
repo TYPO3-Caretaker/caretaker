@@ -42,6 +42,6 @@ $MCONF['name']='txcaretakerNav';
 $MCONF['access'] = 'user,group';
 $MCONF['script'] = 'index.php';
 $MCONF['navFrameScript'] = 'index.php';
-$MCONF['default']['tabs_images']['tab'] = 'moduleicon.gif';
+$MCONF['default']['tabs_images']['tab'] = 'moduleicon.png';
 $MLANG['default']['ll_ref']='LLL:EXT:caretaker/mod_nav/locallang_mod.xml';
 ?>

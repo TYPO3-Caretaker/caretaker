@@ -43,6 +43,6 @@ $MCONF['name']='txcaretakerNav_txcaretakerOverview';
 $MCONF['access']='user,group';
 $MCONF['script']='index.php';
 
-$MLANG['default']['tabs_images']['tab'] = 'moduleicon.gif';
+$MLANG['default']['tabs_images']['tab'] = 'moduleicon.png';
 $MLANG['default']['ll_ref']='LLL:EXT:caretaker/mod_overview/locallang_mod.xml';
 ?>
