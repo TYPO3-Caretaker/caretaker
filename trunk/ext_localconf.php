@@ -58,26 +58,31 @@ $TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodeSetDue']   = 'EXT:caretaker/cl
 
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass'][] = 'EXT:caretaker/classes/hooks/class.tx_caretaker_hooks_tceforms_getSingleFieldClass.php:tx_caretaker_hooks_tceforms_getSingleFieldClass';
 
-	// Register scheduler tasks for caretaker
+	// Register scheduler tasks for caretaker testrunner
 $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TestrunnerTask'] = array(
 	'extension'        => $_EXTKEY,
 	'title'            => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:testrunnerTask.name',
 	'description'      => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:testrunnerTask.description',
 	'additionalFields' => 'tx_caretaker_TestrunnerTask_AdditionalFieldProvider'
 );
-	// Register scheduler tasks for caretaker
-$TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TerupdateTask'] = array(
-	'extension'        => $_EXTKEY,
-	'title'            => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:terupdateTask.name',
-	'description'      => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:terupdateTask.description',
-	'additionalFields' => 'tx_caretaker_TerupdateTask_AdditionalFieldProvider'
-);
-	// Register scheduler tasks for caretaker
+
+	// Register scheduler tasks for caretaker typo3 version number update
 $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_Typo3versionnumbersupdateTask'] = array(
 	'extension'        => $_EXTKEY,
 	'title'            => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:typo3versionnumbersupdateTask.name',
 	'description'      => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:typo3versionnumbersupdateTask.description'
 );
+
+	// ter update is only suportet until 4.5 which has an own sceduler task for this purpose
+if ( t3lib_div::int_from_ver( TYPO3_version ) < t3lib_div::int_from_ver( '4.5.0' ) ){
+	$TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TerupdateTask'] = array(
+		'extension'        => $_EXTKEY,
+		'title'            => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:terupdateTask.name',
+		'description'      => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:terupdateTask.description',
+		'additionalFields' => 'tx_caretaker_TerupdateTask_AdditionalFieldProvider'
+	);
+}
+
 
 require(t3lib_extMgm::extPath('caretaker').'/ext_conf_include.php');
 
