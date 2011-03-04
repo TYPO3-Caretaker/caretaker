@@ -199,7 +199,7 @@ class tx_caretaker_TestResultRepository {
 		$last = $result_range->getLast(); 
 		if ($last && $last->getTstamp() < $stop_timestamp){
 			if($graph) {
-				$real_last = new tx_caretaker_TestResult( $stop_timestamp, $last->getState(), $last->getValue(), $last->getMessage()->getText() );
+				$real_last = new tx_caretaker_TestResult( $stop_timestamp, $last->getState(), $last->getValue(), $last->getMessage()->getText(), $last->getSubMessages() );
 				$result_range->addResult($real_last);
 			}
 		}
