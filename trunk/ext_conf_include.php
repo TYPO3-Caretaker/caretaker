@@ -73,18 +73,18 @@ tx_caretaker_ServiceHelper::registerExtJsBackendPanel (
 );
 
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel (
-	'node-contacts',
-	'caretaker-nodecontacts',
-	Array( 'EXT:caretaker/res/css/tx.caretaker.overview.css' ),
-	Array( 'EXT:caretaker/res/js/tx.caretaker.NodeContacts.js' ),
-	$_EXTKEY
-);
-
-tx_caretaker_ServiceHelper::registerExtJsBackendPanel (
 	'node-log',
 	'caretaker-nodelog',
 	Array( 'EXT:caretaker/res/css/tx.caretaker.overview.css' ),
 	Array( 'EXT:caretaker/res/js/tx.caretaker.NodeLog.js' ),
+	$_EXTKEY
+);
+
+tx_caretaker_ServiceHelper::registerExtJsBackendPanel (
+	'node-contacts',
+	'caretaker-nodecontacts',
+	Array( 'EXT:caretaker/res/css/tx.caretaker.overview.css' ),
+	Array( 'EXT:caretaker/res/js/tx.caretaker.NodeContacts.js' ),
 	$_EXTKEY
 );
 

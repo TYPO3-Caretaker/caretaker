@@ -7,16 +7,18 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 		
 		config = Ext.apply({
 			layout : "toolbar",
+			pading : "5",
             items :  [
                     {
                           text    : "Refresh",
+						  xtype   : 'splitbutton',
                           icon    : "../res/icons/arrow_refresh_small.png",
                           handler : this.refreschNode,
 							scope   : this
                     },
                     {
                           text    : "Actions",
-                          xtype   : 'tbbutton',
+                          xtype   : 'splitbutton',
                           icon    : "../res/icons/arrow_refresh_small.png",
                           menu    : [
                                 
@@ -48,13 +50,14 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
                     },
                     {
                             text    : "Edit",
+							xtype   : 'splitbutton',
                             icon    : "../res/icons/pencil.png",
                             disabled: (config.node_type =='root')?true:false,
                             handler : this.editNode,
 							scope   : this
                     },{
                             text    : "Add Child Record",
-							xtype   : 'tbbutton',
+							xtype   : 'splitbutton',
                             icon    : "../res/icons/add.png",
 							menu    : [
 								{
@@ -90,6 +93,7 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 
                     },"->",{
                             text    : "Enable",
+							xtype   : 'splitbutton',
                             disabled: (config.node_hidden==0 || config.node_type=='root')?true:false,
                             icon    : "../res/icons/lightbulb.png",
                             handler : this.enableNode,
@@ -97,6 +101,7 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
                     },
                     {
                             text    : "Disable",
+							xtype   : 'splitbutton',
                             icon    : "../res/icons/lightbulb_off.png",
                             disabled: (config.node_hidden==1 || config.node_type=='root')?true:false,
                             handler : this.disableNode,

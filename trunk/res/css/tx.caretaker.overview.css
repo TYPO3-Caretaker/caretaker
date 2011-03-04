@@ -1,3 +1,36 @@
+
+#ext-caretaker-mod-overview-index-php .x-panel-header {
+	-moz-box-shadow: -2px 0 1px #414141 inset;
+	background-color: #585858;
+	padding: 4px;
+	height: 14px;
+	border: none;
+	color:white;
+}
+
+#ext-caretaker-mod-overview-index-php .x-panel-tbar {
+	height: 28px;
+	padding: 0px;
+	border:none;
+}
+
+
+#ext-caretaker-mod-overview-index-php .x-panel-tbar .x-toolbar{
+	height: 26px;
+	background-color: #DADADA;
+	background-image:none;
+	border:none;
+}
+
+#ext-caretaker-mod-overview-index-php .x-panel-tbar .x-btn{
+	border:none;
+}
+
+#ext-caretaker-mod-overview-index-php #caretaker-panels .x-panel{
+	border:1px solid #DADADA;
+	margin-bottom: 10px;
+}
+
 .ext-gecko .x-btn button {
 	background-repeat: no-repeat;
 	padding-left: 18px;
@@ -11,8 +44,8 @@
 	color: #333333;
 }
 
-.icon-caretaker-root { background-image: url(../icons/caretaker.gif) !important; }
-.icon-caretaker-type-root { background-image: url(../icons/caretaker.gif) !important; }
+.icon-caretaker-root { background-image: url(../icons/caretaker.png) !important; }
+.icon-caretaker-type-root { background-image: url(../icons/caretaker.png) !important; }
 .icon-caretaker-type-test { background-image: url(../icons/test.png) !important; }
 .icon-caretaker-type-test-hidden { background-image: url(../icons/test__h.png) !important; }
 .icon-caretaker-type-testgroup { background-image: url(../icons/group.png) !important; }
