@@ -177,8 +177,17 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 									node_state_info: node_state_info
 								},
 								items    : [
-									'. implode( chr(10).',' , $pluginItems ). chr(10) . '
-								]
+									{
+										xtype    : "panel",
+										padding  : "10",
+										layout   : "fit",
+										id       : "caretaker-panels",
+										items    : [
+											'. implode( chr(10).',' , $pluginItems ). chr(10) . '
+										]
+									}
+								],
+								
 						}
 					 });
 
