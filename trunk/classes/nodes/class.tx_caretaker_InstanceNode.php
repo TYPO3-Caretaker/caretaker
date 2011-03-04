@@ -153,36 +153,37 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 				'data/sDEF/lDEF/testconfigurations/el',
 				$this->testConfigurationOverlay
 			);
+			if ($options) {
+				foreach ($options as $key => $el) {
+					if (is_array($el['curl_option'])) {
+						$currentEl = $el['curl_option']['el'];
+						$value = '';
+						if (!defined($currentEl['option']['vDEF'])) {
+							continue;
+						}
+						switch ($currentEl['option']['vDEF']) {
+							case 'CURLOPT_SSL_VERIFYPEER':
+								$value = (boolean) ($currentEl['value_bool']['vDEF'] != 'false');
+								break;
 
-			foreach ($options as $key => $el) {
-				if (is_array($el['curl_option'])) {
-					$currentEl = $el['curl_option']['el'];
-					$value = '';
-					if (!defined($currentEl['option']['vDEF'])) {
-						continue;
+							case 'CURLOPT_TIMEOUT_MS':
+								$value = intval($currentEl['value_int']['vDEF']);
+								break;
+
+							case 'CURLOPT_INTERFACE':
+								$value = (string) $currentEl['value_ip']['vDEF'];
+								break;
+
+							case 'CURLOPT_USERPWD':
+								$value = (string) $currentEl['value_string']['vDEF'];
+								break;
+
+							case 'CURLOPT_HTTPAUTH':
+								$value = intval($currentEl['value_httpauth']['vDEF']);
+								break;
+						}
+						$curl_options[constant($currentEl['option']['vDEF'])] = $value;
 					}
-					switch ($currentEl['option']['vDEF']) {
-						case 'CURLOPT_SSL_VERIFYPEER':
-							$value = (boolean) ($currentEl['value_bool']['vDEF'] != 'false');
-							break;
-
-						case 'CURLOPT_TIMEOUT_MS':
-							$value = intval($currentEl['value_int']['vDEF']);
-							break;
-
-						case 'CURLOPT_INTERFACE':
-							$value = (string) $currentEl['value_ip']['vDEF'];
-							break;
-
-						case 'CURLOPT_USERPWD':
-							$value = (string) $currentEl['value_string']['vDEF'];
-							break;
-
-						case 'CURLOPT_HTTPAUTH':
-							$value = intval($currentEl['value_httpauth']['vDEF']);
-							break;
-					}
-					$curl_options[constant($currentEl['option']['vDEF'])] = $value;
 				}
 			}
 		}
