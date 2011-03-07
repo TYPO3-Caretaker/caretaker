@@ -95,7 +95,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			// Include Ext JS
 			$this->pageRenderer->loadExtJS();
 			$this->pageRenderer->enableExtJSQuickTips();
-			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.js');
+			$this->pageRenderer->addJsFile( $BACK_PATH . t3lib_extMgm::extRelPath('caretaker') . 'res/js/tx.caretaker.js');
 
 			$panels = array();
 			foreach( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'] as $extJsBackendPanel ){

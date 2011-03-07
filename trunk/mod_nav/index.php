@@ -90,8 +90,8 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->pageRenderer->loadExtJS(true, true);
 			$this->pageRenderer->enableExtJSQuickTips();
 			$this->pageRenderer->enableExtJsDebug();
-			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.js', 'text/javascript', FALSE , FALSE);
-			$this->pageRenderer->addJsFile('../res/js/tx.caretaker.NodeTree.js', 'text/javascript', FALSE, FALSE );
+			$this->pageRenderer->addJsFile( $BACK_PATH . t3lib_extMgm::extRelPath('caretaker') . 'res/js/tx.caretaker.js', 'text/javascript', FALSE , FALSE);
+			$this->pageRenderer->addJsFile( $BACK_PATH . t3lib_extMgm::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeTree.js', 'text/javascript', FALSE, FALSE );
 
 			//Add caretaker css
 			$this->pageRenderer->addCssFile('../res/css/tx.caretaker.nodetree.css', 'stylesheet' , 'all' , '' , FALSE);
