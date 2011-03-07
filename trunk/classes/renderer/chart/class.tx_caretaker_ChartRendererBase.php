@@ -87,13 +87,13 @@ abstract class tx_caretaker_ChartRendererBase {
 	 * minimal Value
 	 * @var float
 	 */
-	protected $minValue;
+	protected $minValue = 0;
 
 	/**
 	 * maximal Value
 	 * @var float
 	 */
-	protected $maxValue;
+	protected $maxValue = 1;
 
 	/**
 	 * start timestamp
