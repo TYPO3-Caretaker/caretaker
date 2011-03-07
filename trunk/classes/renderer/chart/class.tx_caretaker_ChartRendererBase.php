@@ -201,11 +201,10 @@ abstract class tx_caretaker_ChartRendererBase {
 	 * @param float $maxValue
 	 */
 	protected function setMaxValue( $maxValue ){
-		$this->maxValue = $maxValue;
-		if ( $this->maxValue <= 0){
+		if ( $maxValue <= 0){
 			$maxValue = 1;
 		}
-		$this->maxValue = $this->maxValue * 1.05;
+		$this->maxValue = $maxValue * 1.05;
 	}
 
 	/**
