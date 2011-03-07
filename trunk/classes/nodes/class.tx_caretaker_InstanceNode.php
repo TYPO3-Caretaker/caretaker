@@ -153,7 +153,7 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 				'data/sDEF/lDEF/testconfigurations/el',
 				$this->testConfigurationOverlay
 			);
-			if ($options) {
+			if( $options && is_array($options) ) {
 				foreach ($options as $key => $el) {
 					if (is_array($el['curl_option'])) {
 						$currentEl = $el['curl_option']['el'];
