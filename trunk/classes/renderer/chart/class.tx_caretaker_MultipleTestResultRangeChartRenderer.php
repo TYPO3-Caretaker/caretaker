@@ -94,33 +94,20 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 	 */
     protected function drawChartImageBackground( &$image ){
 
-	}
-
-	/**
-	 * draw the chart-foreground into the given chart image
-	 * @param resource $image
-	 */
-	protected function drawChartImageForeground( &$image ){
-		
-
 		foreach ( $this->testResultRanges as $key => $testResultRange) {
 
 			$lastX = NULL;
 			$lastY = NULL;
 
 			$colorRGB = $this->getChartIndexColor($key);
-			$color = imagecolorallocate($image, $colorRGB[0],  $colorRGB[1],  $colorRGB[2]);
 			$colorBg = imagecolorallocatealpha($image, $colorRGB[0],  $colorRGB[1],  $colorRGB[2],110);
 
 			$bgPoints = array();
-			$feLines = array();
 			foreach ( $testResultRange as $testResult ){
 				$newX = intval( $this->transformX( $testResult->getTimestamp() ) );
 				$newY = intval( $this->transformY( $testResult->getValue() ) );
 				if( $lastX !== NULL  ){
-					imageline ( $image , $lastX, $lastY, $newX, $lastY, $color );
-					imageline ( $image , $newX,  $lastY, $newX, $newY,  $color );
-
+					
 					$bgPoints[] = $lastX;
 					$bgPoints[] = $lastY;
 					$bgPoints[] = $newX;
@@ -128,14 +115,12 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 					$bgPoints[] = $newX;
 					$bgPoints[] = $newY;
 
-					$feLines[] = array($lastX,$lastY,$newX,$lastY);
-					$feLines[] = array($newX,$lastY,$newX,$newY);
 				}
 
 				$lastX = $newX;
 				$lastY = $newY;
 			}
-			
+
 			$bgPoints[] = intval( $this->transformX( $testResultRange->getLast()->getTimestamp() ) );
 			$bgPoints[] = intval( $this->transformY( 0 ) );
 			$bgPoints[] = intval( $this->transformX( $testResultRange->getFirst()->getTimestamp() ) );
@@ -145,15 +130,45 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 			if ( count($bgPoints) > 7 ){
 				imagefilledpolygon ($image, $bgPoints , count($bgPoints)/2 , $colorBg );
 			}
+		}
+	}
+
+	/**
+	 * draw the chart-foreground into the given chart image
+	 * @param resource $image
+	 */
+	protected function drawChartImageForeground( &$image ){
+
+		foreach ( $this->testResultRanges as $key => $testResultRange) {
+
+			$lastX = NULL;
+			$lastY = NULL;
+
+			$colorRGB = $this->getChartIndexColor($key);
+			$color = imagecolorallocate($image, $colorRGB[0],  $colorRGB[1],  $colorRGB[2]);
+
+			$feLines = array();
+			foreach ( $testResultRange as $testResult ){
+				$newX = intval( $this->transformX( $testResult->getTimestamp() ) );
+				$newY = intval( $this->transformY( $testResult->getValue() ) );
+				if( $lastX !== NULL  ){
+					imageline ( $image , $lastX, $lastY, $newX, $lastY, $color );
+					imageline ( $image , $newX,  $lastY, $newX, $newY,  $color );
+					
+					$feLines[] = array($lastX,$lastY,$newX,$lastY);
+					$feLines[] = array($newX,$lastY,$newX,$newY);
+				}
+				$lastX = $newX;
+				$lastY = $newY;
+			}
+			
 				// draw line
 			if ( count($feLines) > 1 ){
 				foreach ($feLines as $line){
 					imageline ( $image , $line[0], $line[1], $line[2], $line[3],  $color );
 				}
 			}
-
 		}
-		
 	}
 
 	/**
