@@ -202,8 +202,8 @@ abstract class tx_caretaker_ChartRendererBase {
 	 */
 	protected function setMaxValue( $maxValue ){
 		$this->maxValue = $maxValue;
-		if ( $this->maxValue == 0){
-			$maxValue ++;
+		if ( $this->maxValue <= 0){
+			$maxValue = 1;
 		}
 		$this->maxValue = $this->maxValue * 1.05;
 	}
