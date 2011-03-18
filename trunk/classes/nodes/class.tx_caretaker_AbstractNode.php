@@ -52,13 +52,13 @@ abstract class tx_caretaker_AbstractNode {
 	 * @var integer
 	 */
 	protected $uid = FALSE;
-	
+
 	/**
 	 * Title
 	 * @var string
 	 */
 	protected $title = FALSE;
-	
+
 	/**
 	 * Type
 	 * @var string
@@ -70,14 +70,13 @@ abstract class tx_caretaker_AbstractNode {
 	 * @var string
 	 */
 	protected $description = '';
-	
+
 	/**
 	 * Hidden
 	 * @var boolean
 	 */
 	protected $hidden = FALSE;
-	
-	
+
 	/**
 	 * Parent Node
 	 * @var tx_caretaker_AbstractNode
@@ -305,10 +304,10 @@ abstract class tx_caretaker_AbstractNode {
 	/**
 	 * Update the Node State (Execute Test)
 	 *
- 	 * @param boolean $force_update
+ 	 * @param array $options
 	 * @return tx_caretaker_NodeResult
 	 */
-	abstract public function updateTestResult($force_update = false);
+	abstract public function updateTestResult($options = array());
 	
 	/**
 	 * Read current Node Result
@@ -349,7 +348,7 @@ abstract class tx_caretaker_AbstractNode {
 	 * @param tx_caretaker_TestResult $lastResult
 	 * @return void
 	 */
-	public function notify ($event, $result = NULL, $lastResult = NULL ) {
+	public function notify($event, $result = NULL, $lastResult = NULL) {
 			// find all registered notification services
 		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
 		foreach($notificationServices as $notificationService) {

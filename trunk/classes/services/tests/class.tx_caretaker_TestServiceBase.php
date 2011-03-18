@@ -46,26 +46,25 @@
  * @subpackage caretaker
  */
 class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_TestServiceInterface {
-	
+
 	/**
 	 * The instance the test is run for
 	 * @var tx_caretaker_InstanceNode
 	 */
 	protected $instance;
-	
+
 	/**
 	 * Test Array Configuration
 	 * @var array
 	 */
 	protected $array_configuration = false;
-	
+
 	/**
 	 * Test Flexform Configuration
 	 * @var array
 	 */
 	protected $flexform_configuration = false;
 
-	
 	/**
 	 * Value Description. Can be a LLL Label.
 	 * @var string
@@ -92,12 +91,12 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	public function setInstance($instance){
 		$this->instance = $instance;
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see caretaker/trunk/interfaces/tx_caretaker_TestService#setConfiguration($configuration)
 	 */
-	public function setConfiguration($configuration){
+	public function setConfiguration($configuration) {
 		if (is_array( $configuration) && !is_array($configuration['data']) ){
 			$this->array_configuration  = $configuration;
 
@@ -108,11 +107,10 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 			$this->flexform_configuration = t3lib_div::xml2array($configuration);
 		}
 		
-		//echo 'Following configuration is set:'."\n";
-		//print_r($this->flexform_configuration);
-		
+		// echo 'Following configuration is set:'."\n";
+		// print_r($this->flexform_configuration);
 	}
-	
+
 	/**
 	 * Get a single Value from the test configuration
 	 * 
@@ -121,8 +119,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * @param string $sheet
 	 * @return string
 	 */
-	public function getConfigValue($key, $default=false, $sheet=false){
-		
+	public function getConfigValue($key, $default = false, $sheet = false){
 		$result = false;
 		if ($this->flexform_configuration && is_array( $this->flexform_configuration ) ){
 			if (!$sheet) $sheet = 'sDEF';
@@ -143,21 +140,20 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 			return $default;
 		}
 	}
-	
-	
+
 	/**
 	 * Return the type Description of this test Service
 	 * @return string
 	 */
-	public function getTypeDescription(){
+	public function getTypeDescription() {
 		return tx_caretaker_LocallizationHelper::locallizeString( $this->typeDescription );
 	}
-	
+
 	/**
 	 * Return the type ConfigurationInfoTemplate of this test Service
 	 * @return string
 	 */
-	public function getConfigurationInfo(){
+	public function getConfigurationInfo() {
 		$markers = array();
 		if ($this->flexform_configuration && is_array($this->flexform_configuration['data'])){
 			foreach($this->flexform_configuration['data'] as $sheetName => $sheet) {
@@ -184,7 +180,6 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 		$result = new tx_caretaker_TestResult();
 		return $result;
 	}
-
 
 	/**
 	 * Execute a HTTP request for the POST values via CURL
@@ -236,8 +231,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * 
 	 * @return String Description what is stored in the Value field. 
 	 */
-	public function getValueDescription(){
-		
+	public function getValueDescription() {
 		return $this->valueDescription;
 	}
 	
@@ -246,7 +240,6 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * @see interfaces/tx_caretaker_TestService#isExecutable()
 	 */
 	public function isExecutable() {
-		
 		return true;
 	}
 
@@ -256,7 +249,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * @param string $string
 	 * @return string
 	 */
-	protected function locallizeString( $locallang_string ){
+	protected function locallizeString($locallang_string) {
 
 		$locallang_parts = explode (':',$locallang_string);
 
@@ -284,8 +277,6 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 			default :
 
 				return $locallang_string;
-
-
 		}
 
 	}

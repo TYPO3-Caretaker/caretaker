@@ -82,7 +82,7 @@ class tx_caretaker_ServiceHelper {
 	 * @param string $title  title of the testservice
 	 * @param string $description description of the testservice
 	 */
-	public static function registerCaretakerService ($extKey, $path, $key, $title, $description=''){
+	public static function registerCaretakerService ($extKey, $path, $key, $title, $description = '') {
 		return tx_caretaker_ServiceHelper::registerCaretakerTestService($extKey, $path, $key, $title, $description);
 	}
 	
@@ -95,11 +95,11 @@ class tx_caretaker_ServiceHelper {
 	 * @param string $title  title of the testservice
 	 * @param string $description description of the testservice
 	 */
-	public static function registerCaretakerTestService ($extKey, $path, $key, $title, $description=''){
+	public static function registerCaretakerTestService ($extKey, $path, $key, $title, $description = '') {
 		global $TCA;
-		
+
 		t3lib_div::loadTCA('tx_caretaker_test');
-		
+
 			// Register test service
 		t3lib_extMgm::addService(
 			'caretaker',
@@ -114,21 +114,20 @@ class tx_caretaker_ServiceHelper {
 				'quality' => 50,
 				'os' => '',
 				'exec' => '',
-				'classFile' => t3lib_extMgm::extPath($extKey).$path.'/class.'.$key.'TestService.php',
+				'classFile' => t3lib_extMgm::extPath($extKey) . $path . '/class.' . $key . 'TestService.php',
 				'className' => $key.'TestService',
 			)
 		);
-		
+
 			// Add testtype to TCA 
 		if (is_array($TCA['tx_caretaker_test']['columns']) && is_array($TCA['tx_caretaker_test']['columns']['test_service']['config']['items'])) {
 			$TCA['tx_caretaker_test']['columns']['test_service']['config']['items'][] =  array( $title, $key);
 		}
-		
+
 			// Add flexform to service-item
 		if (is_array($TCA['tx_caretaker_test']['columns']) && is_array($TCA['tx_caretaker_test']['columns']['test_conf']['config']['ds'])) {
 			$TCA['tx_caretaker_test']['columns']['test_conf']['config']['ds'][$key] = 'FILE:EXT:'.$extKey.'/'.$path.'/'.( $flexform ? $flexform:'ds.'.$key.'TestService.xml');
 		}
-		
 	}
 
 	/**

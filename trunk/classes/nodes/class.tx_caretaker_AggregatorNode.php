@@ -79,10 +79,10 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 	 *
 	 * If force is set children will also be forced to update their state.
 	 *
-	 * @param boolean Force update
+	 * @param array Options
 	 * @return tx_caretaker_AggregatorResult
 	 */
-	public function updateTestResult($force_update = FALSE) {
+	public function updateTestResult($options = array()) {
 		$this->notify('updateAggregatorNode');
 
 		if ($this->getHidden() == true) {
@@ -93,7 +93,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 			if (count($children) > 0) {
 				$testResults = array();
 				foreach ($children as $child) {
-					$testResult = $child->updateTestResult($force_update);
+					$testResult = $child->updateTestResult($options);
 					$testResults[] = array('node' => $child, 'result' => $testResult);
 				}
 				$groupResult = $this->getAggregatedResult($testResults);

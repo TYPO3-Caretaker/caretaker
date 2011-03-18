@@ -112,7 +112,7 @@ return array(
 
 		/* services */
 	'tx_caretaker_testservicebase'	     => $caretakerExtPath.'classes/services/tests/class.tx_caretaker_TestServiceBase.php',
-
+	'tx_caretaker_testservicerunner'     => $caretakerExtPath.'classes/services/class.tx_caretaker_TestServiceRunner.php',
 
 );
 ?>

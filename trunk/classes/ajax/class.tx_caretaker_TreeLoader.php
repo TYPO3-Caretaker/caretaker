@@ -49,7 +49,6 @@
 class tx_caretaker_TreeLoader {
 	
 	public function ajaxLoadTree($params, &$ajaxObj) {
-		
 		$node_id = t3lib_div::_GP('node');
 		
 		if ( $node_id == 'root'){
@@ -110,8 +109,8 @@ class tx_caretaker_TreeLoader {
 		} else {
 			$result['leaf'] = TRUE;
 		}
-	
+
 		return $result;
-	}	
+	}
 }
 ?>

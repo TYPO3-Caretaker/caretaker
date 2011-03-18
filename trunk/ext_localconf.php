@@ -84,7 +84,7 @@ if ( t3lib_div::int_from_ver( TYPO3_version ) < t3lib_div::int_from_ver( '4.5.0'
 }
 
 
-require(t3lib_extMgm::extPath('caretaker').'/ext_conf_include.php');
+require(t3lib_extMgm::extPath('caretaker') . '/ext_conf_include.php');
 
 	// eid script
 $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);

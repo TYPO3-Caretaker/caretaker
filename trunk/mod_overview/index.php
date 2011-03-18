@@ -95,21 +95,21 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			// Include Ext JS
 			$this->pageRenderer->loadExtJS();
 			$this->pageRenderer->enableExtJSQuickTips();
-			$this->pageRenderer->addJsFile( $BACK_PATH . t3lib_extMgm::extRelPath('caretaker') . 'res/js/tx.caretaker.js');
+			$this->pageRenderer->addJsFile($BACK_PATH . t3lib_extMgm::extRelPath('caretaker') . 'res/js/tx.caretaker.js');
 
 			$panels = array();
 			foreach( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'] as $extJsBackendPanel ){
 
 					// register JS
 				foreach($extJsBackendPanel['jsIncludes'] as $jsInclude){
-					$filename = $BACK_PATH . '../' . str_replace( PATH_site, '' , t3lib_div::getFileAbsFileName($jsInclude) );
-					$this->pageRenderer->addJsFile( $filename );
+					$filename = $BACK_PATH . '../' . str_replace( PATH_site, '' , t3lib_div::getFileAbsFileName($jsInclude));
+					$this->pageRenderer->addJsFile($filename);
 				}
 
 					// register CSS
 				foreach($extJsBackendPanel['cssIncludes'] as $cssInclude){
-					$filename = $BACK_PATH . '../' . str_replace( PATH_site, '' , t3lib_div::getFileAbsFileName($cssInclude) );
-					$this->pageRenderer->addCssFile( $filename  );
+					$filename = $BACK_PATH . '../' . str_replace( PATH_site, '' , t3lib_div::getFileAbsFileName($cssInclude));
+					$this->pageRenderer->addCssFile($filename );
 				}
 
 					// add ExtJs Panel

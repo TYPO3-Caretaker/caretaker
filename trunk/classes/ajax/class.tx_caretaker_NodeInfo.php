@@ -139,7 +139,7 @@ class tx_caretaker_NodeInfo {
 
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
 		if ($node_id && $node = $node_repository->id2node($node_id, true) ){
-			$result = $node->updateTestResult($force);
+			$result = $node->updateTestResult(array('forceUpdate' => $force));
 			$content = array(
 				'state' => $result->getState(),
 				'state_info' => $result->getStateInfo(),
