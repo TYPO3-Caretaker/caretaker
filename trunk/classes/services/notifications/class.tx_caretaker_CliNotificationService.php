@@ -60,7 +60,7 @@ class tx_caretaker_CliNotificationService extends tx_caretaker_AbstractNotificat
 	 * @param tx_caretaKer_TestResult $lastResult
 	 */
 	public function addNotification ( $event, $node, $result = NULL, $lastResult = NULL ){
-		
+
 		$indent = $this->getCliIndentation($node);
 
 		if ( is_a ($node, 'tx_caretaker_TestNode' )  ) {

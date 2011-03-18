@@ -127,9 +127,9 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
 	}
 
 	public function addNotification($event, $node, $result = NULL, $lastResult = NULL) {}
-	
+
 	public function sendNotifications() {}
-	
+
 }
 
 ?>

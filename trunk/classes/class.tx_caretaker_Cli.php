@@ -69,17 +69,17 @@ class tx_caretaker_Cli extends t3lib_cli {
 
         $this->cli_options[] = array('--root', 'update all beginning with Root Node');
         $this->cli_options[] = array('-R', 'Same as --root');
-        
+
         $this->cli_options[] = array('--node', 'update all beginning with this NodeID');
         $this->cli_options[] = array('-N', 'Same as --node');
-        
+
         $this->cli_options[] = array('-f', 'force Refresh of testResults');
         $this->cli_options[] = array('-r', 'Return status code');
 
 		$this->cli_options[] = array('--options', 'Generic options for running tests, e.g. "timeout=10 reporting=off"');
 		$this->cli_options[] = array('-o', 'Same as --options');
     }
-    
+
     /**
      * CLI engine
      *
@@ -156,7 +156,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 	        	} else {
 	        		exit;
 	        	}
-				
+
         	} else {
         		$this->cli_echo( 'Node not found or inactive'.chr(10) );
         		exit;
@@ -173,7 +173,7 @@ class tx_caretaker_Cli extends t3lib_cli {
         } elseif  ($task == 'update-typo3-latest-version-list'){
         	$result = tx_caretaker_LatestVersionsHelper::updateLatestTypo3VersionRegistry();
         	$this->cli_echo( 'TYPO3 latest version list update result: ' . $result.chr(10) );
-        } 
+        }
 
         if ($task == 'help') {
         	$this->cli_validateArgs();
@@ -184,7 +184,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 
 	/**
 	 * Get a specific CLI Argument
-	 * 
+	 *
 	 * @param string $name
 	 * @param string $alt_name
 	 * @return string

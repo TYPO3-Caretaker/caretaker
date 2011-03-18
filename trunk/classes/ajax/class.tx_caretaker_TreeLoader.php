@@ -47,10 +47,10 @@
  * @subpackage caretaker
  */
 class tx_caretaker_TreeLoader {
-	
+
 	public function ajaxLoadTree($params, &$ajaxObj) {
 		$node_id = t3lib_div::_GP('node');
-		
+
 		if ( $node_id == 'root'){
 			$node_repository = tx_caretaker_NodeRepository::getInstance();
 			$node = $node_repository->getRootNode(true);
@@ -60,14 +60,14 @@ class tx_caretaker_TreeLoader {
 			$node =  $node_repository->id2node($node_id, 1);
 			$result = $this->nodeToArray($node);
 		}
-		
-		
-		
+
+
+
 		$ajaxObj->setContent($result['children']);
 
 		$ajaxObj->setContentFormat('jsonbody');
 	}
-	
+
 	protected function nodeToArray($node, $depth = 1) {
 			// show node and icon
 		$result = array();
@@ -75,13 +75,13 @@ class tx_caretaker_TreeLoader {
 		$title  = $node->getTitle();
 		$hidden = $node->getHidden();
 		$table  = 'tx_caretaker_' . strToLower($node->getType());
-		
+
 		$id = $node->getCaretakerNodeId();
-		
+
 		$testResult = $node->getTestResult();
 		$resultClass = 'caretaker-state-' . strtolower( $testResult->getStateInfo() );
 		$typeClass = 'caretaker-type-' . strtolower( $node->getType() );
-	
+
 		$result['type'] = strtolower($node->getType());
 		$result['id'] = $id;
 		$result['uid'] = $uid;
@@ -94,8 +94,8 @@ class tx_caretaker_TreeLoader {
 		} else {
 			$result['url'] = false;
 		}
-		
-		
+
+
 			// show subitems of tx_caretaker_AggregatorNodes
 		if (is_a($node, 'tx_caretaker_AggregatorNode')) {
 			$children = $node->getChildren(true);

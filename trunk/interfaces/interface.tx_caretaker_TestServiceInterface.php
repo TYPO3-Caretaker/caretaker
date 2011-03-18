@@ -35,13 +35,13 @@
  */
 
 interface tx_caretaker_TestServiceInterface {
-	
+
 	/**
 	 * Initialize the Service
 	 * @return unknown_type
 	 */
 	public function init();
-	
+
 	/**
 	 * Set the instance for the test execution
 	 * @param $instance
@@ -53,29 +53,29 @@ interface tx_caretaker_TestServiceInterface {
 	 * @param $configuration
 	 */
 	function setConfiguration($configuration);
-	
+
 	/**
-	 * Run the Test defined in TestConf and return a Testresult Object 
-	 * 
+	 * Run the Test defined in TestConf and return a Testresult Object
+	 *
 	 * @param array $flexFormData Flexform Configuration
 	 * @return tx_caretaker_TestResult
 	 */
 	public function runTest();
-	
+
 	/**
 	 * Get a short description for the meaning of the value in the current test
-	 *  
-	 * @return String Description what is stored in the Value field. 
+	 *
+	 * @return String Description what is stored in the Value field.
 	 */
 	public function getValueDescription();
-	
+
 	/**
 	 * Get information if the test service is able to execute tests
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isExecutable();
-	
+
 }
 
 ?>

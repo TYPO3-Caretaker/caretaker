@@ -51,7 +51,7 @@ class tx_caretaker_TestResultRepository {
 
 	/**
 	 * Reference to the current Instance
-	 * 
+	 *
 	 * @var $instance tx_caretaker_TestResultRepository
 	 */
 	private static $instance = null;
@@ -62,20 +62,20 @@ class tx_caretaker_TestResultRepository {
 	 * @var integer
 	 */
 	private $lastTestResultScanRange = 0;
-	
+
 	/**
 	 * Private constructor use getInstance instead
-	 * 
+	 *
 	 * @return unknown_type
 	 */
 	private function __construct (){
 		$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
 		$this->lastTestResultScanRange = (int)$confArray['lastTestResultScanRange'];
 	}
-	
+
 	/**
 	 * Get the Singleton Object
-	 *  
+	 *
 	 * @return tx_caretaker_TestResultRepository
 	 */
 	public function getInstance(){
@@ -138,7 +138,7 @@ class tx_caretaker_TestResultRepository {
 
 		$testUID     = $testNode->getUid();
 		$instanceUID = $testNode->getInstance()->getUid();
-		
+
 		$result_range = new tx_caretaker_TestResultRange(NULL, NULL);
 		$base_condition = 'test_uid='.$testUID.' AND instance_uid='.$instanceUID.' ';
 
@@ -157,8 +157,8 @@ class tx_caretaker_TestResultRepository {
 	}
 
 	/**
-	 * Get the ResultRange for the given Instance Test and the timerange 
-	 * 
+	 * Get the ResultRange for the given Instance Test and the timerange
+	 *
 	 * @param tx_caretaker_TestNode $testNode
 	 * @param integer $start_timestamp
 	 * @param integer $stop_timestamp
@@ -172,7 +172,7 @@ class tx_caretaker_TestResultRepository {
 
 		$result_range = new tx_caretaker_TestResultRange($start_timestamp, $stop_timestamp);
 		$base_condition = 'test_uid='.$testUID.' AND instance_uid='.$instanceUID.' ';
-		
+
 		$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery( '*', 'tx_caretaker_testresult', $base_condition.'AND tstamp >='.$start_timestamp.' AND tstamp <='.$stop_timestamp, '', 'tstamp ASC'  );
 
@@ -194,9 +194,9 @@ class tx_caretaker_TestResultRepository {
 				$result_range->addResult($result, 'first');
 			}
 		}
-		
+
 			// add last value if needed
-		$last = $result_range->getLast(); 
+		$last = $result_range->getLast();
 		if ($last && $last->getTstamp() < $stop_timestamp){
 			if($graph) {
 				$real_last = new tx_caretaker_TestResult( $stop_timestamp, $last->getState(), $last->getValue(), $last->getMessage()->getText(), $last->getSubMessages() );
@@ -204,12 +204,12 @@ class tx_caretaker_TestResultRepository {
 			}
 		}
 
-		return $result_range; 
+		return $result_range;
 	}
-	
+
 	/**
 	 * Convert DB-Row to Test Node Result
-	 * 
+	 *
 	 * @param array $row
 	 * @return tx_caretaker_TestResult
 	 */
@@ -223,9 +223,9 @@ class tx_caretaker_TestResultRepository {
 			$message,
 			$submessages
 		);
-		return $instance; 
+		return $instance;
 	}
-	
+
 	/**
 	 * Save the Testresult for the given TestNode
 	 * @param tx_caretaker_TestNode $uid
@@ -257,7 +257,7 @@ class tx_caretaker_TestResultRepository {
 		}
 
 	}
-	
+
 }
 
 ?>

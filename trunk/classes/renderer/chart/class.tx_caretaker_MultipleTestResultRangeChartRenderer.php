@@ -58,10 +58,10 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 	 * @var array
 	 */
 	var $testResultRangeTitles = array();
-	
+
 	/**
 	 * Add a new test result range
-	 * @param tx_caretaker_TestResultRange $testResultRange 
+	 * @param tx_caretaker_TestResultRange $testResultRange
 	 */
 	public function addTestResultrange( tx_caretaker_TestResultRange $testResultRange, $title ){
 		$this->testResultRanges[] = $testResultRange;
@@ -83,11 +83,11 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 		if( !$this->getMaxValue() || $this->getMaxValue() < $testResultRange->getMaxValue()){
 			$this->setMaxValue( $testResultRange->getMaxValue() );
 		}
-		
+
 		$this->init();
 
 	}
-	
+
 	/**
 	 * draw the chart-background into the given chart image
 	 * @param resource $image
@@ -107,7 +107,7 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 				$newX = intval( $this->transformX( $testResult->getTimestamp() ) );
 				$newY = intval( $this->transformY( $testResult->getValue() ) );
 				if( $lastX !== NULL  ){
-					
+
 					$bgPoints[] = $lastX;
 					$bgPoints[] = $lastY;
 					$bgPoints[] = $newX;
@@ -154,14 +154,14 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 				if( $lastX !== NULL  ){
 					imageline ( $image , $lastX, $lastY, $newX, $lastY, $color );
 					imageline ( $image , $newX,  $lastY, $newX, $newY,  $color );
-					
+
 					$feLines[] = array($lastX,$lastY,$newX,$lastY);
 					$feLines[] = array($newX,$lastY,$newX,$newY);
 				}
 				$lastX = $newX;
 				$lastY = $newY;
 			}
-			
+
 				// draw line
 			if ( count($feLines) > 1 ){
 				foreach ($feLines as $line){
@@ -185,7 +185,7 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 	 */
 	protected function drawChartImageLegend( &$image  ){
 
-		$chartLegendColor = imagecolorallocate($image, 1 , 1 ,1);	
+		$chartLegendColor = imagecolorallocate($image, 1 , 1 ,1);
 		$offset = $this->marginTop + 10 ;
 
 		foreach ( $this->testResultRanges as $key => $testResultRange ){
@@ -203,10 +203,10 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 			$size  = 9;
 			$angle = 0;
 			imagettftext( $image, $size, $angle, $x + 10, $y, $chartLegendColor, $font, $this->testResultRangeTitles[$key] );
-			
+
 			$offset += 18;
 		}
-		
+
 	}
 
 	/**
@@ -216,7 +216,7 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 	 * @return array Array with RGB values
 	 */
 	protected function getChartIndexColor( $index ){
-		
+
 		$chartColors = array(
 			array( 248 , 139 ,   0 ),
 			array(   0 ,   0 , 248 ),
@@ -234,7 +234,7 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 		$colorIndex = ( $index + $colorCount ) % $colorCount ;
 
 		return ( $chartColors[ $colorIndex ] );
-		
+
 	}
 
 }

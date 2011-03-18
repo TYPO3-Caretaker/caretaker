@@ -35,10 +35,10 @@
  */
 
 class tx_caretaker_NotificationFileExitPoint extends tx_caretaker_NotificationBaseExitPoint {
-	
+
 	public function execute() {
 		$fh = fopen($this->config['data']['sDEF']['lDEF']['filePath']['vDEF'], 'a');
-		
+
 		fclose($fh);
 	}
 }

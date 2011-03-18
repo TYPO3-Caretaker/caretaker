@@ -34,8 +34,11 @@
  * $Id$
  */
 
+/**
+ * 
+ */
 abstract class tx_caretaker_pibase extends tslib_pibase {
-	
+
 	/**
 	 * The main method of the PlugIn
 	 *
@@ -48,25 +51,25 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
 		$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
-	
+
 		$content=$this->getContent();
-		
+
 		//$GLOBALS['TSFE']->additionalHeaderData['caretaker'] = '<link rel="stylesheet" type="text/css" href="'.t3lib_extMgm::siteRelPath('caretaker').'res/css/caretaker.css" />';
-		
+
 		return $this->pi_wrapInBaseClass($content);
 	}
 
 	abstract function getContent();
-	
+
 	function showNodeInfo($node){
-		
+
 		$template; // = $this->cObj->cObjGetSingle($this->conf['template'], $this->conf['template.']);
-		
+
 		// render first level Children
 		if  (is_a($node, 'tx_caretaker_AggregatorNode')){
-			
+
 			$template = $this->cObj->cObjGetSingle($this->conf['template'], $this->conf['template.']);
-			
+
 			$children  = $node->getChildren();
 			$child_template  = $this->cObj->getSubpart($template, '###CARETAKER-CHILD###');
 			$child_infos = '';
@@ -85,16 +88,16 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 					$child_infos .= $this->cObj->substituteMarkerArray($child_template,$node_markers);
 				}
 			}
-			
+
 			$template =  $this->cObj->substituteSubpart($template,'CARETAKER-CHILDREN',$child_infos);
-			
-			
+
+
 		} else {
-			
+
 			$template = $this->cObj->cObjGetSingle($this->conf['templateChild'], $this->conf['templateChild.']);
 			$child_infos = '';
 		}
-		
+
 			// render Rootline
 		$rootline_subpart  = $this->cObj->getSubpart($template, '###ROOTLINE_ITEM###');
 		$rootline_items    = array();
@@ -114,7 +117,7 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 				$rootline_items[] = $this->cObj->substituteMarkerArray($rootline_subpart,$node_markers);
 			}
 		} while ( $rootline_node = $rootline_node->getParent() );
-		
+
 		$rootline_items = array_reverse( $rootline_items );
 		$template =  $this->cObj->substituteSubpart($template,'###ROOTLINE###', implode('', $rootline_items) );
 
@@ -131,15 +134,19 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 					$node_markers['###'.$key.'###'] = $mark;
 				}
 			}
-			
+
 			$template = $this->cObj->substituteMarkerArray($template,$node_markers);
 		}
 
 
 		return $template;
 	}
-	
-	
+
+	/**
+	 *
+	 * @param tx_caretaker_AbstractNode $node
+	 * @return array
+	 */
 	function getNodeData($node){
 		$date = array();
 			// node data
@@ -151,24 +158,24 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		$data['title']         = $node->getTitle();
 		$data['description']   = $node->getDescription();
 
-			// add state Infos		
+			// add state Infos
 		$result = $node->getTestResult();
 		$data['state']       = $result->getState();
 		$data['state_info']  = $result->getStateInfo();
 		$data['state_show']  = $result->getLocallizedStateInfo();
 		$data['state_msg']   = $result->getLocallizedInfotext();
 		$data['state_tstamp']= $result->getTstamp();
-		
+
 		if(is_a($result, 'tx_caretaker_TestResult')) {
-		
+
 			$data['state_value'] = $result->getValue();
 		}
-		
+
 			// instance data
 		if (is_a($node , 'tx_caretaker_TestNode' ) || is_a($node ,'tx_caretaker_TestgroupNode') ) {
 			$data['instance'] = $node->getInstance()->getTitle();
-		} 
-		
+		}
+
 		$data['link_parameters'] = '&tx_caretaker_pi_singleview[id]='.$node->getCaretakerNodeId() ;
 		return $data;
 	}
@@ -181,7 +188,5 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		return false;
 	}
 
-	
 }
-	
 ?>

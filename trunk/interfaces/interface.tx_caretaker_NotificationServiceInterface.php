@@ -51,7 +51,7 @@ interface tx_caretaker_NotificationServiceInterface {
 
 	/**
 	 * Check weather the notificationService is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isEnabled();
@@ -70,6 +70,6 @@ interface tx_caretaker_NotificationServiceInterface {
 	 * Send the aggregated Notifications
 	 */
 	public function sendNotifications();
-	
+
 }
 ?>

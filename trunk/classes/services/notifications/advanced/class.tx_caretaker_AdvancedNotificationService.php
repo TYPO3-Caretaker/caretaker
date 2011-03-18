@@ -46,14 +46,14 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 
 	/**
 	 * Internal data structure to collect all notifications
-	 * 
+	 *
 	 * @var array
 	 */
 	private $notifications = array();
 
 	/**
 	 * Array with list of called exitpoint objects
-	 * 
+	 *
 	 * @var array
 	 */
 	private $exitPoints = array();
@@ -165,7 +165,7 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 			if (count($dbRole) == 0) $dbRole[0] = false;
 			$this->roleCache[$roleName] = $dbRole[0];
 		}
-	
+
 		return $this->roleCache[$roleName];
 	}
 
@@ -188,7 +188,7 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 			if (!$epTempObj) return false;
 
 			$epTempObj->init(t3lib_div::xml2array($epRow[0]['config']));
-			
+
 			$this->exitPoints[$epName] = $epTempObj;
 		}
 

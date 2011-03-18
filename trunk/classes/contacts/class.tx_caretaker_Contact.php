@@ -61,7 +61,7 @@ class tx_caretaker_Contact {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param array $address
 	 * @param tx_caretaker_ContactRole $role
 	 */

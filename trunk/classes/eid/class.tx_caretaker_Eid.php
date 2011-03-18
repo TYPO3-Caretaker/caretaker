@@ -46,32 +46,32 @@
  * @subpackage caretaker
  */
 class tx_caretaker_Eid {
-	
+
 	public function __construct(){
 		tslib_eidtools::connectDB();
 		tslib_eidtools::initFeUser();
 		tslib_eidtools::initLanguage();
 		tslib_eidtools::initTCA();
 	}
-	
+
 	/**
 	 * @return tx_caretaker_agregatorNode
 	 */
 	private function getRequestedNode( $nodeId ){
-		
+
 		$node = false;
 		if ($nodeId){
 			$node_repository = tx_caretaker_NodeRepository::getInstance();
 	        $node = $node_repository->id2node( $nodeId , false);
 		}
-		
+
 		if ($node) {
 			// check credentials
 		}
-		
+
 		return $node;
 	}
-	
+
 	private function sendResultData( $data, $format ){
 		switch ($format){
 			case 'xml':
@@ -89,22 +89,22 @@ class tx_caretaker_Eid {
 				break;
 		}
 	}
-	
+
 	private function formatResultDataXml( $data ){
-		
+
 		switch ( gettype($data) ){
 			case 'array':
 				$result = '';
 				foreach ( $data as $key => $value ){
 					if( is_int($key) ){
-						$result .= '<item index="' . $key . '">' . $this->formatResultDataXml($value). '</item>';		
+						$result .= '<item index="' . $key . '">' . $this->formatResultDataXml($value). '</item>';
 					} else {
-						$result .= '<' . $key . '>' . $this->formatResultDataXml($value) . '</' . $key . '>';		
+						$result .= '<' . $key . '>' . $this->formatResultDataXml($value) . '</' . $key . '>';
 					}
 				}
 				return $result;
 				break;
-				
+
 			case 'boolean':
 				if ($data) {
 					return 'true';
@@ -112,11 +112,11 @@ class tx_caretaker_Eid {
 					return 'false';
 				}
 				break;
-				
+
 			case 'string':
 				return '<![CDATA['.$data.']]>';
 				break;
-				
+
 			default:
 				if ($data) {
 					return $data;
@@ -124,38 +124,38 @@ class tx_caretaker_Eid {
 					return '';
 				}
 				break;
-				
-				
+
+
 		}
-		
+
 	}
-	
+
 	private function formatResultDataJson($data ){
 		return json_encode($data);
 	}
-	
+
 	public function getEidFormat(){
 		 $format = $_SERVER['HTTP_ACCEPT'];
 		 if (  t3lib_div::_GP('format') ) {
-			$format = 	t3lib_div::_GP('format');	 	
-		 } 
+			$format = 	t3lib_div::_GP('format');
+		 }
 		 return $format;
 	}
-	
+
 	public function getEidData(){
-		
+
 		$nodeId = t3lib_div::_GP('node');
 		$node = $this->getRequestedNode($nodeId);
-		
-		if (!$node){ 
+
+		if (!$node){
 			return array ('success' => false, 'id' => $nodeId ) ;
 		}
-		
+
 		$result =  array(
 			'success' => true,
 			'id' => $nodeId
 		);
-		
+
 		// add node infos
 		if ( t3lib_div::_GP('addNode') == 1 ){
 			$result['node'] = array(
@@ -164,8 +164,8 @@ class tx_caretaker_Eid {
 				'type' => $node->getType(),
 				'description' => $node->getDescription()
 			);
-		} 
-		
+		}
+
 		// add result infos
 		if (  t3lib_div::_GP('addResult') == 1 ){
 			$nodeResult = $node->getTestResult();
@@ -175,8 +175,8 @@ class tx_caretaker_Eid {
 				'message'   => $nodeResult->getLocallizedInfotext(),
 				'timestamp' => $nodeResult->getTimestamp()
 			);
-		} 
-		
+		}
+
 		// add child infos
 		if (  t3lib_div::_GP('addChildren') == 1 ){
 			$result['children'] = false;
@@ -185,12 +185,12 @@ class tx_caretaker_Eid {
 				foreach ($children as $child){
 					$result['children'][] = $child->getCaretakerNodeId();
 				}
-			} 
-		} 
-		
+			}
+		}
+
 		// add statistic infos
 		if (  t3lib_div::_GP('addTestStatistics') == 1 ){
-			
+
 			$result['statistics']['count'] = array(
 				'error'     => 0,
 				'warning'   => 0,
@@ -207,7 +207,7 @@ class tx_caretaker_Eid {
 				'ack'       => array(),
 				'due'       => array(),
 			);
-			
+
 			$tests = $node->getTestNodes();
 			if ( $tests && count($tests) ){
 				foreach ($tests as $test){
@@ -236,23 +236,23 @@ class tx_caretaker_Eid {
 						case tx_caretaker_Constants::state_due:
 							$result['statistics']['id']['due'][] = $test->getCaretakerNodeId();
 							$result['statistics']['count']['due'] ++;
-							break;		
+							break;
 					}
 				}
-			}	
-			
+			}
+
 		}
-		
+
 		return $result;
-		
+
 	}
-	
+
 	public function processEidRequest(){
 		$data   = $this->getEidData();
 		$format = $this->getEidFormat();
 		$this->sendResultData($data,$format);
 	}
-	
+
 }
 
 if ( t3lib_div::_GP('eID') && t3lib_div::_GP('eID') == 'tx_caretaker')    {

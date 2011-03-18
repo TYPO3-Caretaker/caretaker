@@ -43,8 +43,8 @@ $TCA['tx_caretaker_instancegroup'] = array (
 	),
 	'feInterface' => $TCA['tx_caretaker_instancegroup']['feInterface'],
 	'columns' => array (
-	
-		'hidden' => Array (        
+
+		'hidden' => Array (
 			'exclude' => 1,
 			'label'   => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
 			'config'  => Array (
@@ -52,7 +52,7 @@ $TCA['tx_caretaker_instancegroup'] = array (
 				'default' => '0'
 			),
 		),
-		'starttime' => Array (        
+		'starttime' => Array (
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
             'config' => Array (
@@ -64,7 +64,7 @@ $TCA['tx_caretaker_instancegroup'] = array (
                 'checkbox' => '0'
             )
         ),
-        'endtime' => Array (        
+        'endtime' => Array (
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
             'config' => Array (
@@ -80,7 +80,7 @@ $TCA['tx_caretaker_instancegroup'] = array (
                 )
             )
         ),
-        'fe_group' => Array (        
+        'fe_group' => Array (
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.fe_group',
             'config' => Array (
@@ -109,7 +109,7 @@ $TCA['tx_caretaker_instancegroup'] = array (
 		'description' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.description',
-			'config' => Array (		
+			'config' => Array (
 				'type' => 'text',
 				'cols' => '50',
 				'rows' => '5',
@@ -119,7 +119,7 @@ $TCA['tx_caretaker_instancegroup'] = array (
 		'parent_group'=>Array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.parent_group',
-			'config' => Array (		
+			'config' => Array (
 				'type'          => 'select',
 				'form_type'     => 'user',
 				'userFunc'      => 'tx_ttaddress_treeview->displayGroupTree',
@@ -129,7 +129,7 @@ $TCA['tx_caretaker_instancegroup'] = array (
 				'autoSizeMax'   => 10,
 				'minitems'      => 0,
 				'maxitems'      => 2,
-		
+
 				'items' => Array (
                     Array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.parent_group.select', 0),
                 ),
@@ -185,8 +185,8 @@ $TCA['tx_caretaker_instance'] = array (
 	),
 	'feInterface' => $TCA['tx_caretaker_instance']['feInterface'],
 	'columns' => array (
-	
-		'hidden' => Array (        
+
+		'hidden' => Array (
 			'exclude' => 1,
 			'label'   => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
 			'config'  => Array (
@@ -194,7 +194,7 @@ $TCA['tx_caretaker_instance'] = array (
 				'default' => '0'
 			),
 		),
-		'starttime' => Array (        
+		'starttime' => Array (
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
             'config' => Array (
@@ -206,7 +206,7 @@ $TCA['tx_caretaker_instance'] = array (
                 'checkbox' => '0'
             )
         ),
-        'endtime' => Array (        
+        'endtime' => Array (
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
             'config' => Array (
@@ -222,7 +222,7 @@ $TCA['tx_caretaker_instance'] = array (
                 )
             )
         ),
-        'fe_group' => Array (        
+        'fe_group' => Array (
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.fe_group',
             'config' => Array (
@@ -251,7 +251,7 @@ $TCA['tx_caretaker_instance'] = array (
 		'description' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.description',
-			'config' => Array (		
+			'config' => Array (
 				'type' => 'text',
 				'cols' => '50',
 				'rows' => '5',
@@ -308,29 +308,29 @@ $TCA['tx_caretaker_instance'] = array (
 				'autoSizeMax'   => 10,
 				'minitems'      => 0,
 				'maxitems'      => 10000,
-				'wizards' => Array( 
-					'_PADDING' => 1, 
-					'_VERTICAL' => 1, 
-					'edit' => Array( 
-						'type' => 'popup', 
-						'title' => 'Edit Test', 
-						'script' => 'wizard_edit.php', 
-						'icon' => 'edit2.gif', 
-						'popup_onlyOpenIfSelected' => 1, 
-						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1', 
-					), 
-					'add' => Array( 
-						'type' => 'script', 
-						'title' => 'Create new Test', 
-						'icon' => 'add.gif', 
-						'params' => Array( 
-							'table'=>'tx_caretaker_test', 
-							'pid' => '###CURRENT_PID###', 
-							'setValue' => 'prepend' 
-						), 
-						'script' => 'wizard_add.php', 
+				'wizards' => Array(
+					'_PADDING' => 1,
+					'_VERTICAL' => 1,
+					'edit' => Array(
+						'type' => 'popup',
+						'title' => 'Edit Test',
+						'script' => 'wizard_edit.php',
+						'icon' => 'edit2.gif',
+						'popup_onlyOpenIfSelected' => 1,
+						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
 					),
-				), 
+					'add' => Array(
+						'type' => 'script',
+						'title' => 'Create new Test',
+						'icon' => 'add.gif',
+						'params' => Array(
+							'table'=>'tx_caretaker_test',
+							'pid' => '###CURRENT_PID###',
+							'setValue' => 'prepend'
+						),
+						'script' => 'wizard_add.php',
+					),
+				),
 	      )
 	    ),
 		'public_key' => Array (
@@ -352,10 +352,10 @@ $TCA['tx_caretaker_instance'] = array (
 			'size'          => 1,
 			'minitems'      => 0,
 			'maxitems'      => 1,
-			'items' => Array ( 
-				Array('', '0'), 
+			'items' => Array (
+				Array('', '0'),
 			),
-		
+
 	      )
 	    ),
 	    'notifications' => Array(
@@ -495,8 +495,8 @@ $TCA['tx_caretaker_testgroup'] = array (
 	),
 	'feInterface' => $TCA['tx_caretaker_testgroup']['feInterface'],
 	'columns' => array (
-	
-		'hidden' => Array (        
+
+		'hidden' => Array (
 			'exclude' => 1,
 			'label'   => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
 			'config'  => Array (
@@ -504,7 +504,7 @@ $TCA['tx_caretaker_testgroup'] = array (
 				'default' => '0'
 			),
 		),
-		'starttime' => Array (        
+		'starttime' => Array (
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
             'config' => Array (
@@ -516,7 +516,7 @@ $TCA['tx_caretaker_testgroup'] = array (
                 'checkbox' => '0'
             )
         ),
-        'endtime' => Array (        
+        'endtime' => Array (
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
             'config' => Array (
@@ -532,7 +532,7 @@ $TCA['tx_caretaker_testgroup'] = array (
                 )
             )
         ),
-        'fe_group' => Array (        
+        'fe_group' => Array (
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.fe_group',
             'config' => Array (
@@ -558,7 +558,7 @@ $TCA['tx_caretaker_testgroup'] = array (
 		'description' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.description',
-			'config' => Array (		
+			'config' => Array (
 				'type' => 'text',
 				'cols' => '50',
 				'rows' => '5',
@@ -568,7 +568,7 @@ $TCA['tx_caretaker_testgroup'] = array (
 		'parent_group'=>Array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.parent_group',
-			'config' => Array (		
+			'config' => Array (
 				'type'          => 'select',
 				'form_type'     => 'user',
 				'userFunc'      => 'tx_ttaddress_treeview->displayGroupTree',
@@ -578,7 +578,7 @@ $TCA['tx_caretaker_testgroup'] = array (
 				'autoSizeMax'   => 10,
 				'minitems'      => 0,
 				'maxitems'      => 2,
-		
+
 				'items' => Array (
                     Array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.parent_group.select', 0),
                 ),
@@ -601,7 +601,7 @@ $TCA['tx_caretaker_testgroup'] = array (
 		'tests' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tests',
-			'config' => Array (		
+			'config' => Array (
 				'type'          => 'select',
 				'foreign_table' => 'tx_caretaker_test',
 				'MM'            => 'tx_caretaker_testgroup_test_mm',
@@ -610,29 +610,29 @@ $TCA['tx_caretaker_testgroup'] = array (
 				'autoSizeMax'   => 25,
 				'minitems'      => 0,
 				'maxitems'      => 10000,
-				'wizards' => Array( 
-					'_PADDING' => 1, 
-					'_VERTICAL' => 1, 
-					'edit' => Array( 
-						'type' => 'popup', 
-						'title' => 'Edit Test', 
-						'script' => 'wizard_edit.php', 
-						'icon' => 'edit2.gif', 
-						'popup_onlyOpenIfSelected' => 1, 
-						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1', 
-					), 
-					'add' => Array( 
-						'type' => 'script', 
-						'title' => 'Create new Test', 
-						'icon' => 'add.gif', 
-						'params' => Array( 
-							'table'=>'tx_caretaker_test', 
-							'pid' => '###CURRENT_PID###', 
-							'setValue' => 'prepend' 
-						), 
-						'script' => 'wizard_add.php', 
+				'wizards' => Array(
+					'_PADDING' => 1,
+					'_VERTICAL' => 1,
+					'edit' => Array(
+						'type' => 'popup',
+						'title' => 'Edit Test',
+						'script' => 'wizard_edit.php',
+						'icon' => 'edit2.gif',
+						'popup_onlyOpenIfSelected' => 1,
+						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
 					),
-				), 
+					'add' => Array(
+						'type' => 'script',
+						'title' => 'Create new Test',
+						'icon' => 'add.gif',
+						'params' => Array(
+							'table'=>'tx_caretaker_test',
+							'pid' => '###CURRENT_PID###',
+							'setValue' => 'prepend'
+						),
+						'script' => 'wizard_add.php',
+					),
+				),
 			)
 		)
     ),
@@ -657,7 +657,7 @@ $TCA['tx_caretaker_test'] = array (
 	),
 	'feInterface' => $TCA['tx_caretaker_test']['feInterface'],
 	'columns' => Array (
-		'hidden' => Array (        
+		'hidden' => Array (
 			'exclude' => 1,
 			'label'   => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
 			'config'  => Array (
@@ -665,7 +665,7 @@ $TCA['tx_caretaker_test'] = array (
 				'default' => '0'
 			),
 		),
-		'starttime' => Array (        
+		'starttime' => Array (
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
             'config' => Array (
@@ -677,7 +677,7 @@ $TCA['tx_caretaker_test'] = array (
                 'checkbox' => '0'
             )
         ),
-        'endtime' => Array (        
+        'endtime' => Array (
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
             'config' => Array (
@@ -693,7 +693,7 @@ $TCA['tx_caretaker_test'] = array (
                 )
             )
         ),
-        'fe_group' => Array (        
+        'fe_group' => Array (
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.fe_group',
             'config' => Array (
@@ -719,7 +719,7 @@ $TCA['tx_caretaker_test'] = array (
 		'description' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.description',
-			'config' => Array (		
+			'config' => Array (
 				'type' => 'text',
 				'cols' => '50',
 				'rows' => '5',
@@ -766,7 +766,7 @@ $TCA['tx_caretaker_test'] = array (
 				'type'     => 'select',
 				'items'    =>Array(
 					Array('',0),Array(1,1),Array(2,2),Array(3,3),Array(4,4),	Array(5,5),Array(6,6),Array(7,7),Array(8,8),Array(9,9),Array(10,10),Array(11,11),Array(12,12),
-					Array(13,13),Array(14,14),Array(15,15),Array(16,16),Array(17,17),Array(18,18),Array(19,19),Array(20,20),Array(21,21),Array(22,22),Array(23,23),Array(24,24),					
+					Array(13,13),Array(14,14),Array(15,15),Array(16,16),Array(17,17),Array(18,18),Array(19,19),Array(20,20),Array(21,21),Array(22,22),Array(23,23),Array(24,24),
 				)
 			)
 		),
@@ -777,7 +777,7 @@ $TCA['tx_caretaker_test'] = array (
 				'type'     => 'select',
 				'items'    =>Array(
 					Array('',0),Array(1,1),Array(2,2),Array(3,3),Array(4,4),	Array(5,5),Array(6,6),Array(7,7),Array(8,8),Array(9,9),Array(10,10),Array(11,11),Array(12,12),
-					Array(13,13),Array(14,14),Array(15,15),Array(16,16),Array(17,17),Array(18,18),Array(19,19),Array(20,20),Array(21,21),Array(22,22),Array(23,23),Array(24,24),					
+					Array(13,13),Array(14,14),Array(15,15),Array(16,16),Array(17,17),Array(18,18),Array(19,19),Array(20,20),Array(21,21),Array(22,22),Array(23,23),Array(24,24),
 				)
 			)
 		),

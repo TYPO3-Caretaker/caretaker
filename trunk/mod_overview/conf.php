@@ -39,7 +39,7 @@ define('TYPO3_MOD_PATH', '../typo3conf/ext/caretaker/mod_overview/');
 $BACK_PATH='../../../../typo3/';
 $MCONF['name']='txcaretakerNav_txcaretakerOverview';
 
-	
+
 $MCONF['access']='user,group';
 $MCONF['script']='index.php';
 

@@ -73,7 +73,7 @@ class tx_caretaker_ContactRole {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param intger $uid
 	 * @param string $id
 	 * @param string $title

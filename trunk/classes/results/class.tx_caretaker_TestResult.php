@@ -54,8 +54,8 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	protected $value = 0;
 
 	/**
-	 * Constructor 
-	 * 
+	 * Constructor
+	 *
 	 * @param integer $timestamp
 	 * @param integer $state
 	 * @param float   $value
@@ -70,7 +70,7 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 
 	/**
 	 * Create a new testresult with state UNKNOWN
-	 * 
+	 *
 	 * @return tx_caretaker_TestResult
 	 */
 	static public function undefined($message = 'Result is undefined') {
@@ -80,7 +80,7 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 
 	/**
 	 * Create a new testresult with current timestamp
-	 * 
+	 *
 	 * @param integer $status
 	 * @param float   $value
 	 * @param string  $message
@@ -93,7 +93,7 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 
 	/**
 	 * Return the value of the result
-	 * 
+	 *
 	 * @return unknown_type
 	 */
 	public function getValue() {

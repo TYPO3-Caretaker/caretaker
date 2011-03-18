@@ -71,7 +71,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @see caretaker/trunk/services/tx_caretaker_TestServiceBase#runTest()
 	 */
 	function runTest() {
-		
+
 		$timeWarning     = $this->getTimeWarning();
 		$timeError       = $this->getTimeError();
 
@@ -90,15 +90,15 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		$expectedHeaders = $this->getExpectedHeaders();
 		$expectedDateAge = $this->getExpectedDateAge();
 		$expectedModifiedAge = $this->getExpectedModifiedAge();
-		
-		
+
+
 		$url           = $this->getInstanceUrl();
 		$parsed_url    = parse_url($url);
 
 		if ($parsed_url['path'] == '') {
 			$parsed_url['path'] = '/';
 		}
-		
+
 		if ($parsed_url['port'] && !$requestPort ){
 			$requestPort = $parsed_url['port'];
 		}
@@ -110,7 +110,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		if ($parsed_url['pass'] && !$requestPassword) {
 			$requestPassword = $parsed_url['pass'];
 		}
-		
+
 		$request_url   = $parsed_url['scheme'] . '://' . $parsed_url['host'] . $parsed_url['path'] . $requestQuery;
 
 			// no query
@@ -120,7 +120,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 
 			// execute query
 		list ($time, $response, $info, $headers) = $this->executeCurlRequest($request_url, $timeError * 3, $requestPort, $requestMethod, $requestUsername, $requestPassword, $requestData, $requestProxy, $requestProxyport);
-		
+
 		$submessages = array();
 
 			// time-ERROR
@@ -152,7 +152,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 				)
 			);
 		}
-		
+
 			// http-header check
 		if ( count($expectedHeaders)>0 ){
 			$headerSuccess = TRUE;
@@ -251,7 +251,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 
 			// Return
 		return tx_caretaker_TestResult::create( $resultState, $time ,  new tx_caretaker_ResultMessage( $message, $values ), $submessages  );
-		
+
 	}
 
 
@@ -281,7 +281,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 			$expectedValue = str_replace ('###INSTANCE_QUERY###',    $instanceQuery,    $expectedValue);
 			$expectedValue = str_replace ('###REQUEST_QUERY###',     $requestQuery,     $expectedValue);
 		}
-		
+
 		$result = TRUE;
 
 			// = Value equals
@@ -316,7 +316,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		return $result;
 	}
 
-	
+
 	public function parseHeaderDate($datestring){
 			// replace  wekkdays >> %u
 		$datestring = str_replace( array( 'Mon','Tue','Wed','Thu','Fri','Sat','Sun' ), array( 1,2,3,4,5,6,7), $datestring );
@@ -327,15 +327,15 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		$timestamp = mktime($date['tm_hour'],$date['tm_min'],$date['tm_sec'],$date['tm_mon']+1,$date['tm_mday'], 1900+$date['tm_year'] );
 		return $timestamp;
 	}
-	
+
 	/**
-	 * Get the maximal time befor WARNING 
+	 * Get the maximal time befor WARNING
 	 * @return integer
 	 */
 	protected function getTimeWarning(){
 		return intval($this->getConfigValue('max_time_warning'));
 	}
-	
+
 	/**
 	 * Get the maximal time before ERROR
 	 * @return integer
@@ -343,7 +343,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	protected function getTimeError(){
 		return intval($this->getConfigValue('max_time_error'));
 	}
-	
+
 	/**
 	 * Get the expected http status code from the test configuration
 	 * @return integer
@@ -396,7 +396,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	protected function getRequestQuery(){
 		return $this->getConfigValue('request_query');
 	}
-	
+
 	/**
 	 * Get the HTTP-Method for the Request
 	 * @return string
@@ -454,7 +454,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function getInstanceUrl(){
@@ -468,29 +468,29 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	protected function getInstanceHostname(){
 		return $this->instance->getUrl();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param string $request_url
 	 * @param integer $timeout curl http-timeout
- 	 * @param mixed  $request_port curl request http-port 
+ 	 * @param mixed  $request_port curl request http-port
 	 * @param string $request_method
 	 * @param string $request_username
 	 * @param string $request_password
 	 * @param string $request_data
-	 * @param string $request_proxy 
+	 * @param string $request_proxy
 	 * @return array time in seconds and status information im associatie arrays
 	 */
 	protected function executeCurlRequest($request_url , $timeout=0, $request_port=false, $request_method='GET', $request_username='', $request_password='', $request_data='' , $request_proxy = false , $request_proxyport = false){
 
 		$curl = curl_init();
-		
+
 			// url & timeout
 		curl_setopt($curl, CURLOPT_URL, $request_url);
-        if ( $timeout > 0 ) { 
+        if ( $timeout > 0 ) {
         	curl_setopt($curl, CURLOPT_TIMEOUT, (int)ceil( $timeout / 1000) );
         }
-		
+
 			// username & password
 		if ( $request_username && $request_password ) {
 			curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY );
@@ -501,7 +501,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		if ( $request_port &&  $request_port != '' ) {
 			curl_setopt($curl, CURLOPT_PORT, $request_port );
 		}
-		
+
 			// proxy server
 		if ( $request_proxy && $request_proxyport ) {
 			curl_setopt($curl, CURLOPT_PROXY, $request_proxy );
@@ -530,9 +530,9 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 				break;
 			case 'DELETE':
 				curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
-				break;				
+				break;
 		}
-		
+
 		curl_setopt($curl, CURLOPT_HEADER, TRUE);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
 

@@ -46,10 +46,10 @@
  * @subpackage caretaker
  */
 class tx_caretaker_LatestVersionsHelper {
-	
+
 	public static function updateLatestTypo3VersionRegistry() {
-		
-		$success = false;		
+
+		$success = false;
 
 		$content = self::curlRequest('https://svn.typo3.org/TYPO3v4/Core/tags/');
 
@@ -62,7 +62,7 @@ class tx_caretaker_LatestVersionsHelper {
 		if (!is_array($matches[1]) || count($matches[1]) === 0) {
 			return false;
 		}
-		
+
 		$max = array();
 		foreach ($matches[1] as $key => $version) {
 			$versionDigits = explode('-', $version, 3);
@@ -75,14 +75,14 @@ class tx_caretaker_LatestVersionsHelper {
 		foreach ($max as $key => $value) {
 			$max[$key] = implode('.', $value);
 		}
-		
+
 		t3lib_div::makeInstance('t3lib_Registry')->set('tx_caretaker', 'TYPO3versions', $max);
-		
+
 		return true;
-		
+
 	}
-	
-	private function curlRequest($requestUrl = false) {	
+
+	private function curlRequest($requestUrl = false) {
 		$curl = curl_init();
         if ($curl === false || $requestUrl === false) {
         	return false;
@@ -104,8 +104,8 @@ class tx_caretaker_LatestVersionsHelper {
 
 		$response = curl_exec($curl);
 		curl_close($curl);
-		
+
 		return $response;
 	}
-	
+
 }

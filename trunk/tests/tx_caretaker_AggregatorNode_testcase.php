@@ -1,4 +1,4 @@
-<?php 
+<?php
 /***************************************************************
  * Copyright notice
  *
@@ -48,7 +48,7 @@ class tx_caretaker_AggregatorNode_Stub extends tx_caretaker_AggregatorNode {
 	public function getAggregatedResult($results){
 		return parent::getAggregatedResult($results);
 	}
-	
+
 }
 
 	/* this is the test */
@@ -76,11 +76,11 @@ class tx_caretaker_AggregatorNode_testcase extends tx_phpunit_testcase  {
 		$this->assertEquals( 1, $aggregated_result->getNumUNDEFINED() , "wrong undefined count" );
 
 		$this->assertEquals( tx_caretaker_Constants::state_error, $aggregated_result->getState() , "wrong result" );
-		
+
 	}
 
-	
-	
+
+
 }
 
 ?>

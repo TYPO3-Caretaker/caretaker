@@ -49,7 +49,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 	 * @return string
 	 */
 	function getContent() {
-		
+
 		$node = $this->getNode();
 
 		if ($node) {
@@ -76,10 +76,10 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 					$template = $this->cObj->substituteSubpart($template, $subpartMark, $partTemplate);
 				}
 			}
-			
+
 			$lcObj = t3lib_div::makeInstance('tslib_cObj');
 			$lcObj->start($renderData);
-			
+
 
 				// substitute markers
 			if ($this->conf['markers.']) {
@@ -92,8 +92,8 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 				$template = $this->cObj->substituteMarkerArray($template,$markers);
 			}
 
-			
-			
+
+
 			$content = 	$template;
 
 		} else {
@@ -110,7 +110,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 	 * @return string
 	 */
 	function renderNodeList($nodeDataList,  $template){
-		
+
 		$renderedNodelist = '';
 		if ($nodeDataList && is_array($nodeDataList)) {
 			foreach ($nodeDataList as $nodeData){
@@ -162,14 +162,14 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 		} else {
 			$testChildNodes = array ();
 		}
-			
+
 		$nodesErrors    = array();
 		$nodesWarnings  = array();
 		$nodesAck       = array();
 		$nodesDue       = array();
 		$nodesOk        = array();
 		$nodesUndefined = array();
-		
+
 		$worst_state       = tx_caretaker_Constants::state_ok;
 		$worst_state_info  = '';
 
@@ -179,7 +179,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 		$num_undefined = 0;
 		$num_ack = 0;
 		$num_due = 0;
-		
+
 		foreach ( $testChildNodes as $testNode ) {
 
 			$testResult = $testNode->getTestResult();
@@ -225,7 +225,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 				case tx_caretaker_Constants::state_due:
 					$nodesDue[] = $nodeInfo;
 					$num_due ++;
-					break;	
+					break;
 				case tx_caretaker_Constants::state_ok:
 					$nodesOk[] = $nodeInfo;
 					$num_ok ++;
@@ -233,9 +233,9 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 				case tx_caretaker_Constants::state_undefined:
 					$nodesUndefined[] = $nodeInfo;
 					$num_undefined ++;
-					break;	
+					break;
 			}
-			
+
 		}
 
 		$data = array(
@@ -257,7 +257,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 				'due'       => $nodesDue
 			)
 		);
-		
+
 		return $data;
 	}
 

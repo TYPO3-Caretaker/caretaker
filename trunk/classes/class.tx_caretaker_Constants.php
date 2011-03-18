@@ -51,7 +51,7 @@ class tx_caretaker_Constants {
 	const state_undefined = -1;
 	const state_ack = -2;
 	const state_due = -3;
-	
+
 
 		/* node types */
 	const nodeType_Root =			'Root';

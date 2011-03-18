@@ -41,7 +41,7 @@
 $caretakerExtPath = t3lib_extMgm::extPath('caretaker');
 
 return array(
-	
+
 		/* helpers */
 	'tx_caretaker_constants'			   => $caretakerExtPath.'classes/class.tx_caretaker_Constants.php',
 	'tx_caretaker_servicehelper'           => $caretakerExtPath.'classes/helpers/class.tx_caretaker_ServiceHelper.php',
@@ -75,7 +75,7 @@ return array(
 	'tx_caretaker_terupdatetask'							=> $caretakerExtPath.'scheduler/class.tx_caretaker_terupdatetask.php',
 	'tx_caretaker_terupdatetask_additionalfieldprovider'	=> $caretakerExtPath.'scheduler/class.tx_caretaker_terupdatetask_additionalfieldprovider.php',
 	'tx_caretaker_typo3versionnumbersupdatetask'			=> $caretakerExtPath.'scheduler/class.tx_caretaker_typo3versionnumbersupdatetask.php',
-	
+
 		/* nodes */
 	'tx_caretaker_abstractnode'	      => $caretakerExtPath.'classes/nodes/class.tx_caretaker_AbstractNode.php',
 	'tx_caretaker_aggregatornode'	  => $caretakerExtPath.'classes/nodes/class.tx_caretaker_AggregatorNode.php',

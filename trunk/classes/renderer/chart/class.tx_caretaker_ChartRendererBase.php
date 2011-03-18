@@ -139,7 +139,7 @@ abstract class tx_caretaker_ChartRendererBase {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param integer $width
 	 * @param integer $height
 	 */
@@ -259,7 +259,7 @@ abstract class tx_caretaker_ChartRendererBase {
 	 * init the chart and calculate the scales
 	 */
 	protected function init(){
-		
+
 		// calculate chart Area
 		$this->chartWidth  = $this->width  - $this->marginLeft - $this->marginRight ;
 		$this->chartHeight = $this->height - $this->marginTop  - $this->marginBottom ;
@@ -275,7 +275,7 @@ abstract class tx_caretaker_ChartRendererBase {
 	/**
 	 * transform values from valuespace to chart-image space
 	 * @param float $value
-	 * @return float 
+	 * @return float
 	 */
 	protected function transformX ($value){
 		return $this->marginLeft + ($value - $this->baseX) * $this->scaleX;
@@ -284,12 +284,12 @@ abstract class tx_caretaker_ChartRendererBase {
 	/**
 	 * transform values from valuespace to chart-image space
 	 * @param float $value
-	 * @return float 
+	 * @return float
 	 */
 	protected function transformY ($value){
 		return $this->marginTop + $this->chartHeight - ( ( $value - $this->baseY ) * $this->scaleY );
 	}
-	
+
 	/**
 	 * combine the chart images from the given parts
 	 */
@@ -298,7 +298,7 @@ abstract class tx_caretaker_ChartRendererBase {
 		// create image of width and height
 		$image = imagecreatetruecolor ( $this->width ,  $this->height );
 		// imageantialias ( $image , true );
-		
+
 		// Make the background transparent
 		$background = imagecolorallocate($image,255,255,255);
 		imagefilledrectangle( $image, 0, 0, $this->width ,  $this->height, $background);
@@ -313,7 +313,7 @@ abstract class tx_caretaker_ChartRendererBase {
 
 		imagefilledrectangle( $image , $this->marginLeft ,  $this->marginTop ,  $this->width  - $this->marginRight  , $this->height - $this->marginBottom , $chartBackgroundColor );
 
-				
+
 		// combine with chartImageBackground
 		$this->drawChartImageBackground( $image );
 
@@ -329,10 +329,10 @@ abstract class tx_caretaker_ChartRendererBase {
 		// combine with getChartImageLegend
 		$this->drawChartImageLegend( $image );
 
-		
+
 		// combine with getChartImageTitle
 		$this->drawChartTitle( $image , $this->getChartTitle() );
-		
+
 
 		return $image;
 	}
@@ -407,13 +407,13 @@ abstract class tx_caretaker_ChartRendererBase {
 			$font  = t3lib_extMgm::extPath('caretaker').'/lib/Fonts/tahoma.ttf';
 			$size  = 9;
 			$angle = 0;
-		
+
 			$Position   = imageftbbox($size,$angle,$font,$value);
 			$TextWidth  = abs($Position[2])-abs($Position[0]);
 			$TextHeight = abs($Position[1])-abs($Position[3]);
 
 			$color = imagecolorallocate  ($image  ,255 ,1 ,1 );
-			
+
 			imagettftext( $image, $size, $angle, $this->marginLeft - 10 - floor( $TextWidth ) , $scaledValueY + 6, $chartLegendColor, $font, $value);
 		}
 	}
@@ -426,7 +426,7 @@ abstract class tx_caretaker_ChartRendererBase {
 	 * @param <type> $min_timestamp
 	 */
 	private function drawXAxis( &$image, &$chartLegendColor, &$chartLegendColor2, &$chartLegendColor3 ){
-		
+
 		$timerange = $this->endTimestamp - $this->startTimestamp ;
 
 		$times_super = array();
@@ -496,7 +496,7 @@ abstract class tx_caretaker_ChartRendererBase {
 
 			}
 		}
-		
+
 		foreach ($times_minor as $timestamp){
 			if ($timestamp > $this->startTimestamp && $timestamp < $this->endTimestamp){
 				$scaledTime = $this->transformX( $timestamp );
@@ -523,7 +523,7 @@ abstract class tx_caretaker_ChartRendererBase {
 			$angle = 45;
 			$info  = strftime($format,$timestamp);
 
-			
+
 			$Position   = imageftbbox($size,$angle,$font,$info);
 			$TextWidth  = abs($Position[2])-abs($Position[0]);
 			$TextHeight = abs($Position[1])-abs($Position[3]);
@@ -531,7 +531,7 @@ abstract class tx_caretaker_ChartRendererBase {
 			$scaledTime = $this->transformX( $timestamp );
 
 			imagettftext($image,$size,$angle, floor($scaledTime)-$TextWidth, $this->height - $this->marginBottom - $TextHeight + 10 ,$chartLegendColor,$font,$info);
-			
+
 		}
 	}
 
@@ -569,7 +569,7 @@ abstract class tx_caretaker_ChartRendererBase {
 		return ( $result );
 	}
 
-	
+
 	/**
 	 * Get all news-year timestamps in the given range
 	 * @param intger $min_timestamp

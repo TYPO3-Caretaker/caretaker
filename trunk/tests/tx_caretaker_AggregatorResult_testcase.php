@@ -35,9 +35,9 @@
  */
 
 class tx_caretaker_AggregatorResult_testcase extends tx_phpunit_testcase  {
-	
+
 	function test_comparisonOfAggreagtorResults (){
-		
+
 		$result = tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_undefined);
 
 		$compareResult =  tx_caretaker_AggregatorResult::create(tx_caretaker_Constants::state_undefined);
@@ -60,9 +60,9 @@ class tx_caretaker_AggregatorResult_testcase extends tx_phpunit_testcase  {
 
 		$compareResult =  tx_caretaker_AggregatorResult::create( tx_caretaker_Constants::state_undefined , 0 , 0 , 0 , 1 );
 		$this->assertFalse( $result->equals($compareResult), 'result with state undefined and but numError = 1 is not equal to empty result' );
-		
+
 	}
-	
+
 }
 
 ?>

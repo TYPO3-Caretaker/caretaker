@@ -47,7 +47,7 @@
  * @subpackage caretaker
  */
 class tx_caretaker_LocallizationHelper {
-	
+
     /**
 	 * Translate a given string in the current language
 	 *
@@ -62,21 +62,21 @@ class tx_caretaker_LocallizationHelper {
 		} else {
 			switch (TYPO3_MODE){
 				case 'FE':
-					
+
 					// FE
 					if ( $GLOBALS['TSFE'] ){
 						$lcObj  = t3lib_div::makeInstance('tslib_cObj');
 						$result = $lcObj->TEXT( array( 'data' => $locallangString ) ) ;
-					} 
+					}
 					// eID
-					else { 
+					else {
 						$LANG = t3lib_div::makeInstance('language');
 						$LANG->init($language_key);
 						$result = $LANG->getLLL($locallang_key, t3lib_div::readLLfile(t3lib_div::getFileAbsFileName( $locallang_file) , $LANG->lang, $LANG->charSet ) );
 					}
-					
+
 					break;
-					
+
 				case 'BE':
 
 					$locallangParts = explode (':',$locallangString);
@@ -99,9 +99,9 @@ class tx_caretaker_LocallizationHelper {
 					break;
 
 			}
-		} 
+		}
 
-		/// recursive call for {LLL:} parts	
+		/// recursive call for {LLL:} parts
 		$result = preg_replace_callback  ( '/{(LLL:EXT:[^ ]+?:[^ ]+?)}/' ,  'tx_caretaker_LocallizationHelper::locallizeSubstring'  , $result );
 
 		return $result;

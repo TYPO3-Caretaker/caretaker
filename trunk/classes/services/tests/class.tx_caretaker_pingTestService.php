@@ -63,7 +63,7 @@
 	 * @var string
 	 */
 	protected $configurationInfoTemplate = 'LLL:EXT:caretaker/locallang_fe.xml:ping_service_configuration';
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see caretaker/trunk/services/tx_caretaker_TestServiceBase#runTest()
@@ -82,7 +82,7 @@
 				}
 				if ($time_warning && $time > $time_warning) {
 					return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_warning, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' );
-				} 
+				}
 				return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_ok, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' ) ;
 			} else {
 				$message = new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:ping_error', array('command'=>$command, 'message'=>$message) );
@@ -92,15 +92,15 @@
 			return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0 , 'LLL:EXT:caretaker/locallang_fe.xml:ping_no_command_template');
 		}
 	}
-	
+
 	/**
-	 * Get the maximal time befor WARNING 
+	 * Get the maximal time befor WARNING
 	 * @return unknown_type
 	 */
 	protected function getTimeWarning() {
 		return $this->getConfigValue('max_time_warning');
 	}
-	
+
 	/**
 	 * Get the maximal time before ERROR
 	 * @return integer
@@ -108,10 +108,10 @@
 	protected function getTimeError() {
 		return $this->getConfigValue('max_time_error');
 	}
-	
+
 	/**
 	 * Bild the Build Ping Command for this System
-	 *  
+	 *
 	 * @return string
 	 */
 	protected function buildPingCommand() {
@@ -121,23 +121,23 @@
 		$command = str_replace('###' , $hostname, $commandTemplate);
 		return $command;
 	}
-	
+
 	/**
-	 * Execute a system command 
-	 * 
-	 * @param string $command 
+	 * Execute a system command
+	 *
+	 * @param string $command
 	 * @return array Array of ReturnCode Message and $ime
 	 */
 	protected function executeSystemCommand($command){
 		$starttime = microtime(TRUE);
-		
+
 		$returnCode = FALSE;
 		$messages   = array();
 		$message    = '';
 
 		exec( $command , $messages , $returnCode );
 		$message = implode( chr(10) , $messages );
-		
+
 		$endtime = microtime(TRUE);
 		$time =  ($endtime - $starttime)*1000;
 

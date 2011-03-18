@@ -73,10 +73,10 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 
 	/**
 	 * Set the test result range
-	 * @param tx_caretaker_TestResultRange $testResultRange 
+	 * @param tx_caretaker_TestResultRange $testResultRange
 	 */
 	public function setTestResultRange( tx_caretaker_TestResultRange $testResultRange ){
-		
+
 		$this->testResultRange = $testResultRange;
 		$this->testResultRangeInfos   = $this->testResultRange->getInfos();
 		$this->testResultRangeMedian  = $this->testResultRange->getMedianValue();
@@ -96,7 +96,7 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 	 * @param resource $image
 	 */
     protected function drawChartImageBackground( &$image ){
-		
+
 		$lastX     = NULL;
 		$lastState = NULL;
 
@@ -131,7 +131,7 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 				}
 				$backgroundColor =  imagecolorallocatealpha( $image, $colorRGB[0], $colorRGB[1], $colorRGB[2], 100 );
 			}
-			
+
 			$isLast = ( $step == $count );
 
 			if( $lastX !== NULL && $backgroundColor && ($newState != $lastState || $isLast ) ){
@@ -142,7 +142,7 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 				$lastX = $newX;
 			}
 			$lastState = $newState;
-			
+
 		}
 
 	}
@@ -156,14 +156,14 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 		$colorBg = imagecolorallocatealpha($image, 0, 0, 255, 100);
 		$color   = imagecolorallocate($image, 0, 0, 255);
 
-			
+
 
 		$lastX = NULL;
 		$lastY = NULL;
 
 		$bgPoints = array();
 		$feLines = array();
-		
+
 		foreach ( $this->testResultRange as $testResult ){
 			$newX = intval( $this->transformX( $testResult->getTimestamp() ) );
 			$newY = intval( $this->transformY( $testResult->getValue() ) );
@@ -184,12 +184,12 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 			$lastX = $newX;
 			$lastY = $newY;
 		}
-		
+
 		$bgPoints[] = intval( $this->transformX( $this->testResultRange->getLast()->getTimestamp() ) );
 		$bgPoints[] = intval( $this->transformY( 0 ) );
 		$bgPoints[] = intval( $this->transformX( $this->testResultRange->getFirst()->getTimestamp() ) );
 		$bgPoints[] = intval( $this->transformY( 0 ) );
-		
+
 			// draw filled chart background
 		if ( count($bgPoints) > 7 ){
 			imagefilledpolygon ($image, $bgPoints , count($bgPoints)/2 , $colorBg );
@@ -199,7 +199,7 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 			foreach ($feLines as $line){
 				imageline ( $image , $line[0], $line[1], $line[2], $line[3],  $color );
 			}
-		}		
+		}
 	}
 
 	/**
@@ -207,12 +207,12 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 	 * @return string
 	 */
 	protected function getChartTitle (){
-		
+
 		$title = $this->title.' '.round(($this->testResultRangeInfos['PercentAVAILABLE']*100),2 )."% available" ;
 		if ( $this->testResultRangeMedian != 0 || $this->testResultRangeAverage != 0 ){
 			$title .= ' [Median: ' . number_format( $this->testResultRangeMedian , 2 ) . ', Average: ' . number_format( $this->testResultRangeAverage, 2 ) . ']';
 		}
-		return $title;		
+		return $title;
 
 	}
 
@@ -223,7 +223,7 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 	protected function drawChartImageLegend( &$image ){
 
 		$chartLegendColor = imagecolorallocate( $image, 1, 1, 1 );
-		
+
 		$legendItems = array(
 			'OK'        => $this->testResultRangeInfos['PercentOK'],
 			'Warning'   => $this->testResultRangeInfos['PercentWARNING'],
@@ -250,14 +250,14 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 			$size  = 9;
 			$angle = 0;
 			imagettftext( $image, $size, $angle, $x + 10, $y, $chartLegendColor, $font, $key . ' ' . number_format( $value * 100 , 2  ). ' %' );
-			
+
 			$offset += 18;
 		}
-		
-		
+
+
 	}
 
-	
+
 
 }
 ?>

@@ -88,8 +88,8 @@ require(t3lib_extMgm::extPath('caretaker') . '/ext_conf_include.php');
 
 	// eid script
 $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
-if ( $extConfig['eid.']['enabled'] ){ 
+if ( $extConfig['eid.']['enabled'] ){
 	$TYPO3_CONF_VARS['FE']['eID_include']['tx_caretaker'] = 'EXT:caretaker/classes/eid/class.tx_caretaker_Eid.php';
-} 
-	
+}
+
 ?>

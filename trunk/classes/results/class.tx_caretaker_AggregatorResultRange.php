@@ -1,4 +1,4 @@
-<?php 
+<?php
 /***************************************************************
  * Copyright notice
  *
@@ -46,7 +46,7 @@
  * @subpackage caretaker
  */
 class tx_caretaker_AggregatorResultRange extends tx_caretaker_NodeResultRange {
-			
+
 }
 
 ?>

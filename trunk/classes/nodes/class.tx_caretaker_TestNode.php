@@ -48,7 +48,7 @@
  * @subpackage caretaker
  */
 class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
-	
+
 	/**
 	 * Test Service Type
 	 * @var string
@@ -80,7 +80,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	protected $testRetry = 0;
 
 	/**
-	 * Set the due mode 
+	 * Set the due mode
 	 * @var integer
 	 */
 	protected $testDue = 0;
@@ -104,7 +104,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param integer $uid
 	 * @param string $title
 	 * @param tx_caretaker_AbstractNode $parentNode
@@ -128,7 +128,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 			}
 		}
 
-		parent::__construct($uid, $title, $parentNode, tx_caretaker_Constants::table_Tests, tx_caretaker_Constants::nodeType_Test, $hidden);		
+		parent::__construct($uid, $title, $parentNode, tx_caretaker_Constants::table_Tests, tx_caretaker_Constants::nodeType_Test, $hidden);
 
 		$this->testServiceType = $serviceType;
 		$this->testServiceConfiguration = $serviceConfiguration;
@@ -236,7 +236,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	public function getInterval(){
 		return $this->testInterval;
 	}
-	
+
 	/**
 	 * Get the test start hour
 	 *
@@ -245,7 +245,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	public function getStartHour(){
 		return $this->startHour;
 	}
-	
+
 	/**
 	 * Get the test stop hour
 	 *
@@ -254,10 +254,10 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	public function getStopHour(){
 		return $this->stopHour;
 	}
-	
+
 	/**
 	 * Set the testnode into acknowledged State
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setModeAck() {
@@ -282,10 +282,10 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		$this->notify('updatedTestResult', $result, $latestTestResult);
 		return $result;
 	}
-	
+
 	/**
 	 * End the wip state by running a forced update
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setModeDue() {
@@ -312,7 +312,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		return $result;
 	}
 
-	/** 
+	/**
 	 * Update TestResult and store in DB. If the Test is not due the result is fetched from the cache.
 	 *
 	 * If force is not set the execution time and exclude hours are taken in account.
@@ -405,7 +405,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 	/**
 	 * Get the TestResultRange for the given time range
-	 * 
+	 *
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
 	 * @param int $start_timestamp
 	 * @param int $stop_timestamp

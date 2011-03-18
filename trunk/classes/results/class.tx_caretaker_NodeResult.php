@@ -47,21 +47,21 @@
  * @subpackage caretaker
  */
 abstract class tx_caretaker_NodeResult {
-	
+
 	/**
 	 * Status Code of the Test Result
-	 * @var integer  
+	 * @var integer
 	 */
 	protected $state=0;
-	
+
 	/**
-	 * Timestamp of the testresult 
-	 * @var integer 
+	 * Timestamp of the testresult
+	 * @var integer
 	 */
 	protected $timestamp = NULL;
-	
+
 	/**
-	 * The Result message 
+	 * The Result message
 	 * @var tx_caretaker_ResultMessage
 	 */
 	protected $message = NULL;
@@ -81,27 +81,27 @@ abstract class tx_caretaker_NodeResult {
 	public function __construct ($timestamp, $state, $message , $submessages){
 		$this->timestamp = (int)$timestamp;
 		$this->state     = (int)$state;
-		
+
 		if (is_a($message , 'tx_caretaker_ResultMessage') ){
 			$this->message = $message;
 		} else {
 			$this->message = new tx_caretaker_ResultMessage ( (string) $message );
 		}
-		
+
 		if ($submessages){
 			$this->submessages = $submessages;
 		}
-		
+
 	}
-		
+
 	/**
 	 * Return Status Code of the Test
-	 * @return integer 
+	 * @return integer
 	 */
 	public function getState(){
 		return $this->state;
 	}
-	
+
 	/**
 	 * Return human readable status message
 	 * @return string
@@ -117,13 +117,13 @@ abstract class tx_caretaker_NodeResult {
 			case tx_caretaker_Constants::state_undefined:
 				return 'UNDEFINED';
 			case tx_caretaker_Constants::state_ack:
-				return 'ACK';	
+				return 'ACK';
 			case tx_caretaker_Constants::state_due:
-				return 'DUE';	
-				
+				return 'DUE';
+
 		}
 	}
-	
+
 	/**
 	 * Get Timestamp of this Testresult
 	 * @return integer
@@ -133,7 +133,7 @@ abstract class tx_caretaker_NodeResult {
 	public function getTstamp(){
 		return $this->timestamp;
 	}
-	
+
 	/**
 	 * Get Timestamp of this Testresult
 	 * @return integer
@@ -141,7 +141,7 @@ abstract class tx_caretaker_NodeResult {
 	public function getTimestamp(){
 		return $this->timestamp;
 	}
-	
+
 	/**
 	 * Return result message
 	 * @return string
@@ -181,7 +181,7 @@ abstract class tx_caretaker_NodeResult {
 				$result .= chr(10).' - ' . $submessage->getLocallizedInfotext();
 			}
 		}
-		
+
 		return $result;
 	}
 
@@ -227,7 +227,7 @@ abstract class tx_caretaker_NodeResult {
 	 * @return string ResultHash
 	 */
 	abstract public function getResultHash();
-	
+
 }
 
 ?>

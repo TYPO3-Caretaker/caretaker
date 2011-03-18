@@ -42,19 +42,19 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 	var $prefixId = 'tx_caretaker_pi_singleview';		// Same as class name
 	var $scriptRelPath = 'pi_singleview/class.tx_caretaker_pi_singleview.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'caretaker';	// The extension key.
-	
+
 	function getContent(){
 		$node = $this->getNode();
 		if ($node) {
 			$content = $this->showNodeInfo($node);
 		} else {
-			$content = 'no node found'; 
+			$content = 'no node found';
 		}
 		return $content;
 	}
-		
+
 	function getNode(){
-			
+
 		$id   = $this->piVars['id'];
 		$node = false;
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
@@ -65,25 +65,25 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 			$this->pi_initPIflexForm();
 			$node_id =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'node_id');
 			$node = $node_repository->id2node($node_id);
-		}	
+		}
 		return $node;
 	}
-	
+
 	function getNodeData( $node ){
-		
+
 		$data = parent::getNodeData($node);
 
 		$range = 24;
 		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
 		$data['range'] = $range/24;
-		
+
 		return $data;
 	}
 
 	function getNodeChart($node){
 
 		$chart = false;
-		
+
 		$range = 24;
 		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
 

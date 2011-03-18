@@ -63,7 +63,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
-		parent::init();				
+		parent::init();
 	}
 
 
@@ -76,7 +76,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	 */
 	function main()	{
 		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
- 
+
 		$PATH_TYPO3 = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
 
 		if ($BE_USER->user["admin"]) {
@@ -99,7 +99,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			// storage Pid
 			$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
 			$storagePid = (int)$confArray['storagePid'];
-			
+
 			$this->pageRenderer->addJsInlineCode('Caretaker_Nodetree',
 			'
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
@@ -140,7 +140,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->content.=$this->doc->spacer(10);
 		}
 	}
-	
+
 	/**
 	 * Prints out the module HTML
 	 *

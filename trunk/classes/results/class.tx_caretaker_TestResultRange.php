@@ -1,4 +1,4 @@
-<?php 
+<?php
 /***************************************************************
  * Copyright notice
  *
@@ -45,44 +45,44 @@
  * @package TYPO3
  * @subpackage caretaker
  */class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange {
-	
+
 	/**
 	 * Minimal value of this result range
 	 * @var float
 	 */
 	var $min_value = 0;
-	
+
 	/**
 	 * Maximal value of this result range
 	 * @var float
 	 */
 	var $max_value = 0;
-	
+
 	/**
 	 * Add a TestResult to the ResultRange
 	 * @see caretaker/trunk/classes/results/tx_caretaker_NodeResultRange#addResult()
 	 */
 	public function addResult($result ){
-		
+
 		parent::addResult($result);
-		
+
 		$value = $result->getValue();
 		if ($value < $this->min_value){
 			$this->min_value = $value;
 		} else if ($value > $this->max_value){
 			$this->max_value = $value;
 		}
-		
+
 	}
-	
+
 	/**
-	 * Return the minimal result value 
+	 * Return the minimal result value
 	 * @return float
 	 */
 	public function getMinValue(){
 		return $this->min_value;
 	}
-	
+
 	/**
 	 * Return the maximal result value
 	 * @return float
@@ -90,7 +90,7 @@
 	public function getMaxValue(){
 		return $this->max_value;
 	}
-	
+
 	/**
 	 * Get the median value of the given result-set
 	 * undefined values are ignored
@@ -117,22 +117,22 @@
 			return 0;
 		}
 	}
-	
+
 	/**
-	 * Get the average value over the time 
+	 * Get the average value over the time
 	 * undefined values are ignored
 	 * @return float
 	 */
 	public function getAverageValue(){
-		
+
 		$value_area  = 0;
 		$value_range = 0;
 		$currentResult = NULL;
 		$nextResult    = NULL;
 		$length = $this->getLength();
-		
 
-		
+
+
 		// $currentResult = $this->
 		$this->rewind();
 		$currentResult = $this->current();
@@ -151,22 +151,22 @@
 					$value_area  += $timeRange * $value;
 					$value_range += $timeRange;
 				}
-				
+
 			}
-			
+
 			$index ++;
 			$currentResult = $nextResult;
 			$nextResult    = $this->next();
 		}
-		
-	
-		if ($value_range > 0){ 
+
+
+		if ($value_range > 0){
 			return ( $value_area / $value_range);
 		} else {
 			return 0;
 		}
 	}
-			
+
 }
 
 ?>

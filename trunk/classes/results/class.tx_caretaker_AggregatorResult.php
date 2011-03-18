@@ -46,17 +46,17 @@
  * @subpackage caretaker
  */
 class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
-	
+
 	/**
 	 * Number of subtests with state UNDEFINED
 	 * @var integer
 	 */
 	protected $num_UNDEFINED=0;
-	
+
 	/**
 	 * Number of subtests with state OK
 	 * @var integer
-	 */	
+	 */
 	protected $num_OK=0;
 
 	/**
@@ -64,17 +64,17 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 	 * @var integer
 	 */
 	protected $num_ERROR=0;
-	
+
 	/**
 	 * Number of subtests with state WARNING
 	 * @var integer
 	 */
 	protected $num_WARNING=0;
-	
+
 
 	/**
-	 * Constructor 
-	 * 
+	 * Constructor
+	 *
 	 * @param integer $timestamp
 	 * @param integer $state
 	 * @param integer $num_undefined
@@ -88,25 +88,25 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 	public function __construct ($timestamp = 0, $state=tx_caretaker_Constants::state_undefined, $num_undefined=0, $num_ok=0, $num_warning=0, $num_error=0, $message='', $submessages=NULL){
 		parent::__construct($timestamp, $state, $message, $submessages);
 		$this->num_UNDEFINED = $num_undefined;
-		$this->num_OK        = $num_ok; 
+		$this->num_OK        = $num_ok;
 		$this->num_WARNING   = $num_warning;
 		$this->num_ERROR     = $num_error;
-		
+
 	}
-	
+
 	/**
 	 * Create an undefined result with current timestamp
-	 * 
+	 *
 	 * @return tx_caretaker_AggregatorResult
 	 */
 	static public function undefined ($message = 'Result is undefined'){
 		$ts = time();
 		return new tx_caretaker_AggregatorResult($ts, tx_caretaker_Constants::state_undefined, $undefined=0, $ok=0, $warning=0, $error=0, $message );
 	}
-	
+
 	/**
 	 * Create a result with current timestamp
-	 * 
+	 *
 	 * @param integer $state
 	 * @param integer $num_undefined
 	 * @param integer $num_ok
@@ -128,7 +128,7 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 	public function getNumUNDEFINED(){
 		return $this->num_UNDEFINED;
 	}
-	
+
 	/**
 	 * Return number of children with state OK
 	 * @return integer
@@ -144,11 +144,11 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 	public function getNumWARNING(){
 		return $this->num_WARNING;
 	}
-	
+
 	/**
 	 * Return number of children with state ERROR
 	 * @return integer
-	 */	
+	 */
 	public function getNumERROR(){
 		return $this->num_ERROR;
 	}

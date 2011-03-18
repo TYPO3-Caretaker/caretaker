@@ -49,7 +49,7 @@
 class tx_caretaker_NodeInfo {
 
 	public function ajaxGetNodeInfo($params, &$ajaxObj){
-		
+
 		$node_id = t3lib_div::_GP('node');
 
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
@@ -65,7 +65,7 @@ class tx_caretaker_NodeInfo {
 				$pathnode = $pathnode->getParent();
 			}
 			$pathinfo = implode(' -&gt; ' , array_reverse($pathparts)  );
-			
+
 			switch ( get_class($node) ){
 				// test Node
 				case "tx_caretaker_TestNode":
@@ -115,7 +115,7 @@ class tx_caretaker_NodeInfo {
 					    'Path: '.            $pathinfo.'<br/>'.
 						'NodeID: '.          $node->getCaretakerNodeId().'<br/>'.
 						'Description: '.     $node->getDescription().'<br/>'.
-						'Hidden: '.          $node->getHiddenInfo().'<br/>'.	
+						'Hidden: '.          $node->getHiddenInfo().'<br/>'.
 						'last Run: '.        strftime('%x %X',$result->getTimestamp()).'<br/>'.
 						'State: '.           $result->getLocallizedStateInfo().'<br/>'.
 						'Message:'.          '<br/>'.nl2br( $result->getLocallizedInfotext() ).'<br/>'.
@@ -129,7 +129,7 @@ class tx_caretaker_NodeInfo {
 			echo "please select a node";
 
 		}
-		
+
 	}
 
 	public function ajaxRefreshNode($params, &$ajaxObj){
@@ -148,11 +148,11 @@ class tx_caretaker_NodeInfo {
 			 );
             $ajaxObj->setContent($content);
             $ajaxObj->setContentFormat('jsonbody');
-            
+
 		} else {
 			echo "please give a valid node id";
 		}
-		
+
 			// send aggregated notifications
 		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
 		foreach ( $notificationServices as $notificationService ){
@@ -174,23 +174,23 @@ class tx_caretaker_NodeInfo {
 					'timestamp'  => $result->getTimestamp(),
 					'message'    => $result->getLocallizedInfotext()
 				 );
-	 			
+
 	            $ajaxObj->setContent($content);
 	            $ajaxObj->setContentFormat('jsonbody');
 			} else {
 				echo "please give a testnode id" . $node_id;
-			}   
+			}
 		} else {
 			echo "please give a valid node id";
 		}
-		
+
 			// send aggregated notifications
 		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
 		foreach ( $notificationServices as $notificationService ){
 			$notificationService->sendNotifications();
 		}
 	}
-	
+
 	public function ajaxNodeSetDue($params, &$ajaxObj){
 
 		$node_id = t3lib_div::_GP('node');
@@ -205,7 +205,7 @@ class tx_caretaker_NodeInfo {
 					'timestamp'  => $result->getTimestamp(),
 					'message'    => $result->getLocallizedInfotext()
 	 			);
-	 			
+
 	            $ajaxObj->setContent($content);
 	            $ajaxObj->setContentFormat('jsonbody');
 			} else {
@@ -214,18 +214,18 @@ class tx_caretaker_NodeInfo {
 		} else {
 			echo "please give a valid node id" . $node_id;
 		}
-		
+
 			// send aggregated notifications
 		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
 		foreach ( $notificationServices as $notificationService ){
 			$notificationService->sendNotifications();
 		}
 	}
-	
+
 	public function ajaxGetNodeGraph($params, &$ajaxObj){
 
 		$node_id    = t3lib_div::_GP('node');
-		
+
 		$duration   = (int)t3lib_div::_GP('duration');
 		$date_stop  = time();
 		$date_start = $date_stop - $duration;
@@ -249,7 +249,7 @@ class tx_caretaker_NodeInfo {
 					if ($result){
 						echo $result;
 					}
-					
+
 				} else  if (is_a( $node, 'tx_caretaker_AggregatorNode')){
 
 					$AggregatorResultRangeChartRenderer = new tx_caretaker_AggregatorResultRangeChartRenderer( );
@@ -261,7 +261,7 @@ class tx_caretaker_NodeInfo {
 						echo $result;
 					}
 
-				
+
 				}
 			} else {
 				echo 'not enough results';
@@ -278,13 +278,13 @@ class tx_caretaker_NodeInfo {
 
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
         if ($node_id && $node = $node_repository->id2node($node_id, true) ){
-            
+
             $start     = (int)t3lib_div::_GP('start');
             $limit     = (int)t3lib_div::_GP('limit');
 
             $count   = $node->getTestResultNumber();
             $results = $node->getTestResultRangeByOffset($start, $limit);
-            
+
             $content = Array(
                 'totalCount' => $count,
                 'logItems' => Array()
@@ -330,7 +330,7 @@ class tx_caretaker_NodeInfo {
 			$nodeUndefined = array();
 			$nodeAck       = array();
 			$nodeDue       = array();
-			
+
 			$i = 0;
             foreach ($testChildNodes as $testNode){
 
@@ -372,11 +372,11 @@ class tx_caretaker_NodeInfo {
 							break;
 						case tx_caretaker_Constants::state_due:
 							$nodeDue[] = $nodeInfo;
-							break;			
+							break;
 					}
 				}
             }
-			
+
 			$content = Array();
 			$content['nodeProblems'] = array_merge($nodeErrors, $nodeWarnings, $nodeAck, $nodeDue, $nodeUndefined);
 			$content['totalCount']   = count($content['nodeProblems']);
@@ -396,11 +396,11 @@ class tx_caretaker_NodeInfo {
 
         $node_id = t3lib_div::_GP('node');
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		
+
         if ($node_id && $node = $node_repository->id2node($node_id, true) ){
-			
+
 			$count = 0;
-			$contacts = array();			
+			$contacts = array();
 			$nodeContacts = $node->getContacts();
 
 			foreach ($nodeContacts as $nodeContact){
@@ -439,10 +439,10 @@ class tx_caretaker_NodeInfo {
 				foreach ( $role_assoc as $key => $value){
 					$contact['role_'.$key] = $value;
 				}
-				
+
 				$contacts[] = $contact;
 			}
-			
+
 
 			$content = Array();
 			$content['contacts']     = $contacts;

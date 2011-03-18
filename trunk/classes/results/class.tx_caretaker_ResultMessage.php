@@ -60,10 +60,10 @@ class tx_caretaker_ResultMessage {
 	 * @var array;
 	 */
 	protected $values;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param string $text
 	 * @param array $values
 	 */
@@ -93,12 +93,12 @@ class tx_caretaker_ResultMessage {
 	 * @return sring
 	 */
 	public function getLocallizedInfotext(){
-		
+
 		$result = $this->text;
 
 			// check for LLL strings
 		$result = tx_caretaker_LocallizationHelper::locallizeString($result);
-		
+
 			// insert Values
 		foreach ( $this->values as $key=>$value){
 			$marker = '###VALUE_'.strtoupper($key).'###';

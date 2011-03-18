@@ -47,37 +47,37 @@
  * @subpackage caretaker
  */
 abstract class tx_caretaker_NodeResultRange implements Iterator {
-	
+
 	/**
 	 * Array of testResults
 	 * @var array
 	 */
 	private $array = array();
-	
+
 	/**
 	 * Minimal Timestamp of this Result Range
-	 * 
-	 * @var integer 
+	 *
+	 * @var integer
 	 */
 	private $start_timestamp = NULL;
-	
+
 	/**
 	 * Maximal Timestamp of this Result Range
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $end_timestamp = NULL;
-	
+
 	/**
 	 * timestamp of last existing value
-	 *   
+	 *
 	 * @var unknown_type
 	 */
 	private $last_timestamp = 0;
-	
+
 	/**
 	 * Constructur
-	 * 
+	 *
 	 * @param integer $start_timestamp
 	 * @param integer $end_timestamp
 	 */
@@ -85,55 +85,55 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 		$this->end_timestamp = $end_timestamp;
 		$this->start_timestamp = $start_timestamp;
 	}
-	
+
 	/**
 	 * Add a Result to Range
-	 * 
+	 *
 	 * @param tx_caretaker_NodeResult $result
 	 */
 	public function addResult($result){
-		
+
 		$ts = (int)$result->getTstamp();
 		$this->array[$ts] = $result;
-		
+
 		if ($ts < $this->last_timestamp){
 			ksort( $this->array );
 		} else {
 			$this->last_timestamp = $ts;
 		}
-		
+
 		if ($this->start_timestamp !== NULL && $ts < $this->start_timestamp ){
 			$this->start_timestamp  = $ts;
-		} 
-		
+		}
+
 		if ($this->end_timestamp  !== NULL && $ts > $this->end_timestamp){
 			$this->end_timestamp = $ts;
 		}
 	}
-	
+
 	/**
 	 * Return minimal timestamp
-	 * 
+	 *
 	 * @return integer
 	 * @depricated
-	 * @todo remove this method  
+	 * @todo remove this method
 	 */
 	public function getMinTstamp(){
 		return $this->start_timestamp;
 	}
-	
+
 	/**
 	 * Return minimal timetamp
-	 * 
+	 *
 	 * @return unknown_type
 	 */
 	public function getStartTimestamp(){
 		return $this->start_timestamp;
 	}
-	
+
 	/**
 	 * Return maximal timestamp
-	 * 
+	 *
 	 * @return unknown_type
 	 * @depricated
 	 * @todo remove this method
@@ -141,10 +141,10 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	public function getMaxTstamp(){
 		return $this->end_timestamp;
 	}
-	
+
 	/**
 	 * Return maximal timestamp
-	 * 
+	 *
 	 * @return unknown_type
 	 * @depricated
 	 * @todo remove this method
@@ -152,41 +152,41 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	public function getEndTimestamp(){
 		return $this->end_timestamp;
 	}
-	
+
 	/**
-	 * Get the number of Results 
-	 *  
+	 * Get the number of Results
+	 *
 	 * @return integer
 	 */
 	public function getLength(){
-		return count($this->array);	
+		return count($this->array);
 	}
-	
+
 	/**
 	 * Get the first Result
-	 * 
+	 *
 	 * @return tx_caretaker_NodeResult
 	 */
 	public function getFirst(){
 		return reset($this->array);
 	}
-	
+
 	/**
 	 * Get the last Result
-	 * 
+	 *
 	 * @return tx_caretaker_NodeResult
 	 */
 	public function getLast(){
 		return end($this->array);
 	}
-	
+
 	/**
 	 * Get some Statistic Information as an array
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getInfos(){
-		
+
 		$SecondsTotal     = $this->end_timestamp - $this->start_timestamp;
 		$SecondsUNDEFINED = 0;
 		$SecondsOK        = 0;
@@ -194,21 +194,21 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 		$SecondsERROR     = 0;
 		$SecondsACK       = 0;
 		$SecondsDUE       = 0;
-		
+
 		$lastTS    = NULL;
 		$lastSTATE = NULL;
 		foreach( $this->array as $ts=>$result ){
 			if ($lastTS){
-				
+
 				$range = $ts - $lastTS;
-				
+
 				switch ($lastSTATE){
 					case tx_caretaker_Constants::state_due :
 						$SecondsDUE += $range;
 						break;
 					case tx_caretaker_Constants::state_ack :
 						$SecondsACK += $range;
-						break;	
+						break;
 					case tx_caretaker_Constants::state_undefined :
 						$SecondsUNDEFINED += $range;
 						break;
@@ -225,9 +225,9 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 			}
 			$lastTS    = $ts;
 			$lastSTATE = $result->getState();
-			
+
 		}
-		
+
 		return array(
 			'SecondsTotal'      =>$SecondsTotal,
 			'SecondsUNDEFINED'  =>$SecondsUNDEFINED,
@@ -236,7 +236,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 			'SecondsERROR'      =>$SecondsERROR,
 			'SecondsACK'        =>$SecondsACK,
 			'SecondsDUE'        =>$SecondsACK,
-		
+
 			'PercentAVAILABLE'  => ($SecondsTotal - $SecondsERROR - $SecondsWARNING - $SecondsUNDEFINED )/$SecondsTotal,
 			'PercentUNDEFINED'  => $SecondsUNDEFINED/$SecondsTotal,
 			'PercentOK'         => $SecondsOK/$SecondsTotal,
@@ -245,9 +245,9 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 			'PercentACK'        => $SecondsACK/$SecondsTotal,
 			'PercentDUE'        => $SecondsDUE/$SecondsTotal,
  		);
-		
-	}	
-	
+
+	}
+
 		// Iterator methods
 	/**
 	 * Reset the counter and return the first result
@@ -265,7 +265,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	}
 
 	/**
-	 * Return then current result number 
+	 * Return then current result number
 	 * @return integer
 	 */
 	public function key() {
@@ -286,18 +286,18 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	public function valid() {
 		return isset( $this->array[key($this->array)] );
 	}
-	
+
 	/**
 	 * Reverses the array of results
 	 * @return void
 	 */
 	public function reverse() {
-		
+
 		$this->array = array_reverse($this->array);
 	}
 
 	/**
-	 * 
+	 *
 	 * @return integer
 	 */
 	public function count(){

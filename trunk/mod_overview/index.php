@@ -51,12 +51,12 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	var $node_repository;
 	var $instance_repository;
 	var $node_id;
-        
-        /**
+
+	/**
 	 * @var t3lib_PageRenderer
 	 */
-        var $pageRenderer;
-	
+	var $pageRenderer;
+
 	/**
 	 * Initializes the Module
 	 * @return	void
@@ -67,17 +67,15 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 		$this->node_id = $_GET['id'];
 	}
 
-
-
 	/**
 	 * Main function of the module. Write the content to $this->content
 	 * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
 	 *
-	 * @return	[type]		...
+	 * @return void
 	 */
 	function main()	{
 		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
- 
+
 		$PATH_TYPO3 = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
 
 		if ($BE_USER->user["admin"]) {
@@ -91,7 +89,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->doc = t3lib_div::makeInstance("template");
 			$this->doc->backPath = $BACK_PATH;
 			$this->pageRenderer = $this->doc->getPageRenderer();
-                        
+
 			// Include Ext JS
 			$this->pageRenderer->loadExtJS();
 			$this->pageRenderer->enableExtJSQuickTips();
@@ -114,10 +112,10 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 
 					// add ExtJs Panel
 				$panels[ $extJsBackendPanel['id'] ] = $extJsBackendPanel['xtype'];
-				
-				
+
+
 			}
-			
+
 			$this->pageRenderer->addJsFile( $BACK_PATH . t3lib_extMgm::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeToolbar.js' );
 
 			// Enable debug mode for Ext JS
@@ -126,7 +124,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			// storage Pid
 			$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
 			$storagePid = (int)$confArray['storagePid'];
-			
+
 			//Add caretaker css
 			$this->pageRenderer->addCssFile( $BACK_PATH . t3lib_extMgm::extRelPath('caretaker') .  'res/css/tx.caretaker.overview.css' );
 
@@ -134,7 +132,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			foreach ($panels as $id=>$xtype){
 				$pluginItems[] = '{ id: "'.$id.'", xtype: "'.$xtype.'" , back_path: back_path , node_id: node_id }';
 			}
-			
+
 			$this->pageRenderer->addJsInlineCode('Caretaker_Overview','
 				Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 				Ext.namespace("tx","tx.caretaker");
@@ -154,7 +152,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 					var node_title  = "'.htmlspecialchars( $node->getTitle() ? $node->getTitle() : '[no title]' ).'( '.( $node->getTypeDescription() ? htmlspecialchars($node->getTypeDescription()) : $node->getType() ).' )" ;
 					var node_state  = "'.$node->getTestResult()->getState().'" ;
 					var node_state_info  = "'.$node->getTestResult()->getStateInfo().'" ;
-					
+
 					tx.caretaker.view = new Ext.Viewport({
 						layout: "fit",
 						items: {
@@ -187,13 +185,13 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 										]
 									}
 								],
-								
+
 						}
 					 });
 
 				});
 			');
-	
+
 			$this->content .= $this->doc->startPage($LANG->getLL("title"));
 			$this->doc->form = '';
 		} else {
@@ -208,7 +206,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->content.=$this->doc->spacer(10);
 		}
 	}
-	
+
 	/**
 	 * Prints out the module HTML
 	 *
@@ -229,7 +227,9 @@ $SOBE = t3lib_div::makeInstance('tx_caretaker_mod_nav');
 $SOBE->init();
 
 // Include files?
-foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
+foreach($SOBE->include_once as $INC_FILE) {
+	include_once($INC_FILE);
+}
 
 $SOBE->main();
 $SOBE->printContent();

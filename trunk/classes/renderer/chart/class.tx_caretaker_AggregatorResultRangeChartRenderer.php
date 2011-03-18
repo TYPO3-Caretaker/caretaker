@@ -58,7 +58,7 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
 	 * @var array
 	 */
 	var $aggregatorResultRangeInfos = array();
-	
+
 	/**
 	 * Set the result Range
 	 * @param tx_caretaker_TestResultRange $testResultRange
@@ -84,7 +84,7 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
 				$maxValue = $count;
 			}
 		}
-		
+
 		$this->setMinValue( 0 );
 		$this->setMaxValue( $maxValue );
 
@@ -116,7 +116,7 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
 		$color = imagecolorallocate($image, 0, 0, 255);
 
 		foreach ( $this->aggregatorResultRange as $aggregatorResult ){
-			
+
 			if( $lastResult !== NULL  ){
 				$total = 0;
 				foreach ( array( 'OK', 'WARNING', 'ERROR', 'UNDEFINED' ) as $state  ){
@@ -132,7 +132,7 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
 						$startY = intval( $this->transformY( $total + $number) );
 						$stopY  = intval( $this->transformY( $total ) );
 
-						
+
 						imagefilledrectangle( $image , $startX, $startY, $stopX, $stopY, $itemColorAlpha );
 						imageline ( $image , $startX, $startY, $stopX, $startY, $itemColor );
 
@@ -162,7 +162,7 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
 			'OK'        => $this->aggregatorResultRangeInfos['PercentOK'] ,
 			'Warning'   => $this->aggregatorResultRangeInfos['PercentWARNING'] ,
 			'Error'     => $this->aggregatorResultRangeInfos['PercentERROR'],
-			'Undefined' => $this->aggregatorResultRangeInfos['PercentUNDEFINED'] 
+			'Undefined' => $this->aggregatorResultRangeInfos['PercentUNDEFINED']
 		);
 
 		$offset = $this->marginTop + 10 ;

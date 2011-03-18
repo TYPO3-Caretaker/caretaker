@@ -43,10 +43,10 @@ class tx_caretaker_pi_overview extends tx_caretaker_pibase {
 	var $scriptRelPath = 'pi_overview/class.tx_caretaker_pi_overview.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'caretaker';	// The extension key.
 
-	
+
 	function getContent(){
 		$nodes = $this->getNodes();
-		
+
 		if (count($nodes)>0){
 			$content = '';
 			foreach ($nodes as $node){
@@ -55,13 +55,13 @@ class tx_caretaker_pi_overview extends tx_caretaker_pibase {
 			return $content;
 		} else {
 			return 'no node ids found';
-		} 
+		}
 	}
-	
+
 	function getNodes(){
 		$this->pi_initPIflexForm();
 		$node_ids =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'node_ids');
-		
+
 		$nodes = array();
 		$ids = explode (chr(10),$node_ids);
 

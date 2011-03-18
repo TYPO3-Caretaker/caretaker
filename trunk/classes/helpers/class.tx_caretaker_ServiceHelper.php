@@ -56,7 +56,7 @@ class tx_caretaker_ServiceHelper {
 
 	/**
 	 * Returns an array with all services with the type "caretaker_test_service"
-	 * 
+	 *
 	 * @return array
 	 * @deprecated
 	 */
@@ -85,7 +85,7 @@ class tx_caretaker_ServiceHelper {
 	public static function registerCaretakerService ($extKey, $path, $key, $title, $description = '') {
 		return tx_caretaker_ServiceHelper::registerCaretakerTestService($extKey, $path, $key, $title, $description);
 	}
-	
+
 	/**
 	 * Adds a service for caretaker. The service is registered and the type and flexform is added to the testconf
 	 *
@@ -104,7 +104,7 @@ class tx_caretaker_ServiceHelper {
 		t3lib_extMgm::addService(
 			'caretaker',
 			'caretaker_test_service',
-			$key,	
+			$key,
 			array(
 				'title' => $title,
 				'description' => $description,
@@ -119,7 +119,7 @@ class tx_caretaker_ServiceHelper {
 			)
 		);
 
-			// Add testtype to TCA 
+			// Add testtype to TCA
 		if (is_array($TCA['tx_caretaker_test']['columns']) && is_array($TCA['tx_caretaker_test']['columns']['test_service']['config']['items'])) {
 			$TCA['tx_caretaker_test']['columns']['test_service']['config']['items'][] =  array( $title, $key);
 		}
@@ -144,7 +144,7 @@ class tx_caretaker_ServiceHelper {
 
 	/**
 	 * Returns an array with all services with the type "caretaker_notification_service"
-	 * 
+	 *
 	 * @return array
 	 */
 	public static function getAllCaretakerNotificationServices(){
@@ -154,7 +154,7 @@ class tx_caretaker_ServiceHelper {
 
 	/**
 	 * Get a specific notificationService
-	 * 
+	 *
 	 * @param string $serviceKey the notificationService key to get
 	 * @return mixed tx_caretaker_NotificationServiceInterfaceObject of false
 	 */
@@ -169,7 +169,7 @@ class tx_caretaker_ServiceHelper {
 
 	/**
 	 * Load all active notificationServices into static array which are active and of correct type
-	 * 
+	 *
 	 * @return void
 	 */
 	protected static function loadAllCaretakerNotificationServices(){
@@ -178,13 +178,13 @@ class tx_caretaker_ServiceHelper {
 			$instance = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$serviceKey]);
 			if ( $instance instanceof tx_caretaker_NotificationServiceInterface && $instance->isEnabled() ){
 				self::$notificationServiceInstances[$serviceKey] = $instance;
-			} 
+			}
 		}
 	}
 
 	public static function registerNotificationExitPoint($extKey, $path, $key, $title, $description='') {
 		global $TCA;
-		
+
 		t3lib_div::loadTCA('tx_caretaker_exitpoints');
 
 			// Register test service
@@ -219,7 +219,7 @@ class tx_caretaker_ServiceHelper {
 
 	/**
 	 * Register ExtJsPlugin Panel
-	 * 
+	 *
 	 * @param string $extKey
 	 * @param string $path
 	 * @param string $classname
@@ -239,7 +239,7 @@ class tx_caretaker_ServiceHelper {
 		);
 
 		// order by ids
-		
+
 	}
 
 }

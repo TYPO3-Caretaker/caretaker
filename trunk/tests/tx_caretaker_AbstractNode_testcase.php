@@ -40,7 +40,7 @@
  * @author martin
  */
 class tx_caretaker_AbstractNode_Stub extends tx_caretaker_AbstractNode {
-	
+
 	public function getCaretakerNodeId(){
 		return "abstract_node";
 	}
@@ -66,7 +66,7 @@ class tx_caretaker_AbstractNode_Stub extends tx_caretaker_AbstractNode {
  * @author martin
  */
 class tx_caretaker_AbstractNode_testcase extends tx_phpunit_testcase  {
-	
+
    function test_getPropertyMethods(){
 
 		$aggregator = new tx_caretaker_AbstractNode_Stub( 0, 'foo', false );
@@ -81,6 +81,6 @@ class tx_caretaker_AbstractNode_testcase extends tx_phpunit_testcase  {
 
 
 	}
-	
+
 }
 ?>

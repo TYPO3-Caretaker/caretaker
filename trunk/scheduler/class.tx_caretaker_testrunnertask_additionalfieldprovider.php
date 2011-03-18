@@ -54,7 +54,7 @@ class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements tx_schedule
 	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $parentObject) {
 
 		if ($task != null && !is_a($task, 'tx_caretaker_TestrunnerTask')) return;
-		
+
 			// Initialize extra field value
 		if (empty($taskInfo['update_node_id'])) {
 			if ($parentObject->CMD == 'add') {
@@ -77,7 +77,7 @@ class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements tx_schedule
 			'cshKey'   => '_MOD_tools_txschedulerM1',
 			'cshLabel' => $fieldID
 		);
-		
+
 		return $additionalFields;
 	}
 

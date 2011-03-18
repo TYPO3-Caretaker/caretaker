@@ -49,7 +49,7 @@ $TCA['tx_caretaker_instancegroup'] = array (
 		'default_sortby' => 'ORDER BY title',
 		'delete' => 'deleted',
 		'treeParentField' => 'parent_group',
-		'enablecolumns' => array (        
+		'enablecolumns' => array (
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
@@ -73,7 +73,7 @@ $TCA['tx_caretaker_instance'] = array (
 		'cruser_id' => 'cruser_id',
 		'default_sortby' => 'ORDER BY title',
 		'delete' => 'deleted',
-		'enablecolumns' => array (        
+		'enablecolumns' => array (
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
@@ -100,7 +100,7 @@ $TCA['tx_caretaker_testgroup'] = array (
 		'default_sortby' => 'ORDER BY title',
 		'delete' => 'deleted',
 		'treeParentField' => 'parent_group',
-		'enablecolumns' => array (        
+		'enablecolumns' => array (
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
@@ -142,11 +142,11 @@ $TCA['tx_caretaker_roles'] = array (
 $TCA['tx_caretaker_node_address_mm'] = array (
 	'ctrl' => array (
 		'hideTable' => 1,
-		
+
 		'label' => 'uid_address',
 		'label_alt' => 'role',
 		'label_alt_force' => 1,
-		
+
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/nodeaddressrelation.png',
 	),
@@ -225,7 +225,7 @@ $TCA['tx_caretaker_test'] = array (
 		'delete' => 'deleted',
 		'requestUpdate' => 'test_service',
 		'dividers2tabs'=> 1,
-	    'enablecolumns' => array (        
+	    'enablecolumns' => array (
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
@@ -297,7 +297,7 @@ if (TYPO3_MODE=="BE")	{
 
 	t3lib_extMgm::addModule("txcaretakerNav","","",t3lib_extMgm::extPath($_EXTKEY)."mod_nav/");
 	t3lib_extMgm::addModule("txcaretakerNav","txcaretakerOverview","",t3lib_extMgm::extPath($_EXTKEY)."mod_overview/");
-	
+
 	if (isset($TBE_MODULES['file']) ){
 		$caretaker_modconf = $TBE_MODULES['txcaretakerNav'];
 		unset($TBE_MODULES['txcaretakerNav']);
@@ -305,7 +305,7 @@ if (TYPO3_MODE=="BE")	{
 		// move module after 'file'
 	$temp_TBE_MODULES = array();
 	foreach ($TBE_MODULES as $key=>$value){
-		if ($key == 'file'){ 
+		if ($key == 'file'){
 			$temp_TBE_MODULES[$key]=$value;
 			$temp_TBE_MODULES['txcaretakerNav']=$caretaker_modconf;
 		} else {
@@ -313,8 +313,8 @@ if (TYPO3_MODE=="BE")	{
 		}
 	}
 	$TBE_MODULES = $temp_TBE_MODULES;
-	
-	
+
+
 }
 
 require(t3lib_extMgm::extPath('caretaker').'/ext_conf_include.php');

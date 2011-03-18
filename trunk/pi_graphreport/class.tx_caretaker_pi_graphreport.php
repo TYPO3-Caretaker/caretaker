@@ -42,12 +42,12 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 	var $prefixId = 'tx_caretaker_pi_graphreport';		// Same as class name
 	var $scriptRelPath = 'pi_graphreport/class.tx_caretaker_pi_graphreport.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'caretaker';	// The extension key.
-	
-	
+
+
 	function getContent(){
-		
+
 		$template = $this->cObj->cObjGetSingle($this->conf['template'], $this->conf['template.']);
-		
+
 			// render Node Infos
 		$data  = $this->getData();
 		$lcObj = t3lib_div::makeInstance('tslib_cObj');
@@ -64,16 +64,16 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 		}
 		return $template;
 	}
-	
+
 	function getData(){
 		$data = $this->cObj->data;
-		
+
 		$range = $this->conf['defaultRange'] ? (int)$this->conf['defaultRange'] : 24;
 		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
-		
+
 		$nodes = $this->getNodes();
 		$titles = array();
-		
+
 		if (count($nodes)>0){
 
 			$content = '';
@@ -88,7 +88,7 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 			}
 
 			if (count($result_ranges)>0){
-				
+
 				$filename = 'typo3temp/caretaker/charts/report_'.$id.'_'.$range.'.png';
 				$base     = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 
@@ -99,7 +99,7 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 				foreach ($result_ranges as $key=>$range){
 					$MultipleTestResultRangeChartRenderer->addTestResultrange( $range, $titles[$key] );
 				}
-				
+
 				$result = $MultipleTestResultRangeChartRenderer->getChartImageTag( $filename , $base);
 				$data['chart'] = $result;
 
@@ -109,23 +109,23 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 			} else {
 				$data['chart'] = 'please select one or more test-nodes';
 			}
-			
+
 		} else {
 			$data['chart'] = 'no node ids found';
-		} 
-		
+		}
+
 		return $data;
-		 		
+
 	}
-		
+
 	function getNodes(){
 		$this->pi_initPIflexForm();
 		$node_ids =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'node_ids');
-		
+
 		$nodes = array();
 		$ids = explode (chr(10),$node_ids);
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		
+
 		foreach ($ids as $id){
 			$node = $node_repository->id2node($id);
 			if ($node) $nodes[]=$node;

@@ -106,14 +106,14 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 		} else if (!is_array($configuration)) {
 			$this->flexform_configuration = t3lib_div::xml2array($configuration);
 		}
-		
+
 		// echo 'Following configuration is set:'."\n";
 		// print_r($this->flexform_configuration);
 	}
 
 	/**
 	 * Get a single Value from the test configuration
-	 * 
+	 *
 	 * @param string $key
 	 * @param string $default
 	 * @param string $sheet
@@ -171,8 +171,8 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	}
 
 	/**
-	 * Run the Test defined in TestConf and return a Testresult Object 
-	 * 
+	 * Run the Test defined in TestConf and return a Testresult Object
+	 *
 	 * @param array $flexFormData Flexform Configuration
 	 * @return tx_caretaker_TestResult
 	 */
@@ -225,16 +225,16 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 			'info' => $info
 		);
 	}
-	
+
 	/**
 	 * Get the value description for the test
-	 * 
-	 * @return String Description what is stored in the Value field. 
+	 *
+	 * @return String Description what is stored in the Value field.
 	 */
 	public function getValueDescription() {
 		return $this->valueDescription;
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see interfaces/tx_caretaker_TestService#isExecutable()
@@ -280,6 +280,6 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 		}
 
 	}
-	
+
 }
 ?>

@@ -82,7 +82,7 @@ abstract class tx_caretaker_AbstractNode {
 	 * @var tx_caretaker_AbstractNode
 	 */
 	protected $parent;
-	
+
 	/**
 	 * @var array
 	 */
@@ -101,10 +101,10 @@ abstract class tx_caretaker_AbstractNode {
 	 * @var string
 	 */
 	protected $storageTable = '';
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param integer $uid
 	 * @param string $title
 	 * @param tx_caretaker_AbstractNode $parent
@@ -127,14 +127,14 @@ abstract class tx_caretaker_AbstractNode {
 
 	/**
 	 * Set the description
-	 * 
+	 *
 	 * @param string $description
 	 * @return void
 	 */
 	public function setDescription($description) {
 		$this->description = $description;
 	}
-	
+
 	/**
 	 * Get the caretaker node id of this node
 	 *
@@ -144,7 +144,7 @@ abstract class tx_caretaker_AbstractNode {
 
 	/**
 	 * Get the uid
-	 * 
+	 *
 	 * @return integer
 	 */
 	public function getUid() {
@@ -162,7 +162,7 @@ abstract class tx_caretaker_AbstractNode {
 
 	/**
 	 * Returns the table name where this type of node is stored
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getStorageTable() {
@@ -178,7 +178,7 @@ abstract class tx_caretaker_AbstractNode {
 	public function setHidden($hidden = TRUE) {
 		$this->hidden = (boolean)$hidden;
 	}
-	
+
 	/**
 	 * Get hidden state
 	 *
@@ -187,7 +187,7 @@ abstract class tx_caretaker_AbstractNode {
 	public function getHidden() {
 		return $this->hidden;
 	}
-		
+
 	/**
 	 * Get the Title
 	 *
@@ -196,7 +196,7 @@ abstract class tx_caretaker_AbstractNode {
 	public function getTitle() {
 		return $this->title;
 	}
-	
+
 	/**
 	 * Get the Description
 	 *
@@ -206,7 +206,7 @@ abstract class tx_caretaker_AbstractNode {
 	public function getDescription() {
 		return $this->description;
 	}
-	
+
 	/**
 	 * Get the node type
 	 *
@@ -214,14 +214,14 @@ abstract class tx_caretaker_AbstractNode {
 	 */
 	public function getType() {
 		return $this->type;
-	}	
+	}
 
 	/**
 	 * Get the all tests wich can be found below this node
 	 * @return array
 	 */
 	abstract public function getTestNodes();
-	
+
 	/**
 	 * Save the dbRow Array to the node
 	 *
@@ -230,10 +230,10 @@ abstract class tx_caretaker_AbstractNode {
 	public function setDbRow($dbRow) {
 		$this->dbRow = $dbRow;
 	}
-	
+
 	/**
 	 * Get a property from node-dbRow
-	 * 
+	 *
 	 * @param string $fieldname
 	 * @return mixed
 	 */
@@ -278,8 +278,8 @@ abstract class tx_caretaker_AbstractNode {
 	public function getHiddenInfo(){
 		return ($this->getHidden() ? 'yes' : 'no');
 	}
-	
-	/** 
+
+	/**
 	 * Get a Description for the node value
 	 *
 	 * @return string
@@ -300,7 +300,7 @@ abstract class tx_caretaker_AbstractNode {
 			return FALSE;
 		}
 	}
-	
+
 	/**
 	 * Update the Node State (Execute Test)
 	 *
@@ -308,17 +308,17 @@ abstract class tx_caretaker_AbstractNode {
 	 * @return tx_caretaker_NodeResult
 	 */
 	abstract public function updateTestResult($options = array());
-	
+
 	/**
 	 * Read current Node Result
-	 * 
+	 *
 	 * @return tx_caretaker_NodeResult
-	 */	
+	 */
 	abstract public function getTestResult();
-	
+
 	/**
 	 * Get ResultRange for specified time
-	 *  
+	 *
 	 * @param integer $startdate
 	 * @param integer $stopdate
 	 * @return tx_caretaker_NodeResultRange
@@ -333,7 +333,7 @@ abstract class tx_caretaker_AbstractNode {
 
 
 	/**
-	 * Get Test Result Objects 
+	 * Get Test Result Objects
 	 *
 	 * @param integer $offset
 	 * @param integer $limit
@@ -358,7 +358,7 @@ abstract class tx_caretaker_AbstractNode {
 
 	/**
 	 * Get the contacts for the node
-	 * 
+	 *
 	 * @param tx_caretaker_ContactRole $role
 	 * @param boolean $firstResultsOnly
 	 * @param boolean $recursiveSearch

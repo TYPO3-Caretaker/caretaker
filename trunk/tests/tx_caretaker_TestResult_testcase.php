@@ -35,9 +35,9 @@
  */
 
 class tx_caretaker_TestResult_testcase extends tx_phpunit_testcase  {
-	
+
 	function test_comparisonOfTestResults (){
-		
+
 		$result = tx_caretaker_TestResult::create(tx_caretaker_Constants::state_undefined);
 
 		$compareResult =  tx_caretaker_TestResult::create(tx_caretaker_Constants::state_undefined);
@@ -67,7 +67,7 @@ class tx_caretaker_TestResult_testcase extends tx_phpunit_testcase  {
 
 
 	}
-	
+
 }
 
 ?>

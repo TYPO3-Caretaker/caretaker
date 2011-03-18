@@ -1,4 +1,4 @@
-<?php 
+<?php
 /***************************************************************
  * Copyright notice
  *
@@ -38,10 +38,10 @@ require_once (t3lib_extMgm::extPath('caretaker').'classes/services/tests/class.t
 
 
 class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase  {
-	
+
 	/**
 	 * Set the Return Value of a Method
-	 * 
+	 *
 	 * @param $stub
 	 * @param $method_name
 	 * @param $return_value
@@ -51,33 +51,33 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase  {
 		$stub->expects($this->any())
 			->method($method_name)
 			->with()
-			->will($this->returnValue($return_value)); 
+			->will($this->returnValue($return_value));
 	}
-	
+
 	public function testIfNoCommandIsSetAnErrorOccurs(){
-		
+
 		$stub = $this->getMock(
-			'tx_caretaker_pingTestService', 
+			'tx_caretaker_pingTestService',
 			array('getTimeError','getTimeWarning','buildPingCommand')
 		);
 
-		
+
 		$this->setMethodReturnValue($stub, 'getTimeError',    200);
 		$this->setMethodReturnValue($stub, 'getTimeWarning',   10);
 		$this->setMethodReturnValue($stub, 'buildPingCommand', false);
-				
+
 		$result = $stub->runTest();
-		
+
 		$this->assertType('tx_caretaker_TestResult', $result);
 		$this->assertEquals(2, $result->getState() );
 		$this->assertEquals(0, $result->getValue() );
-		
+
 	}
-	
+
 	public function testReturnOkIfAllWentWell(){
-		
+
 		$stub = $this->getMock(
-			'tx_caretaker_pingTestService', 
+			'tx_caretaker_pingTestService',
 			array('getTimeError','getTimeWarning','buildPingCommand','executeSystemCommand')
 		);
 
@@ -85,19 +85,19 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase  {
 		$this->setMethodReturnValue($stub, 'getTimeWarning',   10);
 		$this->setMethodReturnValue($stub, 'buildPingCommand', true);
 		$this->setMethodReturnValue($stub, 'executeSystemCommand', array(0,'',5));
-				
+
 		$result = $stub->runTest();
-		
+
 		$this->assertType('tx_caretaker_TestResult', $result);
 		$this->assertEquals(0, $result->getState() );
 		$this->assertEquals(5, $result->getValue() );
-		
+
 	}
 
 	public function testReturnsWarningIfTimeoutIsReached(){
-		
+
 		$stub = $this->getMock(
-			'tx_caretaker_pingTestService', 
+			'tx_caretaker_pingTestService',
 			array('getTimeError','getTimeWarning','buildPingCommand','executeSystemCommand')
 		);
 
@@ -105,19 +105,19 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase  {
 		$this->setMethodReturnValue($stub, 'getTimeWarning',   10);
 		$this->setMethodReturnValue($stub, 'buildPingCommand', true);
 		$this->setMethodReturnValue($stub, 'executeSystemCommand', array(0,'',20));
-				
+
 		$result = $stub->runTest();
-		
+
 		$this->assertType('tx_caretaker_TestResult', $result);
 		$this->assertEquals(1, $result->getState() );
 		$this->assertEquals(20, $result->getValue() );
-		
+
 	}
 
 	public function testReturnsErrorIfTimeoutIsReached(){
-		
+
 		$stub = $this->getMock(
-			'tx_caretaker_pingTestService', 
+			'tx_caretaker_pingTestService',
 			array('getTimeError','getTimeWarning','buildPingCommand','executeSystemCommand')
 		);
 
@@ -125,19 +125,19 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase  {
 		$this->setMethodReturnValue($stub, 'getTimeWarning',   10);
 		$this->setMethodReturnValue($stub, 'buildPingCommand', true);
 		$this->setMethodReturnValue($stub, 'executeSystemCommand', array(0,'',201));
-				
+
 		$result = $stub->runTest();
-		
+
 		$this->assertType('tx_caretaker_TestResult', $result);
 		$this->assertEquals(2, $result->getState() );
 		$this->assertEquals(201, $result->getValue() );
-		
+
 	}
-	
+
 	public function testReturnsErrorIfCommandFailes(){
-		
+
 		$stub = $this->getMock(
-			'tx_caretaker_pingTestService', 
+			'tx_caretaker_pingTestService',
 			array('getTimeError','getTimeWarning','buildPingCommand','executeSystemCommand')
 		);
 
@@ -145,13 +145,13 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase  {
 		$this->setMethodReturnValue($stub, 'getTimeWarning',   10);
 		$this->setMethodReturnValue($stub, 'buildPingCommand', true);
 		$this->setMethodReturnValue($stub, 'executeSystemCommand', array(3,'',5));
-				
+
 		$result = $stub->runTest();
-		
+
 		$this->assertType('tx_caretaker_TestResult', $result);
 		$this->assertEquals(2, $result->getState() );
 		$this->assertEquals(5, $result->getValue() );
-		
+
 	}
 
 }

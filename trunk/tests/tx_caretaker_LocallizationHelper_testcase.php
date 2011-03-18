@@ -1,4 +1,4 @@
-<?php 
+<?php
 /***************************************************************
  * Copyright notice
  *
@@ -47,7 +47,7 @@ class tx_caretaker_LocallizationHelper_testcase extends tx_phpunit_testcase  {
 		$str = 'LLL:EXT:caretaker/tests/locallang-test.xml:foo';
 		$lll = tx_caretaker_LocallizationHelper::locallizeString($str);
 		$this->assertEquals( 'bar' , $lll );
-		
+
 	}
 
 	function test_locallization_of_partial_lll_strings (){

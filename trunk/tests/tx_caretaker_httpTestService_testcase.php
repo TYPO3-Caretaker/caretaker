@@ -1,4 +1,4 @@
-<?php 
+<?php
 /***************************************************************
  * Copyright notice
  *
@@ -40,18 +40,18 @@ require_once (t3lib_extMgm::extPath('caretaker').'classes/services/tests/class.t
  * Stub class to expose protected methods for testing
  */
 class tx_caretaker_httpTestService_stub extends tx_caretaker_httpTestService {
-	
+
 	public function checkSingleHeader( $expectedHeaders,$responseHeaders ){
 		return parent::checkSingleHeader( $expectedHeaders,$responseHeaders );
 	}
-	
+
 }
 
 class tx_caretaker_httpTestService_testcase extends tx_phpunit_testcase  {
-	
+
 	/**
 	 * Set the Return Value of a Method
-	 * 
+	 *
 	 * @param $stub
 	 * @param $method_name
 	 * @param $return_value
@@ -61,116 +61,116 @@ class tx_caretaker_httpTestService_testcase extends tx_phpunit_testcase  {
 		$stub->expects($this->any())
 			->method($method_name)
 			->with()
-			->will($this->returnValue($return_value)); 
+			->will($this->returnValue($return_value));
 	}
-	
+
 	public function testErrorIfNoQuery(){
-		
+
 		$stub = $this->getMock(
-			'tx_caretaker_httpTestService', 
+			'tx_caretaker_httpTestService',
 			array('getTimeError','getTimeWarning','getExpectedReturnCode','getRequestQuery','getInstanceUrl')
 		);
-		
+
 		$this->setMethodReturnValue($stub, 'getTimeError',    200);
 		$this->setMethodReturnValue($stub, 'getTimeWarning',   10);
 		$this->setMethodReturnValue($stub, 'getExpectedReturnCode',  false);
 		$this->setMethodReturnValue($stub, 'getRequestQuery',   '');
 		$this->setMethodReturnValue($stub, 'getInstanceUrl',  '');
-		
+
 		$result = $stub->runTest();
-		
+
 		$this->assertType('tx_caretaker_TestResult', $result);
 		$this->assertEquals(-1, $result->getState() );
 		$this->assertEquals(0, $result->getValue() );
-		
+
 	}
-	
+
 	public function testEverythingWentFine(){
-		
+
 		$stub = $this->getMock(
-			'tx_caretaker_httpTestService', 
+			'tx_caretaker_httpTestService',
 			array('getTimeError','getTimeWarning','getExpectedReturnCode','getRequestQuery','getInstanceUrl','executeCurlRequest')
 		);
-		
+
 		$this->setMethodReturnValue($stub, 'getTimeError',     20);
 		$this->setMethodReturnValue($stub, 'getTimeWarning',   10);
 		$this->setMethodReturnValue($stub, 'getExpectedReturnCode',  200);
 		$this->setMethodReturnValue($stub, 'getRequestQuery',  true);
 		$this->setMethodReturnValue($stub, 'getInstanceUrl',  true);
 		$this->setMethodReturnValue($stub, 'executeCurlRequest', array(5,'',array('http_code' => 200, array() ) ) );
-		
+
 		$result = $stub->runTest();
-		
+
 		$this->assertType('tx_caretaker_TestResult', $result);
 		$this->assertEquals(0, $result->getState() );
 		$this->assertEquals(5, $result->getValue() );
-		
+
 	}
-	
+
 	public function testWarningIfTimeoutIsReached(){
-		
+
 		$stub = $this->getMock(
-			'tx_caretaker_httpTestService', 
+			'tx_caretaker_httpTestService',
 			array('getTimeError','getTimeWarning','getExpectedReturnCode','getRequestQuery','getInstanceUrl','executeCurlRequest')
 		);
-		
+
 		$this->setMethodReturnValue($stub, 'getTimeError',     20);
 		$this->setMethodReturnValue($stub, 'getTimeWarning',   10);
 		$this->setMethodReturnValue($stub, 'getExpectedReturnCode',  200);
 		$this->setMethodReturnValue($stub, 'getRequestQuery',  true);
 		$this->setMethodReturnValue($stub, 'getInstanceUrl',  true);
 		$this->setMethodReturnValue($stub, 'executeCurlRequest', array(12,'',array('http_code' => 200, array() ) ) );
-		
+
 		$result = $stub->runTest();
-		
+
 		$this->assertType('tx_caretaker_TestResult', $result);
 		$this->assertEquals(1, $result->getState() );
 		$this->assertEquals(12, $result->getValue() );
-		
+
 	}
 
 	public function testErrorIfTimeoutIsReached(){
-		
+
 		$stub = $this->getMock(
-			'tx_caretaker_httpTestService', 
+			'tx_caretaker_httpTestService',
 			array('getTimeError','getTimeWarning','getExpectedReturnCode','getRequestQuery','getInstanceUrl','executeCurlRequest')
 		);
-		
+
 		$this->setMethodReturnValue($stub, 'getTimeError',     20);
 		$this->setMethodReturnValue($stub, 'getTimeWarning',   10);
 		$this->setMethodReturnValue($stub, 'getExpectedReturnCode',  200);
 		$this->setMethodReturnValue($stub, 'getRequestQuery',  true);
 		$this->setMethodReturnValue($stub, 'getInstanceUrl',  true);
 		$this->setMethodReturnValue($stub, 'executeCurlRequest', array(22,'',array('http_code' => 200, array() ) ) );
-		
+
 		$result = $stub->runTest();
-		
+
 		$this->assertType('tx_caretaker_TestResult', $result);
 		$this->assertEquals(2, $result->getState() );
 		$this->assertEquals(22, $result->getValue() );
-		
+
 	}
-	
+
 	public function testErrorIfHttpStatusIsWrong(){
-		
+
 		$stub = $this->getMock(
-			'tx_caretaker_httpTestService', 
+			'tx_caretaker_httpTestService',
 			array('getTimeError','getTimeWarning','getExpectedReturnCode','getRequestQuery','getInstanceUrl','executeCurlRequest')
 		);
-		
+
 		$this->setMethodReturnValue($stub, 'getTimeError',     20);
 		$this->setMethodReturnValue($stub, 'getTimeWarning',   10);
 		$this->setMethodReturnValue($stub, 'getExpectedReturnCode',  404);
 		$this->setMethodReturnValue($stub, 'getRequestQuery',  true);
 		$this->setMethodReturnValue($stub, 'getInstanceUrl',  true);
 		$this->setMethodReturnValue($stub, 'executeCurlRequest', array(5,'',array('http_code' => 200, array() ) ) );
-		
+
 		$result = $stub->runTest();
-		
+
 		$this->assertType('tx_caretaker_TestResult', $result);
 		$this->assertEquals(2, $result->getState() );
 		$this->assertEquals(5, $result->getValue() );
-		
+
 	}
 
 	public function testHttpHeaderComparison(){
