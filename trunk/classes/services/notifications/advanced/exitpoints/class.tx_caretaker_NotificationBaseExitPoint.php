@@ -95,7 +95,7 @@ class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_Notificatio
 	 */
 	protected function getMessageForNotification($notification) {
 		$resultBefore = $notification['node']->getPreviousDifferingResult($notification['result']);
-		$durationStateBefore = ($notification['result'] ? $notification['result']->getTimestamp() - $resultBefore->getTimestamp() : 0);
+		$durationStateBefore = ($notification['result']  && $resultBefore->getTimestamp() > 0 ? $notification['result']->getTimestamp() - $resultBefore->getTimestamp() : 0);
 		$messages = array(
 			($notification['result'] ? 'Date/Time: ' . date('Y-m-d H:i:s', $notification['result']->getTimestamp()) : ''),
 			'Instance: ' .
@@ -110,7 +110,7 @@ class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_Notificatio
 			($notification['result'] ? 'State is now: ' . $notification['result']->getLocallizedStateInfo() : ''),
 			($resultBefore ?
 					'State before: ' . $resultBefore->getLocallizedStateInfo() .
-					' (was ' . $this->humanReadableTime($durationStateBefore) . ')' :
+					($durationStateBefore > 0 ? ' (was ' . $this->humanReadableTime($durationStateBefore) . ')' : '' ) :
 					''),
 			($notification['result'] ? 'Info: ' . chr(10) . $notification['result']->getLocallizedInfotext() : ''),
 			'',
@@ -127,7 +127,8 @@ class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_Notificatio
 		$periods = array("sec", "min", "hour", "day", "week", "month", "year", "decade");
 		$lengths = array("60", "60", "24", "7", "4.35", "12", "10");
         for ($j = 0; $time >= $lengths[$j]; $j++) {
-	        $time /= $lengths[$j];
+	        if ($lengths[$j] == 0) break;
+		$time /= $lengths[$j];
         }
         $time = round($time);
         if ($time != 1) $periods[$j] .= "s";
