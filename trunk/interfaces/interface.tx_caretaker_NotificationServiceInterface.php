@@ -64,7 +64,7 @@ interface tx_caretaker_NotificationServiceInterface {
 	 * @param tx_caretaker_TestResult $result
 	 * @param tx_caretaKer_TestResult $lastResult
 	 */
-	public function addNotification($event, tx_caretaker_AbstractNode $node, tx_caretaker_TestResult $result = NULL, tx_caretaker_TestResult $lastResult = NULL);
+	public function addNotification($event, $node, $result = NULL, $lastResult = NULL);
 
 	/**
 	 * Send the aggregated Notifications

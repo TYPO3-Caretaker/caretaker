@@ -59,7 +59,8 @@ class tx_caretaker_NotificationXmppExitPoint extends tx_caretaker_NotificationBa
 	 */
 	protected function connectXmpp() {
 		require_once(t3lib_extMgm::extPath('caretaker', 'res/php/xmpphp/XMPPHP/XMPP.php'));
-		$this->connection = new XMPPHP_XMPP('jabber.ccc.de', 5222, 'etobi@jabber.ccc.de', 'vwe$60', 'caretaker', 'jabber.ccc.de');
+		$this->connection = new XMPPHP_XMPP($this->config['host'], $this->config['port'], $this->config['user'], $this->config['password'], $this->config['resource'], $this->config['server']);
+		// TODO configurable: $this->connection->useEncryption(FALSE);
 		$this->connection->connect();
 		$this->connection->processUntil('session_start');
 	}

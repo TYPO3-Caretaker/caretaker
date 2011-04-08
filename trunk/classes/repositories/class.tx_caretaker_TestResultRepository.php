@@ -113,22 +113,24 @@ class tx_caretaker_TestResultRepository {
 	 * @param tx_caretaker_TestNode $testNode
 	 * @return tx_caretaker_TestResult
 	 */
-	public function getPreviousDifferingResult(tx_caretaker_TestNode $testNode, tx_caretaker_TestResult $currentResult) {
-		$testUID = $testNode->getUid();
-		$instanceUID = $testNode->getInstance()->getUid();
+	public function getPreviousDifferingResult($testNode, $currentResult) {
+		if ($testNode instanceOf tx_caretaker_TestNode) {
+			$testUID = $testNode->getUid();
+			$instanceUID = $testNode->getInstance()->getUid();
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'*',
-			'tx_caretaker_testresult',
-			'test_uid = ' . $testUID .
-				' AND instance_uid = ' . $instanceUID .
-				' AND result_status <> ' . $currentResult->getState() .
-				' AND tstamp < ' . $currentResult->getTimestamp(),
-			'tstamp DESC, uid DESC',
-			'',
-			'1'
-		);
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'*',
+				'tx_caretaker_testresult',
+				'test_uid = ' . $testUID .
+					' AND instance_uid = ' . $instanceUID .
+					' AND result_status <> ' . $currentResult->getState() .
+					' AND tstamp < ' . $currentResult->getTimestamp(),
+				'tstamp DESC, uid DESC',
+				'',
+				'1'
+			);
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		}
 
 		if ($row) {
 			$result = $this->dbrow2instance($row);

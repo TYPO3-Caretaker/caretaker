@@ -69,7 +69,7 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	 * @param tx_caretaker_TestResult $result
 	 * @param tx_caretaKer_TestResult $lastResult
 	 */
-	public function addNotification($event, tx_caretaker_AbstractNode $node, tx_caretaker_TestResult $result = NULL, tx_caretaker_TestResult $lastResult = NULL) {
+	public function addNotification($event, $node, $result = NULL, $lastResult = NULL) {
 		$strategies = $node->getStrategies();
 		foreach($strategies as $strategy) {
 			$config = $this->getStrategyConfig($strategy);

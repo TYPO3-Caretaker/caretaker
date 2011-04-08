@@ -117,7 +117,7 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 	 * @param tx_caretaker_TestResult $result
 	 * @param tx_caretaker_TestResult $lastResult
 	 */
-	public function addNotification($event, tx_caretaker_AbstractNode $node, tx_caretaker_TestResult $result = NULL, tx_caretaker_TestResult $lastResult = NULL) {
+	public function addNotification($event, $node, $result = NULL, $lastResult = NULL) {
 			// stop if event is not updatedTestResult of a TestNode
 		if ($event != 'updatedTestResult' || is_a($node, 'tx_caretaker_TestNode') == false) {
 			return;

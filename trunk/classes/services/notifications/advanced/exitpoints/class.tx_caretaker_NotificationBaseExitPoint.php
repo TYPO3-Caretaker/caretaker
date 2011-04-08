@@ -95,7 +95,7 @@ class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_Notificatio
 	 */
 	protected function getMessageForNotification($notification) {
 		$resultBefore = $notification['node']->getPreviousDifferingResult($notification['result']);
-		$durationStateBefore = $notification['result']->getTimestamp() - $resultBefore->getTimestamp();
+		$durationStateBefore = ($notification['result'] ? $notification['result']->getTimestamp() - $resultBefore->getTimestamp() : 0);
 		$messages = array(
 			($notification['result'] ? 'Date/Time: ' . date('Y-m-d H:i:s', $notification['result']->getTimestamp()) : ''),
 			'Instance: ' .
