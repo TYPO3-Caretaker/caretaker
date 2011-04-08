@@ -103,9 +103,10 @@ class tx_caretaker_Cli extends t3lib_cli {
 			$node = FALSE;
 
 			$node_repository = tx_caretaker_NodeRepository::getInstance();
+			$nodeId = $this->readArgument('--node', '-N');
 			if ((boolean)$this->readArgument('--root', '-R')) {
 				$node = $node_repository->getRootNode();
-			} else if ($nodeId == $this->readArgument('--node', '-N')) {
+			} else if ($nodeId) {
 				$node = $node_repository->id2node($nodeId);
 			}
 
