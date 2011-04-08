@@ -52,8 +52,9 @@ tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'Cli
 tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'AdvancedNotificationService', 'classes/services/notifications/advanced/class.tx_caretaker_AdvancedNotificationService.php', 'tx_caretaker_AdvancedNotificationService' );
 
 	// register ExitPoint services
-tx_caretaker_ServiceHelper::registerNotificationExitPoint($_EXTKEY, 'classes/services/notifications/escalation/exitpoints', 'tx_caretaker_NotificationMail', 'E-Mail', 'Sends an e-mail');
-tx_caretaker_ServiceHelper::registerNotificationExitPoint($_EXTKEY, 'classes/services/notifications/escalation/exitpoints', 'tx_caretaker_NotificationFile', 'File', 'Writes to a file');
+tx_caretaker_ServiceHelper::registerNotificationExitPoint($_EXTKEY, 'classes/services/notifications/advanced/exitpoints', 'tx_caretaker_NotificationMail', 'E-Mail', 'Sends an e-mail');
+tx_caretaker_ServiceHelper::registerNotificationExitPoint($_EXTKEY, 'classes/services/notifications/advanced/exitpoints', 'tx_caretaker_NotificationFile', 'File', 'Writes to a file');
+tx_caretaker_ServiceHelper::registerNotificationExitPoint($_EXTKEY, 'classes/services/notifications/advanced/exitpoints', 'tx_caretaker_NotificationXmpp', 'XMPP/Jabber', 'Sends XMPP/Jabber messages');
 
 	// register ExtJS Panels
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel (

@@ -95,8 +95,8 @@ class tx_caretaker_Contact {
 	 * @return mixed
 	 */
 	public function getAddressProperty( $propertyName ){
-		if ( $address[$propertyName] ){
-			return $address[$propertyName];
+		if ($this->address[$propertyName]){
+			return $this->address[$propertyName];
 		} else {
 			return '';
 		}

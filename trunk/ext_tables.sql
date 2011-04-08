@@ -375,3 +375,10 @@ CREATE TABLE tx_caretaker_strategies (
 CREATE TABLE fe_users (
 	tx_caretaker_api_key text NOT NULL,
 );
+
+#
+# Table structure for table 'tt_address'
+#
+CREATE TABLE tt_address (
+	tx_caretaker_xmpp text NOT NULL,
+);

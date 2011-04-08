@@ -8,6 +8,7 @@
 		<languageKey index="default" type="array">
 			
 			<label index="fe_users.tx_caretaker_api_key">Caretaker API Key</label>
+			<label index="tt_address.tx_caretaker_xmpp">XMPP/Jabber</label>
 
 			<label index="tx_caretaker_general.notification_strategies">Notification strategies</label>
 			

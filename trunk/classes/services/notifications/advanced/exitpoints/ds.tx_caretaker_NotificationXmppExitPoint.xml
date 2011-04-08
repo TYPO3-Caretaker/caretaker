@@ -4,12 +4,9 @@
 /**
  * This is a file of the caretaker project.
  * Copyright 2008-2011 by n@work Internet Informationssystem GmbH (www.work.de)
- * 
- * @Author	Thomas Hempel 		<thomas@work.de>
- * @Author	Martin Ficzel		<martin@work.de>
- * @Author	Patrick Kollodzik	<patrick@work.de>
- * 
- * $$Id$$
+ *
+ * @author Tobias Liebig <liebig@networkteam.com>
+ * $$
  */
 -->
 
@@ -23,38 +20,61 @@
 			</TCEforms>
 		<type>array</type>
 		<el>
-			<aggregateByRecipient>
+			<host>
 				<TCEforms>
-					<label>Aggregate by recipient</label>
+					<label>Host</label>
 					<config>
-						<type>check</type>
+						<type>input</type>
+						<eval>required</eval>
 					</config>
 				</TCEforms>
-			</aggregateByRecipient>
-			<emailSenderName>
+			</host>
+			<port>
 				<TCEforms>
-					<label>Sender Name</label>
+					<label>Port</label>
+					<config>
+						<type>input</type>
+						<size>5</size>
+						<default>5222</default>
+						<eval>required,int</eval>
+					</config>
+				</TCEforms>
+			</port>
+			<user>
+				<TCEforms>
+					<label>User</label>
+					<config>
+						<type>input</type>
+						<eval>required</eval>
+					</config>
+				</TCEforms>
+			</user>
+			<password>
+				<TCEforms>
+					<label>Password</label>
+					<config>
+						<type>input</type>
+						<eval>required,password</eval>
+					</config>
+				</TCEforms>
+			</password>
+			<server>
+				<TCEforms>
+					<label>Server</label>
 					<config>
 						<type>input</type>
 					</config>
 				</TCEforms>
-			</emailSenderName>
-			<emailSenderAddress>
+			</server>
+			<resource>
 				<TCEforms>
-					<label>Sender E-Mail</label>
+					<label>Resource</label>
 					<config>
 						<type>input</type>
+						<default>Caretaker</default>
 					</config>
 				</TCEforms>
-			</emailSenderAddress>
-			<emailSubject>
-				<TCEforms>
-					<label>Subject</label>
-					<config>
-						<type>input</type>
-					</config>
-				</TCEforms>
-			</emailSubject>
+			</resource>
 			<!--roles>
 				<TCEforms>
 					<label>Recipient Roles</label>

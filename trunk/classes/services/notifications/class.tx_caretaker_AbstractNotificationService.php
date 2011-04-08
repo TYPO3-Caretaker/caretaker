@@ -33,7 +33,6 @@
  *
  * $Id$
  */
-
 class tx_caretaker_AbstractNotificationService implements tx_caretaker_NotificationServiceInterface {
 
 	/**
@@ -54,7 +53,6 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
 	protected $extConfig = array();
 
 	public function __construct($serviceKey = '') {
-		// var_dump('=======> construct '.$serviceKey);
 		$this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
 		$this->setId($serviceKey);
 	}
@@ -113,7 +111,7 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
 	}
 
 	/**
-	 * This returns wether the service is enabled or not. By default this returns the value of
+	 * This returns whether the service is enabled or not. By default this returns the value of
 	 * the extension config for the key notifications.[id].enabled.
 	 * This can be overwritten by the specific implementation of the notification service.
 	 *
@@ -126,8 +124,8 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
 		return ($enabled === TRUE && TYPO3_MODE == 'BE' && ( $beUsername == '_cli_caretaker' || $beUsername == '_cli_scheduler' ) );
 	}
 
-	public function addNotification($event, $node, $result = NULL, $lastResult = NULL) {}
-
+	public function addNotification($event, tx_caretaker_AbstractNode $node, tx_caretaker_TestResult $result = NULL, tx_caretaker_TestResult $lastResult = NULL) {}
+	
 	public function sendNotifications() {}
 
 }

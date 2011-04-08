@@ -147,8 +147,6 @@ $TCA['tx_caretaker_instancegroup'] = array (
 					'collapseAll' => true,
 					'expandSingle' => true
 				)
-
-
 			)
 		),
 		'notification_strategies' => array (

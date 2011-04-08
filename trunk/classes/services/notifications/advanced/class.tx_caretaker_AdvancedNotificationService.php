@@ -38,43 +38,30 @@
  * The Testrunner Output Notification-Service
  *
  * @author Thomas Hempel <thomas@work.de>
+ * @author Tobias Liebig <liebig@networkteam.com>
  *
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNotificationService  {
-
-	/**
-	 * Internal data structure to collect all notifications
-	 *
-	 * @var array
-	 */
-	private $notifications = array();
+class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNotificationService {
 
 	/**
 	 * Array with list of called exitpoint objects
 	 *
 	 * @var array
 	 */
-	private $exitPoints = array();
-
-	/**
-	 * Internal data structure to hold role records
-	 *
-	 * @var array
-	 */
-	private $roleCache = array();
+	protected $exitpoints = array();
 
 	/**
 	 * Constructor
 	 * reads the service configuration
 	 */
-	public function __construct (){
+	public function __construct() {
 		parent::__construct('advanced');
 	}
 
-    /**
-	 * This is called whenever the notfication service is called. We have to store all interesting
+	/**
+	 * This is called whenever the notification service is called. We have to store all interesting
 	 * results in an internal structure to use it later.
 	 *
 	 * @param string $event
@@ -82,120 +69,295 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	 * @param tx_caretaker_TestResult $result
 	 * @param tx_caretaKer_TestResult $lastResult
 	 */
-	public function addNotification($event, $node, $result = NULL, $lastResult = NULL){
-		$this->addNotificationToQueue($node->getTitle(), $node->getCaretakerNodeId());
+	public function addNotification($event, tx_caretaker_AbstractNode $node, tx_caretaker_TestResult $result = NULL, tx_caretaker_TestResult $lastResult = NULL) {
+		$strategies = $node->getStrategies();
+		foreach($strategies as $strategy) {
+			$config = $this->getStrategyConfig($strategy);
+			$this->processStrategy(
+				$strategy,
+				$config,
+				array(
+				'event' => $event,
+				'node' => $node,
+				'result' => $result,
+				'lastResult' => $lastResult,
+			));
+
+			if ($config['stop']) {
+				break;
+			}
+		}
 	}
 
 	/**
-	 * This is the main method for sending the notifications.
-	 * All general information has been collected at this point. We have the aggregated results for each instance and instancegroup with all
-	 * tests that where executed for that specific instance.
-	 *
-	 * nothing happens here since all Informations are already sent to cli
+	 * finish all used exitpoints
 	 */
 	public function sendNotifications() {
-		// var_dump($this->getNotificationQueue());
+		foreach($this->exitpoints as $identifier => $exitpoint) {
+			$exitpoint->execute();
+		}
 	}
 
 	/**
-	 * Processes a given ruleSet. It tries to do as less as possible to keep it as cheap as possible.
-	 * To achive that it figures out which roles a configured at all. If the roles should be contacted
-	 * at this time, if they are connected to the node etc.
-	 * Fetching the specific result lists for each role and state is pretty expensive and so we try to
-	 * avoid that.
-	 *
-	 * @TODO: A LOT OF THINGS
-	 *
-	 * @param array		$ruleSet
-	 * @param integer	$resultCount
-	 * @param array		$contacts
-	 * @param array		$data
-	 * @param integer	$state
-	 * @return boolean
+	 * @param  $strategy
+	 * @param  $notification
+	 * @return void
 	 */
-	private function processRuleSet($ruleSet, $resultCount, $contacts, $data, $state) {
-			// get the roles we are interested in
-		$roleNames = array_keys($ruleSet['notify.']);
-		$roles = array();
-		foreach ($roleNames as $roleNameWithDot) {
-			$roleName = substr($roleNameWithDot, 0, -1);
+	protected function processStrategy($strategy, $config, $notification) {
+		// echo 'process strategy: ' . $strategy['name'] . chr(10);
 
-				// check if the role is defined in the database
-			$dbRole = $this->getRole($roleName);
-			if ($dbRole === false) continue;
-
-			$roles[$roleName] = $dbRole;
+		if (count($config['rules.']) === 0 || !$this->doConditionsApply($config['conditions.'], $notification)) {
+			return;
+		}
+		foreach($config['rules.'] as $ruleName => $rule) {
+			$this->processRule($ruleName, $rule, $notification);
 		}
 
-		// var_dump($roles, $contacts);
-
-			// if no roles found, we have nothing to do
-		if (count($roles) == 0) return true;
-
-		$roleNames = array_keys($roles);
-
-			// process threshold if set
-		$threshold = $ruleSet['threshold.'];
-		if (isset($threshold)) {
-
-			// var_dump($data['tests']);
-
-				// get the last max+1 results
-			// var_dump($GLOBALS['TYPO3_DB']->SELECTquery('*', tx_caretaker_Constants::table_Aggregatorresults, 'aggregator_uid='.$data['node']->getUid().' AND result_status='.$state, '', 'tstamp DESC', intval($threshold['max'])+1));
-			// var_dump($state);
-
-		}
-
-		// var_dump($ruleSet, $resultCount);
-
+		// TODO
+		// $config['includeStrategy'] to include another strategy
 	}
 
 	/**
-	 * Searches and returns a role record for a given name.
-	 * It looks up the role in an internal cache and if it doesn't find it there, it will look up
-	 * in the database.
-	 * If neither the database nor the cache contains any matching role, it returns false.
-	 *
-	 * @param sting $roleName
-	 * @return mixed (array or false)
+	 * @param  $ruleName
+	 * @param  $rule
+	 * @param  $notification
+	 * @return void
 	 */
-	private function getRole($roleName) {
-		if (!isset($this->roleCache[$roleName])) {
-			$dbRole = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', tx_caretaker_Constants::table_Roles, 'id=\''.mysql_real_escape_string($roleName).'\' AND deleted=0 AND hidden=0', '', '', 1);
-			if (count($dbRole) == 0) $dbRole[0] = false;
-			$this->roleCache[$roleName] = $dbRole[0];
+	protected function processRule($ruleName, $rule, $notification) {
+		$ruleName = rtrim($ruleName, '.');
+		// echo 'process rule: ' . $ruleName . chr(10);
+		if (count($rule['exit.']) === 0 || !$this->doConditionsApply($rule['conditions.'], $notification)) {
+			return;
 		}
 
-		return $this->roleCache[$roleName];
+		foreach($rule['exit.'] as $exitName => $exit) {
+			$this->processExitpoint($exitName, $exit, $notification);
+		}
 	}
 
 	/**
-	 * Finds and initializes an exitpoint and calls it's process method.
-	 *
-	 * @param string	$epName: The unique name of the exitpoint record
-	 * @param array		$resultData: result set for the node
-	 * @param array		$contacts: A list of all contacts
-	 *
-	 * @return boolean
+	 * @param  $exitName
+	 * @param  $exit
+	 * @param  $notification
+	 * @return void
 	 */
-	protected function callExitPoint($epName, $resultData, $contacts = null) {
-			// search exitPoint record and intantiate it
-		if (!isset($this->exitPoints[$epName])) {
-			$epRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', tx_caretaker_Constants::table_Exitponts, 'id=\''.mysql_real_escape_string($epName).'\'', '', '', 1);
-			if (count($epRow) == 0) return false;
+	protected function processExitpoint($exitName, $exit, $notification) {
+		$exitName = rtrim($exitName, '.');
+		// echo 'process exitpoint: ' . $exitName . chr(10);
+		if (!$this->doConditionsApply($exit['conditions.'], $notification)) {
+			return;
+		}
+		$exitpoint = $this->getExitpointByIdentifier($exitName);
+		if ($exitpoint instanceof tx_caretaker_NotificationExitPointInterface) {
+			$exitpoint->addNotification($notification, $exit);
+		}
+	}
 
-			$epTempObj = t3lib_div::makeInstance($epRow[0]['service'].'ExitPoint');
-			if (!$epTempObj) return false;
+	/**
+	 * @param string $identifier
+	 * @return bool|tx_caretaker_NotificationExitPointInterface
+	 */
+	protected function getExitpointByIdentifier($identifier) {
+		if ($this->exitpoints[$identifier] !== NULL) {
+			return $this->exitpoints[$identifier];
+		}
+		$exitpoint = FALSE;
+		list($exitpointRecord) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			tx_caretaker_Constants::table_Exitponts,
+			'id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, '') . ' AND deleted=0 AND hidden=0',
+			'',
+			'',
+			1
+		);
+		if ($exitpointRecord === NULL) {
+			return;
+		}
+		$info = t3lib_extMgm::findService($exitpointRecord['service'], '*');
+		if (is_array($info) && !empty($info['classFile'])) {
+			require_once($info['classFile']);
+			$exitpoint = t3lib_div::makeInstance($info['className']);
+			$config = t3lib_div::xml2array($exitpointRecord['config']);
+			if (!is_array($config)) $config = array();
+			$exitpoint->init($config);
+		}
+		$this->exitpoints[$identifier] = $exitpoint;
+		return $exitpoint;
+	}
 
-			$epTempObj->init(t3lib_div::xml2array($epRow[0]['config']));
+	/**
+	 * @param  $conditions
+	 * @param  $notification
+	 * @return bool
+	 */
+	protected function doConditionsApply($conditions, $notification) {
+		if (empty($conditions)) return TRUE;
 
-			$this->exitPoints[$epName] = $epTempObj;
+		foreach($conditions as $key => $configValue) {
+			$conditionApply = TRUE;
+			switch($key) {
+				case 'event':
+					$conditionApply = $this->matchConditionValue($configValue, $notification['event']);
+					break;
+
+				case 'state':
+				case 'newState':
+					if (!$notification['result'] instanceof tx_caretaker_TestResult) {
+						break;
+					}
+					$conditionApply = $this->matchConditionValue($configValue, $notification['result']->getStateInfo());
+					break;
+
+				case 'previousState':
+					if (!$notification['lastResult'] instanceof tx_caretaker_TestResult) {
+						break;
+					}
+					$conditionApply = $this->matchConditionValue($configValue, $notification['lastResult']->getStateInfo());
+					break;
+
+				case 'previousDifferingState':
+					$diffResult = $notification['node']->getPreviousDifferingResult($notification['result']);
+					$conditionApply = $this->matchConditionValue($configValue, $diffResult->getStateInfo());
+					break;
+
+				case 'lastStateChangeOlderThen':
+					$diffResult = $notification['node']->getPreviousDifferingResult($notification['result']);
+					if ($notification['result']->getTimestamp() - $diffResult->getTimestamp() < $configValue) {
+						$conditionApply = FALSE;
+					}
+					break;
+
+				case 'lastStateChangeYoungerThen':
+					$diffResult = $notification['node']->getPreviousDifferingResult($notification['result']);
+					if ($notification['result']->getTimestamp() - $diffResult->getTimestamp() > $configValue) {
+						$conditionApply = FALSE;
+					}
+					break;
+
+				case 'testServices':
+					if ($notification['node'] instanceof tx_caretaker_TestNode
+							&& !$this->matchConditionValue($configValue, get_class($notification['node']->getTestService()))) {
+						$conditionApply = FALSE;
+					}
+					break;
+
+				case 'onlyIfStateChanged':
+				case 'onlyIfStateChanges':
+					if ((bool)$configValue && $notification['result']->getState() === $notification['lastResult']->getState()) {
+						$conditionApply = FALSE;
+					}
+					break;
+
+				case 'stateChanges':
+					$allowedChanges = t3lib_div::trimExplode(',', $configValue);
+					$conditionApply = FALSE;
+					foreach ($allowedChanges as $allowedChange) {
+						list($from, $to) = t3lib_div::trimExplode('>', $allowedChange);
+						if ($this->matchConditionValue($to, $notification['result']->getStateInfo())
+								&& $this->matchConditionValue($from, $notification['lastResult']->getStateInfo())) {
+							$conditionApply = TRUE;
+							break;
+						}
+					}
+					break;
+
+				case 'schedule.':
+					$conditionApply = $this->matchConditionSchedule($configValue);
+					break;
+
+				case 'threshold.':
+					if ((isset($configValue['min']) && $notification['result']->getValue() < $configValue['min'])
+							|| (isset($configValue['max']) && $notification['result']->getValue() > $configValue['max'])) {
+						$conditionApply = FALSE;
+					}
+					break;
+
+				case 'userFunc':
+					$conditionApply = TRUE;
+					$parameters = array(
+						'conditionApply' => &$conditionApply,
+						'event' => $notification['event'],
+						'node' => $notification['node'],
+						'result' => $notification['result'],
+						'lastResult' => $notification['lastResult']
+					);
+					t3lib_div::callUserFunction($configValue, $parameters, $this);
+			}
+
+			if (!$conditionApply) {
+				// echo 'condition does not apply: ' . $key . chr(10);
+				return FALSE;
+			}
+		}
+		return TRUE;
+	}
+
+	/**
+	 * @param array $schedule
+	 * @return bool
+	 */
+	protected function matchConditionSchedule($schedule) {
+		if (empty($schedule)) {
+			return TRUE;
 		}
 
-		$epObject = $this->exitPoints[$epName];
-
-
-		// $epObject->execute($resultData);
+		$weekdays = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday');
+		$currentHour = intval(date('H'));
+		$currentDayOfWeek = date('w');
+		if (!empty($schedule[$weekdays[$currentDayOfWeek] . '.'])) {
+			$schedule = array_merge($schedule, $schedule[$weekdays[$currentDayOfWeek] . '.']);
+		}
+		if (isset($schedule['start']) && isset($schedule['end'])) {
+			if ($currentHour >= intval($schedule['start']) && $currentHour <= intval($schedule['end'])) {
+				return TRUE;
+			}
+		}
+		return FALSE;
 	}
+
+	/**
+	 * @param string $references comma separated list of allowed values ("ok,error" OR "!undefined")
+	 * @param string $value the value to compare
+	 * @return bool
+	 */
+	protected function matchConditionValue($references, $value) {
+		$value = strtoupper($value);
+		foreach (t3lib_div::trimExplode(',', $references) as $reference) {
+			$reference = strtoupper($reference);
+			if ($reference === '*' || $reference === 'ALL') return TRUE;
+			if ((substr($reference, 0, 1) !== '!' && $reference !== $value)
+					|| (substr($reference, 0, 1) === '!' && substr($reference, 1) === $value)) {
+				return FALSE;
+			}
+		}
+		return TRUE;
+	}
+
+	/**
+	 * @param  $strategy
+	 * @return array
+	 */
+	protected function getStrategyConfig($strategy) {
+		if ($this->strategyConfig[$strategy['uid']] === NULL) {
+			$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
+			$config = t3lib_TSparser::checkIncludeLines($strategy['config']);
+			$parseObj->parse($config);
+			$config = $parseObj->setup;
+			$this->strategyConfig[$strategy['uid']] = $config;
+		}
+		return $this->strategyConfig[$strategy['uid']];
+	}
+
+	/**
+	 * @param array $params
+	 * @param tx_caretaker_AdvancedNotificationService $pObj
+	 * @return void
+	 */
+	/* * /
+	public function testUserFunc($params, $pObj) {
+		$params['conditionApply'] = FALSE;
+	}
+	// */
 }
+
 ?>

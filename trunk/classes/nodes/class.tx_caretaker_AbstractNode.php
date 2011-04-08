@@ -103,6 +103,11 @@ abstract class tx_caretaker_AbstractNode {
 	protected $storageTable = '';
 
 	/**
+	 * @var array Array of contacts group by role
+	 */
+	protected $contacts = array();
+
+	/**
 	 * Constructor
 	 *
 	 * @param integer $uid
@@ -342,6 +347,15 @@ abstract class tx_caretaker_AbstractNode {
 	abstract public function getTestResultRangeByOffset($offset=0, $limit=10);
 
 	/**
+	 * @param tx_caretaker_TestResult $result
+	 * @return tx_caretaker_TestResult
+	 */
+	public function getPreviousDifferingResult($result) {
+		$testResultRepository = tx_caretaker_TestResultRepository::getInstance();
+		return $testResultRepository->getPreviousDifferingResult($this, $result);
+	}
+
+	/**
 	 * Send a notification to all registered notification services
 	 *
 	 * @param tx_caretaker_TestResult $result
@@ -359,35 +373,52 @@ abstract class tx_caretaker_AbstractNode {
 	/**
 	 * Get the contacts for the node
 	 *
-	 * @param tx_caretaker_ContactRole $role
-	 * @param boolean $firstResultsOnly
-	 * @param boolean $recursiveSearch
+	 * @param string|tx_caretaker_ContactRole|array<tx_caretaker_ContactRole> $roles
 	 * @return array
 	 */
-	public function getContacts($role = NULL, $firstResultsOnly = FALSE, $recursiveSearch = TRUE) {
+	public function getContacts($roles = NULL) {
 		$contactRepository = tx_caretaker_ContactRepository::getInstance();
-		$contacts = array();
 
-		$node = $this;
-		while ($node) {
+		if ($roles instanceof tx_caretaker_ContactRole) {
+			$roles = array($roles);
 
-			if ($role !== NULL) {
-				$node_contacts = $contactRepository->getContactsByNodeAndRole($node, $role);
-			} else {
-				$node_contacts = $contactRepository->getContactsByNode($node);
-			}
-
-			$contacts = array_merge($contacts, $node_contacts);
-
-			if (count($contacts) > 0 && $firstResultsOnly) {
-				return $contacts;
-			}
-			if ($recursiveSearch) {
-				$node = $node->getParent();
-			} else {
-				break;
+		} else if (is_string($roles)) {
+			$roleIds = $roles;
+			$roles = array();
+			foreach (t3lib_div::trimExplode(',', $roleIds) as $roleId) {
+				if ($roleId === '*') {
+					$roles = NULL;
+					break;
+				}
+				$role = $contactRepository->getContactRoleById($roleId);
+				if (!$role instanceof tx_caretaker_ContactRole) {
+					$role = $contactRepository->getContactRoleByUid(intval($roleId));
+				}
+				if ($role instanceof tx_caretaker_ContactRole) {
+					$roles[] = $role;
+				}
 			}
 		}
+
+		$contacts = array();
+		if ($roles === NULL) {
+			if ($this->contacts['__all__'] === NULL) {
+				$this->contacts['__all__'] = $contactRepository->getContactsByNode($this);
+			}
+			$contacts = $this->contacts['__all__'];
+		} else {
+			foreach($roles as $role) {
+				if ($this->contacts[$role->getId()] === NULL) {
+					$this->contacts[$role->getId()] = $contactRepository->getContactsByNodeAndRole($this, $role);
+				}
+				$contacts = array_merge($this->contacts[$role->getId()], $contacts);
+			}
+		}
+
+		if ($this->getParent()) {
+			$contacts = array_merge($this->getParent()->getContacts($roles), $contacts);
+		}
+		// TODO return a list with only unique entries
 		return $contacts;
 	}
 
@@ -398,6 +429,13 @@ abstract class tx_caretaker_AbstractNode {
 	 */
 	public function findContacts($roles = NULL, $returnFirst = NULL) {
 		throw new Exception('deprecated method: use getContacts instead', 1297445757);
+	}
+
+	/**
+	 * @return array|bool
+	 */
+	public function getStrategies() {
+		return $this->getParent() ? $this->getParent()->getStrategies() : FALSE;
 	}
 }
 ?>

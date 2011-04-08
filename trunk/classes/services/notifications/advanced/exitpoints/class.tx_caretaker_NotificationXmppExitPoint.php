@@ -31,15 +31,38 @@
  * n@work GmbH - http://www.work.de
  * networkteam GmbH - http://www.networkteam.com/
  *
- * $Id$
+ * $Id: class.tx_caretaker_NotificationMailExitPoint.php 43024 2011-02-03 11:58:50Z matrikz $
  */
-
 require_once (t3lib_extMgm::extPath('caretaker', 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationBaseExitPoint.php'));
 
 /**
- *
+ * 
  */
-class tx_caretaker_NotificationFileExitPoint extends tx_caretaker_NotificationBaseExitPoint {
+class tx_caretaker_NotificationXmppExitPoint extends tx_caretaker_NotificationBaseExitPoint {
+
+	/**
+	 * @var XMPP
+	 */
+	protected $connection;
+
+	/**
+	 * @param array $config
+	 * @return void
+	 */
+	public function init(array $config) {
+		parent::init($config);
+		$this->connectXmpp();
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function connectXmpp() {
+		require_once(t3lib_extMgm::extPath('caretaker', 'res/php/xmpphp/XMPPHP/XMPP.php'));
+		$this->connection = new XMPPHP_XMPP('jabber.ccc.de', 5222, 'etobi@jabber.ccc.de', 'vwe$60', 'caretaker', 'jabber.ccc.de');
+		$this->connection->connect();
+		$this->connection->processUntil('session_start');
+	}
 
 	/**
 	 * @param array $notification
@@ -48,30 +71,21 @@ class tx_caretaker_NotificationFileExitPoint extends tx_caretaker_NotificationBa
 	 */
 	public function addNotification($notification, $overrideConfig) {
 		$config = $this->getConfig($overrideConfig);
-
-		$line = implode(
-			' ',
-			array(
-				date('Y-m-d H:i:s'),
-				($notification['node'] instanceof tx_caretaker_AbstractNode ? $notification['node']->getInstance()->getTitle() : '-'),
-				($notification['node'] instanceof tx_caretaker_AbstractNode ? '[' . $notification['node']->getCaretakerNodeId() . ']' : '-'),
-				$notification['node']->getTitle(),
-				($notification['lastResult'] instanceof tx_caretaker_TestResult ? $notification['lastResult']->getLocallizedStateInfo() : '-'),
-				'->',
-				($notification['result'] instanceof tx_caretaker_TestResult ? $notification['result']->getLocallizedStateInfo() : '-')
-			)
-		) . chr(10);
-
-		$fileHandle = fopen($config['filePath'], 'a');
-		fwrite($fileHandle, $line);
-		fclose($fileHandle);
+		$message = $this->getMessageForNotification($notification);
+		$contacts = $notification['node']->getContacts($config['roles']);
+		foreach($contacts as $contact) {
+			$xmppAddress = $contact->getAddressProperty('tx_caretaker_xmpp');
+			if (!empty($xmppAddress)) {
+				$this->connection->message($xmppAddress, $message);
+			}
+		}
 	}
 
 	/**
 	 * @return void
 	 */
 	public function execute() {
-		// nothing to do here
+		$this->connection->disconnect();
 	}
 }
 

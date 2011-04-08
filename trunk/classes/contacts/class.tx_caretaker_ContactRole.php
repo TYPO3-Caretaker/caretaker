@@ -74,12 +74,12 @@ class tx_caretaker_ContactRole {
 	/**
 	 * Constructor
 	 *
-	 * @param intger $uid
+	 * @param integer $uid
 	 * @param string $id
 	 * @param string $title
 	 * @param string $description
 	 */
-	public function __construct ($uid, $id, $title='', $description='' ){
+	public function __construct($uid, $id, $title='', $description='') {
 		$this->uid = $uid;
 		$this->id  = $id;
 		$this->title = $title;
@@ -90,7 +90,7 @@ class tx_caretaker_ContactRole {
 	 * Get the uid
 	 * @return integer
 	 */
-	public function getUid(){
+	public function getUid() {
 		return $this->uid;
 	}
 
@@ -98,7 +98,7 @@ class tx_caretaker_ContactRole {
 	 * Get the roleID
 	 * @return string
 	 */
-	public function getId(){
+	public function getId() {
 		return $this->id;
 	}
 
@@ -106,7 +106,7 @@ class tx_caretaker_ContactRole {
 	 * Get the title
 	 * @return string
 	 */
-	public function getTitle(){
+	public function getTitle() {
 		return $this->title;
 	}
 
@@ -114,8 +114,8 @@ class tx_caretaker_ContactRole {
 	 * Get the description
 	 * @return string
 	 */
-	public function getDescription(){
-		return$this->description;
+	public function getDescription() {
+		return $this->description;
 	}
 
 }

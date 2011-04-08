@@ -57,13 +57,13 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * Test Array Configuration
 	 * @var array
 	 */
-	protected $array_configuration = false;
+	protected $array_configuration = FALSE;
 
 	/**
 	 * Test Flexform Configuration
 	 * @var array
 	 */
-	protected $flexform_configuration = false;
+	protected $flexform_configuration = FALSE;
 
 	/**
 	 * Value Description. Can be a LLL Label.
@@ -76,7 +76,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * Testtype in human readable form. Can be a LLL Label.
 	 * @var sring
 	 */
-	protected $typeDescription  = '';
+	protected $typeDescription = '';
 
 	/**
 	 * Template to display the test Configuration in human readable form. Can be a LLL Label.
@@ -88,7 +88,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * (non-PHPdoc)
 	 * @see caretaker/trunk/interfaces/tx_caretaker_TestService#setInstance($instance)
 	 */
-	public function setInstance($instance){
+	public function setInstance($instance) {
 		$this->instance = $instance;
 	}
 
@@ -97,18 +97,15 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * @see caretaker/trunk/interfaces/tx_caretaker_TestService#setConfiguration($configuration)
 	 */
 	public function setConfiguration($configuration) {
-		if (is_array( $configuration) && !is_array($configuration['data']) ){
-			$this->array_configuration  = $configuration;
+		if (is_array($configuration) && !is_array($configuration['data'])) {
+			$this->array_configuration = $configuration;
 
-		} else if (is_array($configuration) && is_array($configuration['data']) ){
+		} else if (is_array($configuration) && is_array($configuration['data'])) {
 			$this->flexform_configuration = $configuration;
 
 		} else if (!is_array($configuration)) {
 			$this->flexform_configuration = t3lib_div::xml2array($configuration);
 		}
-
-		// echo 'Following configuration is set:'."\n";
-		// print_r($this->flexform_configuration);
 	}
 
 	/**
@@ -119,22 +116,22 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * @param string $sheet
 	 * @return string
 	 */
-	public function getConfigValue($key, $default = false, $sheet = false){
-		$result = false;
-		if ($this->flexform_configuration && is_array( $this->flexform_configuration ) ){
+	public function getConfigValue($key, $default = FALSE, $sheet = FALSE) {
+		$result = FALSE;
+		if ($this->flexform_configuration && is_array($this->flexform_configuration)) {
 			if (!$sheet) $sheet = 'sDEF';
-			if ( isset($this->flexform_configuration['data'][$sheet]['lDEF'][$key]['vDEF'] ) ){
+			if (isset($this->flexform_configuration['data'][$sheet]['lDEF'][$key]['vDEF'])) {
 				$result = $this->flexform_configuration['data'][$sheet]['lDEF'][$key]['vDEF'];
 			}
-		} else if ($this->array_configuration){
-			if ($sheet==false && isset($this->array_configuration[$key]) ){
+		} else if ($this->array_configuration) {
+			if ($sheet == FALSE && isset($this->array_configuration[$key])) {
 				$result = $this->array_configuration[$key];
-			} else if (isset($this->array_configuration[$sheet][$key]) ){
+			} else if (isset($this->array_configuration[$sheet][$key])) {
 				$result = $this->array_configuration[$sheet][$key];
 			}
 		}
 
-		if ( $result !== false){
+		if ($result !== FALSE) {
 			return $result;
 		} else {
 			return $default;
@@ -146,7 +143,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * @return string
 	 */
 	public function getTypeDescription() {
-		return tx_caretaker_LocallizationHelper::locallizeString( $this->typeDescription );
+		return tx_caretaker_LocallizationHelper::locallizeString($this->typeDescription);
 	}
 
 	/**
@@ -173,12 +170,10 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	/**
 	 * Run the Test defined in TestConf and return a Testresult Object
 	 *
-	 * @param array $flexFormData Flexform Configuration
 	 * @return tx_caretaker_TestResult
 	 */
-	public function runTest(){
-		$result = new tx_caretaker_TestResult();
-		return $result;
+	public function runTest() {
+		return new tx_caretaker_TestResult();
 	}
 
 	/**
@@ -190,24 +185,24 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 */
 	protected function executeHttpRequest($requestUrl, $postValues = null) {
 		$curl = curl_init();
-        if (!$curl) {
-        	return false;
-        }
+		if (!$curl) {
+			return FALSE;
+		}
 
 		curl_setopt($curl, CURLOPT_URL, $requestUrl);
 		curl_setopt($curl, CURLOPT_HEADER, 0);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
 		curl_setopt($curl, CURLOPT_TIMEOUT, 30);
 
 		$headers = array(
-            "Cache-Control: no-cache",
-            "Pragma: no-cache"
-        );
+			"Cache-Control: no-cache",
+			"Pragma: no-cache"
+		);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
 		if (is_array($postValues)) {
-			foreach($postValues as $key => $value) {
+			foreach ($postValues as $key => $value) {
 				$postQuery .= urlencode($key) . '=' . urlencode($value) . '&';
 			}
 			rtrim($postQuery, '&');
@@ -240,7 +235,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * @see interfaces/tx_caretaker_TestService#isExecutable()
 	 */
 	public function isExecutable() {
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -251,35 +246,29 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 */
 	protected function locallizeString($locallang_string) {
 
-		$locallang_parts = explode (':',$locallang_string);
+		$locallang_parts = explode(':', $locallang_string);
 
-		if( array_shift($locallang_parts) != 'LLL') {
+		if (array_shift($locallang_parts) != 'LLL') {
 			return $locallang_string;
 		}
 
-		switch (TYPO3_MODE){
+		switch (TYPO3_MODE) {
 			case 'FE':
-
-				$lcObj  = t3lib_div::makeInstance('tslib_cObj');
-				return( $lcObj->TEXT(array('data' => $locallang_string )) );
+				$lcObj = t3lib_div::makeInstance('tslib_cObj');
+				return ($lcObj->TEXT(array('data' => $locallang_string)));
 
 			case 'BE':
-
-				$locallang_key   = array_pop($locallang_parts);
-				$locallang_file  = implode(':',$locallang_parts);
-
-				$language_key  = $GLOBALS['BE_USER']->uc['lang'];
+				$locallang_key = array_pop($locallang_parts);
+				$locallang_file = implode(':', $locallang_parts);
+				$language_key = $GLOBALS['BE_USER']->uc['lang'];
 				$LANG = t3lib_div::makeInstance('language');
 				$LANG->init($language_key);
-
-				return $LANG->getLLL($locallang_key, t3lib_div::readLLfile(t3lib_div::getFileAbsFileName( $locallang_file ),$LANG->lang, $LANG->charSet ));
+				return $LANG->getLLL($locallang_key, t3lib_div::readLLfile(t3lib_div::getFileAbsFileName($locallang_file), $LANG->lang, $LANG->charSet));
 
 			default :
-
 				return $locallang_string;
 		}
-
 	}
-
 }
+
 ?>

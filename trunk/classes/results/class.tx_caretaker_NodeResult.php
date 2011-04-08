@@ -52,7 +52,7 @@ abstract class tx_caretaker_NodeResult {
 	 * Status Code of the Test Result
 	 * @var integer
 	 */
-	protected $state=0;
+	protected $state = 0;
 
 	/**
 	 * Timestamp of the testresult
@@ -70,7 +70,7 @@ abstract class tx_caretaker_NodeResult {
 	 * The submessage
 	 * @var array array of tx_caretaker_ResultMessage objects
 	 */
-	protected $submessages= array();
+	protected $submessages = array();
 
 	/**
 	 * Constructor
@@ -78,17 +78,17 @@ abstract class tx_caretaker_NodeResult {
 	 * @param integer $state      Status of the result
 	 * @param mixed   $message    Result message (string or tx_caretaker_ResultMessage Object )
 	 */
-	public function __construct ($timestamp, $state, $message , $submessages){
-		$this->timestamp = (int)$timestamp;
-		$this->state     = (int)$state;
+	public function __construct($timestamp, $state, $message, $submessages) {
+		$this->timestamp = (int) $timestamp;
+		$this->state = (int) $state;
 
-		if (is_a($message , 'tx_caretaker_ResultMessage') ){
+		if (is_a($message, 'tx_caretaker_ResultMessage')) {
 			$this->message = $message;
 		} else {
-			$this->message = new tx_caretaker_ResultMessage ( (string) $message );
+			$this->message = new tx_caretaker_ResultMessage((string) $message);
 		}
 
-		if ($submessages){
+		if ($submessages) {
 			$this->submessages = $submessages;
 		}
 
@@ -98,7 +98,7 @@ abstract class tx_caretaker_NodeResult {
 	 * Return Status Code of the Test
 	 * @return integer
 	 */
-	public function getState(){
+	public function getState() {
 		return $this->state;
 	}
 
@@ -106,8 +106,8 @@ abstract class tx_caretaker_NodeResult {
 	 * Return human readable status message
 	 * @return string
 	 */
-	public function getStateInfo (){
-		switch ($this->state){
+	public function getStateInfo() {
+		switch ($this->state) {
 			case tx_caretaker_Constants::state_ok:
 				return 'OK';
 			case tx_caretaker_Constants::state_error:
@@ -127,10 +127,10 @@ abstract class tx_caretaker_NodeResult {
 	/**
 	 * Get Timestamp of this Testresult
 	 * @return integer
-	 * @depricated
+	 * @deprecated
 	 * @todo remove this method
 	 */
-	public function getTstamp(){
+	public function getTstamp() {
 		return $this->timestamp;
 	}
 
@@ -138,7 +138,7 @@ abstract class tx_caretaker_NodeResult {
 	 * Get Timestamp of this Testresult
 	 * @return integer
 	 */
-	public function getTimestamp(){
+	public function getTimestamp() {
 		return $this->timestamp;
 	}
 
@@ -146,7 +146,7 @@ abstract class tx_caretaker_NodeResult {
 	 * Return result message
 	 * @return string
 	 */
-	public function getMessage(){
+	public function getMessage() {
 		return $this->message;
 	}
 
@@ -154,11 +154,11 @@ abstract class tx_caretaker_NodeResult {
 	 * add a submessage to the result
 	 * @param mixed $message string or tx_caretaker_ResultMessage
 	 */
-	public function addSubMessage($message){
-		if (is_a($message , 'tx_caretaker_ResultMessage') ){
+	public function addSubMessage($message) {
+		if (is_a($message, 'tx_caretaker_ResultMessage')) {
 			$this->submessages[] = $message;
 		} else {
-			$this->submessages[] = new tx_caretaker_ResultMessage ( (string)$message );
+			$this->submessages[] = new tx_caretaker_ResultMessage ((string) $message);
 		}
 	}
 
@@ -166,7 +166,7 @@ abstract class tx_caretaker_NodeResult {
 	 * Return the array of submessages
 	 * @return array
 	 */
-	public function getSubMessages(){
+	public function getSubMessages() {
 		return $this->submessages;
 	}
 
@@ -174,11 +174,11 @@ abstract class tx_caretaker_NodeResult {
 	 * Get a combined and locallized Info of message and all submessages
 	 * @return string
 	 */
-	public function getLocallizedInfotext(){
+	public function getLocallizedInfotext() {
 		$result = $this->message->getLocallizedInfotext();
-		if ($this->submessages ) {
-			foreach ($this->submessages as $submessage){
-				$result .= chr(10).' - ' . $submessage->getLocallizedInfotext();
+		if ($this->submessages) {
+			foreach ($this->submessages as $submessage) {
+				$result .= chr(10) . ' - ' . $submessage->getLocallizedInfotext();
 			}
 		}
 
@@ -190,8 +190,8 @@ abstract class tx_caretaker_NodeResult {
 	 *
 	 * @return string
 	 */
-	public function getLocallizedStateInfo(){
-		return tx_caretaker_LocallizationHelper::locallizeString( 'LLL:EXT:caretaker/locallang_fe.xml:state_' . strtolower( $this->getStateInfo() ) );
+	public function getLocallizedStateInfo() {
+		return tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_' . strtolower($this->getStateInfo()));
 	}
 
 	/**
@@ -199,8 +199,8 @@ abstract class tx_caretaker_NodeResult {
 	 * @param tx_caretaker_AggregatorResult $result
 	 * @return boolean
 	 */
-	public function equals(tx_caretaker_NodeResult $result){
-		if ($this->getResultHash() == $result->getResultHash() ) {
+	public function equals(tx_caretaker_NodeResult $result) {
+		if ($this->getResultHash() == $result->getResultHash()) {
 			return TRUE;
 		} else {
 			return FALSE;
@@ -212,8 +212,8 @@ abstract class tx_caretaker_NodeResult {
 	 * @param tx_caretaker_AggregatorResult $result
 	 * @return boolean
 	 */
-	public function isDifferent(tx_caretaker_NodeResult $result){
-		if ($this->getResultHash() != $result->getResultHash() ) {
+	public function isDifferent(tx_caretaker_NodeResult $result) {
+		if ($this->getResultHash() != $result->getResultHash()) {
 			return TRUE;
 		} else {
 			return FALSE;

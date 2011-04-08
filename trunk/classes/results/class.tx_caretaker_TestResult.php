@@ -126,6 +126,5 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 		);
 		return md5(serialize($state));
 	}
-
 }
 ?>

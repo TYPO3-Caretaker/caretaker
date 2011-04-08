@@ -239,7 +239,6 @@ $TCA['tx_caretaker_test'] = array (
 	),
 );
 
-
 	// add API-Key to fe_user record
 $tempColumns = array(
 	'tx_caretaker_api_key' => Array (
@@ -254,6 +253,21 @@ t3lib_div::loadTCA('fe_users');
 t3lib_extMgm::addTCAcolumns('fe_users', $tempColumns, 1);
 t3lib_extMgm::addToAllTCAtypes('fe_users','tx_caretaker_api_key' );
 
+$tempColumns = array (
+    'tx_caretaker_xmpp' => array (
+        'exclude' => 0,
+        'label' => 'LLL:EXT:caretaker/locallang_db.xml:tt_address.tx_caretaker_xmpp',
+        'config' => array (
+            'type' => 'input',
+            'size' => '30',
+        )
+    ),
+);
+
+
+t3lib_div::loadTCA('tt_address');
+t3lib_extMgm::addTCAcolumns('tt_address',$tempColumns,1);
+t3lib_extMgm::addToAllTCAtypes('tt_address','tx_caretaker_xmpp;;;;1-1-1');
 
 
 	// register FE-Plugins
