@@ -79,6 +79,7 @@ class tx_caretaker_TestServiceRunner extends t3lib_svbase {
 	 */
 	protected function shouldReturnLatestResult($node, $latestTestResult, $options) {
 		$forceUpdate = isset($options['forceUpdate']) && $options['forceUpdate'] === TRUE;
+		$returnLatestResult = FALSE;
 		if (!$forceUpdate) {
 			if ($latestTestResult) {
 					// test is not in due state so retry
@@ -116,6 +117,7 @@ class tx_caretaker_TestServiceRunner extends t3lib_svbase {
 				}
 			}
 		}
+		return $returnLatestResult;
 	}
 
 	/**
