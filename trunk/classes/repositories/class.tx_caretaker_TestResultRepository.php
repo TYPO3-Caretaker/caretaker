@@ -111,6 +111,7 @@ class tx_caretaker_TestResultRepository {
 	 * Get the latest Testresult for the given Instance and Test
 	 *
 	 * @param tx_caretaker_TestNode $testNode
+	 * @param tx_caretaker_TestResult $result
 	 * @return tx_caretaker_TestResult
 	 */
 	public function getPreviousDifferingResult($testNode, $currentResult) {

@@ -52,6 +52,10 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	 */
 	protected $exitpoints = array();
 
+	protected $defaultConditions = array(
+		'event' => 'updatedTestResult'
+	);
+
 	/**
 	 * Constructor
 	 * reads the service configuration
@@ -105,8 +109,8 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	 */
 	protected function processStrategy($strategy, $config, $notification) {
 		// echo 'process strategy: ' . $strategy['name'] . chr(10);
-
-		if (count($config['rules.']) === 0 || !$this->doConditionsApply($config['conditions.'], $notification)) {
+		$conditions = t3lib_div::array_merge_recursive_overrule($this->defaultConditions, $config['conditions.']);
+		if (count($config['rules.']) === 0 || !$this->doConditionsApply($conditions, $notification)) {
 			return;
 		}
 		foreach($config['rules.'] as $ruleName => $rule) {
@@ -272,6 +276,14 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 					}
 					break;
 
+				case 'infoRegexp':
+					$conditionApply = preg_match($configValue, $notification['result']->getLocallizedInfotext());
+					break;
+
+				case 'not.':
+					$conditionApply = !$this->doConditionsApply($configValue, $notification);
+					break;
+
 				case 'userFunc':
 					$conditionApply = TRUE;
 					$parameters = array(
@@ -283,7 +295,6 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 					);
 					t3lib_div::callUserFunction($configValue, $parameters, $this);
 			}
-
 			if (!$conditionApply) {
 				// echo 'condition does not apply: ' . $key . chr(10);
 				return FALSE;
@@ -304,8 +315,23 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 		$weekdays = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday');
 		$currentHour = intval(date('H'));
 		$currentDayOfWeek = date('w');
+
+			// schedule = 8-18
+		if (!empty($schedule)) {
+			list($start, $stop) = t3lib_div::intExplode('-', $schedule[$weekdays[$currentDayOfWeek]], FALSE, 2);
+			$schedule['start'] = $start;
+			$schedule['end'] = $stop;
+		}
+			// schedule.monday.start = 8
+			// schedule.monday.end = 18
 		if (!empty($schedule[$weekdays[$currentDayOfWeek] . '.'])) {
 			$schedule = array_merge($schedule, $schedule[$weekdays[$currentDayOfWeek] . '.']);
+		}
+			// schedule.monday = 8-18
+		if (!empty($schedule[$weekdays[$currentDayOfWeek]])) {
+			list($start, $stop) = t3lib_div::intExplode('-', $schedule[$weekdays[$currentDayOfWeek]], FALSE, 2);
+			$schedule['start'] = $start;
+			$schedule['end'] = $stop;
 		}
 		if (isset($schedule['start']) && isset($schedule['end'])) {
 			if ($currentHour >= intval($schedule['start']) && $currentHour <= intval($schedule['end'])) {
@@ -347,17 +373,6 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 		}
 		return $this->strategyConfig[$strategy['uid']];
 	}
-
-	/**
-	 * @param array $params
-	 * @param tx_caretaker_AdvancedNotificationService $pObj
-	 * @return void
-	 */
-	/* * /
-	public function testUserFunc($params, $pObj) {
-		$params['conditionApply'] = FALSE;
-	}
-	// */
 }
 
 ?>
