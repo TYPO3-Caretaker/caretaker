@@ -266,7 +266,7 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 					break;
 
 				case 'schedule.':
-					$conditionApply = $this->matchConditionSchedule($configValue);
+					$conditionApply = $this->matchConditionSchedule($conditions['schedule'], $configValue);
 					break;
 
 				case 'threshold.':
@@ -307,8 +307,8 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	 * @param array $schedule
 	 * @return bool
 	 */
-	protected function matchConditionSchedule($schedule) {
-		if (empty($schedule)) {
+	protected function matchConditionSchedule($schedule, $scheduleSub) {
+		if (empty($schedule) && empty($scheduleSub)) {
 			return TRUE;
 		}
 
@@ -317,24 +317,26 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 		$currentDayOfWeek = date('w');
 
 			// schedule = 8-18
-		if (!empty($schedule)) {
-			list($start, $stop) = t3lib_div::intExplode('-', $schedule[$weekdays[$currentDayOfWeek]], FALSE, 2);
-			$schedule['start'] = $start;
-			$schedule['end'] = $stop;
+		if (!empty($schedule) && strpos($schedule, '-') !== FALSE) {
+			list($start, $stop) = t3lib_div::intExplode('-', $schedule, FALSE, 2);
 		}
+			// schedule.start = 8
+			// schedule.end = 18
+		if (isset($scheduleSub['start'])) $start = $scheduleSub['start'];
+		if (isset($scheduleSub['end'])) $stop = $scheduleSub['end'];
+
+			// schedule.monday = 8-18
+		if (!empty($scheduleSub[$weekdays[$currentDayOfWeek]]) && strpos($scheduleSub[$weekdays[$currentDayOfWeek]], '-') !== FALSE) {
+			list($start, $stop) = t3lib_div::intExplode('-', $scheduleSub[$weekdays[$currentDayOfWeek]], FALSE, 2);
+		}
+
 			// schedule.monday.start = 8
 			// schedule.monday.end = 18
-		if (!empty($schedule[$weekdays[$currentDayOfWeek] . '.'])) {
-			$schedule = array_merge($schedule, $schedule[$weekdays[$currentDayOfWeek] . '.']);
-		}
-			// schedule.monday = 8-18
-		if (!empty($schedule[$weekdays[$currentDayOfWeek]])) {
-			list($start, $stop) = t3lib_div::intExplode('-', $schedule[$weekdays[$currentDayOfWeek]], FALSE, 2);
-			$schedule['start'] = $start;
-			$schedule['end'] = $stop;
-		}
-		if (isset($schedule['start']) && isset($schedule['end'])) {
-			if ($currentHour >= intval($schedule['start']) && $currentHour <= intval($schedule['end'])) {
+		if (isset($scheduleSub[$weekdays[$currentDayOfWeek] . '.']['start'])) $start = $scheduleSub[$weekdays[$currentDayOfWeek] . '.']['start'];
+		if (isset($scheduleSub[$weekdays[$currentDayOfWeek] . '.']['end'])) $stop = $scheduleSub[$weekdays[$currentDayOfWeek] . '.']['end'];
+
+		if (isset($start) && isset($stop)) {
+			if ($currentHour >= intval($start) && $currentHour <= intval($stop)) {
 				return TRUE;
 			}
 		}
