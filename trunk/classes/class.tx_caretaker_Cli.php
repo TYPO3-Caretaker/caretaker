@@ -173,7 +173,11 @@ class tx_caretaker_Cli extends t3lib_cli {
 			}
         } elseif  ($task == 'update-typo3-latest-version-list'){
         	$result = tx_caretaker_LatestVersionsHelper::updateLatestTypo3VersionRegistry();
-        	$this->cli_echo( 'TYPO3 latest version list update result: ' . $result.chr(10) );
+        	$this->cli_echo('TYPO3 latest version list update result: ' . $result . chr(10) );
+			$versions = t3lib_div::makeInstance('t3lib_Registry')->get('tx_caretaker', 'TYPO3versions');
+			foreach ($versions as $key => $version) {
+				$this->cli_echo($key .' => ' . $version . chr(10));
+			}
         }
 
         if ($task == 'help') {

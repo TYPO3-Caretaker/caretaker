@@ -47,59 +47,52 @@
  */
 class tx_caretaker_LatestVersionsHelper {
 
+	/**
+	 *
+	 */
+	protected static $rssFeed = 'http://sourceforge.net/api/file/index/project-id/20391/mtime/desc/limit/40/rss';
+
 	public static function updateLatestTypo3VersionRegistry() {
-
-		$success = false;
-
-		$content = self::curlRequest('https://svn.typo3.org/TYPO3v4/Core/tags/');
-
-		if (empty($content)) {
-			return false;
+		$max = t3lib_div::makeInstance('t3lib_Registry')->get('tx_caretaker', 'TYPO3versions');
+		foreach ($max as $key => $value) {
+			$max[$key] = explode('.', $value);
 		}
-
-		preg_match_all('/TYPO3_(4-[0-9]{1,2}-[0-9]{1,2}((alpha|beta|RC)[^\/]{0,2})?)\//', $content, $matches);
-
-		if (!is_array($matches[1]) || count($matches[1]) === 0) {
-			return false;
-		}
-
-		$max = array();
-		foreach ($matches[1] as $key => $version) {
-			$versionDigits = explode('-', $version, 3);
-
-			if ($max[$versionDigits[0] . '.' . $versionDigits[1]][2] < $versionDigits[2] && preg_match('/alpha|beta|RC/',$version) === 0) {
-				$max[$versionDigits[0] . '.' . $versionDigits[1]] = $versionDigits;
+		$xml = new SimpleXMLElement(self::curlRequest(self::$rssFeed));
+		foreach ($xml->channel->item as $item) {
+			preg_match('/(typo3_src-(4\.[0-9]+\.[0-9]+)).tar.gz/', $item->title, $matches);
+			if (!empty($matches)) {
+				$version = $matches[2];
+				$versionDigits = explode('.', $version, 3);
+				if ($max[$versionDigits[0] . '.' . $versionDigits[1]][2] < $versionDigits[2] && preg_match('/alpha|beta|RC/',$version) === 0) {
+					$max[$versionDigits[0] . '.' . $versionDigits[1]] = $versionDigits;
+				}
 			}
 		}
-
 		foreach ($max as $key => $value) {
 			$max[$key] = implode('.', $value);
 		}
-
 		t3lib_div::makeInstance('t3lib_Registry')->set('tx_caretaker', 'TYPO3versions', $max);
-
-		return true;
-
+		return TRUE;
 	}
 
-	private function curlRequest($requestUrl = false) {
+	protected static function curlRequest($requestUrl = FALSE) {
 		$curl = curl_init();
-        if ($curl === false || $requestUrl === false) {
-        	return false;
-        }
+		if ($curl === FALSE || $requestUrl === FALSE) {
+        	return FALSE;
+		}
 
 		curl_setopt($curl, CURLOPT_URL, $requestUrl);
 		curl_setopt($curl, CURLOPT_HEADER, 0);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
 		curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, true);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, TRUE);
 
 		$headers = array(
-            "Cache-Control: no-cache",
-            "Pragma: no-cache"
-        );
+			"Cache-Control: no-cache",
+			"Pragma: no-cache"
+		);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
 		$response = curl_exec($curl);
@@ -107,5 +100,5 @@ class tx_caretaker_LatestVersionsHelper {
 
 		return $response;
 	}
-
 }
+?>
