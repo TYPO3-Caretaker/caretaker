@@ -68,10 +68,9 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 	function getData(){
 		$data = $this->cObj->data;
 
-		$range = $this->conf['defaultRange'] ? (int)$this->conf['defaultRange'] : 24;
-		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
-
+		$range = $this->getTimeRange();
 		$nodes = $this->getNodes();
+		
 		$titles = array();
 
 		if (count($nodes)>0){
@@ -82,7 +81,7 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 			foreach ($nodes as $node){
 				if (is_a($node,'tx_caretaker_TestNode')){
 					$result_ranges[] = $node->getTestResultRange(time()-(3600*$range), time());
-					$titles[] = $node->getTitle();
+					$titles[] = $node->getInstance()->getTitle() . ' - ' . $node->getTitle();
 					$id .= $node->getCaretakerNodeId();
 				}
 			}
@@ -117,7 +116,22 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 		return $data;
 
 	}
-
+	
+	function getTimeRange(){
+		$range = 24;
+		
+		$ts_range = (int)$this->conf['defaultRange'];
+		if ($ts_range) $range = $ts_range;
+		
+		$ff_range = (int)$this->pi_getFFValue($this->cObj->data['pi_flexform'],'time_range');
+		if ($ff_range) $range = $ff_range;
+		
+		$pivar_range = (int)$this->piVars['range'];
+		if ($pivar_range) $range = $pivar_range;
+		
+		return $range;
+	}
+	
 	function getNodes(){
 		$this->pi_initPIflexForm();
 		$node_ids =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'node_ids');
