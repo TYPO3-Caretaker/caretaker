@@ -43,7 +43,11 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 	var $scriptRelPath = 'pi_graphreport/class.tx_caretaker_pi_graphreport.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'caretaker';	// The extension key.
 
-
+	function main(){
+		$this->pi_initPIflexForm();
+		return parent::main();
+	}
+		
 	function getContent(){
 
 		$template = $this->cObj->cObjGetSingle($this->conf['template'], $this->conf['template.']);
@@ -135,7 +139,7 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 	}
 	
 	function getNodes(){
-		$this->pi_initPIflexForm();
+		
 		$node_ids =  $this->pi_getFFValue( $this->cObj->data['pi_flexform'] , 'node_ids' );
 
 		$nodes = array();
