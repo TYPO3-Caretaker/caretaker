@@ -37,8 +37,6 @@
 					<label>LLL:EXT:caretaker/pi_graphreport/locallang.xml:time_range</label>
 					<config>
 						<type>input</type>
-						<cols>20</cols>
-						<rows>5</rows>
 					</config>
 				</TCEforms>
 			</time_range>
