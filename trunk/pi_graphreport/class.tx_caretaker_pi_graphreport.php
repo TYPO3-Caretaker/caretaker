@@ -125,10 +125,12 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 		
 		$ff_range = (int) $this->pi_getFFValue( $this->cObj->data['pi_flexform'] , 'time_range' );
 		if ($ff_range) $range = $ff_range;
+		debug($ff_range);
 		
 		$pivar_range = (int)$this->piVars['range'];
 		if ($pivar_range) $range = $pivar_range;
 		
+		debug($range);
 		return $range;
 	}
 	
