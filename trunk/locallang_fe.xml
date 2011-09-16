@@ -67,12 +67,12 @@
 			<label index="http_time_warning">HTTP-Request took ###VALUE_TIME### milliseconds returned an timeout-warning</label>
 			<label index="http_state_error">Returned Status ###VALUE_STATE_RETURNED### does not match expected state ###VALUE_STATE_EXPECTED###</label>
 			<label index="http_header_error">HTTP-Header ###VALUE_NAME###:###VALUE_RETURNED### did not match expected value ###VALUE_EXPECTED##</label>
+			<label index="http_header_ok">HTTP-Header ###VALUE_NAME###:###VALUE_RETURNED### matched expected value ###VALUE_EXPECTED##</label>
+			<label index="http_header_missing">Expected HTTP-Header ###VALUE_NAME### was not found</label>
 			<label index="http_regex_error">Regular Expression ###VALUE_REGEX### did not match the http response</label>
 			<label index="http_regex_ok">Regular Expression ###VALUE_REGEX### matched the http response</label>
-			<label index="http_header_missing">Expected HTTP-Header ###VALUE_NAME### was not found</label>
 			<label index="http_date_error">HTTP-Date-Header ###VALUE_PLAIN### (###VALUE_PARSED###) is older than ###VALUE_MAX_AGE## seconds</label>
 			<label index="http_modified_error">HTTP-Last-Modified-Header  ###VALUE_PLAIN### (###VALUE_PARSED###) is older than ###VALUE_MAX_AGE## seconds</label>
-
 			<label index="http_no_query">No HTTP-Code or no query was set</label>
 
 			<label index="touch_service_description">Touch Test</label>
