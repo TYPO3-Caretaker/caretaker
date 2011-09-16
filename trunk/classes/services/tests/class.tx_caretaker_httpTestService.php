@@ -177,6 +177,15 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 								'returned'=>$returnedValue
 							)
 						);
+					} else {
+						$submessages[] = new tx_caretaker_ResultMessage(
+							'LLL:EXT:caretaker/locallang_fe.xml:http_header_ok',
+							array(
+								'name'=>$headerName,
+								'expected'=>$expectedValue,
+								'returned'=>$returnedValue
+							)
+						);
 					}
 				}
 			}
