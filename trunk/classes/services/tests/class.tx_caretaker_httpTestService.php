@@ -187,7 +187,14 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		if ( count($expectedRegex)>0 ){
 			$regexSuccess = TRUE;
 			foreach ( $expectedRegex as $regex){
-				if( !preg_match($regex, $response) ){
+				if( preg_match($regex, $response) ){
+					$submessages[] = new tx_caretaker_ResultMessage(
+						'LLL:EXT:caretaker/locallang_fe.xml:http_regex_ok',
+						array(
+							'regex'=>$regex
+						)
+					);
+				} else {
 					$regexSuccess = FALSE;
 					$submessages[] = new tx_caretaker_ResultMessage(
 						'LLL:EXT:caretaker/locallang_fe.xml:http_regex_error',
