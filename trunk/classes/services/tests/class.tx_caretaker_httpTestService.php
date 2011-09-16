@@ -191,7 +191,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 					$submessages[] = new tx_caretaker_ResultMessage(
 						'LLL:EXT:caretaker/locallang_fe.xml:http_regex_ok',
 						array(
-							'regex'=>$regex
+							'regex'=>htmlspecialchars($regex)
 						)
 					);
 				} else {
@@ -199,7 +199,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 					$submessages[] = new tx_caretaker_ResultMessage(
 						'LLL:EXT:caretaker/locallang_fe.xml:http_regex_error',
 						array(
-							'regex'=>$regex
+							'regex'=>htmlspecialchars($regex)
 						)
 					);
 				}		
