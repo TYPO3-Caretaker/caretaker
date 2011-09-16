@@ -120,7 +120,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		}
 
 			// execute query
-		list ($time, $response, $info, $headers) = $this->executeCurlRequest($request_url, $timeError * 3, $requestPort, $requestMethod, $requestUsername, $requestPassword, $requestData, $requestProxy, $requestProxyport);
+		list ($time, $content, $info, $headers) = $this->executeCurlRequest($request_url, $timeError * 3, $requestPort, $requestMethod, $requestUsername, $requestPassword, $requestData, $requestProxy, $requestProxyport);
 
 		$submessages = array();
 
@@ -187,7 +187,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		if ( count($expectedRegex)>0 ){
 			$regexSuccess = TRUE;
 			foreach ( $expectedRegex as $regex){
-				if( preg_match($regex, $response) ){
+				if( preg_match($regex, $content) ){
 					$submessages[] = new tx_caretaker_ResultMessage(
 						'LLL:EXT:caretaker/locallang_fe.xml:http_regex_ok',
 						array(
@@ -597,7 +597,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 
 		$time = $info['total_time'] * 1000;
 
-		return array ( $time, $response, $info, $headers );
+		return array ( $time, $content, $info, $headers );
 	}
 }
 
