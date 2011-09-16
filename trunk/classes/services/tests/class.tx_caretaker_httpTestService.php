@@ -415,8 +415,8 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		$expectedRegex = array();
 		$expectedRegexConfiguration = $this->getConfigValue('expected_regex' , false , 'sResponse' );
 		if ($expectedRegexConfiguration){
-			$expectedRegex = t3lib_div::trim_explode( $expectedRegexConfiguration );
-		}
+			$expectedRegex = t3lib_div::trimExplode( $expectedRegexConfiguration );
+		}		
 		return $expectedRegex;
 	}
 
