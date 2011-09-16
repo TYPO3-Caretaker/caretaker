@@ -51,6 +51,9 @@
 			<label index="expected_headers.description">Add a list of header conditions which are checked.
 				Each line is interperted as a single condition. See syntax section for more informations about the syntax
 			</label>
+			<label index="expected_regex">expected Regular Expressions</label>
+			<label index="expected_regex.deacription">Add regular expressions that should match the HTTP-Response. Each line is checked separately with preg_match(). </label>
+			
 			<label index="expected_headers.syntax">
 				__HEADER-NAME__ __COMPARISON-OPERATOR__ __EXPECTED_VALUE__
 

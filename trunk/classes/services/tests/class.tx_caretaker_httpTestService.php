@@ -88,6 +88,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 			// response
 		$expectedStatus  = $this->getExpectedReturnCode();
 		$expectedHeaders = $this->getExpectedHeaders();
+		$expectedRegex   = $this->getExpectedRegex();
 		$expectedDateAge = $this->getExpectedDateAge();
 		$expectedModifiedAge = $this->getExpectedModifiedAge();
 
@@ -180,6 +181,23 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 				}
 			}
 			if ( !$headerSuccess ) $resultState = tx_caretaker_Constants::state_error;
+		}
+		
+			// regex  check
+		if ( count($expectedRegex)>0 ){
+			$regexSuccess = TRUE;
+			foreach ( $expectedRegex as $regex){
+				if( !preg_match($regex, $response) ){
+					$regexSuccess = FALSE;
+					$submessages[] = new tx_caretaker_ResultMessage(
+						'LLL:EXT:caretaker/locallang_fe.xml:http_regex_error',
+						array(
+							'regex'=>$regex
+						)
+					);
+				}		
+			}
+			if ( !$regexSuccess ) $resultState = tx_caretaker_Constants::state_error;
 		}
 
 			// date header check
@@ -388,6 +406,20 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		}
 		return $expectedHeaders;
 	}
+	
+	/**
+	 * Get the expected headers from the test configuration
+	 * @return array an associative Array with headers as key and expectec values as sting value
+	 */
+	protected function getExpectedRegex(){
+		$expectedRegex = array();
+		$expectedRegexConfiguration = $this->getConfigValue('expected_regex' , false , 'sResponse' );
+		if ($expectedRegexConfiguration){
+			$expectedRegex = t3lib_div::trim_explode( $expectedRegexConfiguration );
+		}
+		return $expectedRegex;
+	}
+
 
 	/**
 	 * Get the url path and query for the request

@@ -227,6 +227,15 @@
 							</config>
 						</TCEforms>
 					</expected_headers>
+					
+					<expected_regex>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_regex</label>
+							<config>
+								<type>text</type>
+							</config>
+						</TCEforms>
+					</expected_regex>
 
 				</el>
 			</ROOT>
