@@ -185,6 +185,30 @@
 				<type>array</type>
 				<el>
 
+					<error_type_on_failure>
+						<TCEforms>
+							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:error_type_on_failure</label>
+							<config>
+								<type>select</type>
+								<items>
+									<numIndex index="0">
+										<numIndex index="0">ERROR</numIndex>
+										<numIndex index="1">ERROR</numIndex>
+									</numIndex>
+									<numIndex index="1">
+										<numIndex index="0">WARNING</numIndex>
+										<numIndex index="1">WARNING</numIndex>
+									</numIndex>
+									<numIndex index="2">
+										<numIndex index="0">UNDEFINED</numIndex>
+										<numIndex index="1">UNDEFINED</numIndex>
+									</numIndex>
+								</items>
+								<default>ERROR</default>
+							</config>
+						</TCEforms>
+					</error_type_on_failure>
+
 					<expected_status>
 						<TCEforms>
 							<label>LLL:EXT:caretaker/classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_status</label>

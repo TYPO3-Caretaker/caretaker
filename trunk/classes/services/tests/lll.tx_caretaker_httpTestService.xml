@@ -41,6 +41,7 @@
 
 			<!-- sheet response -->
 			<label index="sheet_response">Response</label>
+			<label index="error_type_on_failure">Errortype on failure</label>
 			<label index="expected_status">expected HTTP status code</label>
 			<label index="expected_date_age">expected Age of Date-Header in seconds</label>
 			<label index="expected_date_age.description">An error will occur if the document was not generated in the selected period.</label>
