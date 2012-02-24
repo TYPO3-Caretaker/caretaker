@@ -144,7 +144,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 
 			// http-status check
 		if ($info['http_code'] != $expectedStatus){
-			$resultState = tx_caretaker_Constants::state_error;
+			$resultState = $this->getErrorTypeOnFailure();
 			$submessages[] = new tx_caretaker_ResultMessage(
 				'LLL:EXT:caretaker/locallang_fe.xml:http_state_error',
 				array(
@@ -344,7 +344,21 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	protected function getTimeError(){
 		return intval($this->getConfigValue('max_time_error'));
 	}
-	
+
+	protected function getErrorTypeOnFailure() {
+		switch ($this->getConfigValue('error_type_on_failure', false, 'sResponse')) {
+			case 'WARNING':
+				return tx_caretaker_Constants::state_warning;
+				break;
+			case 'UNDEFINED':
+				return tx_caretaker_Constants::state_undefined;
+				break;
+			default:
+				return tx_caretaker_Constants::state_error;
+				break;
+		}
+	}
+
 	/**
 	 * Get the expected http status code from the test configuration
 	 * @return integer
