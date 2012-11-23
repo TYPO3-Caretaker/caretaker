@@ -49,9 +49,8 @@ class tx_caretaker_LatestVersionsHelper {
 
 	/**
 	 * @var string JSON release feed
-	 * TODO is this available from any more official source (typo3.org?)
 	 */
-	protected static $releaseJsonFeed = 'http://typo3.causal.ch/releases.php';
+	protected static $releaseJsonFeed = 'http://get.typo3.org/json';
 
 	public static function updateLatestTypo3VersionRegistry() {
 		$releases = json_decode(self::curlRequest(self::$releaseJsonFeed), TRUE);
