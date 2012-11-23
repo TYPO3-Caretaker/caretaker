@@ -59,9 +59,9 @@ return array(
 	'tx_caretaker_advancednotificationservice'   => $caretakerExtPath.'classes/services/notifications/advanced/class.tx_caretaker_AdvancedNotificationService.php',
 
 		/* notification exit points */
-	'tx_caretaker_notificationbaseexitpoint'	 => $caretakerExtPath.'classes/services/notifications/escalation/exitpoints/class.tx_caretaker_NotificationBaseExitPoint.php',
-	'tx_caretaker_notificationmailexitpoint'	 => $caretakerExtPath.'classes/services/notifications/escalation/exitpoints/class.tx_caretaker_NotificationMailExitPoint.php',
-	'tx_caretaker_notificationfileexitpoint'	 => $caretakerExtPath.'classes/services/notifications/escalation/exitpoints/class.tx_caretaker_NotificationFileExitPoint.php',
+	'tx_caretaker_notificationbaseexitpoint'	 => $caretakerExtPath.'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationBaseExitPoint.php',
+	'tx_caretaker_notificationmailexitpoint'	 => $caretakerExtPath.'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationMailExitPoint.php',
+	'tx_caretaker_notificationfileexitpoint'	 => $caretakerExtPath.'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationFileExitPoint.php',
 
 		/* interfaces */
 	'tx_caretaker_resultrangerenderer'            => $caretakerExtPath.'interfaces/interface.tx_caretaker_ResultRangeRenderer.php',
