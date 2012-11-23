@@ -92,14 +92,12 @@ class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBa
 	 * @return
 	 */
 	protected function sendMail($recipient, $mailContent) {
-		$mail = new t3lib_htmlmail();
-		$mail->charset = 'utf-8';
-		$mail->start();
-		$mail->from_email = $this->config['emailSenderName'] . '<' . $this->config['emailSenderAddress'] . '>';
-		$mail->returnPath = $this->config['emailSenderAddress'];
-		$mail->subject = $mailContent['subject'];
-		$mail->setPlain($mail->encodeMsg($mailContent['message']));
-		return $mail->send($recipient);
+		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+		$mail->setFrom($this->config['emailSenderName'] . '<' . $this->config['emailSenderAddress'] . '>');
+		$mail->setTo($recipient);
+		$mail->setSubject($mailContent['subject']);
+		$mail->setBody($mailContent['message']);
+		return $mail->send();
 	}
 
 	/**

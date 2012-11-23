@@ -232,15 +232,12 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 	 * @return unknown_type
 	 */
 	private function sendMail($subject, $recipient, $from, $message) {
-		$mail = new t3lib_htmlmail();
-		$mail->charset = 'utf-8';
-		$mail->start();
-		$mail->from_email = $from;
-		$mail->returnPath = $from;
-		$mail->subject = $subject;
-		$mail->setPlain($mail->encodeMsg($message));
-
-		return $mail->send($recipient);
+		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+		$mail->setFrom($from);
+		$mail->setTo($recipient);
+		$mail->setSubject($subject);
+		$mail->setBody($message);
+		return $mail->send();
 	}
 }
 
