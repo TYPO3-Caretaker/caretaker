@@ -48,28 +48,18 @@
 class tx_caretaker_LatestVersionsHelper {
 
 	/**
-	 *
+	 * @var string JSON release feed
+	 * TODO is this available from any more official source (typo3.org?)
 	 */
-	protected static $rssFeed = 'http://sourceforge.net/api/file/index/project-id/20391/mtime/desc/limit/40/rss';
+	protected static $releaseJsonFeed = 'http://typo3.causal.ch/releases.php';
 
 	public static function updateLatestTypo3VersionRegistry() {
-		$max = t3lib_div::makeInstance('t3lib_Registry')->get('tx_caretaker', 'TYPO3versions');
-		foreach ($max as $key => $value) {
-			$max[$key] = explode('.', $value);
-		}
-		$xml = new SimpleXMLElement(self::curlRequest(self::$rssFeed));
-		foreach ($xml->channel->item as $item) {
-			preg_match('/(typo3_src-(4\.[0-9]+\.[0-9]+)).tar.gz/', $item->title, $matches);
-			if (!empty($matches)) {
-				$version = $matches[2];
-				$versionDigits = explode('.', $version, 3);
-				if ($max[$versionDigits[0] . '.' . $versionDigits[1]][2] < $versionDigits[2] && preg_match('/alpha|beta|RC/',$version) === 0) {
-					$max[$versionDigits[0] . '.' . $versionDigits[1]] = $versionDigits;
-				}
+		$releases = json_decode(self::curlRequest(self::$releaseJsonFeed), TRUE);
+		foreach($releases as $major => $details) {
+			debug($details);
+			if (is_array($details) && !empty($details['latest'])) {
+				$max[$major] = $details['latest'];
 			}
-		}
-		foreach ($max as $key => $value) {
-			$max[$key] = implode('.', $value);
 		}
 		t3lib_div::makeInstance('t3lib_Registry')->set('tx_caretaker', 'TYPO3versions', $max);
 		return TRUE;
