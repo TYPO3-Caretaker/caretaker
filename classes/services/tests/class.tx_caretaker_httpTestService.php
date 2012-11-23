@@ -92,9 +92,13 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		$expectedDateAge = $this->getExpectedDateAge();
 		$expectedModifiedAge = $this->getExpectedModifiedAge();
 
-
-		$url           = $this->getInstanceUrl();
-		$parsed_url    = parse_url($url);
+		if (preg_match('/^https?:\/\/.*/', $requestQuery)) {
+			$parsed_url = parse_url($requestQuery);
+			$requestQuery = '?' . $parsed_url['query'];
+		} else {
+			$url = $this->getInstanceUrl();
+			$parsed_url = parse_url($url);
+		}
 
 		if ($parsed_url['path'] == '') {
 			$parsed_url['path'] = '/';
