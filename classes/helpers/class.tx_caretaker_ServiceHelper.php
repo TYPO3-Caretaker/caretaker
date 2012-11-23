@@ -99,36 +99,57 @@ class tx_caretaker_ServiceHelper {
 		global $TCA;
 
 		t3lib_div::loadTCA('tx_caretaker_test');
-
-			// Register test service
-		t3lib_extMgm::addService(
-			'caretaker',
-			'caretaker_test_service',
-			$key,
-			array(
-				'title' => $title,
-				'description' => $description,
-				'subtype' => $key,
-				'available' => TRUE,
-				'priority' => 50,
-				'quality' => 50,
-				'os' => '',
-				'exec' => '',
-				'classFile' => t3lib_extMgm::extPath($extKey) . $path . '/class.' . $key . 'TestService.php',
-				'className' => $key.'TestService',
-			)
-		);
-
-			// Add testtype to TCA
-		if (is_array($TCA['tx_caretaker_test']['columns']) && is_array($TCA['tx_caretaker_test']['columns']['test_service']['config']['items'])) {
-			$TCA['tx_caretaker_test']['columns']['test_service']['config']['items'][] =  array( $title, $key);
+		if (!is_array($TCA['tx_caretaker_test']['columns'])) {
+			// EXT:caretaker not yet loaded. Memorize the data for later registration
+			if (!is_array($GLOBALS['tx_caretaker_servicesToRegister'])) {
+				$GLOBALS['tx_caretaker_servicesToRegister'] = array();
+			}
+			$GLOBALS['tx_caretaker_servicesToRegister'][$extKey . $path . $key] = array(
+				$extKey, $path, $key, $title, $description
+			);
+			return;
+		}
+		if (is_array($GLOBALS['tx_caretaker_servicesToRegister'])) {
+			// register memorized services
+			$servicesToRegister = $GLOBALS['tx_caretaker_servicesToRegister'];
+			unset($GLOBALS['tx_caretaker_servicesToRegister']);
+			foreach ($servicesToRegister as $service) {
+				self::registerCaretakerTestService($service[0], $service[1], $service[2], $service[3], $service[4]);
+			}
 		}
 
-			// Add flexform to service-item
-		if (is_array($TCA['tx_caretaker_test']['columns']) && is_array($TCA['tx_caretaker_test']['columns']['test_conf']['config']['ds'])) {
-			$TCA['tx_caretaker_test']['columns']['test_conf']['config']['ds'][$key] = 'FILE:EXT:'.$extKey.'/'.$path.'/'.( $flexform ? $flexform:'ds.'.$key.'TestService.xml');
+		if (!$GLOBALS['T3_SERVICES']['caretaker_test_service'][$key]) {
+				// Register test service
+			t3lib_extMgm::addService(
+				'caretaker',
+				'caretaker_test_service',
+				$key,
+				array(
+					'title' => $title,
+					'description' => $description,
+					'subtype' => $key,
+					'available' => TRUE,
+					'priority' => 50,
+					'quality' => 50,
+					'os' => '',
+					'exec' => '',
+					'classFile' => t3lib_extMgm::extPath($extKey) . $path . '/class.' . $key . 'TestService.php',
+					'className' => $key.'TestService',
+				)
+			);
+
+				// Add testtype to TCA
+			if (is_array($TCA['tx_caretaker_test']['columns']) && is_array($TCA['tx_caretaker_test']['columns']['test_service']['config']['items'])) {
+				$TCA['tx_caretaker_test']['columns']['test_service']['config']['items'][] =  array( $title, $key);
+			}
+
+				// Add flexform to service-item
+			if (is_array($TCA['tx_caretaker_test']['columns']) && is_array($TCA['tx_caretaker_test']['columns']['test_conf']['config']['ds'])) {
+				$TCA['tx_caretaker_test']['columns']['test_conf']['config']['ds'][$key] = 'FILE:EXT:'.$extKey.'/'.$path.'/'.( $flexform ? $flexform:'ds.'.$key.'TestService.xml');
+			}
 		}
 	}
+
 
 	/**
 	 * Register a new caretaker notification service. The ClassFile and
