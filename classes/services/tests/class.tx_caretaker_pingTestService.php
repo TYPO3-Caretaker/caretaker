@@ -126,7 +126,7 @@
 	 * Execute a system command
 	 *
 	 * @param string $command
-	 * @return array Array of ReturnCode Message and $ime
+	 * @return array Array of ($returnCode, $message, $time)
 	 */
 	protected function executeSystemCommand($command){
 		$starttime = microtime(TRUE);
