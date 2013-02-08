@@ -66,6 +66,8 @@ class tx_caretaker_TestrunnerTask extends tx_scheduler_Task {
 		if (!$node)return false;
 
 		$lockObj = t3lib_div::makeInstance('t3lib_lock', 'tx_caretaker_update_'.$node->getCaretakerNodeId() , $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode'] );
+			// no output during scheduler runs
+		tx_caretaker_ServiceHelper::unregisterCaretakerNotificationService( 'CliNotificationService' );
 
 		if( $lockObj->acquire() ) {
 		   	$node->updateTestResult();
