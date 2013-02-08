@@ -164,6 +164,19 @@ class tx_caretaker_ServiceHelper {
 	}
 
 	/**
+	 * Unregister a caretaker notification service.
+	 *
+	 * @param string $serviceKey  key wich is used for the service
+	 *
+	 * @return void
+	 */
+	public static function unregisterCaretakerNotificationService ( $serviceKey ){
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$serviceKey]) ){
+			unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$serviceKey]);
+		}
+	}
+
+	/**
 	 * Returns an array with all services with the type "caretaker_notification_service"
 	 *
 	 * @return array
