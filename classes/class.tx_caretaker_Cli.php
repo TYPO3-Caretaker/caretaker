@@ -52,7 +52,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 	 */
 	public function __construct() {
 		// Running parent class constructor
-		parent::t3lib_cli();
+		parent::__construct();
 
 			// Setting help texts:
         $this->cli_help['name'] = 'Caretaker CLI-Testrunner';
