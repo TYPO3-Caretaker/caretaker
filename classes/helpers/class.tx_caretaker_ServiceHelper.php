@@ -99,7 +99,7 @@ class tx_caretaker_ServiceHelper {
 		global $TCA;
 
 		t3lib_div::loadTCA('tx_caretaker_test');
-		if (!is_array($TCA['tx_caretaker_test']['columns'])) {
+		if (TYPO3_MODE =='BE' && !is_array($TCA['tx_caretaker_test']['columns'])) {
 			// EXT:caretaker not yet loaded. Memorize the data for later registration
 			if (!is_array($GLOBALS['tx_caretaker_servicesToRegister'])) {
 				$GLOBALS['tx_caretaker_servicesToRegister'] = array();
