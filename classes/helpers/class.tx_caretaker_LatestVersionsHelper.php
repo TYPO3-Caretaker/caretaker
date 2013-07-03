@@ -41,6 +41,7 @@
  * @author Thomas Hempel <thomas@work.de>
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
+ * @author Tomas Norre Mikkelsen <tomasnorre@gmail.com>
  *
  * @package TYPO3
  * @subpackage caretaker
@@ -55,12 +56,17 @@ class tx_caretaker_LatestVersionsHelper {
 	public static function updateLatestTypo3VersionRegistry() {
 		$releases = json_decode(self::curlRequest(self::$releaseJsonFeed), TRUE);
 		foreach($releases as $major => $details) {
-			debug($details);
 			if (is_array($details) && !empty($details['latest'])) {
 				$max[$major] = $details['latest'];
 			}
+			
+			if (is_array($details) && !empty($details['stable'])) {
+				$stable[$major] = $details['stable'];
+			}
+			
 		}
 		t3lib_div::makeInstance('t3lib_Registry')->set('tx_caretaker', 'TYPO3versions', $max);
+		t3lib_div::makeInstance('t3lib_Registry')->set('tx_caretaker', 'TYPO3versionsStable', $stable);
 		return TRUE;
 	}
 
