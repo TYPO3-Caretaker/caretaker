@@ -93,7 +93,7 @@ class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBa
 	 */
 	protected function sendMail($recipient, $mailContent) {
 		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
-		$mail->setFrom($this->config['emailSenderName'] . '<' . $this->config['emailSenderAddress'] . '>');
+		$mail->setFrom($this->config['emailSenderAddress'], $this->config['emailSenderName']);
 		$mail->setTo($recipient);
 		$mail->setSubject($mailContent['subject']);
 		$mail->setBody($mailContent['message']);
