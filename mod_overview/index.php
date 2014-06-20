@@ -41,7 +41,6 @@
 unset($MCONF);
 require('conf.php');
 require_once($BACK_PATH . 'init.php');
-require_once($BACK_PATH . 'template.php');
 
 $GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
 $GLOBALS['BE_USER']->modAccess($MCONF, 1);
