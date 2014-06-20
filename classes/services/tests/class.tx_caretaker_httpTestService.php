@@ -147,13 +147,13 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		}
 
 			// http-status check
-		if ($info['http_code'] != $expectedStatus){
+		if (!in_array($info['http_code'], $expectedStatus)){
 			$resultState = $this->getErrorTypeOnFailure();
 			$submessages[] = new tx_caretaker_ResultMessage(
 				'LLL:EXT:caretaker/locallang_fe.xml:http_state_error',
 				array(
 					'state_returned'=>$info['http_code'],
-					'state_expected'=>$expectedStatus,
+					'state_expected'=>implode(',', $expectedStatus),
 				)
 			);
 		}
@@ -406,7 +406,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @return integer
 	 */
 	protected function getExpectedReturnCode(){
-		return intval($this->getConfigValue('expected_status' , false ,'sResponse' ) );
+		return $arr = explode(',', $this->getConfigValue('expected_status' , false ,'sResponse' ));
 	}
 
 	/**
