@@ -179,7 +179,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	}
 
 	/**
-	 * Get the description of the Testsevice
+	 * Get the description of the Testservice
 	 *
 	 * @return string
 	 */
