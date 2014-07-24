@@ -179,7 +179,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	}
 
 	/**
-	 * Get the description of the Testsevice
+	 * Get the description of the Testservice
 	 *
 	 * @return string
 	 */
@@ -197,7 +197,8 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	public function getConfigurationInfo() {
 		if ($this->testServiceType) {
 			$configurationInfo = $this->getTestService()->getConfigurationInfo();
-			if (is_array($this->testServiceConfiguration['overwritten_in'])) {
+			if (isset($this->testServiceConfiguration['overwritten_in'])
+			    && is_array($this->testServiceConfiguration['overwritten_in'])) {
 				$configurationInfo .= ' (overwritten in ' .
 					'<span title=" '.
 					$this->testServiceConfiguration['overwritten_in']['id'] .
@@ -215,8 +216,9 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	public function getHiddenInfo() {
 		$hiddenInfo = parent::getHiddenInfo();
 		if ($this->testServiceType) {
-			if (is_array($this->testServiceConfiguration['overwritten_in'])
-					&& $this->testServiceConfiguration['hidden']) {
+			if (isset($this->testServiceConfiguration['overwritten_in'])
+			    && is_array($this->testServiceConfiguration['overwritten_in'])
+			    && $this->testServiceConfiguration['hidden']) {
 				$hiddenInfo .= ' (hidden in ' .
 					'<span title=" ' .
 					$this->testServiceConfiguration['overwritten_in']['id'] .
