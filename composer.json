@@ -1,0 +1,7 @@
+{
+    "name": "caretaker/caretaker",
+    "description": "TYPO3 caretaker server",
+    "type": "typo3-cms-extension",
+    "homepage": "https://github.com/TYPO3-Caretaker/",
+    "version": "0.5.0"
+}
