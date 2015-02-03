@@ -49,6 +49,16 @@
 class tx_caretaker_ServiceHelper {
 
 	/**
+	 * @var array
+	 */
+	protected static $tcaTestServiceItems = array();
+
+	/**
+	 * @var array
+	 */
+	protected static $tcaTestConfigDs = array();
+
+	/**
 	 * Array of all active Notification Services
 	 * @var array
 	 */
@@ -96,23 +106,12 @@ class tx_caretaker_ServiceHelper {
 	 * @param string $description description of the testservice
 	 */
 	public static function registerCaretakerTestService ($extKey, $path, $key, $title, $description = '') {
-		global $TCA;
-
-		t3lib_div::loadTCA('tx_caretaker_test');
-		if (TYPO3_MODE =='BE' && !is_array($TCA['tx_caretaker_test']['columns'])) {
-			// EXT:caretaker not yet loaded. Memorize the data for later registration
-			if (!is_array($GLOBALS['tx_caretaker_servicesToRegister'])) {
-				$GLOBALS['tx_caretaker_servicesToRegister'] = array();
-			}
-			$GLOBALS['tx_caretaker_servicesToRegister'][$extKey . $path . $key] = array(
-				$extKey, $path, $key, $title, $description
-			);
-			return;
-		}
-		if (is_array($GLOBALS['tx_caretaker_servicesToRegister'])) {
-			// register memorized services
-			$servicesToRegister = $GLOBALS['tx_caretaker_servicesToRegister'];
-			unset($GLOBALS['tx_caretaker_servicesToRegister']);
+			// load deferred registered test services from EXT:caretaker_instance, if that was loaded before EXT:caretaker
+		if (t3lib_extMgm::isLoaded('caretaker_instance')
+				&& class_exists('tx_caretakerinstance_ServiceHelper')
+				&& count(tx_caretakerinstance_ServiceHelper::$deferredTestServicesToRegister) > 0) {
+			$servicesToRegister = tx_caretakerinstance_ServiceHelper::$deferredTestServicesToRegister;
+			tx_caretakerinstance_ServiceHelper::$deferredTestServicesToRegister = array();
 			foreach ($servicesToRegister as $service) {
 				self::registerCaretakerTestService($service[0], $service[1], $service[2], $service[3], $service[4]);
 			}
@@ -139,17 +138,23 @@ class tx_caretaker_ServiceHelper {
 			);
 
 				// Add testtype to TCA
-			if (is_array($TCA['tx_caretaker_test']['columns']) && is_array($TCA['tx_caretaker_test']['columns']['test_service']['config']['items'])) {
-				$TCA['tx_caretaker_test']['columns']['test_service']['config']['items'][] =  array( $title, $key);
-			}
+			self::$tcaTestServiceItems[] = array($title, $key);
 
 				// Add flexform to service-item
-			if (is_array($TCA['tx_caretaker_test']['columns']) && is_array($TCA['tx_caretaker_test']['columns']['test_conf']['config']['ds'])) {
-				$TCA['tx_caretaker_test']['columns']['test_conf']['config']['ds'][$key] = 'FILE:EXT:'.$extKey.'/'.$path.'/'.( $flexform ? $flexform:'ds.'.$key.'TestService.xml');
-			}
+			self::$tcaTestConfigDs[$key] = 'FILE:EXT:' . $extKey . '/' . $path . '/' . 'ds.' . $key . 'TestService.xml';
 		}
 	}
 
+	public static function getTcaTestServiceItems() {
+		return self::$tcaTestServiceItems;
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function getTcaTestConfigDs() {
+		return self::$tcaTestConfigDs;
+	}
 
 	/**
 	 * Register a new caretaker notification service. The ClassFile and

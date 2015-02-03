@@ -784,8 +784,9 @@ $TCA['tx_caretaker_test'] = array (
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service',
 			'config' => Array (
 				'type' => 'select',
-				'items' => array (
-					0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service.select_service', '')
+				'items' => array_merge(
+					array(0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service.select_service', '')),
+					\tx_caretaker_ServiceHelper::getTcaTestServiceItems()
 				),
 				'size' => 1,
 				'maxitems' => 1,
