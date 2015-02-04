@@ -36,6 +36,8 @@
 
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
+$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+$advancedNotificationsEnabled = $extConfig['notifications.']['advanced.']['enabled'];
 
 // register Records
 
@@ -159,66 +161,68 @@ $TCA['tx_caretaker_node_address_mm'] = array (
 	),
 );
 
-/*
- * Register strategy tables
- */
+if ($advancedNotificationsEnabled) {
+	/*
+	 * Register strategy tables
+	 */
 
-$TCA['tx_caretaker_node_strategy_mm'] = array (
-	'ctrl' => array (
-		'hideTable' => 1,
+	$TCA['tx_caretaker_node_strategy_mm'] = array(
+			'ctrl' => array(
+					'hideTable' => 1,
 
-		'label' => 'uid_strategy',
+					'label' => 'uid_strategy',
 
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/nodeaddressrelation.png',
-	),
-	'feInterface' => array (
-		'fe_admin_fieldList' => '',
-	),
-);
+					'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
+					'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/icons/nodeaddressrelation.png',
+			),
+			'feInterface' => array(
+					'fe_admin_fieldList' => '',
+			),
+	);
 
-$TCA['tx_caretaker_exitpoints'] = array (
-	'ctrl' => array (
-		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints',
-		'label'     => 'name',
-		'tstamp'    => 'tstamp',
-		'crdate'    => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'default_sortby' => 'ORDER BY name',
-		'delete' => 'deleted',
-		'rootLevel' => 1,
-		'enablecolumns' => array (
-			'disabled' => 'hidden',
-		),
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/exitpoint.png',
-		'requestUpdate' => 'service',
-	),
-	'feInterface' => array (
-		'fe_admin_fieldList' => '',
-	),
-);
+	$TCA['tx_caretaker_exitpoints'] = array(
+			'ctrl' => array(
+					'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints',
+					'label' => 'name',
+					'tstamp' => 'tstamp',
+					'crdate' => 'crdate',
+					'cruser_id' => 'cruser_id',
+					'default_sortby' => 'ORDER BY name',
+					'delete' => 'deleted',
+					'rootLevel' => 1,
+					'enablecolumns' => array(
+							'disabled' => 'hidden',
+					),
+					'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
+					'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/icons/exitpoint.png',
+					'requestUpdate' => 'service',
+			),
+			'feInterface' => array(
+					'fe_admin_fieldList' => '',
+			),
+	);
 
-$TCA['tx_caretaker_strategies'] = array (
-	'ctrl' => array (
-		'title'     => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies',
-		'label'     => 'name',
-		'tstamp'    => 'tstamp',
-		'crdate'    => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'default_sortby' => 'ORDER BY name',
-		'delete' => 'deleted',
-		'rootLevel' => 1,
-		'enablecolumns' => array (
-			'disabled' => 'hidden',
-		),
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'res/icons/strategy.png',
-	),
-	'feInterface' => array (
-		'fe_admin_fieldList' => '',
-	),
-);
+	$TCA['tx_caretaker_strategies'] = array(
+			'ctrl' => array(
+					'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies',
+					'label' => 'name',
+					'tstamp' => 'tstamp',
+					'crdate' => 'crdate',
+					'cruser_id' => 'cruser_id',
+					'default_sortby' => 'ORDER BY name',
+					'delete' => 'deleted',
+					'rootLevel' => 1,
+					'enablecolumns' => array(
+							'disabled' => 'hidden',
+					),
+					'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
+					'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/icons/strategy.png',
+			),
+			'feInterface' => array(
+					'fe_admin_fieldList' => '',
+			),
+	);
+}
 
 $TCA['tx_caretaker_test'] = array (
 	'ctrl' => array (

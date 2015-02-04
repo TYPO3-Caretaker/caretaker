@@ -36,6 +36,9 @@
 
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
+$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+$advancedNotificationsEnabled = $extConfig['notifications.']['advanced.']['enabled'];
+
 $TCA['tx_caretaker_instancegroup'] = array (
 	'ctrl' => $TCA['tx_caretaker_instancegroup']['ctrl'],
 	'interface' => array (
@@ -169,7 +172,7 @@ $TCA['tx_caretaker_instancegroup'] = array (
 		'0' => array('showitem' => 'title;;1;;1-1-1, parent_group;;;;2-2-2,' .
 					'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.description, description, ' .
 					'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.contacts, contacts, '.
-					'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.notifications, notification_strategies, '.
+					($advancedNotificationsEnabled ? '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.notifications, notification_strategies, ' : '') .
 					'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.access, hidden, starttime, endtime, fe_group'
 		)
 	),
@@ -414,7 +417,7 @@ $TCA['tx_caretaker_instance'] = array (
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.description, description, ' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests, ' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.contacts, contacts, '.
-			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, notification_strategies, ' .
+			($advancedNotificationsEnabled ? '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, notification_strategies, ' : '') .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.testconfigurations, testconfigurations, '.
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.access, hidden, starttime, endtime, fe_group'
 		)
@@ -466,24 +469,26 @@ $TCA['tx_caretaker_node_address_mm'] = array (
 	)
 );
 
-$TCA['tx_caretaker_node_strategy_mm'] = array (
-	'ctrl' => $TCA['tx_caretaker_node_strategy_mm']['ctrl'],
-	'interface' => array (
-		'showRecordFieldList' => ''
-	),
-	'columns' => array (
-		'uid_strategy' => array (
-			'label' => 'LLL:EXT:tt_address/locallang_tca.xml:tx_caretaker_strategies',
-			'config' => array (
-				'type' => 'select',
-				'foreign_table' => 'tx_caretaker_strategies'
+if ($advancedNotificationsEnabled) {
+	$TCA['tx_caretaker_node_strategy_mm'] = array (
+		'ctrl' => $TCA['tx_caretaker_node_strategy_mm']['ctrl'],
+		'interface' => array (
+			'showRecordFieldList' => ''
+		),
+		'columns' => array (
+			'uid_strategy' => array (
+				'label' => 'LLL:EXT:tt_address/locallang_tca.xml:tx_caretaker_strategies',
+				'config' => array (
+					'type' => 'select',
+					'foreign_table' => 'tx_caretaker_strategies'
+				)
 			)
+		),
+		'types' => array (
+			'0' => array('showitem' => 'uid_strategy;;1;;1-1-1')
 		)
-	),
-	'types' => array (
-		'0' => array('showitem' => 'uid_strategy;;1;;1-1-1')
-	)
-);
+	);
+}
 
 
 $TCA['tx_caretaker_testgroup'] = array (
@@ -929,123 +934,125 @@ $TCA['tx_caretaker_roles'] = array (
 	)
 );
 
-$TCA['tx_caretaker_exitpoints'] = array (
-	'ctrl' => $TCA['tx_caretaker_exitpoints']['ctrl'],
-	'interface' => array (
-		'showRecordFieldList' => 'hidden,id,name,description,service,config'
-	),
-	'feInterface' => $TCA['tx_caretaker_exitpoints']['feInterface'],
-	'columns' => Array (
-		'hidden' => Array (
-			'exclude' => 1,
-			'label'   => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
-			'config'  => Array (
-				'type'    => 'check',
-				'default' => '0'
+if ($advancedNotificationsEnabled) {
+	$TCA['tx_caretaker_exitpoints'] = array(
+			'ctrl' => $TCA['tx_caretaker_exitpoints']['ctrl'],
+			'interface' => array(
+					'showRecordFieldList' => 'hidden,id,name,description,service,config'
 			),
-		),
-		'id' => array (
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.id',
-			'config' => array (
-				'type' => 'input',
-				'size' => 30,
-				'eval' => 'required,nospace,unique'
+			'feInterface' => $TCA['tx_caretaker_exitpoints']['feInterface'],
+			'columns' => Array(
+					'hidden' => Array(
+							'exclude' => 1,
+							'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+							'config' => Array(
+									'type' => 'check',
+									'default' => '0'
+							),
+					),
+					'id' => array(
+							'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.id',
+							'config' => array(
+									'type' => 'input',
+									'size' => 30,
+									'eval' => 'required,nospace,unique'
+							)
+					),
+					'name' => Array(
+							'exclude' => 1,
+							'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.name',
+							'config' => Array(
+									'type' => 'input',
+									'size' => '255',
+							)
+					),
+					'description' => Array(
+							'exclude' => 1,
+							'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.description',
+							'config' => Array(
+									'type' => 'text',
+									'cols' => '50',
+									'rows' => '5',
+							)
+					),
+					'service' => array(
+							'exclude' => 1,
+							'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service',
+							'config' => Array(
+									'type' => 'select',
+									'items' => array(
+											0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service.select_exitpoint', '')
+									),
+									'size' => 1,
+									'maxitems' => 1,
+							)
+					),
+					'config' => array(
+							'displayCond' => 'FIELD:service:REQ:true',
+							'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.config',
+							'config' => Array(
+									'type' => 'flex',
+									'ds_pointerField' => 'service',
+									'ds' => array()
+							)
+					)
+			),
+			'types' => array(
+					'0' => array('showitem' => 'id;;;;1-1-1, name, description, service, config')
+			),
+			'palettes' => array(
+					'1' => array('showitem' => 'hidden')
 			)
-		),
-		'name' => Array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.name',
-			'config' => Array (
-				'type' => 'input',
-				'size' => '255',
-			)
-		),
-		'description' => Array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.description',
-			'config' => Array (
-				'type' => 'text',
-				'cols' => '50',
-				'rows' => '5',
-			)
-		),
-		'service' => array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service',
-			'config' => Array (
-				'type' => 'select',
-				'items' => array (
-					0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service.select_exitpoint', '')
-				),
-				'size' => 1,
-				'maxitems' => 1,
-			)
-		),
-		'config' => array (
-			'displayCond' => 'FIELD:service:REQ:true',
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.config',
-			'config' => Array (
-				'type' => 'flex',
-				'ds_pointerField' => 'service',
-				'ds' => array()
-			)
-		)
-	),
-	'types' => array (
-		'0' => array('showitem' => 'id;;;;1-1-1, name, description, service, config')
-	),
-	'palettes' => array (
-		'1' => array('showitem' => 'hidden')
-	)
-);
+	);
 
-$TCA['tx_caretaker_strategies'] = array (
-	'ctrl' => $TCA['tx_caretaker_strategies']['ctrl'],
-	'interface' => array (
-		'showRecordFieldList' => 'hidden,id,name'
-	),
-	'feInterface' => $TCA['tx_caretaker_strategies']['feInterface'],
-	'columns' => Array (
-		'hidden' => Array (
-			'exclude' => 1,
-			'label'   => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
-			'config'  => Array (
-				'type'    => 'check',
-				'default' => '0'
+	$TCA['tx_caretaker_strategies'] = array(
+			'ctrl' => $TCA['tx_caretaker_strategies']['ctrl'],
+			'interface' => array(
+					'showRecordFieldList' => 'hidden,id,name'
 			),
-		),
-		'name' => Array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies.name',
-			'config' => Array (
-				'type' => 'input',
-				'size' => '30',
-				'eval' => 'unique,trim',
+			'feInterface' => $TCA['tx_caretaker_strategies']['feInterface'],
+			'columns' => Array(
+					'hidden' => Array(
+							'exclude' => 1,
+							'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
+							'config' => Array(
+									'type' => 'check',
+									'default' => '0'
+							),
+					),
+					'name' => Array(
+							'exclude' => 1,
+							'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies.name',
+							'config' => Array(
+									'type' => 'input',
+									'size' => '30',
+									'eval' => 'unique,trim',
+							)
+					),
+					'description' => Array(
+							'exclude' => 1,
+							'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies.description',
+							'config' => Array(
+									'type' => 'text',
+									'cols' => '50',
+									'rows' => '5',
+							)
+					),
+					'config' => array(
+							'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies.config',
+							'config' => Array(
+									'type' => 'text',
+									'cols' => 50,
+									'rows' => 50
+							)
+					)
+			),
+			'types' => array(
+					'0' => array('showitem' => 'hidden;;;;1-1-1, id;;;;1-1-1, name, description, config')
+			),
+			'palettes' => array(
+					'1' => array()
 			)
-		),
-		'description' => Array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies.description',
-			'config' => Array (
-				'type' => 'text',
-				'cols' => '50',
-				'rows' => '5',
-			)
-		),
-		'config' => array (
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies.config',
-			'config' => Array (
-				'type' => 'text',
-				'cols' => 50,
-				'rows' => 50
-			)
-		)
-	),
-	'types' => array (
-		'0' => array('showitem' => 'hidden;;;;1-1-1, id;;;;1-1-1, name, description, config')
-	),
-	'palettes' => array (
-		'1' => array()
-	)
-);
+	);
+}
 
