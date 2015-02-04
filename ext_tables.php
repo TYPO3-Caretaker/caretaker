@@ -37,7 +37,7 @@
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
-$advancedNotificationsEnabled = $extConfig['notifications.']['advanced.']['enabled'];
+$advancedNotificationsEnabled = $extConfig['notifications.']['advanced.']['enabled'] == '1';
 
 // register Records
 
