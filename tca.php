@@ -803,7 +803,7 @@ $TCA['tx_caretaker_test'] = array (
 			'config' => Array (
 				'type' => 'flex',
 				'ds_pointerField' => 'test_service',
-				'ds' => array()
+				'ds' => \tx_caretaker_ServiceHelper::getTcaTestConfigDs()
 			)
 		),
 		'test_retry' =>Array(
