@@ -156,7 +156,7 @@ plugin.tx_caretaker_pi_singleview {
 		CHART_LINKS.90.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=8760
 
 		
-		CHART = HTML
+		CHART = TEXT
 		CHART.value.field = chart
 		
 		TITLE = TEXT
@@ -275,7 +275,7 @@ plugin.tx_caretaker_pi_graphreport{
 		CHART_LINKS.30.data = LLL:EXT:caretaker/pi_graphreport/locallang.xml:30days
 		CHART_LINKS.30.typolink.additionalParams = &tx_caretaker_pi_graphreport[range]=720
 		
-		CHART = HTML
+		CHART = TEXT
 		CHART.value.field = chart
 	}
 }
