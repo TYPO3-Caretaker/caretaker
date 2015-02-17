@@ -252,12 +252,11 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 
 	refreschNode : function (){
         Ext.Ajax.request({
-			url: this.back_path + 'ajax.php',
+			url: TYPO3.settings.ajaxUrls['tx_caretaker::noderefresh'],
 			success: this.refreschSuccess,
 			failure: this.refreschFailure,
 			scope  : this,
 			params: {
-               ajaxID: 'tx_caretaker::noderefresh',
                node:   this.node_id,
                force:  0
 			}
@@ -266,12 +265,11 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 
     refreschNodeForced : function (){
          Ext.Ajax.request({
-           url: this.back_path + 'ajax.php',
+           url: TYPO3.settings.ajaxUrls['tx_caretaker::noderefresh'],
 		   success: this.refreschSuccess,
            failure: this.refreschFailure,
 		   scope  : this,
            params: {
-               ajaxID: 'tx_caretaker::noderefresh',
                node:   this.node_id,
                force:  1
             }
@@ -280,12 +278,11 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
     
     setAck : function (){
         Ext.Ajax.request({
-			url: this.back_path + 'ajax.php',
+			url: TYPO3.settings.ajaxUrls['tx_caretaker::nodeSetAck'],
 			success: this.refreschSuccess,
 			failure: this.refreschFailure,
 			scope  : this,
 			params: {
-               ajaxID: 'tx_caretaker::nodeSetAck',
                node:   this.node_id,
                force:  0
 			}
@@ -294,12 +291,11 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
     
     setDue : function (){
         Ext.Ajax.request({
-			url: this.back_path + 'ajax.php',
+			url: TYPO3.settings.ajaxUrls['tx_caretaker::nodeSetDue'],
 			success: this.refreschSuccess,
 			failure: this.refreschFailure,
 			scope  : this,
 			params: {
-               ajaxID: 'tx_caretaker::nodeSetDue',
                node:   this.node_id,
                force:  0
 			}
@@ -330,7 +326,7 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
     	}
 	    	
         var node_info_panel = Ext.getCmp('node-info');
-        node_info_panel.load( this.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + this.node_id);
+        node_info_panel.load( TYPO3.settings.ajaxUrls['tx_caretaker::nodeinfo'] + '&node=' + this.node_id);
       
         if ( parent.nav_frame && parent.nav_frame.tx_caretaker_updateTreeById ) {
 			parent.nav_frame.tx_caretaker_updateTreeById( this.node_id );
@@ -340,7 +336,7 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 
     refreschFailure : function (response, opts){
         var node_info_panel = Ext.getCmp('node-info');
-        node_info_panel.load( this.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + this.node_id);
+        node_info_panel.load( TYPO3.settings.ajaxUrls['tx_caretaker::nodeinfo'] + '&node=' + this.node_id);
 		this.refreshTree();
     },
 

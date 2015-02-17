@@ -23,7 +23,7 @@ tx.caretaker.NodeContacts = Ext.extend( Ext.grid.GridPanel , {
 				'address_company','address_address','address_city','address_zip','address_country'
 			],
 			proxy: new Ext.data.HttpProxy({
-				url: config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodecontacts&node=' + config.node_id
+				url: TYPO3.settings.ajaxUrls['tx_caretaker::nodecontacts'] + '&node=' + config.node_id
 			})
 		});
 
