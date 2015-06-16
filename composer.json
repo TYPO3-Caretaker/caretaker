@@ -3,5 +3,5 @@
     "description": "TYPO3 caretaker server",
     "type": "typo3-cms-extension",
     "homepage": "https://github.com/TYPO3-Caretaker/",
-    "version": "0.5.2"
+    "version": "0.6.0"
 }
