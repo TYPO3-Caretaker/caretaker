@@ -236,7 +236,7 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 	},
 	navigateToNodeDetails: function(node) {
 		var params = 'id=' + node.attributes.id;
-		var url = top.TS.PATH_typo3 + top.currentSubScript + '?' + params;
+		var url = top.TS.PATH_typo3 + top.currentSubScript + '&' + params;
 		this.openUrlInContent(url);
 	},
 	editNode: function(node) {

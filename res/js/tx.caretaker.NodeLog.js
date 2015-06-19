@@ -22,7 +22,7 @@ tx.caretaker.NodeLog = Ext.extend( Ext.grid.GridPanel , {
 				'state'
 			],
 			proxy: new Ext.data.HttpProxy({
-				url: config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodelog&node=' + config.node_id
+				url: TYPO3.settings.ajaxUrls['tx_caretaker::nodelog'] + '&node=' + config.node_id
 			})
 		});
 

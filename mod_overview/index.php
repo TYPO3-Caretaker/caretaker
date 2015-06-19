@@ -37,14 +37,6 @@
 /**
  * Module 'Caretaker' for the 'caretaker' extension.
  */
-
-unset($MCONF);
-require('conf.php');
-require_once($BACK_PATH . 'init.php');
-
-$GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
-$GLOBALS['BE_USER']->modAccess($MCONF, 1);
-
 class tx_caretaker_mod_nav extends t3lib_SCbase {
 	var $pageinfo;
 	var $node_repository;
@@ -55,6 +47,10 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	 * @var t3lib_PageRenderer
 	 */
 	var $pageRenderer;
+
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
+	}
 
 	/**
 	 * Initializes the Module
