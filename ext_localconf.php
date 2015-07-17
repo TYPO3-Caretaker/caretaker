@@ -73,16 +73,6 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_Typo3versionn
 	'description'      => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:typo3versionnumbersupdateTask.description'
 );
 
-	// ter update is only suportet until 4.5 which has an own sceduler task for this purpose
-if ( t3lib_div::int_from_ver( TYPO3_version ) < t3lib_div::int_from_ver( '4.5.0' ) ){
-	$TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TerupdateTask'] = array(
-		'extension'        => $_EXTKEY,
-		'title'            => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:terupdateTask.name',
-		'description'      => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:terupdateTask.description',
-		'additionalFields' => 'tx_caretaker_TerupdateTask_AdditionalFieldProvider'
-	);
-}
-
 
 require(t3lib_extMgm::extPath('caretaker') . '/ext_conf_include.php');
 

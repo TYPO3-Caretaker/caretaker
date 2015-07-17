@@ -57,11 +57,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 			// Setting help texts:
         $this->cli_help['name'] = 'Caretaker CLI-Testrunner';
 
-		if (t3lib_div::int_from_ver(TYPO3_version) < t3lib_div::int_from_ver('4.5.0')) {
-			$this->cli_help['synopsis'] = 'update|get|wip|update-extension-list|update-typo3-latest-version-list|help ###OPTIONS###';
-		} else {
-			$this->cli_help['synopsis'] = 'update|get|wip|update-typo3-latest-version-list|help ###OPTIONS###';
-		}
+		$this->cli_help['synopsis'] = 'update|get|wip|update-typo3-latest-version-list|help ###OPTIONS###';
 
         $this->cli_help['description'] = 'Class with basic functionality for CLI scripts';
         $this->cli_help['examples'] = '../cli_dispatch.phpsh caretaker update --root';
@@ -162,15 +158,6 @@ class tx_caretaker_Cli extends t3lib_cli {
         		$this->cli_echo( 'Node not found or inactive'.chr(10) );
         		exit;
         	}
-        } elseif ($task == 'update-extension-list') {
-			if ( t3lib_div::int_from_ver( TYPO3_version ) < t3lib_div::int_from_ver( '4.5.0' ) ){
-				$result = tx_caretaker_ExtensionManagerHelper::updateExtensionList();
-				$this->cli_echo( 'Extension list update result: ' . $result.chr(10) );
-				exit;
-			} else {
-				$this->cli_echo( 'TYPO3 4.5.+ comes with a sceduler task for ter updates. The caretaker ter update is\'nt supportet any more.' );
-				exit ( 2 );
-			}
         } elseif  ($task == 'update-typo3-latest-version-list'){
         	$result = tx_caretaker_LatestVersionsHelper::updateLatestTypo3VersionRegistry();
         	$this->cli_echo('TYPO3 latest version list update result: ' . $result . chr(10) );
