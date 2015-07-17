@@ -67,16 +67,16 @@ class tx_caretaker_ResultMessage {
 	 * @param string $text
 	 * @param array $values
 	 */
-	public function __construct ( $text='', $values=array() ){
-		$this->text    = $text;
-		$this->values  = $values;
+	public function __construct($text = '', $values = array()) {
+		$this->text = $text;
+		$this->values = $values;
 	}
 
 	/**
 	 * Get the plain unlocallized text
 	 * @return string
 	 */
-	public function getText (){
+	public function getText() {
 		return $this->text;
 	}
 
@@ -84,7 +84,7 @@ class tx_caretaker_ResultMessage {
 	 * Get the value array which will be merged with the text
 	 * @return array
 	 */
-	public function getValues (){
+	public function getValues() {
 		return $this->values;
 	}
 
@@ -92,20 +92,21 @@ class tx_caretaker_ResultMessage {
 	 * Get the locallized and valuemerged message to show
 	 * @return sring
 	 */
-	public function getLocallizedInfotext(){
+	public function getLocallizedInfotext() {
 
 		$result = $this->text;
 
-			// check for LLL strings
+		// check for LLL strings
 		$result = tx_caretaker_LocallizationHelper::locallizeString($result);
 
-			// insert Values
-		foreach ( $this->values as $key=>$value){
-			$marker = '###VALUE_'.strtoupper($key).'###';
+		// insert Values
+		foreach ($this->values as $key => $value) {
+			$marker = '###VALUE_' . strtoupper($key) . '###';
 			$result = str_replace($marker, $value, $result);
 		}
 
 		return $result;
 	}
 }
+
 ?>

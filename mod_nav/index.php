@@ -50,36 +50,35 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	var $node_repository;
 	var $instance_repository;
 
-        /**
+	/**
 	 * @var t3lib_PageRenderer
 	 */
-        var $pageRenderer;
+	var $pageRenderer;
 
 	/**
 	 * Initializes the Module
-	 * @return	void
+	 * @return    void
 	 */
-	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+	function init() {
+		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 
 		parent::init();
 	}
-
 
 
 	/**
 	 * Main function of the module. Write the content to $this->content
 	 * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
 	 *
-	 * @return	[type]		...
+	 * @return    [type]        ...
 	 */
-	function main()	{
+	function main() {
 		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 
 		$PATH_TYPO3 = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
 
 		if ($BE_USER->user["admin"]) {
-				// Draw the header.
+			// Draw the header.
 			$this->doc = t3lib_div::makeInstance("template");
 			$this->doc->backPath = $BACK_PATH;
 
@@ -89,18 +88,18 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->pageRenderer->loadExtJS(true, true);
 			$this->pageRenderer->enableExtJSQuickTips();
 			$this->pageRenderer->enableExtJsDebug();
-			$this->pageRenderer->addJsFile( $BACK_PATH . t3lib_extMgm::extRelPath('caretaker') . 'res/js/tx.caretaker.js', 'text/javascript', FALSE , FALSE);
-			$this->pageRenderer->addJsFile( $BACK_PATH . t3lib_extMgm::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeTree.js', 'text/javascript', FALSE, FALSE );
+			$this->pageRenderer->addJsFile($BACK_PATH . t3lib_extMgm::extRelPath('caretaker') . 'res/js/tx.caretaker.js', 'text/javascript', FALSE, FALSE);
+			$this->pageRenderer->addJsFile($BACK_PATH . t3lib_extMgm::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeTree.js', 'text/javascript', FALSE, FALSE);
 
 			//Add caretaker css
-			$this->pageRenderer->addCssFile('../res/css/tx.caretaker.nodetree.css', 'stylesheet' , 'all' , '' , FALSE);
+			$this->pageRenderer->addCssFile('../res/css/tx.caretaker.nodetree.css', 'stylesheet', 'all', '', FALSE);
 
 			// storage Pid
-			$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+			$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
 			$storagePid = (int)$confArray['storagePid'];
 
 			$this->pageRenderer->addJsInlineCode('Caretaker_Nodetree',
-			'
+					'
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 			Ext.ns("tx.caretaker");
 			Ext.onReady(function() {
@@ -128,30 +127,30 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->content .= $this->doc->startPage($LANG->getLL("title"));
 			$this->doc->form = '';
 		} else {
-				// If no access or if not admin
+			// If no access or if not admin
 
 			$this->doc = t3lib_div::makeInstance("mediumDoc");
 			$this->doc->backPath = $BACK_PATH;
 
-			$this->content.=$this->doc->startPage($LANG->getLL("title"));
-			$this->content.=$this->doc->header($LANG->getLL("title"));
-			$this->content.=$this->doc->spacer(5);
-			$this->content.=$this->doc->spacer(10);
+			$this->content .= $this->doc->startPage($LANG->getLL("title"));
+			$this->content .= $this->doc->header($LANG->getLL("title"));
+			$this->content .= $this->doc->spacer(5);
+			$this->content .= $this->doc->spacer(10);
 		}
 	}
 
 	/**
 	 * Prints out the module HTML
 	 *
-	 * @return	void
+	 * @return    void
 	 */
-	function printContent()	{
+	function printContent() {
 		$this->content .= $this->doc->endPage();
 		echo $this->content;
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/mod_nav/index.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/mod_nav/index.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/mod_nav/index.php']);
 }
 
@@ -160,7 +159,7 @@ $SOBE = t3lib_div::makeInstance('tx_caretaker_mod_nav');
 $SOBE->init();
 
 // Include files?
-foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
+foreach ($SOBE->include_once as $INC_FILE) include_once($INC_FILE);
 
 $SOBE->main();
 $SOBE->printContent();

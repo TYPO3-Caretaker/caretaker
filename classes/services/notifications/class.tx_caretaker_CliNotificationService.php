@@ -45,13 +45,13 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_CliNotificationService extends tx_caretaker_AbstractNotificationService  {
+class tx_caretaker_CliNotificationService extends tx_caretaker_AbstractNotificationService {
 
 	public function  __construct() {
 		parent::__construct('cli');
 	}
 
-    /**
+	/**
 	 * Notify the service about a test status
 	 *
 	 * @param string $event
@@ -62,20 +62,20 @@ class tx_caretaker_CliNotificationService extends tx_caretaker_AbstractNotificat
 	public function addNotification($event, $node, $result = NULL, $lastResult = NULL) {
 		$indent = $this->getCliIndentation($node);
 
-		if ( is_a ($node, 'tx_caretaker_TestNode' )  ) {
+		if (is_a($node, 'tx_caretaker_TestNode')) {
 			$infotext = $result->getLocallizedInfotext();
-			$msg  = $indent.'--+ '.$node->getTitle().' ['.$node->getCaretakerNodeId().']';
-			$msg  .= str_replace( chr(10), chr(10).$indent.'  | ' , chr(10).$infotext );
-			$msg  .= chr(10).$indent.'  +-> '.$result->getLocallizedStateInfo().' ('.$event.')';
+			$msg = $indent . '--+ ' . $node->getTitle() . ' [' . $node->getCaretakerNodeId() . ']';
+			$msg .= str_replace(chr(10), chr(10) . $indent . '  | ', chr(10) . $infotext);
+			$msg .= chr(10) . $indent . '  +-> ' . $result->getLocallizedStateInfo() . ' (' . $event . ')';
 		} else {
-			if ( $result == NULL ){
-				$msg = $indent.'--+ '.$node->getTitle().' ['.$node->getCaretakerNodeId().']'.$infotext.' '.$event;
+			if ($result == NULL) {
+				$msg = $indent . '--+ ' . $node->getTitle() . ' [' . $node->getCaretakerNodeId() . ']' . $infotext . ' ' . $event;
 			} else {
-				$msg = $indent.'  +-> '.$result->getLocallizedStateInfo().' '.$event.' ['.$node->getCaretakerNodeId().']';
+				$msg = $indent . '  +-> ' . $result->getLocallizedStateInfo() . ' ' . $event . ' [' . $node->getCaretakerNodeId() . ']';
 			}
 		}
 
-		echo ( $msg.chr(10) );
+		echo($msg . chr(10));
 		flush();
 	}
 
@@ -85,12 +85,13 @@ class tx_caretaker_CliNotificationService extends tx_caretaker_AbstractNotificat
 	 * @param tx_caretaker_AbstractNode $node
 	 * @return string
 	 */
-	protected function getCliIndentation( $node ){
+	protected function getCliIndentation($node) {
 		$indentation = '';
-		while ( $node && $node = $node->getParent() ){
+		while ($node && $node = $node->getParent()) {
 			$indentation .= '  |';
 		}
 		return $indentation;
 	}
 }
+
 ?>

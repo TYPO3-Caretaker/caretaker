@@ -80,4 +80,5 @@ class tx_caretaker_TestgroupNode extends tx_caretaker_AggregatorNode {
 		return array_merge($subgroups, $tests);
 	}
 }
+
 ?>

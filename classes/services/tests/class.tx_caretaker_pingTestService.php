@@ -44,7 +44,8 @@
  *
  * @package TYPO3
  * @subpackage caretaker
- */class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
+ */
+class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 
 	/**
 	 * Value Description
@@ -78,18 +79,18 @@
 
 			if ($returnCode === 0) {
 				if ($time_error && $time > $time_error) {
-					return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' );
+					return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time, 'LLL:EXT:caretaker/locallang_fe.xml:ping_info');
 				}
 				if ($time_warning && $time > $time_warning) {
-					return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_warning, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' );
+					return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_warning, $time, 'LLL:EXT:caretaker/locallang_fe.xml:ping_info');
 				}
-				return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_ok, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' ) ;
+				return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_ok, $time, 'LLL:EXT:caretaker/locallang_fe.xml:ping_info');
 			} else {
-				$message = new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:ping_error', array('command'=>$command, 'message'=>$message) );
-				return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time , $message );
+				$message = new tx_caretaker_ResultMessage('LLL:EXT:caretaker/locallang_fe.xml:ping_error', array('command' => $command, 'message' => $message));
+				return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time, $message);
 			}
 		} else {
-			return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0 , 'LLL:EXT:caretaker/locallang_fe.xml:ping_no_command_template');
+			return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, 'LLL:EXT:caretaker/locallang_fe.xml:ping_no_command_template');
 		}
 	}
 
@@ -116,9 +117,9 @@
 	 */
 	protected function buildPingCommand() {
 		$hostname = $this->instance->getHostname();
-		$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+		$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
 		$commandTemplate = $confArray['ping.']['cli_command'];
-		$command = str_replace('###' , $hostname, $commandTemplate);
+		$command = str_replace('###', $hostname, $commandTemplate);
 		return $command;
 	}
 
@@ -128,20 +129,20 @@
 	 * @param string $command
 	 * @return array Array of ($returnCode, $message, $time)
 	 */
-	protected function executeSystemCommand($command){
+	protected function executeSystemCommand($command) {
 		$starttime = microtime(TRUE);
 
 		$returnCode = FALSE;
-		$messages   = array();
-		$message    = '';
+		$messages = array();
+		$message = '';
 
-		exec( $command , $messages , $returnCode );
-		$message = implode( chr(10) , $messages );
+		exec($command, $messages, $returnCode);
+		$message = implode(chr(10), $messages);
 
 		$endtime = microtime(TRUE);
-		$time =  ($endtime - $starttime)*1000;
+		$time = ($endtime - $starttime) * 1000;
 
-		return array( $returnCode , $message , $time );
+		return array($returnCode, $message, $time);
 	}
 
 }

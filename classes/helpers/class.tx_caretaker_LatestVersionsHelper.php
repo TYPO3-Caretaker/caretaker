@@ -55,15 +55,15 @@ class tx_caretaker_LatestVersionsHelper {
 
 	public static function updateLatestTypo3VersionRegistry() {
 		$releases = json_decode(self::curlRequest(self::$releaseJsonFeed), TRUE);
-		foreach($releases as $major => $details) {
+		foreach ($releases as $major => $details) {
 			if (is_array($details) && !empty($details['latest'])) {
 				$max[$major] = $details['latest'];
 			}
-			
+
 			if (is_array($details) && !empty($details['stable'])) {
 				$stable[$major] = $details['stable'];
 			}
-			
+
 		}
 		t3lib_div::makeInstance('t3lib_Registry')->set('tx_caretaker', 'TYPO3versions', $max);
 		t3lib_div::makeInstance('t3lib_Registry')->set('tx_caretaker', 'TYPO3versionsStable', $stable);
@@ -73,7 +73,7 @@ class tx_caretaker_LatestVersionsHelper {
 	protected static function curlRequest($requestUrl = FALSE) {
 		$curl = curl_init();
 		if ($curl === FALSE || $requestUrl === FALSE) {
-        	return FALSE;
+			return FALSE;
 		}
 
 		curl_setopt($curl, CURLOPT_URL, $requestUrl);
@@ -85,8 +85,8 @@ class tx_caretaker_LatestVersionsHelper {
 		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, TRUE);
 
 		$headers = array(
-			"Cache-Control: no-cache",
-			"Pragma: no-cache"
+				"Cache-Control: no-cache",
+				"Pragma: no-cache"
 		);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
@@ -96,4 +96,5 @@ class tx_caretaker_LatestVersionsHelper {
 		return $response;
 	}
 }
+
 ?>

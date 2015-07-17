@@ -103,8 +103,8 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
 	 * @return mixed
 	 */
 	public function getConfigValue($key) {
-		if (isset($this->extConfig['notifications.'][$this->getId().'.'][$key])) {
-			return $this->extConfig['notifications.'][$this->getId().'.'][$key];
+		if (isset($this->extConfig['notifications.'][$this->getId() . '.'][$key])) {
+			return $this->extConfig['notifications.'][$this->getId() . '.'][$key];
 		} else {
 			return NULL;
 		}
@@ -119,13 +119,15 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
 	 */
 	public function isEnabled() {
 		$enabled = (bool)$this->getConfigValue('enabled');
-		$beUsername  = $GLOBALS["BE_USER"]->user['username'];
-		return ($enabled === TRUE && TYPO3_MODE == 'BE' && ( defined('TYPO3_cliMode') && ( $beUsername == '_cli_caretaker' || $beUsername == '_cli_scheduler' ) || $GLOBALS['MCONF']['name'] == 'tools_txschedulerM1' ) );
+		$beUsername = $GLOBALS["BE_USER"]->user['username'];
+		return ($enabled === TRUE && TYPO3_MODE == 'BE' && (defined('TYPO3_cliMode') && ($beUsername == '_cli_caretaker' || $beUsername == '_cli_scheduler') || $GLOBALS['MCONF']['name'] == 'tools_txschedulerM1'));
 	}
 
-	public function addNotification($event, $node, $result = NULL, $lastResult = NULL) {}
-	
-	public function sendNotifications() {}
+	public function addNotification($event, $node, $result = NULL, $lastResult = NULL) {
+	}
+
+	public function sendNotifications() {
+	}
 
 }
 

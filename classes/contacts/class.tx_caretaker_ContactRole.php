@@ -79,9 +79,9 @@ class tx_caretaker_ContactRole {
 	 * @param string $title
 	 * @param string $description
 	 */
-	public function __construct($uid, $id, $title='', $description='') {
+	public function __construct($uid, $id, $title = '', $description = '') {
 		$this->uid = $uid;
-		$this->id  = $id;
+		$this->id = $id;
 		$this->title = $title;
 		$this->description = $description;
 	}
@@ -119,4 +119,5 @@ class tx_caretaker_ContactRole {
 	}
 
 }
+
 ?>

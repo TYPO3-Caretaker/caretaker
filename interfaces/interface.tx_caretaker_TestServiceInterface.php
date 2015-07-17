@@ -33,7 +33,6 @@
  *
  * $Id$
  */
-
 interface tx_caretaker_TestServiceInterface {
 
 	/**

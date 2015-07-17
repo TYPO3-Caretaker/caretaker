@@ -37,20 +37,19 @@
 /**
  * Plugin 'Overview' for the 'user_overview' extension.
  */
-
 class tx_caretaker_pi_overview extends tx_caretaker_pibase {
-	var $prefixId = 'tx_caretaker_pi_overview';		// Same as class name
-	var $scriptRelPath = 'pi_overview/class.tx_caretaker_pi_overview.php';	// Path to this script relative to the extension dir.
-	var $extKey = 'caretaker';	// The extension key.
+	var $prefixId = 'tx_caretaker_pi_overview';        // Same as class name
+	var $scriptRelPath = 'pi_overview/class.tx_caretaker_pi_overview.php';    // Path to this script relative to the extension dir.
+	var $extKey = 'caretaker';    // The extension key.
 
 
-	function getContent(){
+	function getContent() {
 		$nodes = $this->getNodes();
 
-		if (count($nodes)>0){
+		if (count($nodes) > 0) {
 			$content = '';
-			foreach ($nodes as $node){
-				 $content.= $this->showNodeInfo($node);
+			foreach ($nodes as $node) {
+				$content .= $this->showNodeInfo($node);
 			}
 			return $content;
 		} else {
@@ -58,18 +57,18 @@ class tx_caretaker_pi_overview extends tx_caretaker_pibase {
 		}
 	}
 
-	function getNodes(){
+	function getNodes() {
 		$this->pi_initPIflexForm();
-		$node_ids =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'node_ids');
+		$node_ids = $this->pi_getFFValue($this->cObj->data['pi_flexform'], 'node_ids');
 
 		$nodes = array();
-		$ids = explode (chr(10),$node_ids);
+		$ids = explode(chr(10), $node_ids);
 
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
 
-		foreach ($ids as $id){
+		foreach ($ids as $id) {
 			$node = $node_repository->id2node($id);
-			if ($node) $nodes[]=$node;
+			if ($node) $nodes[] = $node;
 		}
 
 		return $nodes;
@@ -77,8 +76,7 @@ class tx_caretaker_pi_overview extends tx_caretaker_pibase {
 }
 
 
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_overview/class.tx_caretaker_pi_overview.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_overview/class.tx_caretaker_pi_overview.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_overview/class.tx_caretaker_pi_overview.php']);
 }
 

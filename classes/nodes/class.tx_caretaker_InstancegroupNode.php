@@ -90,4 +90,5 @@ class tx_caretaker_InstancegroupNode extends tx_caretaker_AggregatorNode {
 		return $parent;
 	}
 }
+
 ?>

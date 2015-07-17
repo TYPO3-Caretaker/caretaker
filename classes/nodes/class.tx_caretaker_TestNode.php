@@ -119,7 +119,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @return tx_caretaker_TestNode
 	 */
 	public function __construct($uid, $title, $parentNode, $serviceType, $serviceConfiguration, $interval = 86400, $retry = 0, $due = 0, $startHour = FALSE, $stopHour = FALSE, $hidden = FALSE) {
-			// Overwrite default test configuration
+		// Overwrite default test configuration
 		$configurationOverlay = $parentNode->getTestConfigurationOverlayForTestUid($uid);
 		if ($configurationOverlay) {
 			$serviceConfiguration = $configurationOverlay;
@@ -198,13 +198,14 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		if ($this->testServiceType) {
 			$configurationInfo = $this->getTestService()->getConfigurationInfo();
 			if (isset($this->testServiceConfiguration['overwritten_in'])
-			    && is_array($this->testServiceConfiguration['overwritten_in'])) {
+					&& is_array($this->testServiceConfiguration['overwritten_in'])
+			) {
 				$configurationInfo .= ' (overwritten in ' .
-					'<span title=" '.
-					$this->testServiceConfiguration['overwritten_in']['id'] .
-					'">' .
-					$this->testServiceConfiguration['overwritten_in']['title'] .
-					'</span>)';
+						'<span title=" ' .
+						$this->testServiceConfiguration['overwritten_in']['id'] .
+						'">' .
+						$this->testServiceConfiguration['overwritten_in']['title'] .
+						'</span>)';
 			}
 			return $configurationInfo;
 		}
@@ -217,14 +218,15 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		$hiddenInfo = parent::getHiddenInfo();
 		if ($this->testServiceType) {
 			if (isset($this->testServiceConfiguration['overwritten_in'])
-			    && is_array($this->testServiceConfiguration['overwritten_in'])
-			    && $this->testServiceConfiguration['hidden']) {
+					&& is_array($this->testServiceConfiguration['overwritten_in'])
+					&& $this->testServiceConfiguration['hidden']
+			) {
 				$hiddenInfo .= ' (hidden in ' .
-					'<span title=" ' .
-					$this->testServiceConfiguration['overwritten_in']['id'] .
-					'">' .
-					$this->testServiceConfiguration['overwritten_in']['title'] .
-					'</span>)';
+						'<span title=" ' .
+						$this->testServiceConfiguration['overwritten_in']['id'] .
+						'">' .
+						$this->testServiceConfiguration['overwritten_in']['title'] .
+						'</span>)';
 			}
 		}
 		return $hiddenInfo;
@@ -235,7 +237,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 *
 	 * @return unknown_type
 	 */
-	public function getInterval(){
+	public function getInterval() {
 		return $this->testInterval;
 	}
 
@@ -244,7 +246,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 *
 	 * @return unknown_type
 	 */
-	public function getStartHour(){
+	public function getStartHour() {
 		return $this->startHour;
 	}
 
@@ -253,7 +255,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 *
 	 * @return unknown_type
 	 */
-	public function getStopHour(){
+	public function getStopHour() {
 		return $this->stopHour;
 	}
 
@@ -264,11 +266,11 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 */
 	public function setModeAck() {
 		$info = array(
-			'username' => 'unkown',
-			'realName' => 'unkown',
-			'email' => 'unkown'
+				'username' => 'unkown',
+				'realName' => 'unkown',
+				'email' => 'unkown'
 		);
-		if (TYPO3_MODE=="BE"){
+		if (TYPO3_MODE == "BE") {
 			$info['username'] = $GLOBALS['BE_USER']->user['username'];
 			$info['realName'] = $GLOBALS['BE_USER']->user['realName'];
 			$info['email'] = $GLOBALS['BE_USER']->user['email'];
@@ -292,11 +294,11 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 */
 	public function setModeDue() {
 		$info = array(
-			'username' => 'unkown',
-			'realName' => 'unkown',
-			'email' => 'unkown'
+				'username' => 'unkown',
+				'realName' => 'unkown',
+				'email' => 'unkown'
 		);
-		if (TYPO3_MODE=="BE") {
+		if (TYPO3_MODE == "BE") {
 			$info['username'] = $GLOBALS['BE_USER']->user['username'];
 			$info['realName'] = $GLOBALS['BE_USER']->user['realName'];
 			$info['email'] = $GLOBALS['BE_USER']->user['email'];
@@ -323,9 +325,9 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @return tx_caretaker_NodeResult
 	 */
 	public function updateTestResult($options = array()) {
-		if ($this->getHidden()){
+		if ($this->getHidden()) {
 			$result = tx_caretaker_TestResult::undefined('Node is disabled');
-			$this->notify('disabledTestResult', $result );
+			$this->notify('disabledTestResult', $result);
 			return $result;
 		}
 		return $this->getTestServiceRunner()->runTestService($this->getTestService(), $this, $options);
@@ -359,7 +361,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @return array
 	 * @deprecated This should be only necessary for aggregator nodes
 	 */
-	public function getTestNodes(){
+	public function getTestNodes() {
 		return array($this);
 	}
 
@@ -369,7 +371,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 */
 	public function getValueDescription() {
 		$test_service = t3lib_div::makeInstanceService('caretaker_test_service', $this->testServiceType);
-		if ($test_service){
+		if ($test_service) {
 			return $test_service->getValueDescription();
 		} else {
 			return 'unknown service ' . $this->testServiceType;
@@ -382,8 +384,8 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResult()
 	 * @return tx_caretaker_TestResult
 	 */
-	public function getTestResult(){
-		if ($this->getHidden()){
+	public function getTestResult() {
+		if ($this->getHidden()) {
 			$result = tx_caretaker_TestResult::undefined('Node is disabled');
 			return $result;
 		}
@@ -455,4 +457,5 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		return $this->testDue;
 	}
 }
+
 ?>

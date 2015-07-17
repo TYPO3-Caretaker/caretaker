@@ -45,8 +45,11 @@
 interface tx_caretaker_NotificationExitPointInterface {
 
 	public function init(array $config);
+
 	public function addNotification($notification, $config);
+
 	public function execute();
 
 }
+
 ?>

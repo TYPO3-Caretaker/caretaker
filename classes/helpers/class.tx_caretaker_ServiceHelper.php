@@ -79,7 +79,7 @@ class tx_caretaker_ServiceHelper {
 	 *
 	 * @return array
 	 */
-	public static function getAllCaretakerTestServices(){
+	public static function getAllCaretakerTestServices() {
 		return $GLOBALS['T3_SERVICES']['caretaker_test_service'];
 	}
 
@@ -89,10 +89,10 @@ class tx_caretaker_ServiceHelper {
 	 * @param string $extKey kex of the extension wich is adding the service
 	 * @param string $path path to the flexform and service class without slahes before and after
 	 * @param string $key key wich is used for to identify the service
-	 * @param string $title  title of the testservice
+	 * @param string $title title of the testservice
 	 * @param string $description description of the testservice
 	 */
-	public static function registerCaretakerService ($extKey, $path, $key, $title, $description = '') {
+	public static function registerCaretakerService($extKey, $path, $key, $title, $description = '') {
 		return tx_caretaker_ServiceHelper::registerCaretakerTestService($extKey, $path, $key, $title, $description);
 	}
 
@@ -102,14 +102,15 @@ class tx_caretaker_ServiceHelper {
 	 * @param string $extKey kex of the extension wich is adding the service
 	 * @param string $path path to the flexform and service class without slahes before and after
 	 * @param string $key key wich is used for to identify the service
-	 * @param string $title  title of the testservice
+	 * @param string $title title of the testservice
 	 * @param string $description description of the testservice
 	 */
-	public static function registerCaretakerTestService ($extKey, $path, $key, $title, $description = '') {
-			// load deferred registered test services from EXT:caretaker_instance, if that was loaded before EXT:caretaker
+	public static function registerCaretakerTestService($extKey, $path, $key, $title, $description = '') {
+		// load deferred registered test services from EXT:caretaker_instance, if that was loaded before EXT:caretaker
 		if (t3lib_extMgm::isLoaded('caretaker_instance')
 				&& class_exists('tx_caretakerinstance_ServiceHelper')
-				&& count(tx_caretakerinstance_ServiceHelper::$deferredTestServicesToRegister) > 0) {
+				&& count(tx_caretakerinstance_ServiceHelper::$deferredTestServicesToRegister) > 0
+		) {
 			$servicesToRegister = tx_caretakerinstance_ServiceHelper::$deferredTestServicesToRegister;
 			tx_caretakerinstance_ServiceHelper::$deferredTestServicesToRegister = array();
 			foreach ($servicesToRegister as $service) {
@@ -118,29 +119,29 @@ class tx_caretaker_ServiceHelper {
 		}
 
 		if (!$GLOBALS['T3_SERVICES']['caretaker_test_service'][$key]) {
-				// Register test service
+			// Register test service
 			t3lib_extMgm::addService(
-				'caretaker',
-				'caretaker_test_service',
-				$key,
-				array(
-					'title' => $title,
-					'description' => $description,
-					'subtype' => $key,
-					'available' => TRUE,
-					'priority' => 50,
-					'quality' => 50,
-					'os' => '',
-					'exec' => '',
-					'classFile' => t3lib_extMgm::extPath($extKey) . $path . '/class.' . $key . 'TestService.php',
-					'className' => $key.'TestService',
-				)
+					'caretaker',
+					'caretaker_test_service',
+					$key,
+					array(
+							'title' => $title,
+							'description' => $description,
+							'subtype' => $key,
+							'available' => TRUE,
+							'priority' => 50,
+							'quality' => 50,
+							'os' => '',
+							'exec' => '',
+							'classFile' => t3lib_extMgm::extPath($extKey) . $path . '/class.' . $key . 'TestService.php',
+							'className' => $key . 'TestService',
+					)
 			);
 
-				// Add testtype to TCA
+			// Add testtype to TCA
 			self::$tcaTestServiceItems[] = array($title, $key);
 
-				// Add flexform to service-item
+			// Add flexform to service-item
 			self::$tcaTestConfigDs[$key] = 'FILE:EXT:' . $extKey . '/' . $path . '/' . 'ds.' . $key . 'TestService.xml';
 		}
 	}
@@ -160,23 +161,23 @@ class tx_caretaker_ServiceHelper {
 	 * Register a new caretaker notification service. The ClassFile and
 	 *
 	 * @param string $extKey key of the extension wich is adding the service
-	 * @param string $serviceKey  key wich is used for the service
+	 * @param string $serviceKey key wich is used for the service
 	 * @param string $classFile path and filename of the php which implements the service
 	 * @param string $className the classname of the php-class which implements the service
 	 */
-	public static function registerCaretakerNotificationService ( $extKey, $serviceKey, $classPath, $className ){
-		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$serviceKey] = 'EXT:'.$extKey.'/'.$classPath.':'.$className;
+	public static function registerCaretakerNotificationService($extKey, $serviceKey, $classPath, $className) {
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$serviceKey] = 'EXT:' . $extKey . '/' . $classPath . ':' . $className;
 	}
 
 	/**
 	 * Unregister a caretaker notification service.
 	 *
-	 * @param string $serviceKey  key wich is used for the service
+	 * @param string $serviceKey key wich is used for the service
 	 *
 	 * @return void
 	 */
-	public static function unregisterCaretakerNotificationService ( $serviceKey ){
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$serviceKey]) ){
+	public static function unregisterCaretakerNotificationService($serviceKey) {
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$serviceKey])) {
 			unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$serviceKey]);
 		}
 	}
@@ -186,8 +187,8 @@ class tx_caretaker_ServiceHelper {
 	 *
 	 * @return array
 	 */
-	public static function getAllCaretakerNotificationServices(){
-		if (!self::$notificationServiceInstances)  self::loadAllCaretakerNotificationServices();
+	public static function getAllCaretakerNotificationServices() {
+		if (!self::$notificationServiceInstances) self::loadAllCaretakerNotificationServices();
 		return self::$notificationServiceInstances;
 	}
 
@@ -197,9 +198,9 @@ class tx_caretaker_ServiceHelper {
 	 * @param string $serviceKey the notificationService key to get
 	 * @return mixed tx_caretaker_NotificationServiceInterfaceObject of false
 	 */
-	public static function getCaretakerNotificationService($serviceKey){
-		if (!self::$notificationServiceInstances)  self::loadAllCaretakerNotificationServices();
-		if (self::$notificationServiceInstances[$serviceKey] ){
+	public static function getCaretakerNotificationService($serviceKey) {
+		if (!self::$notificationServiceInstances) self::loadAllCaretakerNotificationServices();
+		if (self::$notificationServiceInstances[$serviceKey]) {
 			return self::$notificationServiceInstances[$serviceKey];
 		} else {
 			return false;
@@ -211,48 +212,48 @@ class tx_caretaker_ServiceHelper {
 	 *
 	 * @return void
 	 */
-	protected static function loadAllCaretakerNotificationServices(){
+	protected static function loadAllCaretakerNotificationServices() {
 		self::$notificationServiceInstances = Array();
-		foreach ( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'] as $serviceKey => $notificationService){
+		foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'] as $serviceKey => $notificationService) {
 			$instance = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$serviceKey]);
-			if ( $instance instanceof tx_caretaker_NotificationServiceInterface && $instance->isEnabled() ){
+			if ($instance instanceof tx_caretaker_NotificationServiceInterface && $instance->isEnabled()) {
 				self::$notificationServiceInstances[$serviceKey] = $instance;
 			}
 		}
 	}
 
-	public static function registerNotificationExitPoint($extKey, $path, $key, $title, $description='') {
+	public static function registerNotificationExitPoint($extKey, $path, $key, $title, $description = '') {
 		global $TCA;
 
 		t3lib_div::loadTCA('tx_caretaker_exitpoints');
 
-			// Register test service
+		// Register test service
 		t3lib_extMgm::addService(
-			'caretaker',
-			'caretaker_exitpoint',
-			$key,
-			array(
-				'title' => $title,
-				'description' => $description,
-				'subtype' => $key,
-				'available' => TRUE,
-				'priority' => 50,
-				'quality' => 50,
-				'os' => '',
-				'exec' => '',
-				'classFile' => t3lib_extMgm::extPath($extKey).$path.'/class.'.$key.'ExitPoint.php',
-				'className' => $key.'ExitPoint',
-			)
+				'caretaker',
+				'caretaker_exitpoint',
+				$key,
+				array(
+						'title' => $title,
+						'description' => $description,
+						'subtype' => $key,
+						'available' => TRUE,
+						'priority' => 50,
+						'quality' => 50,
+						'os' => '',
+						'exec' => '',
+						'classFile' => t3lib_extMgm::extPath($extKey) . $path . '/class.' . $key . 'ExitPoint.php',
+						'className' => $key . 'ExitPoint',
+				)
 		);
 
-			// Add exitpoint to TCA
+		// Add exitpoint to TCA
 		if (is_array($TCA['tx_caretaker_exitpoints']['columns']) && is_array($TCA['tx_caretaker_exitpoints']['columns']['service']['config']['items'])) {
-			$TCA['tx_caretaker_exitpoints']['columns']['service']['config']['items'][] =  array( $title, $key);
+			$TCA['tx_caretaker_exitpoints']['columns']['service']['config']['items'][] = array($title, $key);
 		}
 
-			// Add flexform to service-item
+		// Add flexform to service-item
 		if (is_array($TCA['tx_caretaker_exitpoints']['columns']) && is_array($TCA['tx_caretaker_exitpoints']['columns']['config']['config']['ds'])) {
-			$TCA['tx_caretaker_exitpoints']['columns']['config']['config']['ds'][$key] = 'FILE:EXT:'.$extKey.'/'.$path.'/'.( $flexform ? $flexform:'ds.'.$key.'ExitPoint.xml');
+			$TCA['tx_caretaker_exitpoints']['columns']['config']['config']['ds'][$key] = 'FILE:EXT:' . $extKey . '/' . $path . '/' . ($flexform ? $flexform : 'ds.' . $key . 'ExitPoint.xml');
 		}
 	}
 
@@ -264,17 +265,17 @@ class tx_caretaker_ServiceHelper {
 	 * @param string $classname
 	 * @param string $order
 	 */
-	public static function registerExtJsBackendPanel ( $id, $xtype, $cssIncludes, $jsIncludes, $extKey ){
-		if ( !$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels']) {
+	public static function registerExtJsBackendPanel($id, $xtype, $cssIncludes, $jsIncludes, $extKey) {
+		if (!$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels']) {
 			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'] = array();
 		}
 
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'][$id] = array(
-			'extKey'      => $extKey,
-			'id'          => $id,
-			'xtype'       => $xtype,
-			'cssIncludes' => $cssIncludes,
-			'jsIncludes'  => $jsIncludes
+				'extKey' => $extKey,
+				'id' => $id,
+				'xtype' => $xtype,
+				'cssIncludes' => $cssIncludes,
+				'jsIncludes' => $jsIncludes
 		);
 
 		// order by ids
@@ -282,4 +283,5 @@ class tx_caretaker_ServiceHelper {
 	}
 
 }
+
 ?>

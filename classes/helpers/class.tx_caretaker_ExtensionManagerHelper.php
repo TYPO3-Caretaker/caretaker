@@ -73,4 +73,5 @@ class tx_caretaker_ExtensionManagerHelper {
 		return strip_tags($result);
 	}
 }
+
 ?>

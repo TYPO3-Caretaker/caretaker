@@ -74,18 +74,18 @@ abstract class tx_caretaker_NodeResult {
 
 	/**
 	 * Constructor
-	 * @param integer $timestamp  Timestamp of the result
-	 * @param integer $state      Status of the result
-	 * @param mixed   $message    Result message (string or tx_caretaker_ResultMessage Object )
+	 * @param integer $timestamp Timestamp of the result
+	 * @param integer $state Status of the result
+	 * @param mixed $message Result message (string or tx_caretaker_ResultMessage Object )
 	 */
 	public function __construct($timestamp, $state, $message, $submessages) {
-		$this->timestamp = (int) $timestamp;
-		$this->state = (int) $state;
+		$this->timestamp = (int)$timestamp;
+		$this->state = (int)$state;
 
 		if (is_a($message, 'tx_caretaker_ResultMessage')) {
 			$this->message = $message;
 		} else {
-			$this->message = new tx_caretaker_ResultMessage((string) $message);
+			$this->message = new tx_caretaker_ResultMessage((string)$message);
 		}
 
 		if ($submessages) {
@@ -158,7 +158,7 @@ abstract class tx_caretaker_NodeResult {
 		if (is_a($message, 'tx_caretaker_ResultMessage')) {
 			$this->submessages[] = $message;
 		} else {
-			$this->submessages[] = new tx_caretaker_ResultMessage ((string) $message);
+			$this->submessages[] = new tx_caretaker_ResultMessage ((string)$message);
 		}
 	}
 

@@ -152,17 +152,17 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 */
 	public function getConfigurationInfo() {
 		$markers = array();
-		if ($this->flexform_configuration && is_array($this->flexform_configuration['data'])){
-			foreach($this->flexform_configuration['data'] as $sheetName => $sheet) {
-				foreach( $this->flexform_configuration['data'][$sheetName]['lDEF'] as $key => $value ){
-					$markers['###'.strtoupper($key).'###'] = $value['vDEF'];
+		if ($this->flexform_configuration && is_array($this->flexform_configuration['data'])) {
+			foreach ($this->flexform_configuration['data'] as $sheetName => $sheet) {
+				foreach ($this->flexform_configuration['data'][$sheetName]['lDEF'] as $key => $value) {
+					$markers['###' . strtoupper($key) . '###'] = $value['vDEF'];
 				}
 			}
 		}
 
-		$result = $this->locallizeString(  $this->configurationInfoTemplate );
-		foreach ($markers as $marker => $content){
-			$result = str_replace( $marker, $content , $result);
+		$result = $this->locallizeString($this->configurationInfoTemplate);
+		foreach ($markers as $marker => $content) {
+			$result = str_replace($marker, $content, $result);
 		}
 		return $result;
 	}
@@ -196,8 +196,8 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 		curl_setopt($curl, CURLOPT_TIMEOUT, 30);
 
 		$headers = array(
-			"Cache-Control: no-cache",
-			"Pragma: no-cache"
+				"Cache-Control: no-cache",
+				"Pragma: no-cache"
 		);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
@@ -216,8 +216,8 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 		curl_close($curl);
 
 		return array(
-			'response' => $response,
-			'info' => $info
+				'response' => $response,
+				'info' => $info
 		);
 	}
 

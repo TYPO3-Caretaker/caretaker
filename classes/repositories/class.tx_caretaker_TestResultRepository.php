@@ -70,7 +70,7 @@ class tx_caretaker_TestResultRepository {
 	 */
 	private function __construct() {
 		$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
-		$this->lastTestResultScanRange = (int) $confArray['lastTestResultScanRange'];
+		$this->lastTestResultScanRange = (int)$confArray['lastTestResultScanRange'];
 	}
 
 	/**
@@ -120,15 +120,15 @@ class tx_caretaker_TestResultRepository {
 			$instanceUID = $testNode->getInstance()->getUid();
 
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'*',
-				'tx_caretaker_testresult',
-				'test_uid = ' . $testUID .
+					'*',
+					'tx_caretaker_testresult',
+					'test_uid = ' . $testUID .
 					' AND instance_uid = ' . $instanceUID .
 					' AND result_status <> ' . $currentResult->getState() .
 					' AND tstamp < ' . $currentResult->getTimestamp(),
-				'tstamp DESC, uid DESC',
-				'',
-				'1'
+					'tstamp DESC, uid DESC',
+					'',
+					'1'
 			);
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		}
@@ -155,7 +155,7 @@ class tx_caretaker_TestResultRepository {
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 
 		if ($row) {
-			return ((int) $row['number']);
+			return ((int)$row['number']);
 		} else {
 			return 0;
 		}
@@ -178,7 +178,7 @@ class tx_caretaker_TestResultRepository {
 		$base_condition = 'test_uid=' . $testUID . ' AND instance_uid=' . $instanceUID . ' ';
 
 		$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_testresult', $base_condition, '', 'tstamp DESC', (int) $offset . ',' . (int) $limit);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_testresult', $base_condition, '', 'tstamp DESC', (int)$offset . ',' . (int)$limit);
 
 		$last = 0;
 
@@ -252,11 +252,11 @@ class tx_caretaker_TestResultRepository {
 		$message = new tx_caretaker_ResultMessage($row['result_msg'], unserialize($row['result_values']));
 		$submessages = ($row['result_submessages']) ? unserialize($row['result_submessages']) : array();
 		$instance = new tx_caretaker_TestResult(
-			$row['tstamp'],
-			$row['result_status'],
-			$row['result_value'],
-			$message,
-			$submessages
+				$row['tstamp'],
+				$row['result_status'],
+				$row['result_value'],
+				$message,
+				$submessages
 		);
 		return $instance;
 	}
@@ -269,15 +269,15 @@ class tx_caretaker_TestResultRepository {
 	function saveTestResultForNode(tx_caretaker_TestNode $test, $testResult) {
 
 		$values = array(
-			'test_uid' => $test->getUid(),
-			'instance_uid' => $test->getInstance()->getUid(),
-			'result_status' => TX_CARETAKER_UNDEFINED,
-			'tstamp' => $testResult->getTstamp(),
-			'result_status' => $testResult->getState(),
-			'result_value' => $testResult->getValue(),
-			'result_msg' => $testResult->getMessage()->getText(),
-			'result_values' => serialize($testResult->getMessage()->getValues()),
-			'result_submessages' => serialize($testResult->getSubMessages())
+				'test_uid' => $test->getUid(),
+				'instance_uid' => $test->getInstance()->getUid(),
+				'result_status' => TX_CARETAKER_UNDEFINED,
+				'tstamp' => $testResult->getTstamp(),
+				'result_status' => $testResult->getState(),
+				'result_value' => $testResult->getValue(),
+				'result_msg' => $testResult->getMessage()->getText(),
+				'result_values' => serialize($testResult->getMessage()->getValues()),
+				'result_submessages' => serialize($testResult->getSubMessages())
 		);
 
 		// store log of results

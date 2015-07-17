@@ -33,7 +33,6 @@
  *
  * $Id$
  */
-
 interface tx_caretaker_ResultRangeRenderer {
 
 	/**
@@ -45,7 +44,7 @@ interface tx_caretaker_ResultRangeRenderer {
 	 * @param string $value_decription
 	 * @return string HTML-Code to show the Chart
 	 */
-	public function renderTestResultRange ( $filename, $test_result_range, $title, $value_decription );
+	public function renderTestResultRange($filename, $test_result_range, $title, $value_decription);
 
 	/**
 	 * Render the ResultRange
@@ -55,7 +54,7 @@ interface tx_caretaker_ResultRangeRenderer {
 	 * @param string $itle
 	 * @return string HTML-Code to show the Chart
 	 */
-	public function renderAggregatorResultRange ($filename, $aggregator_result_range, $title);
+	public function renderAggregatorResultRange($filename, $aggregator_result_range, $title);
 
 	/**
 	 * Render multiple TestResultRanges
@@ -65,7 +64,8 @@ interface tx_caretaker_ResultRangeRenderer {
 	 * @param array $titles
 	 * @return string
 	 */
-	public function renderMultipleTestResultRanges ($filename, $test_result_ranges, $titles );
+	public function renderMultipleTestResultRanges($filename, $test_result_ranges, $titles);
 
 }
+
 ?>

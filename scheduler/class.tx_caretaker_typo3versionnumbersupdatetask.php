@@ -54,7 +54,7 @@ class tx_caretaker_Typo3versionnumbersupdateTask extends tx_scheduler_Task {
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_typo3versionnumbersupdatetask.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_typo3versionnumbersupdatetask.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_typo3versionnumbersupdatetask.php']);
 }
 

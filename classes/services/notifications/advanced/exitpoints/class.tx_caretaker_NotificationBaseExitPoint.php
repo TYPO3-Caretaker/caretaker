@@ -40,7 +40,7 @@
 class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_NotificationExitPointInterface {
 
 	/**
-	 * @var array 
+	 * @var array
 	 */
 	protected $config = array();
 
@@ -104,28 +104,28 @@ class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_Notificatio
 				$notification['result']->getTimestamp() - $ancestorResult->getTimestamp() :
 				0);
 
-			// TODO l10n
-			// TODO template
+		// TODO l10n
+		// TODO template
 
 		$messages = array();
 		$messages[] = ($notification['result'] ? 'Date/Time: ' . date('Y-m-d H:i:s', $notification['result']->getTimestamp()) : '');
 		$messages[] = 'Instance: ' .
-			($notification['node'] instanceof tx_caretaker_AbstractNode && $notification['node']->getInstance() ?
-				'"' . $notification['node']->getInstance()->getTitle() . '"' :
-				'-'
-			) .
-			($notification['node'] instanceof tx_caretaker_AbstractNode ?
-				' [' . $notification['node']->getCaretakerNodeId() . ']' :
-				'-'
-			);
+				($notification['node'] instanceof tx_caretaker_AbstractNode && $notification['node']->getInstance() ?
+						'"' . $notification['node']->getInstance()->getTitle() . '"' :
+						'-'
+				) .
+				($notification['node'] instanceof tx_caretaker_AbstractNode ?
+						' [' . $notification['node']->getCaretakerNodeId() . ']' :
+						'-'
+				);
 		$messages[] = 'Test: ' . $notification['node']->getTitle();
 		$messages[] = ($notification['result'] ? 'State is now: ' . $notification['result']->getLocallizedStateInfo() .
-				($durationState > 0 ? ' (since ' . $this->humanReadableTime($durationState) . ')' : '' ) :
+				($durationState > 0 ? ' (since ' . $this->humanReadableTime($durationState) . ')' : '') :
 				'');
 		$messages[] = ($ancestorResult ?
-			'State before: ' . $ancestorResult->getLocallizedStateInfo() .
-			($durationStateBefore > 0 ? ' (was ' . $this->humanReadableTime($durationStateBefore) . ')' : '' ) :
-			'');
+				'State before: ' . $ancestorResult->getLocallizedStateInfo() .
+				($durationStateBefore > 0 ? ' (was ' . $this->humanReadableTime($durationStateBefore) . ')' : '') :
+				'');
 		$messages[] = ($notification['result'] ? 'Info: ' . chr(10) . $notification['result']->getLocallizedInfotext() : '');
 		$messages[] = '';
 		$messages[] = '----------------------------------------------------';
@@ -140,13 +140,13 @@ class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_Notificatio
 	protected function humanReadableTime($time) {
 		$periods = array("sec", "min", "hour", "day", "week", "month", "year", "decade");
 		$lengths = array("60", "60", "24", "7", "4.35", "12", "10");
-        for ($j = 0; $time >= $lengths[$j]; $j++) {
-	        if ($lengths[$j] == 0) break;
-		$time /= $lengths[$j];
-        }
-        $time = round($time);
-        if ($time != 1) $periods[$j] .= "s";
-        return $time . ' ' . $periods[$j];
+		for ($j = 0; $time >= $lengths[$j]; $j++) {
+			if ($lengths[$j] == 0) break;
+			$time /= $lengths[$j];
+		}
+		$time = round($time);
+		if ($time != 1) $periods[$j] .= "s";
+		return $time . ' ' . $periods[$j];
 	}
 }
 

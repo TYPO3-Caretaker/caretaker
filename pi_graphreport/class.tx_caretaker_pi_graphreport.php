@@ -37,73 +37,72 @@
 /**
  * Plugin 'Overview' for the 'user_overview' extension.
  */
-
 class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
-	var $prefixId = 'tx_caretaker_pi_graphreport';		// Same as class name
-	var $scriptRelPath = 'pi_graphreport/class.tx_caretaker_pi_graphreport.php';	// Path to this script relative to the extension dir.
-	var $extKey = 'caretaker';	// The extension key.
+	var $prefixId = 'tx_caretaker_pi_graphreport';        // Same as class name
+	var $scriptRelPath = 'pi_graphreport/class.tx_caretaker_pi_graphreport.php';    // Path to this script relative to the extension dir.
+	var $extKey = 'caretaker';    // The extension key.
 
-	function main($content, $conf){
+	function main($content, $conf) {
 		$this->pi_initPIflexForm();
 		return parent::main($content, $conf);
 	}
-		
-	function getContent(){
+
+	function getContent() {
 
 		$template = $this->cObj->cObjGetSingle($this->conf['template'], $this->conf['template.']);
 
-			// render Node Infos
-		$data  = $this->getData();
+		// render Node Infos
+		$data = $this->getData();
 		$lcObj = t3lib_div::makeInstance('tslib_cObj');
 		$lcObj->start($data);
 		$node_markers = array();
 		if ($this->conf['markers.']) {
-			foreach (array_keys($this->conf['markers.']) as $key){
-				if (  substr($key, -1) != '.'){
-					$mark = $lcObj->cObjGetSingle($this->conf['markers.'][$key], $this->conf['markers.'][$key.'.']);
-					$node_markers['###'.$key.'###'] = $mark;
+			foreach (array_keys($this->conf['markers.']) as $key) {
+				if (substr($key, -1) != '.') {
+					$mark = $lcObj->cObjGetSingle($this->conf['markers.'][$key], $this->conf['markers.'][$key . '.']);
+					$node_markers['###' . $key . '###'] = $mark;
 				}
 			}
-			$template = $this->cObj->substituteMarkerArray($template,$node_markers);
+			$template = $this->cObj->substituteMarkerArray($template, $node_markers);
 		}
 		return $template;
 	}
 
-	function getData(){
+	function getData() {
 		$data = $this->cObj->data;
 
 		$range = $this->getTimeRange();
 		$nodes = $this->getNodes();
-		
+
 		$titles = array();
 
-		if (count($nodes)>0){
+		if (count($nodes) > 0) {
 
 			$content = '';
 			$result_ranges = array();
 			$id = '';
-			foreach ($nodes as $node){
-				if (is_a($node,'tx_caretaker_TestNode')){
-					$result_ranges[] = $node->getTestResultRange(time()-(3600*$range), time());
+			foreach ($nodes as $node) {
+				if (is_a($node, 'tx_caretaker_TestNode')) {
+					$result_ranges[] = $node->getTestResultRange(time() - (3600 * $range), time());
 					$titles[] = $node->getInstance()->getTitle() . ' - ' . $node->getTitle();
 					$id .= $node->getCaretakerNodeId();
 				}
 			}
 
-			if (count($result_ranges)>0){
+			if (count($result_ranges) > 0) {
 
-				$filename = 'typo3temp/caretaker/charts/report_'.$id.'_'.$range.'.png';
-				$base     = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+				$filename = 'typo3temp/caretaker/charts/report_' . $id . '_' . $range . '.png';
+				$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 
 
-				$MultipleTestResultRangeChartRenderer = new tx_caretaker_MultipleTestResultRangeChartRenderer( );
-				$MultipleTestResultRangeChartRenderer->setTitle( $node->getTitle() );
+				$MultipleTestResultRangeChartRenderer = new tx_caretaker_MultipleTestResultRangeChartRenderer();
+				$MultipleTestResultRangeChartRenderer->setTitle($node->getTitle());
 
-				foreach ($result_ranges as $key=>$range){
-					$MultipleTestResultRangeChartRenderer->addTestResultrange( $range, $titles[$key] );
+				foreach ($result_ranges as $key => $range) {
+					$MultipleTestResultRangeChartRenderer->addTestResultrange($range, $titles[$key]);
 				}
 
-				$result = $MultipleTestResultRangeChartRenderer->getChartImageTag( $filename , $base);
+				$result = $MultipleTestResultRangeChartRenderer->getChartImageTag($filename, $base);
 				$data['chart'] = $result;
 
 				// $renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance($this->LOCAL_LANG, $this->LLkey);
@@ -120,33 +119,33 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 		return $data;
 
 	}
-	
-	function getTimeRange(){
+
+	function getTimeRange() {
 		$range = 24;
-		
+
 		$ts_range = (int)$this->conf['defaultRange'];
 		if ($ts_range) $range = $ts_range;
-		
-		$ff_range = (int) $this->pi_getFFValue( $this->cObj->data['pi_flexform'] , 'time_range' );
+
+		$ff_range = (int)$this->pi_getFFValue($this->cObj->data['pi_flexform'], 'time_range');
 		if ($ff_range) $range = $ff_range;
-	
+
 		$pivar_range = (int)$this->piVars['range'];
 		if ($pivar_range) $range = $pivar_range;
-		
+
 		return $range;
 	}
-	
-	function getNodes(){
-		
-		$node_ids =  $this->pi_getFFValue( $this->cObj->data['pi_flexform'] , 'node_ids' );
+
+	function getNodes() {
+
+		$node_ids = $this->pi_getFFValue($this->cObj->data['pi_flexform'], 'node_ids');
 
 		$nodes = array();
-		$ids = explode (chr(10),$node_ids);
+		$ids = explode(chr(10), $node_ids);
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
 
-		foreach ($ids as $id){
+		foreach ($ids as $id) {
 			$node = $node_repository->id2node($id);
-			if ($node) $nodes[]=$node;
+			if ($node) $nodes[] = $node;
 		}
 
 		return $nodes;
@@ -154,8 +153,7 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 }
 
 
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_graphreport/class.tx_caretaker_pi_graphreport.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_graphreport/class.tx_caretaker_pi_graphreport.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_graphreport/class.tx_caretaker_pi_graphreport.php']);
 }
 

@@ -56,7 +56,7 @@ interface tx_caretaker_NotificationServiceInterface {
 	 */
 	public function isEnabled();
 
-    /**
+	/**
 	 * Notify the service about a test status
 	 *
 	 * @param string $event
@@ -72,4 +72,5 @@ interface tx_caretaker_NotificationServiceInterface {
 	public function sendNotifications();
 
 }
+
 ?>

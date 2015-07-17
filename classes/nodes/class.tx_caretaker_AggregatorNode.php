@@ -163,7 +163,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 	/**
 	 * Aggregate Child-Testresults
 	 *
-	 * @param array<tx_caretaker_NodeResult> $test_results Child-Results to aggregate
+	 * @param array <tx_caretaker_NodeResult> $test_results Child-Results to aggregate
 	 * @return tx_caretaker_AggregatorResult Aggregated State
 	 */
 	protected function getAggregatedResult($test_results) {
@@ -216,18 +216,18 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		}
 
 		$values = array(
-			'num_tests' => $num_tests,
-			'num_ok' => $num_ok,
-			'num_warning' => $num_warnings,
-			'num_error' => $num_errors,
-			'num_undefined' => $num_undefined,
-			'num_ack' => $num_undefined,
-			'num_due' => $num_undefined
+				'num_tests' => $num_tests,
+				'num_ok' => $num_ok,
+				'num_warning' => $num_warnings,
+				'num_error' => $num_errors,
+				'num_undefined' => $num_undefined,
+				'num_ack' => $num_undefined,
+				'num_due' => $num_undefined
 		);
 
 		$message = new tx_caretaker_ResultMessage(
-			'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_message',
-			$values
+				'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_message',
+				$values
 		);
 
 		// create Submessages
@@ -236,8 +236,8 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		if ($num_errors > 0) {
 			foreach ($childnode_titles_error as $childTitle) {
 				$submessages[] = new tx_caretaker_ResultMessage(
-					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_error',
-					array('title' => $childTitle)
+						'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_error',
+						array('title' => $childTitle)
 				);
 			}
 		}
@@ -245,8 +245,8 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		if ($num_warnings > 0) {
 			foreach ($childnode_titles_warning as $childTitle) {
 				$submessages[] = new tx_caretaker_ResultMessage(
-					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_warning',
-					array('title' => $childTitle)
+						'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_warning',
+						array('title' => $childTitle)
 				);
 			}
 		}
@@ -254,8 +254,8 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		if ($num_undefined > 0) {
 			foreach ($childnode_titles_undefined as $childTitle) {
 				$submessages[] = new tx_caretaker_ResultMessage(
-					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_undefined',
-					array('title' => $childTitle)
+						'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_undefined',
+						array('title' => $childTitle)
 				);
 			}
 		}
@@ -263,8 +263,8 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		if ($num_ack > 0) {
 			foreach ($childnode_titles_ack as $childTitle) {
 				$submessages[] = new tx_caretaker_ResultMessage(
-					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_ack',
-					array('title' => $childTitle)
+						'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_ack',
+						array('title' => $childTitle)
 				);
 			}
 		}
@@ -272,8 +272,8 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		if ($num_due > 0) {
 			foreach ($childnode_titles_due as $childTitle) {
 				$submessages[] = new tx_caretaker_ResultMessage(
-					'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_due',
-					array('title' => $childTitle)
+						'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_due',
+						array('title' => $childTitle)
 				);
 			}
 		}
@@ -334,8 +334,8 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		if ($this->testConfigurationOverlay) {
 			$fftools = new t3lib_flexformtools();
 			$tests = $fftools->getArrayValueByPath(
-				'data/sDEF/lDEF/testconfigurations/el',
-				$this->testConfigurationOverlay
+					'data/sDEF/lDEF/testconfigurations/el',
+					$this->testConfigurationOverlay
 			);
 			if (is_array($tests)) {
 				foreach ($tests as $key => $el) {
@@ -351,7 +351,8 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		}
 		if (!$overlayConfig
 				&& $this->parent
-				&& method_exists($this->parent, 'getTestConfigurationOverlayForTestUid')) {
+				&& method_exists($this->parent, 'getTestConfigurationOverlayForTestUid')
+		) {
 			$overlayConfig = $this->parent->getTestConfigurationOverlayForTestUid($testUid);
 		}
 		return $overlayConfig;
@@ -368,10 +369,10 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 			$strategies = array();
 		} else {
 			$strategies = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-				's.*',
-				tx_caretaker_Constants::table_Strategies . ' s,' . tx_caretaker_Constants::relationTable_Node2Strategy . ' rel',
-				'rel.uid_node=' . $this->getUid() . ' AND rel.node_table=\'' . $this->getStorageTable() . '\' AND rel.uid_strategy=s.uid' .
-				' AND s.deleted = 0 AND s.hidden = 0');
+					's.*',
+					tx_caretaker_Constants::table_Strategies . ' s,' . tx_caretaker_Constants::relationTable_Node2Strategy . ' rel',
+					'rel.uid_node=' . $this->getUid() . ' AND rel.node_table=\'' . $this->getStorageTable() . '\' AND rel.uid_strategy=s.uid' .
+					' AND s.deleted = 0 AND s.hidden = 0');
 		}
 		if ($this->getParent()) {
 			$strategies = array_merge($strategies, $this->getParent()->getStrategies());
@@ -379,4 +380,5 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode {
 		return $strategies;
 	}
 }
+
 ?>

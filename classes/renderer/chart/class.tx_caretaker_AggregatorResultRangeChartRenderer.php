@@ -63,30 +63,30 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
 	 * Set the result Range
 	 * @param tx_caretaker_TestResultRange $testResultRange
 	 */
-	public function setAggregatorResultrange( tx_caretaker_AggregatorResultRange $aggregatorResultRange ){
+	public function setAggregatorResultrange(tx_caretaker_AggregatorResultRange $aggregatorResultRange) {
 
 		$this->aggregatorResultRange = $aggregatorResultRange;
-		$this->aggregatorResultRangeInfos   = $this->aggregatorResultRange->getInfos();
+		$this->aggregatorResultRangeInfos = $this->aggregatorResultRange->getInfos();
 
-		$this->setStartTimestamp( $this->aggregatorResultRange->getStartTimestamp() );
-		$this->setEndTimestamp( $this->aggregatorResultRange->getEndTimestamp() );
+		$this->setStartTimestamp($this->aggregatorResultRange->getStartTimestamp());
+		$this->setEndTimestamp($this->aggregatorResultRange->getEndTimestamp());
 
 		$maxValue = 0;
-		foreach ( $this->aggregatorResultRange as $aggregatorResult ){
+		foreach ($this->aggregatorResultRange as $aggregatorResult) {
 
 			$undefined = $aggregatorResult->getNumUNDEFINED();
-			$ok        = $aggregatorResult->getNumOK();
-			$warning   = $aggregatorResult->getNumWARNING();
-			$error     = $aggregatorResult->getNumERROR();
+			$ok = $aggregatorResult->getNumOK();
+			$warning = $aggregatorResult->getNumWARNING();
+			$error = $aggregatorResult->getNumERROR();
 
 			$count = $undefined + $ok + $warning + $error;
-			if ( $count > $maxValue ){
+			if ($count > $maxValue) {
 				$maxValue = $count;
 			}
 		}
 
-		$this->setMinValue( 0 );
-		$this->setMaxValue( $maxValue );
+		$this->setMinValue(0);
+		$this->setMaxValue($maxValue);
 
 		$this->init();
 	}
@@ -95,15 +95,15 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
 	 * Get the title to display in the chart.
 	 * @return string
 	 */
-	protected function getChartTitle (){
-		return $this->getTitle() . ' ' . round(( $this->aggregatorResultRangeInfos['PercentAVAILABLE']*100),2 )."% " . "available"  ;
+	protected function getChartTitle() {
+		return $this->getTitle() . ' ' . round(($this->aggregatorResultRangeInfos['PercentAVAILABLE'] * 100), 2) . "% " . "available";
 	}
 
 	/**
 	 * draw the chart-background into the given chart image
 	 * @param resource $image
 	 */
-    protected function drawChartImageBackground( &$image ){
+	protected function drawChartImageBackground(&$image) {
 		// nothing needed here
 	}
 
@@ -111,36 +111,36 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
 	 * draw the chart-foreground into the given chart image
 	 * @param resource $image
 	 */
-	protected function drawChartImageForeground( &$image ){
+	protected function drawChartImageForeground(&$image) {
 
 		$color = imagecolorallocate($image, 0, 0, 255);
 
-		foreach ( $this->aggregatorResultRange as $aggregatorResult ){
+		foreach ($this->aggregatorResultRange as $aggregatorResult) {
 
-			if( $lastResult !== NULL  ){
+			if ($lastResult !== NULL) {
 				$total = 0;
-				foreach ( array( 'OK', 'WARNING', 'ERROR', 'UNDEFINED' ) as $state  ){
-					$number   = $lastResult->getNumGENERIC ($state);
-					if ($number > 0){
-						$colorRGB  = $this->getColorRgbByKey( $state );
-						$itemColor = imagecolorallocate($image, $colorRGB[0], $colorRGB[1], $colorRGB[2] );
-						$itemColorAlpha = imagecolorallocatealpha($image, $colorRGB[0], $colorRGB[1], $colorRGB[2],90 );
+				foreach (array('OK', 'WARNING', 'ERROR', 'UNDEFINED') as $state) {
+					$number = $lastResult->getNumGENERIC($state);
+					if ($number > 0) {
+						$colorRGB = $this->getColorRgbByKey($state);
+						$itemColor = imagecolorallocate($image, $colorRGB[0], $colorRGB[1], $colorRGB[2]);
+						$itemColorAlpha = imagecolorallocatealpha($image, $colorRGB[0], $colorRGB[1], $colorRGB[2], 90);
 
-						$startX  = intval( $this->transformX( $lastResult->getTimestamp() ) );
-						$stopX   = intval( $this->transformX( $aggregatorResult->getTimestamp() ) );
+						$startX = intval($this->transformX($lastResult->getTimestamp()));
+						$stopX = intval($this->transformX($aggregatorResult->getTimestamp()));
 
-						$startY = intval( $this->transformY( $total + $number) );
-						$stopY  = intval( $this->transformY( $total ) );
+						$startY = intval($this->transformY($total + $number));
+						$stopY = intval($this->transformY($total));
 
 
-						imagefilledrectangle( $image , $startX, $startY, $stopX, $stopY, $itemColorAlpha );
-						imageline ( $image , $startX, $startY, $stopX, $startY, $itemColor );
+						imagefilledrectangle($image, $startX, $startY, $stopX, $stopY, $itemColorAlpha);
+						imageline($image, $startX, $startY, $stopX, $startY, $itemColor);
 
 						$total += $number;
 					}
 				}
-				imageline ( $image , $lastX, $lastY, $newX, $lastY, $color );
-				imageline ( $image , $newX,  $lastY, $newX, $newY,  $color );
+				imageline($image, $lastX, $lastY, $newX, $lastY, $color);
+				imageline($image, $newX, $lastY, $newX, $newY, $color);
 			}
 
 			$lastX = $newX;
@@ -155,33 +155,33 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
 	 * draw the chart-legend into the given chart image
 	 * @param resource $image
 	 */
-	protected function drawChartImageLegend( &$image ){
-		$chartLegendColor = imagecolorallocate( $image, 1, 1, 1 );
+	protected function drawChartImageLegend(&$image) {
+		$chartLegendColor = imagecolorallocate($image, 1, 1, 1);
 
 		$legendItems = array(
-			'OK'        => $this->aggregatorResultRangeInfos['PercentOK'] ,
-			'Warning'   => $this->aggregatorResultRangeInfos['PercentWARNING'] ,
-			'Error'     => $this->aggregatorResultRangeInfos['PercentERROR'],
-			'Undefined' => $this->aggregatorResultRangeInfos['PercentUNDEFINED']
+				'OK' => $this->aggregatorResultRangeInfos['PercentOK'],
+				'Warning' => $this->aggregatorResultRangeInfos['PercentWARNING'],
+				'Error' => $this->aggregatorResultRangeInfos['PercentERROR'],
+				'Undefined' => $this->aggregatorResultRangeInfos['PercentUNDEFINED']
 		);
 
-		$offset = $this->marginTop + 10 ;
+		$offset = $this->marginTop + 10;
 
-		foreach (  $legendItems as $key => $value ){
+		foreach ($legendItems as $key => $value) {
 
-			$colorRGB  = $this->getColorRgbByKey( $key );
-			$itemColor = imagecolorallocate($image, $colorRGB[0], $colorRGB[1], $colorRGB[2] );
+			$colorRGB = $this->getColorRgbByKey($key);
+			$itemColor = imagecolorallocate($image, $colorRGB[0], $colorRGB[1], $colorRGB[2]);
 
 			$x = $this->width - $this->marginRight + 20;
 			$y = $offset;
 
-			imagefilledrectangle( $image , $x-5,  $y-8, $x, $y-3, $itemColor );
-			imagerectangle (  $image ,  $x-5,  $y-8, $x, $y-3, $chartLegendColor);
+			imagefilledrectangle($image, $x - 5, $y - 8, $x, $y - 3, $itemColor);
+			imagerectangle($image, $x - 5, $y - 8, $x, $y - 3, $chartLegendColor);
 
-			$font  = t3lib_extMgm::extPath('caretaker').'/lib/Fonts/tahoma.ttf';
-			$size  = 9;
+			$font = t3lib_extMgm::extPath('caretaker') . '/lib/Fonts/tahoma.ttf';
+			$size = 9;
 			$angle = 0;
-			imagettftext( $image, $size, $angle, $x + 10, $y, $chartLegendColor, $font, $key . ' ' . number_format( $value* 100 , 2  ). ' %' );
+			imagettftext($image, $size, $angle, $x + 10, $y, $chartLegendColor, $font, $key . ' ' . number_format($value * 100, 2) . ' %');
 
 			$offset += 18;
 		}
@@ -190,4 +190,5 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
 	}
 
 }
+
 ?>

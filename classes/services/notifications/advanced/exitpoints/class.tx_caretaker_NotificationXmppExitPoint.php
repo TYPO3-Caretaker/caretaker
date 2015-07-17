@@ -33,10 +33,10 @@
  *
  * $Id: class.tx_caretaker_NotificationMailExitPoint.php 43024 2011-02-03 11:58:50Z matrikz $
  */
-require_once (t3lib_extMgm::extPath('caretaker', 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationBaseExitPoint.php'));
+require_once(t3lib_extMgm::extPath('caretaker', 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationBaseExitPoint.php'));
 
 /**
- * 
+ *
  */
 class tx_caretaker_NotificationXmppExitPoint extends tx_caretaker_NotificationBaseExitPoint {
 
@@ -74,7 +74,7 @@ class tx_caretaker_NotificationXmppExitPoint extends tx_caretaker_NotificationBa
 		$config = $this->getConfig($overrideConfig);
 		$message = $this->getMessageForNotification($notification);
 		$contacts = $notification['node']->getContacts($config['roles']);
-		foreach($contacts as $contact) {
+		foreach ($contacts as $contact) {
 			$xmppAddress = $contact->getAddressProperty('tx_caretaker_xmpp');
 			if (!empty($xmppAddress)) {
 				$this->connection->message($xmppAddress, $message);

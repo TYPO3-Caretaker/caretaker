@@ -44,7 +44,8 @@
  *
  * @package TYPO3
  * @subpackage caretaker
- */class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange {
+ */
+class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange {
 
 	/**
 	 * Minimal value of this result range
@@ -62,14 +63,14 @@
 	 * Add a TestResult to the ResultRange
 	 * @see caretaker/trunk/classes/results/tx_caretaker_NodeResultRange#addResult()
 	 */
-	public function addResult($result ){
+	public function addResult($result) {
 
 		parent::addResult($result);
 
 		$value = $result->getValue();
-		if ($value < $this->min_value){
+		if ($value < $this->min_value) {
 			$this->min_value = $value;
-		} else if ($value > $this->max_value){
+		} else if ($value > $this->max_value) {
 			$this->max_value = $value;
 		}
 
@@ -79,7 +80,7 @@
 	 * Return the minimal result value
 	 * @return float
 	 */
-	public function getMinValue(){
+	public function getMinValue() {
 		return $this->min_value;
 	}
 
@@ -87,7 +88,7 @@
 	 * Return the maximal result value
 	 * @return float
 	 */
-	public function getMaxValue(){
+	public function getMaxValue() {
 		return $this->max_value;
 	}
 
@@ -96,22 +97,22 @@
 	 * undefined values are ignored
 	 * @return float
 	 */
-	public function getMedianValue(){
+	public function getMedianValue() {
 		$values = array();
-		foreach ( $this as $result ){
+		foreach ($this as $result) {
 			$state = $result->getState();
 			$value = $result->getValue();
-			if ( in_array( $state, array( tx_caretaker_Constants::state_ok, tx_caretaker_Constants::state_warning, tx_caretaker_Constants::state_error) ) && $value > 0 ) {
+			if (in_array($state, array(tx_caretaker_Constants::state_ok, tx_caretaker_Constants::state_warning, tx_caretaker_Constants::state_error)) && $value > 0) {
 				$values[] = $result->getValue();
 			}
 		}
-		sort( $values );
+		sort($values);
 		$num = count($values);
-		if ( $num > 0 ){
-			if  ( $num % 2 == 1  ){
-				return ( $values[ (int)($num-1)/2 ] );
+		if ($num > 0) {
+			if ($num % 2 == 1) {
+				return ($values[(int)($num - 1) / 2]);
 			} else {
-				return ( ($values[ (int)$num/2 ] + $values[ (int)($num/2-1) ]) / 2.0 );
+				return (($values[(int)$num / 2] + $values[(int)($num / 2 - 1)]) / 2.0);
 			}
 		} else {
 			return 0;
@@ -123,45 +124,44 @@
 	 * undefined values are ignored
 	 * @return float
 	 */
-	public function getAverageValue(){
+	public function getAverageValue() {
 
-		$value_area  = 0;
+		$value_area = 0;
 		$value_range = 0;
 		$currentResult = NULL;
-		$nextResult    = NULL;
+		$nextResult = NULL;
 		$length = $this->getLength();
-
 
 
 		// $currentResult = $this->
 		$this->rewind();
 		$currentResult = $this->current();
-		$nextResult    = $this->next();
+		$nextResult = $this->next();
 		$index = 0;
 		$length = $this->count();
-		while ( $currentResult ){
-				// start
-			if ( $currentResult && $nextResult ){
+		while ($currentResult) {
+			// start
+			if ($currentResult && $nextResult) {
 				$timeStart = $currentResult->getTstamp();
-				$timeStop  = $nextResult->getTstamp();
-				$value     = $currentResult->getValue();
-				$state     = $currentResult->getState();
+				$timeStop = $nextResult->getTstamp();
+				$value = $currentResult->getValue();
+				$state = $currentResult->getState();
 				$timeRange = $timeStop - $timeStart;
-				if ( in_array( $state, array( tx_caretaker_Constants::state_ok, tx_caretaker_Constants::state_warning, tx_caretaker_Constants::state_error) ) && $value > 0 ) {
-					$value_area  += $timeRange * $value;
+				if (in_array($state, array(tx_caretaker_Constants::state_ok, tx_caretaker_Constants::state_warning, tx_caretaker_Constants::state_error)) && $value > 0) {
+					$value_area += $timeRange * $value;
 					$value_range += $timeRange;
 				}
 
 			}
 
-			$index ++;
+			$index++;
 			$currentResult = $nextResult;
-			$nextResult    = $this->next();
+			$nextResult = $this->next();
 		}
 
 
-		if ($value_range > 0){
-			return ( $value_area / $value_range);
+		if ($value_range > 0) {
+			return ($value_area / $value_range);
 		} else {
 			return 0;
 		}

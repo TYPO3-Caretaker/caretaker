@@ -150,8 +150,8 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 		if ($this->testConfigurationOverlay) {
 			$fftools = new t3lib_flexformtools();
 			$options = $fftools->getArrayValueByPath(
-				'data/sDEF/lDEF/testconfigurations/el',
-				$this->testConfigurationOverlay
+					'data/sDEF/lDEF/testconfigurations/el',
+					$this->testConfigurationOverlay
 			);
 			if ($options && is_array($options)) {
 				foreach ($options as $key => $el) {
@@ -163,7 +163,7 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 						}
 						switch ($currentEl['option']['vDEF']) {
 							case 'CURLOPT_SSL_VERIFYPEER':
-								$value = (boolean) ($currentEl['value_bool']['vDEF'] != 'false');
+								$value = (boolean)($currentEl['value_bool']['vDEF'] != 'false');
 								break;
 
 							case 'CURLOPT_TIMEOUT_MS':
@@ -171,11 +171,11 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 								break;
 
 							case 'CURLOPT_INTERFACE':
-								$value = (string) $currentEl['value_ip']['vDEF'];
+								$value = (string)$currentEl['value_ip']['vDEF'];
 								break;
 
 							case 'CURLOPT_USERPWD':
-								$value = (string) $currentEl['value_string']['vDEF'];
+								$value = (string)$currentEl['value_string']['vDEF'];
 								break;
 
 							case 'CURLOPT_HTTPAUTH':
@@ -191,4 +191,5 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	}
 
 }
+
 ?>

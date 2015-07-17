@@ -48,49 +48,48 @@
  */
 class tx_caretaker_LocallizationHelper {
 
-    /**
+	/**
 	 * Translate a given string in the current language
 	 *
 	 * @param string $string
 	 * @return string
 	 */
-	static function locallizeString( $locallangString ){
+	static function locallizeString($locallangString) {
 
-			// handler whole LLL String
-		if ( strpos( $locallangString , 'LLL:' ) !== 0 ){
+		// handler whole LLL String
+		if (strpos($locallangString, 'LLL:') !== 0) {
 			$result = $locallangString;
 		} else {
-			switch (TYPO3_MODE){
+			switch (TYPO3_MODE) {
 				case 'FE':
 
 					// FE
-					if ( $GLOBALS['TSFE'] ){
-						$lcObj  = t3lib_div::makeInstance('tslib_cObj');
-						$result = $lcObj->TEXT( array( 'data' => $locallangString ) ) ;
-					}
-					// eID
+					if ($GLOBALS['TSFE']) {
+						$lcObj = t3lib_div::makeInstance('tslib_cObj');
+						$result = $lcObj->TEXT(array('data' => $locallangString));
+					} // eID
 					else {
 						$LANG = t3lib_div::makeInstance('language');
 						$LANG->init($language_key);
-						$result = $LANG->getLLL($locallang_key, t3lib_div::readLLfile(t3lib_div::getFileAbsFileName( $locallang_file) , $LANG->lang, $LANG->charSet ) );
+						$result = $LANG->getLLL($locallang_key, t3lib_div::readLLfile(t3lib_div::getFileAbsFileName($locallang_file), $LANG->lang, $LANG->charSet));
 					}
 
 					break;
 
 				case 'BE':
 
-					$locallangParts = explode (':',$locallangString);
+					$locallangParts = explode(':', $locallangString);
 
 					array_shift($locallangParts);
 
-					$locallang_key   = array_pop( $locallangParts );
-					$locallang_file  = implode( ':' , $locallangParts );
+					$locallang_key = array_pop($locallangParts);
+					$locallang_file = implode(':', $locallangParts);
 
-					$language_key  = $GLOBALS['BE_USER']->uc['lang'];
+					$language_key = $GLOBALS['BE_USER']->uc['lang'];
 					$LANG = t3lib_div::makeInstance('language');
 					$LANG->init($language_key);
 
-					$result = $LANG->getLLL($locallang_key, t3lib_div::readLLfile(t3lib_div::getFileAbsFileName( $locallang_file) , $LANG->lang, $LANG->charSet ) );
+					$result = $LANG->getLLL($locallang_key, t3lib_div::readLLfile(t3lib_div::getFileAbsFileName($locallang_file), $LANG->lang, $LANG->charSet));
 					break;
 
 				default :
@@ -102,13 +101,14 @@ class tx_caretaker_LocallizationHelper {
 		}
 
 		/// recursive call for {LLL:} parts
-		$result = preg_replace_callback  ( '/{(LLL:EXT:[^ ]+?:[^ ]+?)}/' ,  'tx_caretaker_LocallizationHelper::locallizeSubstring'  , $result );
+		$result = preg_replace_callback('/{(LLL:EXT:[^ ]+?:[^ ]+?)}/', 'tx_caretaker_LocallizationHelper::locallizeSubstring', $result);
 
 		return $result;
 	}
 
-	public static function locallizeSubstring($context){
+	public static function locallizeSubstring($context) {
 		return tx_caretaker_LocallizationHelper::locallizeString($context[1]);
 	}
 }
+
 ?>

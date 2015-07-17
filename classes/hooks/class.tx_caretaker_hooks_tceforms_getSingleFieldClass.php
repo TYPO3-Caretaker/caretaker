@@ -68,9 +68,9 @@ class tx_caretaker_hooks_tceforms_getSingleFieldClass {
 
 					// get related test configuration
 					$testrow = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-						'uid,test_service,test_conf',
-						'tx_caretaker_test',
-						'uid=' . intval($test) . t3lib_BEfunc::deleteClause('tx_caretaker_test')	###NOTE_A###
+							'uid,test_service,test_conf',
+							'tx_caretaker_test',
+							'uid=' . intval($test) . t3lib_BEfunc::deleteClause('tx_caretaker_test')    ###NOTE_A###
 					);
 
 					$row['test_service'] = $testrow[0]['test_service'];
@@ -100,16 +100,16 @@ class tx_caretaker_hooks_tceforms_getSingleFieldClass {
 					break;
 			}
 		}
-    }
+	}
 
 
-    protected function getFFValue($table, $row, $field, $itemFormElName) {
-    	$path = str_replace('data['. $table . ']['. $row['uid'] .']['. $field .'][', '', $itemFormElName);
+	protected function getFFValue($table, $row, $field, $itemFormElName) {
+		$path = str_replace('data[' . $table . '][' . $row['uid'] . '][' . $field . '][', '', $itemFormElName);
 		$path = rtrim($path, ']');
 		$path = explode('][', $path);
 		$fftools = new t3lib_flexformtools();
 		$val = $fftools->getArrayValueByPath($path, t3lib_div::xml2array($row[$field]));
 		return $val;
-    }
+	}
 
 }

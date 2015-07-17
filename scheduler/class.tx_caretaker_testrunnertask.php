@@ -50,11 +50,11 @@ class tx_caretaker_TestrunnerTask extends tx_scheduler_Task {
 	private $node_id;
 
 
-	public function setNodeId($id){
+	public function setNodeId($id) {
 		$this->node_id = $id;
 	}
 
-	public function getNodeId(){
+	public function getNodeId() {
 		return $this->node_id;
 	}
 
@@ -63,22 +63,22 @@ class tx_caretaker_TestrunnerTask extends tx_scheduler_Task {
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
 		$node = $node_repository->id2node($this->node_id);
 
-		if (!$node)return false;
+		if (!$node) return false;
 
-		$lockObj = t3lib_div::makeInstance('t3lib_lock', 'tx_caretaker_update_'.$node->getCaretakerNodeId() , $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode'] );
-			// no output during scheduler runs
-		tx_caretaker_ServiceHelper::unregisterCaretakerNotificationService( 'CliNotificationService' );
+		$lockObj = t3lib_div::makeInstance('t3lib_lock', 'tx_caretaker_update_' . $node->getCaretakerNodeId(), $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
+		// no output during scheduler runs
+		tx_caretaker_ServiceHelper::unregisterCaretakerNotificationService('CliNotificationService');
 
-		if( $lockObj->acquire() ) {
-		   	$node->updateTestResult();
+		if ($lockObj->acquire()) {
+			$node->updateTestResult();
 			$lockObj->release();
 		} else {
 			return false;
 		}
 
-			// send aggregated notifications
+		// send aggregated notifications
 		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
-		foreach ( $notificationServices as $notificationService ){
+		foreach ($notificationServices as $notificationService) {
 			$notificationService->sendNotifications();
 		}
 
@@ -93,7 +93,7 @@ class tx_caretaker_TestrunnerTask extends tx_scheduler_Task {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_testrunnertask.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_testrunnertask.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_testrunnertask.php']);
 }
 

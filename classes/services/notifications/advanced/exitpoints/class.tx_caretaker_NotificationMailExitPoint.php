@@ -33,7 +33,7 @@
  *
  * $Id$
  */
-require_once (t3lib_extMgm::extPath('caretaker', 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationBaseExitPoint.php'));
+require_once(t3lib_extMgm::extPath('caretaker', 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationBaseExitPoint.php'));
 
 class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBaseExitPoint {
 
@@ -49,7 +49,7 @@ class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBa
 
 		$contacts = array();
 		$contacts = $notification['node']->getContacts($config['roles']);
-		foreach($contacts as $contact) {
+		foreach ($contacts as $contact) {
 			$address = $contact->getAddress();
 			if (!$config['aggregateByRecipient']) {
 				$this->sendMail($address['email'], $this->compileMail(array($notification)));
@@ -76,8 +76,8 @@ class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBa
 	 */
 	protected function compileMail($notifications) {
 		$mail = array(
-			'subject' => $this->config['emailSubject'], // TODO compile a proper subject
-			'message' => '',
+				'subject' => $this->config['emailSubject'], // TODO compile a proper subject
+				'message' => '',
 		);
 
 		foreach ($notifications as $notification) {
