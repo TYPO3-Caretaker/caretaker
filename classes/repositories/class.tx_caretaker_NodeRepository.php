@@ -195,7 +195,6 @@ class tx_caretaker_NodeRepository {
 	/**
 	 * Get a Rootnode Object
 	 *
-	 * @param $show_hidden
 	 * @return tx_caretaker_RootNode
 	 */
 	public function getRootNode() {
@@ -209,7 +208,7 @@ class tx_caretaker_NodeRepository {
 	/**
 	 * Get all Instancegroups
 	 *
-	 * @param tx_caretaker_AbstractNode $parent
+	 * @param bool|tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
 	 * @return array
 	 */
@@ -235,10 +234,9 @@ class tx_caretaker_NodeRepository {
 	 * @param $uid
 	 * @param $parent
 	 * @param $show_hidden
-	 * @return unknown_type
+	 * @return bool|tx_caretaker_InstancegroupNode
 	 */
 	public function getInstancegroupByUid($uid, $parent = false, $show_hidden = FALSE) {
-		$instanceId = (int)$instanceId;
 		$hidden = '';
 		if (!$show_hidden) {
 			$hidden = ' AND hidden=0 ';
@@ -253,7 +251,7 @@ class tx_caretaker_NodeRepository {
 	}
 
 	/**
-	 * Get all Instancegroups wich are Children of Instancegroup with UID xxx
+	 * Get all Instancegroups which are Children of Instancegroup with UID xxx
 	 *
 	 * @param integer $parent_group_uid
 	 * @param tx_caretaker_AbstractNode $parent
@@ -289,7 +287,6 @@ class tx_caretaker_NodeRepository {
 			$hidden = ' AND hidden=0 ';
 		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('parent_group', 'tx_caretaker_instancegroup', 'deleted=0 ' . $hidden . ' AND uid=' . (int)$child_group_uid);
-		$result = array();
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$parent_item = $this->getInstancegroupByUid($row['parent_group']);
 			return $parent_item;
@@ -307,7 +304,6 @@ class tx_caretaker_NodeRepository {
 	private function dbrow2instancegroup($row, $parent) {
 		// check access
 		if (TYPO3_MODE == 'FE') {
-
 			if ($GLOBALS['TSFE']->sys_page) {
 				$result = $GLOBALS['TSFE']->sys_page->checkRecord('tx_caretaker_instancegroup', $row['uid']);
 			} else {
@@ -343,7 +339,7 @@ class tx_caretaker_NodeRepository {
 	/**
 	 * Get all Instances in Repository
 	 *
-	 * @param tx_caretaker_AbstractNode $parent
+	 * @param bool|tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
 	 * @return array
 	 */
@@ -654,7 +650,15 @@ class tx_caretaker_NodeRepository {
 		if (!$show_hidden) {
 			$hidden = ' AND hidden=0 ';
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_test', 'deleted=0 ' . $hidden . ' AND uid=' . (int)$uid);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tx_caretaker_test.*, (
+	SELECT GROUP_CONCAT(r.id)
+	FROM tx_caretaker_roles r, tx_caretaker_test_roles_mm mm
+	WHERE mm.uid_local = tx_caretaker_test.uid
+	AND r.uid = mm.uid_foreign
+	AND deleted = 0 ' . $hidden . '
+	) as roles_ids',
+				'tx_caretaker_test',
+				'deleted=0 ' . $hidden . ' AND uid=' . (int)$uid);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		if ($row) {
 			$test = $this->dbrow2test($row, $parent);
@@ -679,8 +683,23 @@ class tx_caretaker_NodeRepository {
 			return false;
 		}
 
-		$test = new tx_caretaker_TestNode($row['uid'], $row['title'], $parent, $row['test_service'], $row['test_conf'], $row['test_interval'], $row['test_retry'], $row['test_due'], $row['test_interval_start_hour'], $row['test_interval_stop_hour'], $row['hidden']);
-		if ($row['description']) $test->setDescription($row['description']);
+		$test = new tx_caretaker_TestNode(
+				$row['uid'],
+				$row['title'],
+				$parent,
+				$row['test_service'],
+				$row['test_conf'],
+				$row['test_interval'],
+				$row['test_retry'],
+				$row['test_due'],
+				$row['test_interval_start_hour'],
+				$row['test_interval_stop_hour'],
+				$row['hidden'],
+				$row['roles_ids']
+		);
+		if ($row['description']) {
+			$test->setDescription($row['description']);
+		}
 		$test->setDbRow($row);
 		return $test;
 	}

@@ -46,7 +46,7 @@ class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBa
 	public function addNotification($notification, $overrideConfig) {
 		$config = $this->getConfig($overrideConfig);
 
-		/** @var tx_caretaker_AbstractNode $node */
+		/** @var tx_caretaker_TestNode $node */
 		$node = $notification['node'];
 		/** @var tx_caretaker_TestResult $result */
 		$result = $notification['result'];

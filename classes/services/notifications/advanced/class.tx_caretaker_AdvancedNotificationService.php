@@ -119,7 +119,6 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	 * @param array $notification
 	 */
 	protected function processStrategy($strategy, $config, $notification) {
-
 		$conditions = $this->defaultConditions;
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($conditions, $config['conditions.']);
 		if (count($config['rules.']) === 0 || !$this->doConditionsApply($conditions, $notification)) {
@@ -294,6 +293,13 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 
 				case 'infoRegexp':
 					$conditionApply = preg_match($configValue, $result->getLocallizedInfotext());
+					break;
+
+				case 'roles':
+					if ($node instanceof tx_caretaker_TestNode
+						&& !in_array($configValue, $node->getRolesIds())) {
+							$conditionApply = FALSE;
+					}
 					break;
 
 				case 'not.':

@@ -57,7 +57,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 	/**
 	 * Configuration of the test
-	 * @var unknown_type
+	 * @var bool|array
 	 */
 	protected $testServiceConfiguration = FALSE;
 
@@ -103,6 +103,11 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	protected $testServiceRunner = NULL;
 
 	/**
+	 * @var array
+	 */
+	protected $rolesIds;
+
+	/**
 	 * Constructor
 	 *
 	 * @param integer $uid
@@ -117,7 +122,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @param bool|int $stopHour
 	 * @param boolean $hidden
 	 */
-	public function __construct($uid, $title, $parentNode, $serviceType, $serviceConfiguration, $interval = 86400, $retry = 0, $due = 0, $startHour = FALSE, $stopHour = FALSE, $hidden = FALSE) {
+	public function __construct($uid, $title, $parentNode, $serviceType, $serviceConfiguration, $interval = 86400, $retry = 0, $due = 0, $startHour = FALSE, $stopHour = FALSE, $hidden = FALSE, $rolesIds = NULL) {
 		// Overwrite default test configuration
 		$configurationOverlay = $parentNode->getTestConfigurationOverlayForTestUid($uid);
 		if ($configurationOverlay) {
@@ -136,6 +141,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		$this->testDue = $due;
 		$this->startHour = $startHour;
 		$this->stopHour = $stopHour;
+		$this->rolesIds = $rolesIds ? explode(',', $rolesIds) : array();
 	}
 
 	/**
@@ -454,4 +460,12 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	public function getTestDue() {
 		return $this->testDue;
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getRolesIds() {
+		return $this->rolesIds;
+	}
+
 }
