@@ -13,7 +13,7 @@ tx.caretaker.NodeInfo = Ext.extend(Ext.Panel, {
 			titleCollapse    : true,
 			html            : "node info",
 			autoHeight      : true,
-			autoLoad        : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeinfo&node=' + config.node_id
+			autoLoad        : TYPO3.settings.ajaxUrls['tx_caretaker::nodeinfo'] + '&node=' + config.node_id
 		}, config);
 
 		tx.caretaker.NodeInfo.superclass.constructor.call(this, config);

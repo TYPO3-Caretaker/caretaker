@@ -70,8 +70,8 @@ $EM_CONF[$_EXTKEY] = array(
 		'depends' => array(
 			'cms' => '',
 			'tt_address' => '2.2.1-',
-			'typo3' => '4.5.0-6.2.99',
-			'php' => '5.3.0-'
+			'typo3' => '6.2.5-6.2.99',
+			'php' => '5.3.7-'
 		),
 		'conflicts' => array(
 		),
