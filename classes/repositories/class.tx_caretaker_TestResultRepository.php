@@ -65,8 +65,6 @@ class tx_caretaker_TestResultRepository {
 
 	/**
 	 * Private constructor use getInstance instead
-	 *
-	 * @return unknown_type
 	 */
 	private function __construct() {
 		$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
@@ -78,7 +76,7 @@ class tx_caretaker_TestResultRepository {
 	 *
 	 * @return tx_caretaker_TestResultRepository
 	 */
-	public function getInstance() {
+	public static function getInstance() {
 		if (!self::$instance) {
 			self::$instance = new tx_caretaker_TestResultRepository();
 		}
@@ -110,7 +108,7 @@ class tx_caretaker_TestResultRepository {
 	/**
 	 * Get the latest Testresult for the given Instance and Test
 	 *
-	 * @param tx_caretaker_TestNode $testNode
+	 * @param tx_caretaker_AbstractNode $testNode
 	 * @param tx_caretaker_TestResult $result
 	 * @return tx_caretaker_TestResult
 	 */

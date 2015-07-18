@@ -144,7 +144,7 @@ abstract class tx_caretaker_NodeResult {
 
 	/**
 	 * Return result message
-	 * @return string
+	 * @return tx_caretaker_ResultMessage
 	 */
 	public function getMessage() {
 		return $this->message;
@@ -191,7 +191,7 @@ abstract class tx_caretaker_NodeResult {
 	 * @return string
 	 */
 	public function getLocallizedStateInfo() {
-		return tx_caretaker_LocallizationHelper::locallizeString('LLL:EXT:caretaker/locallang_fe.xml:state_' . strtolower($this->getStateInfo()));
+		return tx_caretaker_LocalizationHelper::localizeString('LLL:EXT:caretaker/locallang_fe.xml:state_' . strtolower($this->getStateInfo()));
 	}
 
 	/**
@@ -229,5 +229,3 @@ abstract class tx_caretaker_NodeResult {
 	abstract public function getResultHash();
 
 }
-
-?>

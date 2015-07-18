@@ -53,8 +53,13 @@ class tx_caretaker_LatestVersionsHelper {
 	 */
 	protected static $releaseJsonFeed = 'http://get.typo3.org/json';
 
+	/**
+	 * @return bool
+	 */
 	public static function updateLatestTypo3VersionRegistry() {
 		$releases = json_decode(self::curlRequest(self::$releaseJsonFeed), TRUE);
+		$max = array();
+		$stable = array();
 		foreach ($releases as $major => $details) {
 			if (is_array($details) && !empty($details['latest'])) {
 				$max[$major] = $details['latest'];
@@ -65,11 +70,15 @@ class tx_caretaker_LatestVersionsHelper {
 			}
 
 		}
-		t3lib_div::makeInstance('t3lib_Registry')->set('tx_caretaker', 'TYPO3versions', $max);
-		t3lib_div::makeInstance('t3lib_Registry')->set('tx_caretaker', 'TYPO3versionsStable', $stable);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versions', $max);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versionsStable', $stable);
 		return TRUE;
 	}
 
+	/**
+	 * @param bool $requestUrl
+	 * @return bool|mixed
+	 */
 	protected static function curlRequest($requestUrl = FALSE) {
 		$curl = curl_init();
 		if ($curl === FALSE || $requestUrl === FALSE) {
@@ -96,5 +105,3 @@ class tx_caretaker_LatestVersionsHelper {
 		return $response;
 	}
 }
-
-?>

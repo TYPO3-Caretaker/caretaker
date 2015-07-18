@@ -75,6 +75,15 @@ interface tx_caretaker_TestServiceInterface {
 	 */
 	public function isExecutable();
 
-}
+	/**
+	 * @return string
+	 */
+	public function getTypeDescription();
 
-?>
+	/**
+	 * @return string
+	 */
+	public function getConfigurationInfo();
+
+
+}

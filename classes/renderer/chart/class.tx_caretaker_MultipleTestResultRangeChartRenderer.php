@@ -62,6 +62,7 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 	/**
 	 * Add a new test result range
 	 * @param tx_caretaker_TestResultRange $testResultRange
+	 * @param string $title
 	 */
 	public function addTestResultrange(tx_caretaker_TestResultRange $testResultRange, $title) {
 		$this->testResultRanges[] = $testResultRange;
@@ -85,7 +86,6 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 		}
 
 		$this->init();
-
 	}
 
 	/**
@@ -93,9 +93,11 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 	 * @param resource $image
 	 */
 	protected function drawChartImageBackground(&$image) {
-
+		/**
+		 * @var mixed $key
+		 * @var tx_caretaker_TestResultRange $testResultRange
+		 */
 		foreach ($this->testResultRanges as $key => $testResultRange) {
-
 			$lastX = NULL;
 			$lastY = NULL;
 
@@ -103,20 +105,18 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 			$colorBg = imagecolorallocatealpha($image, $colorRGB[0], $colorRGB[1], $colorRGB[2], 110);
 
 			$bgPoints = array();
+			/** @var tx_caretaker_TestResult $testResult */
 			foreach ($testResultRange as $testResult) {
 				$newX = intval($this->transformX($testResult->getTimestamp()));
 				$newY = intval($this->transformY($testResult->getValue()));
 				if ($lastX !== NULL) {
-
 					$bgPoints[] = $lastX;
 					$bgPoints[] = $lastY;
 					$bgPoints[] = $newX;
 					$bgPoints[] = $lastY;
 					$bgPoints[] = $newX;
 					$bgPoints[] = $newY;
-
 				}
-
 				$lastX = $newX;
 				$lastY = $newY;
 			}
@@ -138,23 +138,24 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 	 * @param resource $image
 	 */
 	protected function drawChartImageForeground(&$image) {
-
+		/**
+		 * @var mixed $key
+		 * @var tx_caretaker_TestResultRange $testResultRange
+		 */
 		foreach ($this->testResultRanges as $key => $testResultRange) {
-
 			$lastX = NULL;
 			$lastY = NULL;
-
 			$colorRGB = $this->getChartIndexColor($key);
 			$color = imagecolorallocate($image, $colorRGB[0], $colorRGB[1], $colorRGB[2]);
 
 			$feLines = array();
+			/** @var tx_caretaker_TestResult $testResult */
 			foreach ($testResultRange as $testResult) {
 				$newX = intval($this->transformX($testResult->getTimestamp()));
 				$newY = intval($this->transformY($testResult->getValue()));
 				if ($lastX !== NULL) {
 					imageline($image, $lastX, $lastY, $newX, $lastY, $color);
 					imageline($image, $newX, $lastY, $newX, $newY, $color);
-
 					$feLines[] = array($lastX, $lastY, $newX, $lastY);
 					$feLines[] = array($newX, $lastY, $newX, $newY);
 				}
@@ -184,10 +185,12 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 	 * @param resource $image
 	 */
 	protected function drawChartImageLegend(&$image) {
-
 		$chartLegendColor = imagecolorallocate($image, 1, 1, 1);
 		$offset = $this->marginTop + 10;
-
+		/**
+		 * @var mixed $key
+		 * @var tx_caretaker_TestResultRange $testResultRange
+		 */
 		foreach ($this->testResultRanges as $key => $testResultRange) {
 
 			$colorRGB = $this->getChartIndexColor($key);
@@ -199,7 +202,7 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 			imagefilledrectangle($image, $x - 5, $y - 8, $x, $y - 3, $color);
 			imagerectangle($image, $x - 5, $y - 8, $x, $y - 3, $chartLegendColor);
 
-			$font = t3lib_extMgm::extPath('caretaker') . '/lib/Fonts/tahoma.ttf';
+			$font = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/lib/Fonts/tahoma.ttf';
 			$size = 9;
 			$angle = 0;
 			imagettftext($image, $size, $angle, $x + 10, $y, $chartLegendColor, $font, $this->testResultRangeTitles[$key]);
@@ -216,7 +219,6 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 	 * @return array Array with RGB values
 	 */
 	protected function getChartIndexColor($index) {
-
 		$chartColors = array(
 				array(248, 139, 0),
 				array(0, 0, 248),
@@ -234,9 +236,5 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 		$colorIndex = ($index + $colorCount) % $colorCount;
 
 		return ($chartColors[$colorIndex]);
-
 	}
-
 }
-
-?>

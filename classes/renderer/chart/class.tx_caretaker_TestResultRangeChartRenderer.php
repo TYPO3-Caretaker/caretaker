@@ -76,7 +76,6 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 	 * @param tx_caretaker_TestResultRange $testResultRange
 	 */
 	public function setTestResultRange(tx_caretaker_TestResultRange $testResultRange) {
-
 		$this->testResultRange = $testResultRange;
 		$this->testResultRangeInfos = $this->testResultRange->getInfos();
 		$this->testResultRangeMedian = $this->testResultRange->getMedianValue();
@@ -96,12 +95,15 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 	 * @param resource $image
 	 */
 	protected function drawChartImageBackground(&$image) {
-
 		$lastX = NULL;
 		$lastState = NULL;
-
 		$count = $this->testResultRange->count();
 		$step = 0;
+		$backgroundColor = 0;
+		/**
+		 * @var mixed $key
+		 * @var tx_caretaker_TestResult $testResult
+		 */
 		foreach ($this->testResultRange as $key => $testResult) {
 			$step++;
 
@@ -142,9 +144,7 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 				$lastX = $newX;
 			}
 			$lastState = $newState;
-
 		}
-
 	}
 
 	/**
@@ -152,17 +152,14 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 	 * @param resource $image
 	 */
 	protected function drawChartImageForeground(&$image) {
-
 		$colorBg = imagecolorallocatealpha($image, 0, 0, 255, 100);
 		$color = imagecolorallocate($image, 0, 0, 255);
-
-
 		$lastX = NULL;
 		$lastY = NULL;
-
 		$bgPoints = array();
 		$feLines = array();
 
+		/** @var tx_caretaker_TestResult $testResult */
 		foreach ($this->testResultRange as $testResult) {
 			$newX = intval($this->transformX($testResult->getTimestamp()));
 			$newY = intval($this->transformY($testResult->getValue()));
@@ -206,13 +203,11 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 	 * @return string
 	 */
 	protected function getChartTitle() {
-
 		$title = $this->title . ' ' . round(($this->testResultRangeInfos['PercentAVAILABLE'] * 100), 2) . "% available";
 		if ($this->testResultRangeMedian != 0 || $this->testResultRangeAverage != 0) {
 			$title .= ' [Median: ' . number_format($this->testResultRangeMedian, 2) . ', Average: ' . number_format($this->testResultRangeAverage, 2) . ']';
 		}
 		return $title;
-
 	}
 
 	/**
@@ -220,9 +215,7 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 	 * @param resource $image
 	 */
 	protected function drawChartImageLegend(&$image) {
-
 		$chartLegendColor = imagecolorallocate($image, 1, 1, 1);
-
 		$legendItems = array(
 				'OK' => $this->testResultRangeInfos['PercentOK'],
 				'Warning' => $this->testResultRangeInfos['PercentWARNING'],
@@ -234,8 +227,11 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 
 		$offset = $this->marginTop + 10;
 
+		/**
+		 * @var string $key
+		 * @var float $value
+		 */
 		foreach ($legendItems as $key => $value) {
-
 			$colorRGB = $this->getColorRgbByKey($key);
 			$itemColor = imagecolorallocate($image, $colorRGB[0], $colorRGB[1], $colorRGB[2]);
 
@@ -245,18 +241,12 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 			imagefilledrectangle($image, $x - 5, $y - 8, $x, $y - 3, $itemColor);
 			imagerectangle($image, $x - 5, $y - 8, $x, $y - 3, $chartLegendColor);
 
-			$font = t3lib_extMgm::extPath('caretaker') . '/lib/Fonts/tahoma.ttf';
+			$font = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/lib/Fonts/tahoma.ttf';
 			$size = 9;
 			$angle = 0;
 			imagettftext($image, $size, $angle, $x + 10, $y, $chartLegendColor, $font, $key . ' ' . number_format($value * 100, 2) . ' %');
 
 			$offset += 18;
 		}
-
-
 	}
-
-
 }
-
-?>

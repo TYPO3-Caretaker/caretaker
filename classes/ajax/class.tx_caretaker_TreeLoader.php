@@ -48,8 +48,12 @@
  */
 class tx_caretaker_TreeLoader {
 
+	/**
+	 * @param array $params
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj
+	 */
 	public function ajaxLoadTree($params, &$ajaxObj) {
-		$node_id = t3lib_div::_GP('node');
+		$node_id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
 
 		if ($node_id == 'root') {
 			$node_repository = tx_caretaker_NodeRepository::getInstance();
@@ -61,19 +65,21 @@ class tx_caretaker_TreeLoader {
 			$result = $this->nodeToArray($node);
 		}
 
-
 		$ajaxObj->setContent($result['children']);
-
 		$ajaxObj->setContentFormat('jsonbody');
 	}
 
+	/**
+	 * @param tx_caretaker_AbstractNode $node
+	 * @param int $depth
+	 * @return array
+	 */
 	protected function nodeToArray($node, $depth = 1) {
 		// show node and icon
 		$result = array();
 		$uid = $node->getUid();
 		$title = $node->getTitle();
 		$hidden = $node->getHidden();
-		$table = 'tx_caretaker_' . strToLower($node->getType());
 
 		$id = $node->getCaretakerNodeId();
 
@@ -88,15 +94,14 @@ class tx_caretaker_TreeLoader {
 		$result['text'] = $title ? $title : '[no title]';
 		$result['cls'] = $resultClass . ' ' . $typeClass;
 		$result['iconCls'] = 'icon-' . $typeClass . ($hidden ? '-hidden' : '');
-		if (strtolower($node->getType()) == 'instance') {
+		if (strtolower($node->getType()) == 'instance' && $node instanceof tx_caretaker_InstanceNode) {
 			$result['url'] = $node->getUrl();
 		} else {
 			$result['url'] = false;
 		}
 
-
 		// show subitems of tx_caretaker_AggregatorNodes
-		if (is_a($node, 'tx_caretaker_AggregatorNode')) {
+		if ($node instanceof tx_caretaker_AggregatorNode) {
 			$children = $node->getChildren(true);
 			$result['leaf'] = (count($children) == 0) ? true : false;
 			if ($depth > 0) {
@@ -112,5 +117,3 @@ class tx_caretaker_TreeLoader {
 		return $result;
 	}
 }
-
-?>

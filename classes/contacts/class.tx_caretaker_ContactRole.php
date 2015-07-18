@@ -49,7 +49,7 @@ class tx_caretaker_ContactRole {
 
 	/**
 	 * UID
-	 * @var integer
+	 * @var int
 	 */
 	private $uid;
 
@@ -119,5 +119,3 @@ class tx_caretaker_ContactRole {
 	}
 
 }
-
-?>

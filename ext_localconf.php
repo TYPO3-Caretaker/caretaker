@@ -39,10 +39,10 @@ if (TYPO3_MODE == 'BE') {
 }
 
 // register Plugins
-t3lib_extMgm::addPItoST43($_EXTKEY, 'pi_overview/class.tx_caretaker_pi_overview.php', '_pi_overview', 'list_type', 0);
-t3lib_extMgm::addPItoST43($_EXTKEY, 'pi_singleview/class.tx_caretaker_pi_singleview.php', '_pi_singleview', 'list_type', 0);
-t3lib_extMgm::addPItoST43($_EXTKEY, 'pi_graphreport/class.tx_caretaker_pi_graphreport.php', '_pi_graphreport', 'list_type', 0);
-t3lib_extMgm::addPItoST43($_EXTKEY, 'pi_abstract/class.tx_caretaker_pi_abstract.php', '_pi_abstract', 'list_type', 0);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'pi_overview/class.tx_caretaker_pi_overview.php', '_pi_overview', 'list_type', 0);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'pi_singleview/class.tx_caretaker_pi_singleview.php', '_pi_singleview', 'list_type', 0);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'pi_graphreport/class.tx_caretaker_pi_graphreport.php', '_pi_graphreport', 'list_type', 0);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'pi_abstract/class.tx_caretaker_pi_abstract.php', '_pi_abstract', 'list_type', 0);
 
 // Add eID script for caretaker tree loader
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::treeloader'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_TreeLoader.php:tx_caretaker_TreeLoader->ajaxLoadTree';
@@ -73,7 +73,7 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_Typo3versionn
 		'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:typo3versionnumbersupdateTask.description'
 );
 
-require(t3lib_extMgm::extPath('caretaker') . '/ext_conf_include.php');
+require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/ext_conf_include.php');
 
 // eid script
 $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);

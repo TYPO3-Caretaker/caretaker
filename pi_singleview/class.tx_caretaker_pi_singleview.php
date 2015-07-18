@@ -90,7 +90,7 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		$result_range = $node->getTestResultRange(time() - 3600 * $range, time());
 		$filename = 'typo3temp/caretaker/charts/' . $id . '_' . $range . '.png';
 		$filename2 = 'typo3temp/caretaker/charts/' . $id . '_' . $range . '.2.png';
-		$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		$base = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 
 		if (is_a($node, 'tx_caretaker_TestNode')) {
 

@@ -48,16 +48,16 @@
  */
 class tx_caretaker_NodeInfo {
 
+	/**
+	 * @param array $params
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj
+	 */
 	public function ajaxGetNodeInfo($params, &$ajaxObj) {
-
-		$node_id = t3lib_div::_GP('node');
-
+		$node_id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		if ($node_id && $node = $node_repository->id2node($node_id, true)) {
+		$node = $node = $node_repository->id2node($node_id, true);
 
-			$local_time = localtime(time(), true);
-			$local_hour = $local_time['tm_hour'];
-
+		if ($node_id && $node) {
 			$pathnode = $node;
 			$pathparts = array();
 			while ($pathnode) {
@@ -69,7 +69,7 @@ class tx_caretaker_NodeInfo {
 			switch (get_class($node)) {
 				// test Node
 				case "tx_caretaker_TestNode":
-
+					/** @var tx_caretaker_TestNode $node */
 					$interval_info = '';
 					$interval = $node->getInterval();
 					if ($interval < 60) {
@@ -122,23 +122,24 @@ class tx_caretaker_NodeInfo {
 							'</div>';
 					break;
 			}
-
 			echo $info;
 
 		} else {
 			echo "please select a node";
-
 		}
-
 	}
 
+	/**
+	 * @param array $params
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler ajaxObj
+	 */
 	public function ajaxRefreshNode($params, &$ajaxObj) {
-
-		$node_id = t3lib_div::_GP('node');
-		$force = (boolean)t3lib_div::_GP('force');
-
+		$node_id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
+		$force = (boolean)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('force');
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		if ($node_id && $node = $node_repository->id2node($node_id, true)) {
+		$node = $node_repository->id2node($node_id, true);
+
+		if ($node_id && $node) {
 			$result = $node->updateTestResult(array('forceUpdate' => $force));
 			$content = array(
 					'state' => $result->getState(),
@@ -148,25 +149,29 @@ class tx_caretaker_NodeInfo {
 			);
 			$ajaxObj->setContent($content);
 			$ajaxObj->setContentFormat('jsonbody');
-
 		} else {
 			echo "please give a valid node id";
 		}
 
-		// send aggregated notifications
 		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
+		/** @var tx_caretaker_NotificationServiceInterface $notificationService */
 		foreach ($notificationServices as $notificationService) {
 			$notificationService->sendNotifications();
 		}
 	}
 
+	/**
+	 * @param array $params
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj
+	 */
 	public function ajaxNodeSetAck($params, &$ajaxObj) {
-
-		$node_id = t3lib_div::_GP('node');
-
+		$node_id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		if ($node_id && $node = $node_repository->id2node($node_id, true)) {
-			if (is_a($node, 'tx_caretaker_TestNode')) {
+		$node = $node_repository->id2node($node_id, true);
+
+		if ($node_id && $node) {
+			if ($node instanceof tx_caretaker_TestNode) {
+				/** @var tx_caretaker_TestNode $node */
 				$result = $node->setModeAck();
 				$content = array(
 						'state' => $result->getState(),
@@ -184,20 +189,25 @@ class tx_caretaker_NodeInfo {
 			echo "please give a valid node id";
 		}
 
-		// send aggregated notifications
 		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
+		/** @var tx_caretaker_NotificationServiceInterface $notificationService */
 		foreach ($notificationServices as $notificationService) {
 			$notificationService->sendNotifications();
 		}
 	}
 
+	/**
+	 * @param array $params
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj
+	 */
 	public function ajaxNodeSetDue($params, &$ajaxObj) {
-
-		$node_id = t3lib_div::_GP('node');
-
+		$node_id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		if ($node_id && $node = $node_repository->id2node($node_id, true)) {
-			if (is_a($node, 'tx_caretaker_TestNode')) {
+
+		$node = $node_repository->id2node($node_id, true);
+		if ($node_id && $node) {
+			if ($node instanceof tx_caretaker_TestNode) {
+				/** @var tx_caretaker_TestNode $node */
 				$result = $node->setModeDue();
 				$content = array(
 						'state' => $result->getState(),
@@ -217,30 +227,31 @@ class tx_caretaker_NodeInfo {
 
 		// send aggregated notifications
 		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
+		/** @var tx_caretaker_NotificationServiceInterface $notificationService */
 		foreach ($notificationServices as $notificationService) {
 			$notificationService->sendNotifications();
 		}
 	}
 
+	/**
+	 * @param array $params
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj
+	 */
 	public function ajaxGetNodeGraph($params, &$ajaxObj) {
-
-		$node_id = t3lib_div::_GP('node');
-
-		$duration = (int)t3lib_div::_GP('duration');
+		$node_id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
+		$duration = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('duration');
 		$date_stop = time();
 		$date_start = $date_stop - $duration;
-
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		if ($node_id && $node = $node_repository->id2node($node_id, true)) {
+		$node = $node_repository->id2node($node_id, true);
 
+		if ($node_id && $node) {
 			$result_range = $node->getTestResultRange($date_start, $date_stop);
-
 			if ($result_range->count()) {
 				$filename = 'typo3temp/caretaker/charts/' . $node_id . '_' . $duration . '.png';
-				$base_url = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+				$base_url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 
-				if (is_a($node, 'tx_caretaker_TestNode')) {
-
+				if ($node instanceof tx_caretaker_TestNode) {
 					$TestResultRangeChartRenderer = new tx_caretaker_TestResultRangeChartRenderer();
 					$TestResultRangeChartRenderer->setTitle($node->getTitle());
 					$TestResultRangeChartRenderer->setTestResultRange($result_range);
@@ -250,8 +261,7 @@ class tx_caretaker_NodeInfo {
 						echo $result;
 					}
 
-				} else if (is_a($node, 'tx_caretaker_AggregatorNode')) {
-
+				} else if ($node instanceof tx_caretaker_AggregatorNode) {
 					$AggregatorResultRangeChartRenderer = new tx_caretaker_AggregatorResultRangeChartRenderer();
 					$AggregatorResultRangeChartRenderer->setTitle($node->getTitle());
 					$AggregatorResultRangeChartRenderer->setAggregatorResultRange($result_range);
@@ -260,27 +270,27 @@ class tx_caretaker_NodeInfo {
 					if ($result) {
 						echo $result;
 					}
-
-
 				}
 			} else {
 				echo 'not enough results';
 			}
-
 		} else {
 			echo "please give a valid node id";
 		}
 	}
 
+	/**
+	 * @param array $params
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj
+	 */
 	public function ajaxGetNodeLog($params, &$ajaxObj) {
-
-		$node_id = t3lib_div::_GP('node');
-
+		$node_id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		if ($node_id && $node = $node_repository->id2node($node_id, true)) {
+		$node = $node_repository->id2node($node_id, true);
 
-			$start = (int)t3lib_div::_GP('start');
-			$limit = (int)t3lib_div::_GP('limit');
+		if ($node_id && $node) {
+			$start = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('start');
+			$limit = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('limit');
 
 			$count = $node->getTestResultNumber();
 			$results = $node->getTestResultRangeByOffset($start, $limit);
@@ -291,9 +301,11 @@ class tx_caretaker_NodeInfo {
 			);
 
 			$logItems = array();
+			$i = 0;
 			foreach ($results as $result) {
+				$i++;
 				$logItems[] = Array(
-						'num' => ($i + 1),
+						'num' => $i,
 						'title' => 'title_' . rand(),
 						'timestamp' => $result->getTimestamp(),
 						'stateinfo' => $result->getStateInfo(),
@@ -305,21 +317,24 @@ class tx_caretaker_NodeInfo {
 			}
 			$content['logItems'] = array_reverse($logItems);
 
-
 			$ajaxObj->setContent($content);
 			$ajaxObj->setContentFormat('jsonbody');
 		}
 	}
 
+	/**
+	 * @param array $params
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj
+	 */
 	public function ajaxGetNodeProblems($params, &$ajaxObj) {
-
-		$node_id = t3lib_div::_GP('node');
+		$node_id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		if ($node_id && $node = $node_repository->id2node($node_id, true)) {
+		$node = $node_repository->id2node($node_id, true);
 
-			if (is_a($node, 'tx_caretaker_AggregatorNode')) {
+		if ($node_id && $node) {
+			if ($node instanceof tx_caretaker_AggregatorNode) {
 				$testChildNodes = $node->getTestNodes();
-			} else if (is_a($node, 'tx_caretaker_TestNode')) {
+			} else if ($node instanceof tx_caretaker_TestNode) {
 				$testChildNodes = array($node);
 			} else {
 				$testChildNodes = array();
@@ -332,15 +347,14 @@ class tx_caretaker_NodeInfo {
 			$nodeDue = array();
 
 			$i = 0;
+			/** @var tx_caretaker_AbstractNode $testNode */
 			foreach ($testChildNodes as $testNode) {
-
 				$testResult = $testNode->getTestResult();
 				$instance = $testNode->getInstance();
-
 				if ($testResult->getState() != 0) {
-
+					$i++;
 					$nodeInfo = Array(
-							'num' => $i++,
+							'num' => $i,
 							'title' => 'title_' . rand(),
 
 							'node_title' => $testNode->getTitle(),
@@ -390,22 +404,22 @@ class tx_caretaker_NodeInfo {
 	 * Get the contacts for the given node for AJAX
 	 *
 	 * @param array $params
-	 * @param TYPO3AJAX $ajaxObj
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj
 	 */
 	public function ajaxGetNodeContacts($params, &$ajaxObj) {
-
-		$node_id = t3lib_div::_GP('node');
+		$node_id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
+		$node = $node_repository->id2node($node_id, true);
 
-		if ($node_id && $node = $node_repository->id2node($node_id, true)) {
-
+		if ($node_id && $node) {
 			$count = 0;
 			$contacts = array();
 			$nodeContacts = $node->getContacts();
 
+			/** @var tx_caretaker_Contact $nodeContact */
 			foreach ($nodeContacts as $nodeContact) {
-
-				if ($role = $nodeContact->getRole()) {
+				$role = $nodeContact->getRole();
+				if ($role) {
 					$role_assoc = array(
 							'uid' => $role->getUid(),
 							'id' => $role->getId(),
@@ -413,17 +427,24 @@ class tx_caretaker_NodeInfo {
 							'description' => $role->getDescription()
 					);
 				} else {
-					$role_assoc = array('uid' => '', 'id' => '', 'name' => '', 'description' => '');
+					$role_assoc = array(
+							'uid' => '',
+							'id' => '',
+							'name' => '',
+							'description' => ''
+					);
 				}
 
 				$address = $nodeContact->getAddress();
-				if ($address) $address['email_md5'] = md5($address['email']);
+				if ($address) {
+					$address['email_md5'] = md5($address['email']);
+				}
 
 				$contact = array(
 						'num' => $count++,
 						'id' => $node->getCaretakerNodeId() . '_role_' . $role_assoc['uid'] . '_address_' . $address['uid'],
 
-						'node_title' => $node->getTitle(), //. ' par ' . $node->getParent()->getTitle() ,
+						'node_title' => $node->getTitle(),
 						'node_type' => $node->getType(),
 						'node_type_ll' => $node->getTypeDescription(),
 						'node_id' => $node->getCaretakerNodeId(),
@@ -443,7 +464,6 @@ class tx_caretaker_NodeInfo {
 				$contacts[] = $contact;
 			}
 
-
 			$content = Array();
 			$content['contacts'] = $contacts;
 			$content['totalCount'] = $count;
@@ -453,5 +473,3 @@ class tx_caretaker_NodeInfo {
 		}
 	}
 }
-
-?>

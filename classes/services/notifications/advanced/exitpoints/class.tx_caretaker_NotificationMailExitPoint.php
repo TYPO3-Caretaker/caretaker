@@ -33,7 +33,7 @@
  *
  * $Id$
  */
-require_once(t3lib_extMgm::extPath('caretaker', 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationBaseExitPoint.php'));
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker', 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationBaseExitPoint.php'));
 
 class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBaseExitPoint {
 
@@ -92,7 +92,7 @@ class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBa
 	 * @return
 	 */
 	protected function sendMail($recipient, $mailContent) {
-		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_mail_Message');
 		$mail->setFrom($this->config['emailSenderAddress'], $this->config['emailSenderName']);
 		$mail->setTo($recipient);
 		$mail->setSubject($mailContent['subject']);

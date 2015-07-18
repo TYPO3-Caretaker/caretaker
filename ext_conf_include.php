@@ -39,7 +39,7 @@ if (!defined('TYPO3_MODE')) {
 }
 
 // load Service Helper
-include_once(t3lib_extMgm::extPath('caretaker') . 'classes/helpers/class.tx_caretaker_ServiceHelper.php');
+include_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . 'classes/helpers/class.tx_caretaker_ServiceHelper.php');
 
 // register Test-Services
 tx_caretaker_ServiceHelper::registerCaretakerTestService($_EXTKEY, 'classes/services/tests', 'tx_caretaker_ping', 'Ping', 'Retrieves System Informations');

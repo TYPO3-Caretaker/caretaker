@@ -58,10 +58,9 @@ class tx_caretaker_ContactRepository {
 
 	/**
 	 * Private constructor use getInstance instead
-	 *
-	 * @return unknown_type
 	 */
 	private function __construct() {
+		//
 	}
 
 	/**
@@ -69,7 +68,7 @@ class tx_caretaker_ContactRepository {
 	 *
 	 * @return tx_caretaker_ContactRepository
 	 */
-	public function getInstance() {
+	public static function getInstance() {
 		if (!self::$instance) {
 			self::$instance = new tx_caretaker_ContactRepository();
 		}
@@ -81,7 +80,7 @@ class tx_caretaker_ContactRepository {
 	 * Get Role Object for given Uid
 	 *
 	 * @param <type> $uid
-	 * @return  tx_cretaker_ContactRole
+	 * @return  tx_caretaker_ContactRole
 	 */
 	public function getContactRoleByUid($uid) {
 		$rolesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Roles, 'uid = ' . intval($uid) . ' AND hidden=0 AND deleted=0');
@@ -96,7 +95,7 @@ class tx_caretaker_ContactRepository {
 	 * Get Role Object for given String
 	 *
 	 * @param string $id
-	 * @return tx_cretaker_ContactRole
+	 * @return tx_caretaker_ContactRole
 	 */
 	public function getContactRoleById($id) {
 		$rolesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Roles, 'id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($id, tx_caretaker_Constants::table_Roles) . ' AND hidden=0 AND deleted=0');
@@ -111,7 +110,7 @@ class tx_caretaker_ContactRepository {
 	 * Convert dbrow to ContactRole Object
 	 *
 	 * @param array $dbrow
-	 * @return tx_cretaker_ContactRole
+	 * @return tx_caretaker_ContactRole
 	 */
 	private function dbrow2contact_role($dbrow) {
 		$role = new tx_caretaker_ContactRole($dbrow['uid'], $dbrow['id'], $dbrow['name'], $dbrow['description']);

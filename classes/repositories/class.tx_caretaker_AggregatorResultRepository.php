@@ -58,8 +58,6 @@ class tx_caretaker_AggregatorResultRepository {
 
 	/**
 	 * Private constructor use getInstance instead
-	 *
-	 * @return unknown_type
 	 */
 	private function __construct() {
 	}
@@ -67,9 +65,9 @@ class tx_caretaker_AggregatorResultRepository {
 	/**
 	 * Get the Singleton Object
 	 *
-	 * @return tx_caretaker_TestResultRepository
+	 * @return tx_caretaker_AggregatorResultRepository
 	 */
-	public function getInstance() {
+	public static function getInstance() {
 		if (!self::$instance) {
 			self::$instance = new tx_caretaker_AggregatorResultRepository();
 		}
@@ -109,8 +107,8 @@ class tx_caretaker_AggregatorResultRepository {
 	 * Get the ResultRange for the given Aggregator and the timerange
 	 *
 	 * @param tx_caretaker_AbstractNode $node
-	 * @param integer $start_timestamp
-	 * @param integer $stop_timestamp
+	 * @param int $start_timestamp
+	 * @param int $stop_timestamp
 	 * @return tx_caretaker_AggregatorResultRange
 	 */
 	public function getRangeByNode($node, $start_timestamp, $stop_timestamp) {

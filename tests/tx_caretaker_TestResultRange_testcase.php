@@ -34,8 +34,8 @@
  * $Id$
  */
 
-require_once(t3lib_extMgm::extPath('caretaker') . '/classes/results/class.tx_caretaker_TestResult.php');
-require_once(t3lib_extMgm::extPath('caretaker') . '/classes/results/class.tx_caretaker_TestResultRange.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/classes/results/class.tx_caretaker_TestResult.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/classes/results/class.tx_caretaker_TestResultRange.php');
 
 class tx_caretaker_TestResultRange_testcase extends tx_phpunit_testcase {
 

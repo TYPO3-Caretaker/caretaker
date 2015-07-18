@@ -53,7 +53,7 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 
 		// render Node Infos
 		$data = $this->getData();
-		$lcObj = t3lib_div::makeInstance('tslib_cObj');
+		$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
 		$lcObj->start($data);
 		$node_markers = array();
 		if ($this->conf['markers.']) {
@@ -92,7 +92,7 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 			if (count($result_ranges) > 0) {
 
 				$filename = 'typo3temp/caretaker/charts/report_' . $id . '_' . $range . '.png';
-				$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+				$base = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 
 
 				$MultipleTestResultRangeChartRenderer = new tx_caretaker_MultipleTestResultRangeChartRenderer();

@@ -104,7 +104,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 			$this->flexform_configuration = $configuration;
 
 		} else if (!is_array($configuration)) {
-			$this->flexform_configuration = t3lib_div::xml2array($configuration);
+			$this->flexform_configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($configuration);
 		}
 	}
 
@@ -143,7 +143,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * @return string
 	 */
 	public function getTypeDescription() {
-		return tx_caretaker_LocallizationHelper::locallizeString($this->typeDescription);
+		return tx_caretaker_LocalizationHelper::localizeString($this->typeDescription);
 	}
 
 	/**
@@ -202,6 +202,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
 		if (is_array($postValues)) {
+			$postQuery = '';
 			foreach ($postValues as $key => $value) {
 				$postQuery .= urlencode($key) . '=' . urlencode($value) . '&';
 			}
@@ -254,16 +255,16 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 
 		switch (TYPO3_MODE) {
 			case 'FE':
-				$lcObj = t3lib_div::makeInstance('tslib_cObj');
+				$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
 				return ($lcObj->TEXT(array('data' => $locallang_string)));
 
 			case 'BE':
 				$locallang_key = array_pop($locallang_parts);
 				$locallang_file = implode(':', $locallang_parts);
 				$language_key = $GLOBALS['BE_USER']->uc['lang'];
-				$LANG = t3lib_div::makeInstance('language');
+				$LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('language');
 				$LANG->init($language_key);
-				return $LANG->getLLL($locallang_key, t3lib_div::readLLfile(t3lib_div::getFileAbsFileName($locallang_file), $LANG->lang, $LANG->charSet));
+				return $LANG->getLLL($locallang_key, \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($locallang_file), $LANG->lang, $LANG->charSet));
 
 			default :
 				return $locallang_string;

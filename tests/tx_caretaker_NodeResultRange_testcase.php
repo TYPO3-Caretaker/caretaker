@@ -34,8 +34,8 @@
  * $Id$
  */
 
-require_once(t3lib_extMgm::extPath('caretaker') . '/classes/results/class.tx_caretaker_NodeResult.php');
-require_once(t3lib_extMgm::extPath('caretaker') . '/classes/results/class.tx_caretaker_NodeResultRange.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/classes/results/class.tx_caretaker_NodeResult.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/classes/results/class.tx_caretaker_NodeResultRange.php');
 
 /**
  * Stub calss to test the methods of the abstract Node Result Range Class
@@ -108,14 +108,14 @@ class tx_caretaker_NodeResultRange_testcase extends tx_phpunit_testcase {
 
 		$range = new tx_caretaker_NodeResultRange_Stub(100, 600);
 
-		$this->assertEquals($range->getMinTstamp(), 100);
-		$this->assertEquals($range->getMaxTstamp(), 600);
+		$this->assertEquals($range->getStartTimestamp(), 100);
+		$this->assertEquals($range->getEndTimestamp(), 600);
 
 		$res_1 = new tx_caretaker_NodeResult_Stub(456, 1);
 		$range->addResult($res_1);
 
-		$this->assertEquals($range->getMinTstamp(), 100);
-		$this->assertEquals($range->getMaxTstamp(), 600);
+		$this->assertEquals($range->getStartTimestamp(), 100);
+		$this->assertEquals($range->getEndTimestamp(), 600);
 
 		$res_2 = new tx_caretaker_NodeResult_Stub(789, 2);
 		$res_3 = new tx_caretaker_NodeResult_Stub(50, 2);
@@ -123,8 +123,8 @@ class tx_caretaker_NodeResultRange_testcase extends tx_phpunit_testcase {
 		$range->addResult($res_2);
 		$range->addResult($res_3);
 
-		$this->assertEquals($range->getMinTstamp(), 50);
-		$this->assertEquals($range->getMaxTstamp(), 789);
+		$this->assertEquals($range->getStartTimestamp(), 50);
+		$this->assertEquals($range->getEndTimestamp(), 789);
 
 	}
 

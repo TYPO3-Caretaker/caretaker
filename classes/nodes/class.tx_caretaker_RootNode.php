@@ -52,7 +52,7 @@ class tx_caretaker_RootNode extends tx_caretaker_AggregatorNode {
 	 * @param bool $hidden
 	 */
 	public function __construct($hidden = FALSE) {
-		parent::__construct(0, 'Caretaker Root', FALSE, NULL, tx_caretaker_Constants::nodeType_Root, $hidden);
+		parent::__construct(0, 'Caretaker Root', NULL, NULL, tx_caretaker_Constants::nodeType_Root, $hidden);
 	}
 
 	/**
@@ -91,7 +91,4 @@ class tx_caretaker_RootNode extends tx_caretaker_AggregatorNode {
 	public function getTestConfigurationOverlayForTestUid($testUid) {
 		return FALSE;
 	}
-
 }
-
-?>

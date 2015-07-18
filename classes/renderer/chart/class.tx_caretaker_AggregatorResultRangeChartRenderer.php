@@ -48,7 +48,7 @@
 class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_ChartRendererBase {
 
 	/**
-	 * the resulkt range to render
+	 * the result range to render
 	 * @var tx_caretaker_AggregatorResultRange
 	 */
 	var $aggregatorResultRange = array();
@@ -61,19 +61,17 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
 
 	/**
 	 * Set the result Range
-	 * @param tx_caretaker_TestResultRange $testResultRange
+	 * @param tx_caretaker_AggregatorResultRange $aggregatorResultRange
 	 */
 	public function setAggregatorResultrange(tx_caretaker_AggregatorResultRange $aggregatorResultRange) {
-
 		$this->aggregatorResultRange = $aggregatorResultRange;
 		$this->aggregatorResultRangeInfos = $this->aggregatorResultRange->getInfos();
-
 		$this->setStartTimestamp($this->aggregatorResultRange->getStartTimestamp());
 		$this->setEndTimestamp($this->aggregatorResultRange->getEndTimestamp());
 
 		$maxValue = 0;
+		/** @var tx_caretaker_AggregatorResult $aggregatorResult */
 		foreach ($this->aggregatorResultRange as $aggregatorResult) {
-
 			$undefined = $aggregatorResult->getNumUNDEFINED();
 			$ok = $aggregatorResult->getNumOK();
 			$warning = $aggregatorResult->getNumWARNING();
@@ -112,11 +110,17 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
 	 * @param resource $image
 	 */
 	protected function drawChartImageForeground(&$image) {
-
 		$color = imagecolorallocate($image, 0, 0, 255);
 
-		foreach ($this->aggregatorResultRange as $aggregatorResult) {
+		/** @var tx_caretaker_AggregatorResult $lastResult */
+		$lastResult = NULL;
+		$lastX = 0;
+		$lastY = 0;
+		$startX = 0;
+		$startY = 0;
 
+		/** @var tx_caretaker_AggregatorResult $aggregatorResult */
+		foreach ($this->aggregatorResultRange as $aggregatorResult) {
 			if ($lastResult !== NULL) {
 				$total = 0;
 				foreach (array('OK', 'WARNING', 'ERROR', 'UNDEFINED') as $state) {
@@ -132,23 +136,21 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
 						$startY = intval($this->transformY($total + $number));
 						$stopY = intval($this->transformY($total));
 
-
 						imagefilledrectangle($image, $startX, $startY, $stopX, $stopY, $itemColorAlpha);
 						imageline($image, $startX, $startY, $stopX, $startY, $itemColor);
 
 						$total += $number;
 					}
 				}
-				imageline($image, $lastX, $lastY, $newX, $lastY, $color);
-				imageline($image, $newX, $lastY, $newX, $newY, $color);
+				imageline($image, $lastX, $lastY, $startX, $lastY, $color);
+				imageline($image, $startX, $lastY, $startX, $startY, $color);
 			}
 
-			$lastX = $newX;
-			$lastY = $newY;
+			$lastX = $startX;
+			$lastY = $startY;
 
 			$lastResult = $aggregatorResult;
 		}
-
 	}
 
 	/**
@@ -168,7 +170,6 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
 		$offset = $this->marginTop + 10;
 
 		foreach ($legendItems as $key => $value) {
-
 			$colorRGB = $this->getColorRgbByKey($key);
 			$itemColor = imagecolorallocate($image, $colorRGB[0], $colorRGB[1], $colorRGB[2]);
 
@@ -178,17 +179,12 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
 			imagefilledrectangle($image, $x - 5, $y - 8, $x, $y - 3, $itemColor);
 			imagerectangle($image, $x - 5, $y - 8, $x, $y - 3, $chartLegendColor);
 
-			$font = t3lib_extMgm::extPath('caretaker') . '/lib/Fonts/tahoma.ttf';
+			$font = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/lib/Fonts/tahoma.ttf';
 			$size = 9;
 			$angle = 0;
 			imagettftext($image, $size, $angle, $x + 10, $y, $chartLegendColor, $font, $key . ' ' . number_format($value * 100, 2) . ' %');
 
 			$offset += 18;
 		}
-
-
 	}
-
 }
-
-?>

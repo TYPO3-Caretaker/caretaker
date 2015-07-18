@@ -113,7 +113,7 @@ class tx_caretaker_Cli extends t3lib_cli {
 
 				if ($task == 'update' || $task == 'ack' || $task == 'due') {
 					try {
-						$lockObj = t3lib_div::makeInstance('t3lib_lock', 'tx_caretaker_update_' . $node->getCaretakerNodeId(), $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
+						$lockObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_lock', 'tx_caretaker_update_' . $node->getCaretakerNodeId(), $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
 						$lockIsAquired = $lockObj->acquire();
 					} catch (Exception $e) {
 						$this->cli_echo('lock ' . 'tx_caretaker_update_' . $node->getCaretakerNodeId() . ' could not be aquired!' . chr(10) . $e->getMessage());
@@ -161,7 +161,7 @@ class tx_caretaker_Cli extends t3lib_cli {
         } elseif  ($task == 'update-typo3-latest-version-list'){
         	$result = tx_caretaker_LatestVersionsHelper::updateLatestTypo3VersionRegistry();
         	$this->cli_echo('TYPO3 latest version list update result: ' . $result . chr(10) );
-			$versions = t3lib_div::makeInstance('t3lib_Registry')->get('tx_caretaker', 'TYPO3versions');
+			$versions = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Registry')->get('tx_caretaker', 'TYPO3versions');
 			foreach ($versions as $key => $version) {
 				$this->cli_echo($key .' => ' . $version . chr(10));
 			}
@@ -205,9 +205,9 @@ class tx_caretaker_Cli extends t3lib_cli {
 	 */
 	protected function parseOptions($optionsString) {
 		$options = array();
-		$optionParts = t3lib_div::trimExplode(' ', $optionsString);
+		$optionParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $optionsString);
 		foreach ($optionParts as $optionPart) {
-			list($optionKey, $optionValue) = t3lib_div::trimExplode('=', $optionPart, 2);
+			list($optionKey, $optionValue) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $optionPart, 2);
 			$options[$optionKey] = $optionValue;
 		}
 		return $options;
@@ -220,6 +220,6 @@ if (!defined('TYPO3_cliMode')) {
 	die('You cannot run this script directly!');
 }
 
-$sobe = t3lib_div::makeInstance('tx_caretaker_Cli');
+$sobe = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_caretaker_Cli');
 $sobe->cli_main($_SERVER['argv']);
 ?>

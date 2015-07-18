@@ -84,7 +84,7 @@ class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_Notificatio
 	protected function getConfig($overrideConfig) {
 		$config = $this->config;
 		if (is_array($overrideConfig)) {
-			$config = t3lib_div::array_merge_recursive_overrule($this->config, $overrideConfig);
+			$config = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->config, $overrideConfig);
 		}
 		return $config;
 	}

@@ -34,7 +34,7 @@
  * $Id$
  */
 
-require_once(t3lib_extMgm::extPath('caretaker') . 'classes/services/tests/class.tx_caretaker_httpTestService.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . 'classes/services/tests/class.tx_caretaker_httpTestService.php');
 
 /**
  * Stub class to expose protected methods for testing

@@ -75,11 +75,11 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	function main() {
 		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 
-		$PATH_TYPO3 = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
+		$PATH_TYPO3 = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
 
 		if ($BE_USER->user["admin"]) {
 			// Draw the header.
-			$this->doc = t3lib_div::makeInstance("template");
+			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("template");
 			$this->doc->backPath = $BACK_PATH;
 
 			$this->pageRenderer = $this->doc->getPageRenderer();
@@ -88,8 +88,8 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			$this->pageRenderer->loadExtJS(true, true);
 			$this->pageRenderer->enableExtJSQuickTips();
 			$this->pageRenderer->enableExtJsDebug();
-			$this->pageRenderer->addJsFile($BACK_PATH . t3lib_extMgm::extRelPath('caretaker') . 'res/js/tx.caretaker.js', 'text/javascript', FALSE, FALSE);
-			$this->pageRenderer->addJsFile($BACK_PATH . t3lib_extMgm::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeTree.js', 'text/javascript', FALSE, FALSE);
+			$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.js', 'text/javascript', FALSE, FALSE);
+			$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeTree.js', 'text/javascript', FALSE, FALSE);
 
 			//Add caretaker css
 			$this->pageRenderer->addCssFile('../res/css/tx.caretaker.nodetree.css', 'stylesheet', 'all', '', FALSE);
@@ -129,7 +129,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 		} else {
 			// If no access or if not admin
 
-			$this->doc = t3lib_div::makeInstance("mediumDoc");
+			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("mediumDoc");
 			$this->doc->backPath = $BACK_PATH;
 
 			$this->content .= $this->doc->startPage($LANG->getLL("title"));
@@ -155,7 +155,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretak
 }
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance('tx_caretaker_mod_nav');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_caretaker_mod_nav');
 $SOBE->init();
 
 // Include files?

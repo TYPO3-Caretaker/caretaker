@@ -186,7 +186,7 @@ class tx_caretaker_NodeRepository {
 	 * Get Singleton Instance
 	 * @return tx_caretaker_NodeRepository
 	 */
-	public function getInstance() {
+	public static function getInstance() {
 		if (!self::$instance) {
 			self::$instance = new tx_caretaker_NodeRepository();
 		}
@@ -257,7 +257,7 @@ class tx_caretaker_NodeRepository {
 	 * Get all Instancegroups wich are Children of Instancegroup with UID xxx
 	 *
 	 * @param integer $parent_group_uid
-	 * @param tx_caretaker_Instancgroup $parent
+	 * @param tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
 	 * @return array
 	 */
@@ -372,7 +372,7 @@ class tx_caretaker_NodeRepository {
 	 * @param $show_hidden
 	 * @return unknown_type
 	 */
-	public function getInstanceByUid($uid, $parent = FALSE, $show_hidden = FALSE) {
+	public function getInstanceByUid($uid, $parent = NULL, $show_hidden = FALSE) {
 		$hidden = '';
 		if (!$show_hidden) {
 			$hidden = ' AND hidden=0 ';
@@ -394,7 +394,7 @@ class tx_caretaker_NodeRepository {
 	 * @param boolean $show_hidden
 	 * @return array
 	 */
-	public function getInstancesByInstancegroupUid($uid, $parent = FALSE, $show_hidden = FALSE) {
+	public function getInstancesByInstancegroupUid($uid, $parent = NULL, $show_hidden = FALSE) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tx_caretaker_instance', 'instancegroup = ' . (int)$uid, '', 'title');
 		$result = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -413,7 +413,7 @@ class tx_caretaker_NodeRepository {
 	 * @param tx_caretaker_AbstractNode $parent
 	 * @return tx_caretaker_InstanceNode
 	 */
-	private function dbrow2instance($row, $parent = false) {
+	private function dbrow2instance($row, $parent = NULL) {
 
 		// check access
 		if (TYPO3_MODE == 'FE') {
@@ -429,7 +429,7 @@ class tx_caretaker_NodeRepository {
 		}
 
 		// find parent node if it was not already handed over
-		if ($parent == false) {
+		if (!$parent) {
 			if (intval($row['instancegroup']) > 0) {
 				$parent = $this->getInstancegroupByUid($row['instancegroup'], false);
 			} else {

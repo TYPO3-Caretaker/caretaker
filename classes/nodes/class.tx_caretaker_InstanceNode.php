@@ -107,7 +107,7 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 
 	/**
 	 * Get the hostname
-	 * @return unknown_type
+	 * @return string
 	 */
 	public function getHostname() {
 		return $this->hostname;
@@ -125,7 +125,7 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	 * Find Child nodes
 	 * @param boolean $show_hidden
 	 * @return array
-	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AggregatorNode#findChildren()
+	 * @see tx_caretaker_AggregatorNode#findChildren()
 	 */
 	public function findChildren($show_hidden = false) {
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
@@ -139,7 +139,7 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	 * @return void
 	 */
 	public function setTestConfigurations($data) {
-		$this->testConfigurationOverlay = t3lib_div::xml2array($data);
+		$this->testConfigurationOverlay = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($data);
 	}
 
 	/**
@@ -190,6 +190,35 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 		return $curl_options;
 	}
 
+	/**
+	 * Get the test configuration overlay (configuration overwritten in instance)
+	 *
+	 * @param integer $testUid UID of the test
+	 * @return array
+	 */
+	public function getTestConfigurationOverlayForTestUid($testUid) {
+		$overlayConfig = FALSE;
+		if ($this->testConfigurationOverlay) {
+			$fftools = new \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools();
+			$tests = $fftools->getArrayValueByPath(
+					'data/sDEF/lDEF/testconfigurations/el',
+					$this->testConfigurationOverlay
+			);
+			if (is_array($tests)) {
+				foreach ($tests as $key => $el) {
+					if ($tests[$key]['test']['el']['test_service']['vDEF'] == $testUid) {
+						$overlayConfig = $tests[$key]['test']['el']['test_conf']['vDEF'];
+						$overlayConfig['hidden'] = $tests[$key]['test']['el']['test_hidden']['vDEF'];
+						$overlayConfig['overwritten_in']['title'] = $this->title;
+						$overlayConfig['overwritten_in']['uid'] = $this->uid;
+						$overlayConfig['overwritten_in']['id'] = $this->getCaretakerNodeId();
+					}
+				}
+			}
+		}
+		if (!$overlayConfig) {
+			$overlayConfig = parent::getTestConfigurationOverlayForTestUid($testUid);
+		}
+		return $overlayConfig;
+	}
 }
-
-?>

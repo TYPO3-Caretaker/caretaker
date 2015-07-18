@@ -59,8 +59,8 @@ $TCA['tx_caretaker_instancegroup'] = array(
 						'fe_group' => 'fe_group',
 				),
 				'dividers2tabs' => 1,
-				'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
-				'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/icons/instancegroup.png',
+				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
+				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/instancegroup.png',
 		),
 		'feInterface' => array(
 				'fe_admin_fieldList' => '',
@@ -84,8 +84,8 @@ $TCA['tx_caretaker_instance'] = array(
 						'fe_group' => 'fe_group',
 				),
 				'dividers2tabs' => 1,
-				'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
-				'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/icons/instance.png',
+				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
+				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/instance.png',
 		),
 		'feInterface' => array(
 				'fe_admin_fieldList' => '',
@@ -111,8 +111,8 @@ $TCA['tx_caretaker_testgroup'] = array(
 						'fe_group' => 'fe_group',
 				),
 				'dividers2tabs' => 1,
-				'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
-				'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/icons/group.png',
+				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
+				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/group.png',
 		),
 		'feInterface' => array(
 				'fe_admin_fieldList' => '',
@@ -136,8 +136,8 @@ $TCA['tx_caretaker_roles'] = array(
 				'enablecolumns' => array(
 						'disabled' => 'hidden',
 				),
-				'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
-				'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/icons/role.png',
+				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
+				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/role.png',
 		),
 		'feInterface' => array(
 				'fe_admin_fieldList' => '',
@@ -152,8 +152,8 @@ $TCA['tx_caretaker_node_address_mm'] = array(
 				'label_alt' => 'role',
 				'label_alt_force' => 1,
 
-				'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
-				'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/icons/nodeaddressrelation.png',
+				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
+				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/nodeaddressrelation.png',
 		),
 		'feInterface' => array(
 				'fe_admin_fieldList' => '',
@@ -171,8 +171,8 @@ if ($advancedNotificationsEnabled) {
 
 					'label' => 'uid_strategy',
 
-					'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
-					'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/icons/nodeaddressrelation.png',
+					'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
+					'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/nodeaddressrelation.png',
 			),
 			'feInterface' => array(
 					'fe_admin_fieldList' => '',
@@ -192,8 +192,8 @@ if ($advancedNotificationsEnabled) {
 					'enablecolumns' => array(
 							'disabled' => 'hidden',
 					),
-					'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
-					'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/icons/exitpoint.png',
+					'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
+					'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/exitpoint.png',
 					'requestUpdate' => 'service',
 			),
 			'feInterface' => array(
@@ -214,8 +214,8 @@ if ($advancedNotificationsEnabled) {
 					'enablecolumns' => array(
 							'disabled' => 'hidden',
 					),
-					'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
-					'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/icons/strategy.png',
+					'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
+					'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/strategy.png',
 			),
 			'feInterface' => array(
 					'fe_admin_fieldList' => '',
@@ -241,8 +241,8 @@ $TCA['tx_caretaker_test'] = array(
 						'endtime' => 'endtime',
 						'fe_group' => 'fe_group',
 				),
-				'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
-				'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/icons/test.png',
+				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
+				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/test.png',
 		),
 		'feInterface' => array(
 				'fe_admin_fieldList' => '',
@@ -259,9 +259,9 @@ $tempColumns = array(
 				)
 		),
 );
-t3lib_div::loadTCA('fe_users');
-t3lib_extMgm::addTCAcolumns('fe_users', $tempColumns, 1);
-t3lib_extMgm::addToAllTCAtypes('fe_users', 'tx_caretaker_api_key');
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('fe_users');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('fe_users', $tempColumns, 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('fe_users', 'tx_caretaker_api_key');
 
 $tempColumns = array(
 		'tx_caretaker_xmpp' => array(
@@ -275,52 +275,52 @@ $tempColumns = array(
 );
 
 
-t3lib_div::loadTCA('tt_address');
-t3lib_extMgm::addTCAcolumns('tt_address', $tempColumns, 1);
-t3lib_extMgm::addToAllTCAtypes('tt_address', 'tx_caretaker_xmpp;;;;1-1-1');
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_address');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_address', $tempColumns, 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_address', 'tx_caretaker_xmpp;;;;1-1-1');
 
 
 // register FE-Plugins
-t3lib_div::loadTCA('tt_content');
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 
 // overview
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY . '_pi_overview'] = 'layout,select_key,pages';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_pi_overview'] = 'pi_flexform';
-t3lib_extMgm::addPiFlexFormValue($_EXTKEY . '_pi_overview', 'FILE:EXT:' . $_EXTKEY . '/pi_overview/flexform_ds.xml');
-t3lib_extMgm::addPlugin(Array('LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_overview', $_EXTKEY . '_pi_overview'), 'list_type');
-if (TYPO3_MODE == "BE") $TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_caretaker_pi_overview_wizicon"] = t3lib_extMgm::extPath($_EXTKEY) . 'pi_overview/class.tx_caretaker_pi_overview_wizicon.php';
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_overview', 'FILE:EXT:' . $_EXTKEY . '/pi_overview/flexform_ds.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(Array('LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_overview', $_EXTKEY . '_pi_overview'), 'list_type');
+if (TYPO3_MODE == "BE") $TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_caretaker_pi_overview_wizicon"] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'pi_overview/class.tx_caretaker_pi_overview_wizicon.php';
 
 // singleview
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY . '_pi_singleview'] = 'layout,select_key,pages';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_pi_singleview'] = 'pi_flexform';
-t3lib_extMgm::addPiFlexFormValue($_EXTKEY . '_pi_singleview', 'FILE:EXT:' . $_EXTKEY . '/pi_singleview/flexform_ds.xml');
-t3lib_extMgm::addPlugin(Array('LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_singleview', $_EXTKEY . '_pi_singleview'), 'list_type');
-if (TYPO3_MODE == "BE") $TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_caretaker_pi_singleview_wizicon"] = t3lib_extMgm::extPath($_EXTKEY) . 'pi_singleview/class.tx_caretaker_pi_singleview_wizicon.php';
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_singleview', 'FILE:EXT:' . $_EXTKEY . '/pi_singleview/flexform_ds.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(Array('LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_singleview', $_EXTKEY . '_pi_singleview'), 'list_type');
+if (TYPO3_MODE == "BE") $TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_caretaker_pi_singleview_wizicon"] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'pi_singleview/class.tx_caretaker_pi_singleview_wizicon.php';
 
 // graphreport
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY . '_pi_graphreport'] = 'layout,select_key,pages';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_pi_graphreport'] = 'pi_flexform';
-t3lib_extMgm::addPiFlexFormValue($_EXTKEY . '_pi_graphreport', 'FILE:EXT:' . $_EXTKEY . '/pi_graphreport/flexform_ds.xml');
-t3lib_extMgm::addPlugin(Array('LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_graphreport', $_EXTKEY . '_pi_graphreport'), 'list_type');
-if (TYPO3_MODE == "BE") $TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_caretaker_pi_graphreport_wizicon"] = t3lib_extMgm::extPath($_EXTKEY) . 'pi_graphreport/class.tx_caretaker_pi_graphreport_wizicon.php';
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_graphreport', 'FILE:EXT:' . $_EXTKEY . '/pi_graphreport/flexform_ds.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(Array('LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_graphreport', $_EXTKEY . '_pi_graphreport'), 'list_type');
+if (TYPO3_MODE == "BE") $TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_caretaker_pi_graphreport_wizicon"] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'pi_graphreport/class.tx_caretaker_pi_graphreport_wizicon.php';
 
 // abstract
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY . '_pi_abstract'] = 'layout,select_key,pages';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_pi_abstract'] = 'pi_flexform';
-t3lib_extMgm::addPiFlexFormValue($_EXTKEY . '_pi_abstract', 'FILE:EXT:' . $_EXTKEY . '/pi_abstract/flexform_ds.xml');
-t3lib_extMgm::addPlugin(Array('LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_abstract', $_EXTKEY . '_pi_abstract'), 'list_type');
-if (TYPO3_MODE == "BE") $TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_caretaker_pi_abstract_wizicon"] = t3lib_extMgm::extPath($_EXTKEY) . 'pi_abstract/class.tx_caretaker_pi_abstract_wizicon.php';
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_abstract', 'FILE:EXT:' . $_EXTKEY . '/pi_abstract/flexform_ds.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(Array('LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_abstract', $_EXTKEY . '_pi_abstract'), 'list_type');
+if (TYPO3_MODE == "BE") $TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_caretaker_pi_abstract_wizicon"] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'pi_abstract/class.tx_caretaker_pi_abstract_wizicon.php';
 
 // register Extension TS templates
-t3lib_extMgm::addStaticFile($_EXTKEY, 'res/typoscript/plugin', 'Caretaker Plugin Template');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'res/typoscript/plugin', 'Caretaker Plugin Template');
 // register Extension TS templates
-t3lib_extMgm::addStaticFile($_EXTKEY, 'res/typoscript/page', 'Caretaker Page Template');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'res/typoscript/page', 'Caretaker Page Template');
 
 // Register Backend Modules
 if (TYPO3_MODE == "BE") {
 
-	t3lib_extMgm::addModule("txcaretakerNav", "", "", t3lib_extMgm::extPath($_EXTKEY) . "mod_nav/");
-	t3lib_extMgm::addModule("txcaretakerNav", "txcaretakerOverview", "", t3lib_extMgm::extPath($_EXTKEY) . "mod_overview/");
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule("txcaretakerNav", "", "", \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . "mod_nav/");
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule("txcaretakerNav", "txcaretakerOverview", "", \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . "mod_overview/");
 
 	if (isset($TBE_MODULES['file'])) {
 		$caretaker_modconf = $TBE_MODULES['txcaretakerNav'];
@@ -341,5 +341,5 @@ if (TYPO3_MODE == "BE") {
 
 }
 
-require(t3lib_extMgm::extPath('caretaker') . '/ext_conf_include.php');
+require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/ext_conf_include.php');
 ?>

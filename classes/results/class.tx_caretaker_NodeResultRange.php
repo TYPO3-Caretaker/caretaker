@@ -57,21 +57,21 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	/**
 	 * Minimal Timestamp of this Result Range
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $start_timestamp = NULL;
 
 	/**
 	 * Maximal Timestamp of this Result Range
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $end_timestamp = NULL;
 
 	/**
 	 * timestamp of last existing value
 	 *
-	 * @var unknown_type
+	 * @var int
 	 */
 	private $last_timestamp = 0;
 
@@ -92,7 +92,6 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	 * @param tx_caretaker_NodeResult $result
 	 */
 	public function addResult($result) {
-
 		$ts = (int)$result->getTstamp();
 		$this->array[$ts] = $result;
 
@@ -112,20 +111,9 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	}
 
 	/**
-	 * Return minimal timestamp
-	 *
-	 * @return integer
-	 * @depricated
-	 * @todo remove this method
-	 */
-	public function getMinTstamp() {
-		return $this->start_timestamp;
-	}
-
-	/**
 	 * Return minimal timetamp
 	 *
-	 * @return unknown_type
+	 * @return int
 	 */
 	public function getStartTimestamp() {
 		return $this->start_timestamp;
@@ -134,20 +122,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	/**
 	 * Return maximal timestamp
 	 *
-	 * @return unknown_type
-	 * @depricated
-	 * @todo remove this method
-	 */
-	public function getMaxTstamp() {
-		return $this->end_timestamp;
-	}
-
-	/**
-	 * Return maximal timestamp
-	 *
-	 * @return unknown_type
-	 * @depricated
-	 * @todo remove this method
+	 * @return int
 	 */
 	public function getEndTimestamp() {
 		return $this->end_timestamp;

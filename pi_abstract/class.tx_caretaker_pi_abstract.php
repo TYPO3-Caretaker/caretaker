@@ -76,7 +76,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 				}
 			}
 
-			$lcObj = t3lib_div::makeInstance('tslib_cObj');
+			$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
 			$lcObj->start($renderData);
 
 
@@ -112,7 +112,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 		$renderedNodelist = '';
 		if ($nodeDataList && is_array($nodeDataList)) {
 			foreach ($nodeDataList as $nodeData) {
-				$lcObj = t3lib_div::makeInstance('tslib_cObj');
+				$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
 				$lcObj->start($nodeData);
 				$node_markers = array();
 				if ($this->conf['childMarkers.']) {

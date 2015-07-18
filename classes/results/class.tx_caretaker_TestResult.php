@@ -93,8 +93,7 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 
 	/**
 	 * Return the value of the result
-	 *
-	 * @return unknown_type
+	 * @return float
 	 */
 	public function getValue() {
 		return $this->value;

@@ -54,7 +54,7 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 
 		$content = $this->getContent();
 
-		//$GLOBALS['TSFE']->additionalHeaderData['caretaker'] = '<link rel="stylesheet" type="text/css" href="'.t3lib_extMgm::siteRelPath('caretaker').'res/css/caretaker.css" />';
+		//$GLOBALS['TSFE']->additionalHeaderData['caretaker'] = '<link rel="stylesheet" type="text/css" href="'.\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('caretaker').'res/css/caretaker.css" />';
 
 		return $this->pi_wrapInBaseClass($content);
 	}
@@ -75,7 +75,7 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 			$child_infos = '';
 			foreach ($children as $child) {
 				$data = $this->getNodeData($child);
-				$lcObj = t3lib_div::makeInstance('tslib_cObj');
+				$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
 				$lcObj->start($data);
 				$node_markers = array();
 				if ($this->conf['childMarkers.']) {
@@ -104,7 +104,7 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		$rootline_node = $node;
 		do {
 			$data = $this->getNodeData($rootline_node);
-			$lcObj = t3lib_div::makeInstance('tslib_cObj');
+			$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
 			$lcObj->start($data);
 			$node_markers = array();
 			if ($this->conf['rootlineMarkers.']) {
@@ -124,7 +124,7 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		// render Node Infos
 		$data = $this->getNodeData($node, true);
 		$data['chart'] = $this->getNodeChart($node);
-		$lcObj = t3lib_div::makeInstance('tslib_cObj');
+		$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
 		$lcObj->start($data);
 		$node_markers = array();
 		if ($this->conf['nodeMarkers.']) {

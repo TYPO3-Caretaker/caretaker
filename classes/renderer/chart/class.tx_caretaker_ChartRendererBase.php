@@ -138,6 +138,26 @@ abstract class tx_caretaker_ChartRendererBase {
 	protected $marginBottom = 80;
 
 	/**
+	 * @var float
+	 */
+	protected $scaleX;
+
+	/**
+	 * @var float
+	 */
+	protected $scaleY;
+
+	/**
+	 * @var int
+	 */
+	protected $baseX;
+
+	/**
+	 * @var int
+	 */
+	protected $baseY;
+
+	/**
 	 * Constructor
 	 *
 	 * @param integer $width
@@ -190,7 +210,7 @@ abstract class tx_caretaker_ChartRendererBase {
 
 	/**
 	 * Get the selected minimum chart value
-	 * @return <type>
+	 * @return float
 	 */
 	protected function getMinValue() {
 		return $this->minValue;
@@ -209,7 +229,7 @@ abstract class tx_caretaker_ChartRendererBase {
 
 	/**
 	 * Get the selected maximum chart value
-	 * @return <type>
+	 * @return float
 	 */
 	protected function getMaxValue() {
 		return $this->maxValue;
@@ -294,7 +314,6 @@ abstract class tx_caretaker_ChartRendererBase {
 	 * combine the chart images from the given parts
 	 */
 	public function getChartImage() {
-
 		// create image of width and height
 		$image = imagecreatetruecolor($this->width, $this->height);
 		// imageantialias ( $image , true );
@@ -310,9 +329,7 @@ abstract class tx_caretaker_ChartRendererBase {
 		$chartLegendColor2 = imagecolorallocatealpha($image, 1, 1, 1, 60);
 		$chartLegendColor3 = imagecolorallocatealpha($image, 1, 1, 1, 90);
 
-
 		imagefilledrectangle($image, $this->marginLeft, $this->marginTop, $this->width - $this->marginRight, $this->height - $this->marginBottom, $chartBackgroundColor);
-
 
 		// combine with chartImageBackground
 		$this->drawChartImageBackground($image);
@@ -322,17 +339,14 @@ abstract class tx_caretaker_ChartRendererBase {
 		$this->drawYAxis($image, $chartLegendColor, $chartLegendColor2);
 		$this->drawXAxis($image, $chartLegendColor, $chartLegendColor2, $chartLegendColor3);
 
-
 		// combine with getChartImageForeground
 		$this->drawChartImageForeground($image);
 
 		// combine with getChartImageLegend
 		$this->drawChartImageLegend($image);
 
-
 		// combine with getChartImageTitle
 		$this->drawChartTitle($image, $this->getChartTitle());
-
 
 		return $image;
 	}
@@ -367,23 +381,24 @@ abstract class tx_caretaker_ChartRendererBase {
 	 * @param <type> $title
 	 */
 	private function drawChartTitle(&$image, $title) {
-		$font = t3lib_extMgm::extPath('caretaker') . '/lib/Fonts/tahoma.ttf';
+		$font = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/lib/Fonts/tahoma.ttf';
 		$size = 9;
 		$angle = 0;
 
-		$Position = imageftbbox($size, $angle, $font, $title);
-		$TextWidth = abs($Position[2]) - abs($Position[0]);
-		$TextHeight = abs($Position[1]) - abs($Position[3]);
+		$position = imageftbbox($size, $angle, $font, $title);
+		$textWidth = abs($position[2]) - abs($position[0]);
 
 		$color = imagecolorallocate($image, 1, 1, 1);
-		imagettftext($image, $size, $angle, $this->marginLeft + floor($this->chartWidth / 2) - $TextWidth / 2, 20, $color, $font, $title);
+		imagettftext($image, $size, $angle, $this->marginLeft + floor($this->chartWidth / 2) - $textWidth / 2, 20, $color, $font, $title);
 
 	}
 
 	/**
 	 * Draw the X-Axis Visualisation and Value Information into the chart image
 	 *
-	 * @param image $Graph
+	 * @param resource $image
+	 * @param int $chartLegendColor
+	 * @param int $chartLegendColor2
 	 */
 	private function drawYAxis(&$image, &$chartLegendColor, &$chartLegendColor2) {
 
@@ -404,26 +419,26 @@ abstract class tx_caretaker_ChartRendererBase {
 			imageline($image, $this->marginLeft - 3, $scaledValueY, $this->width - $this->marginRight, $scaledValueY, $chartLegendColor2);
 
 			// text
-			$font = t3lib_extMgm::extPath('caretaker') . '/lib/Fonts/tahoma.ttf';
+			$font = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/lib/Fonts/tahoma.ttf';
 			$size = 9;
 			$angle = 0;
 
-			$Position = imageftbbox($size, $angle, $font, $value);
-			$TextWidth = abs($Position[2]) - abs($Position[0]);
-			$TextHeight = abs($Position[1]) - abs($Position[3]);
+			$position = imageftbbox($size, $angle, $font, $value);
+			$textWidth = abs($position[2]) - abs($position[0]);
 
-			$color = imagecolorallocate($image, 255, 1, 1);
+			imagecolorallocate($image, 255, 1, 1);
 
-			imagettftext($image, $size, $angle, $this->marginLeft - 10 - floor($TextWidth), $scaledValueY + 6, $chartLegendColor, $font, $value);
+			imagettftext($image, $size, $angle, $this->marginLeft - 10 - floor($textWidth), $scaledValueY + 6, $chartLegendColor, $font, $value);
 		}
 	}
 
 	/**
 	 * Draw the X-Axis Visualisation and Value Information
 	 *
-	 * @param <type> $Graph
-	 * @param <type> $max_timstamp
-	 * @param <type> $min_timestamp
+	 * @param resource $image
+	 * @param int $chartLegendColor
+	 * @param int $chartLegendColor2
+	 * @param int $chartLegendColor3
 	 */
 	private function drawXAxis(&$image, &$chartLegendColor, &$chartLegendColor2, &$chartLegendColor3) {
 
@@ -439,10 +454,10 @@ abstract class tx_caretaker_ChartRendererBase {
 		if ($timerange >= 24 * 60 * 60 * 30 * 6) {
 			$times_super = $this->getYearTimestamps($this->startTimestamp, $this->endTimestamp);
 			$times_major = $this->getMonthTimestamps($this->startTimestamp, $this->endTimestamp);
-			//$times_minor = $this->getWeekTimestamps($this->startTimestamp,$this->endTimestamp );
+			//$times_minor = $this->getWeekTimestamps($this->startTimestamp,$this->endTimestamp);
 		}
 		// quarter
-		if ($timerange >= 24 * 60 * 60 * 30 * 3) {
+		else if ($timerange >= 24 * 60 * 60 * 30 * 3) {
 			$times_super = $this->getYearTimestamps($this->startTimestamp, $this->endTimestamp);
 			$times_major = $this->getMonthTimestamps($this->startTimestamp, $this->endTimestamp);
 			$times_minor = $this->getWeekTimestamps($this->startTimestamp, $this->endTimestamp);
@@ -510,35 +525,29 @@ abstract class tx_caretaker_ChartRendererBase {
 		}
 
 		foreach ($x_axis as $timestamp) {
-			$scaledTime = $this->transformX($timestamp);
-			$d = 100;
-
-			$font = t3lib_extMgm::extPath('caretaker') . '/lib/Fonts/tahoma.ttf';
+			$this->transformX($timestamp);
+			$font = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/lib/Fonts/tahoma.ttf';
 			$size = 9;
 			$angle = 45;
 			$info = strftime($format, $timestamp);
 
-
-			$Position = imageftbbox($size, $angle, $font, $info);
-			$TextWidth = abs($Position[2]) - abs($Position[0]);
-			$TextHeight = abs($Position[1]) - abs($Position[3]);
+			$position = imageftbbox($size, $angle, $font, $info);
+			$textWidth = abs($position[2]) - abs($position[0]);
+			$textHeight = abs($position[1]) - abs($position[3]);
 
 			$scaledTime = $this->transformX($timestamp);
 
-			imagettftext($image, $size, $angle, floor($scaledTime) - $TextWidth, $this->height - $this->marginBottom - $TextHeight + 10, $chartLegendColor, $font, $info);
-
+			imagettftext($image, $size, $angle, floor($scaledTime) - $textWidth, $this->height - $this->marginBottom - $textHeight + 10, $chartLegendColor, $font, $info);
 		}
 	}
 
 
 	/**
 	 * round a decimal value to show 2 significant numbers
-	 * @param <type> $value
-	 * @return <type>
+	 * @param float $value
+	 * @return float|int
 	 */
-
 	private function ceilDecimal($value) {
-
 		$number = (float)$value;
 
 		if ($number > 1 || $number < -1) {
@@ -564,18 +573,17 @@ abstract class tx_caretaker_ChartRendererBase {
 		return ($result);
 	}
 
-
 	/**
 	 * Get all news-year timestamps in the given range
-	 * @param intger $min_timestamp
-	 * @param integer $max_timstamp
+	 * @param int $min_timestamp
+	 * @param int $max_timestamp
 	 * @return array
 	 */
-	private function getYearTimestamps($min_timestamp, $max_timstamp) {
+	private function getYearTimestamps($min_timestamp, $max_timestamp) {
 		$result = array();
 		$startdate_info = getdate($min_timestamp);
 		$year = $startdate_info['year'];
-		while ($max_timstamp > $ts = mktime(0, 0, 0, 1, 1, $year)) {
+		while ($max_timestamp > $ts = mktime(0, 0, 0, 1, 1, $year)) {
 			if ($ts > $min_timestamp) $result[] = $ts;
 			$year++;
 		}
@@ -583,17 +591,17 @@ abstract class tx_caretaker_ChartRendererBase {
 	}
 
 	/**
-	 * Get all month yimestamps in the given range
-	 * @param intger $min_timestamp
-	 * @param integer $max_timstamp
+	 * Get all month timestamps in the given range
+	 * @param int $min_timestamp
+	 * @param int $max_timestamp
 	 * @return array
 	 */
-	private function getMonthTimestamps($min_timestamp, $max_timstamp) {
+	private function getMonthTimestamps($min_timestamp, $max_timestamp) {
 		$result = array();
 		$startdate_info = getdate($min_timestamp);
 		$year = $startdate_info['year'];
 		$month = $startdate_info['mon'];
-		while ($max_timstamp > $ts = mktime(0, 0, 0, $month, 1, $year)) {
+		while ($max_timestamp > $ts = mktime(0, 0, 0, $month, 1, $year)) {
 			if ($ts > $min_timestamp) $result[] = $ts;
 			$month++;
 		}
@@ -602,18 +610,18 @@ abstract class tx_caretaker_ChartRendererBase {
 
 	/**
 	 * Get all week(sunday noon) timestamps in the given range
-	 * @param intger $min_timestamp
-	 * @param integer $max_timstamp
+	 * @param int $min_timestamp
+	 * @param int $max_timestamp
 	 * @return array
 	 */
-	private function getWeekTimestamps($min_timestamp, $max_timstamp) {
+	private function getWeekTimestamps($min_timestamp, $max_timestamp) {
 		$result = array();
 		$startdate_info = getdate($min_timestamp);
 		$year = $startdate_info['year'];
 		$month = $startdate_info['mon'];
 		$day = $startdate_info['mday'];
 		$wday = $startdate_info['wday'] - 1;
-		while ($max_timstamp > $ts = mktime(0, 0, 0, $month, $day - $wday, $year)) {
+		while ($max_timestamp > $ts = mktime(0, 0, 0, $month, $day - $wday, $year)) {
 			if ($ts > $min_timestamp) $result[] = $ts;
 			$day += 7;
 		}
@@ -622,18 +630,18 @@ abstract class tx_caretaker_ChartRendererBase {
 
 	/**
 	 * Get all half day timestamps in the given range
-	 * @param intger $min_timestamp
-	 * @param integer $max_timstamp
+	 * @param int $min_timestamp
+	 * @param int $max_timestamp
 	 * @return array
 	 */
-	private function getHalfdayTimestamps($min_timestamp, $max_timstamp) {
+	private function getHalfdayTimestamps($min_timestamp, $max_timestamp) {
 		$result = array();
 		$startdate_info = getdate($min_timestamp);
 		$year = $startdate_info['year'];
 		$month = $startdate_info['mon'];
 		$day = $startdate_info['mday'];
 		$hour = 0;
-		while ($max_timstamp > $ts = mktime($hour, 0, 0, $month, $day, $year)) {
+		while ($max_timestamp > $ts = mktime($hour, 0, 0, $month, $day, $year)) {
 			if ($ts > $min_timestamp) $result[] = $ts;
 			$hour += 12;
 		}
@@ -642,17 +650,17 @@ abstract class tx_caretaker_ChartRendererBase {
 
 	/**
 	 * Get all full day timestamps in the given range
-	 * @param intger $min_timestamp
-	 * @param integer $max_timstamp
+	 * @param int $min_timestamp
+	 * @param int $max_timestamp
 	 * @return array
 	 */
-	private function getDayTimestamps($min_timestamp, $max_timstamp) {
+	private function getDayTimestamps($min_timestamp, $max_timestamp) {
 		$result = array();
 		$startdate_info = getdate($min_timestamp);
 		$year = $startdate_info['year'];
 		$month = $startdate_info['mon'];
 		$day = $startdate_info['mday'];
-		while ($max_timstamp > $ts = mktime(0, 0, 0, $month, $day, $year)) {
+		while ($max_timestamp > $ts = mktime(0, 0, 0, $month, $day, $year)) {
 			if ($ts > $min_timestamp) $result[] = $ts;
 			$day++;
 		}
@@ -661,11 +669,11 @@ abstract class tx_caretaker_ChartRendererBase {
 
 	/**
 	 * Get all quarter hour timestamps in the given range
-	 * @param intger $min_timestamp
-	 * @param integer $max_timstamp
+	 * @param int $min_timestamp
+	 * @param int $max_timestamp
 	 * @return array
 	 */
-	private function getQuarterTimestamps($min_timestamp, $max_timstamp) {
+	private function getQuarterTimestamps($min_timestamp, $max_timestamp) {
 		$result = array();
 		$startdate_info = getdate($min_timestamp);
 		$year = $startdate_info['year'];
@@ -673,7 +681,7 @@ abstract class tx_caretaker_ChartRendererBase {
 		$day = $startdate_info['mday'];
 		$hour = $startdate_info['hours'];
 		$minute = 0;
-		while ($max_timstamp > $ts = mktime($hour, $minute, 0, $month, $day, $year)) {
+		while ($max_timestamp > $ts = mktime($hour, $minute, 0, $month, $day, $year)) {
 			if ($ts > $min_timestamp) $result[] = $ts;
 			$minute += 15;
 		}
@@ -682,18 +690,18 @@ abstract class tx_caretaker_ChartRendererBase {
 
 	/**
 	 * Get all full hour timestamps in the given range
-	 * @param intger $min_timestamp
-	 * @param integer $max_timstamp
+	 * @param int $min_timestamp
+	 * @param int $max_timestamp
 	 * @return array
 	 */
-	private function getHourTimestamps($min_timestamp, $max_timstamp) {
+	private function getHourTimestamps($min_timestamp, $max_timestamp) {
 		$result = array();
 		$startdate_info = getdate($min_timestamp);
 		$year = $startdate_info['year'];
 		$month = $startdate_info['mon'];
 		$day = $startdate_info['mday'];
 		$hour = $startdate_info['hours'];
-		while ($max_timstamp > $ts = mktime($hour, 0, 0, $month, $day, $year)) {
+		while ($max_timestamp > $ts = mktime($hour, 0, 0, $month, $day, $year)) {
 			if ($ts > $min_timestamp)
 				$result[] = $ts;
 			$hour++;
@@ -707,7 +715,6 @@ abstract class tx_caretaker_ChartRendererBase {
 	 * @param string $key
 	 * @return array RGB integer
 	 */
-
 	protected function getColorRgbByKey($key = '') {
 		switch (strtoupper($key)) {
 			case "ERROR" :
@@ -725,8 +732,4 @@ abstract class tx_caretaker_ChartRendererBase {
 				return array(100, 100, 100);
 		}
 	}
-
-
 }
-
-?>

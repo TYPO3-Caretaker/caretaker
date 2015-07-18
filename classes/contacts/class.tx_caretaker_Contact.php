@@ -101,7 +101,5 @@ class tx_caretaker_Contact {
 			return '';
 		}
 	}
-
 }
 
-?>

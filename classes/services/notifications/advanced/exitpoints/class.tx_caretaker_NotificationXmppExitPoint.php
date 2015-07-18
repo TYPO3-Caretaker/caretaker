@@ -33,7 +33,7 @@
  *
  * $Id: class.tx_caretaker_NotificationMailExitPoint.php 43024 2011-02-03 11:58:50Z matrikz $
  */
-require_once(t3lib_extMgm::extPath('caretaker', 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationBaseExitPoint.php'));
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker', 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationBaseExitPoint.php'));
 
 /**
  *
@@ -58,7 +58,7 @@ class tx_caretaker_NotificationXmppExitPoint extends tx_caretaker_NotificationBa
 	 * @return void
 	 */
 	protected function connectXmpp() {
-		require_once(t3lib_extMgm::extPath('caretaker', 'res/php/xmpphp/XMPPHP/XMPP.php'));
+		require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker', 'res/php/xmpphp/XMPPHP/XMPP.php'));
 		$this->connection = new XMPPHP_XMPP($this->config['host'], $this->config['port'], $this->config['user'], $this->config['password'], $this->config['resource'], $this->config['server']);
 		// TODO configurable: $this->connection->useEncryption(FALSE);
 		$this->connection->connect();

@@ -69,7 +69,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 	/**
 	 * Interval of Tests in Seconds
-	 * @var integer
+	 * @var int
 	 */
 	protected $testInterval = FALSE;
 
@@ -113,10 +113,9 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @param integer $interval
 	 * @param integer $retry
 	 * @param integer $due
-	 * @param integer $startHour
-	 * @param integer $stopHour
+	 * @param bool|int $startHour
+	 * @param bool|int $stopHour
 	 * @param boolean $hidden
-	 * @return tx_caretaker_TestNode
 	 */
 	public function __construct($uid, $title, $parentNode, $serviceType, $serviceConfiguration, $interval = 86400, $retry = 0, $due = 0, $startHour = FALSE, $stopHour = FALSE, $hidden = FALSE) {
 		// Overwrite default test configuration
@@ -141,16 +140,17 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 	/**
 	 * @return tx_caretaker_TestServiceInterface
+	 * @throws Exception
 	 */
 	public function getTestService() {
 		if ($this->testService === NULL) {
 			if ($this->testServiceType) {
-				$info = t3lib_extMgm::findService('caretaker_test_service', $this->testServiceType);
+				$info = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findService('caretaker_test_service', $this->testServiceType);
 				if ($info && $info['classFile']) {
-					$requireFile = t3lib_div::getFileAbsFileName($info['classFile']);
+					$requireFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($info['classFile']);
 					if (@is_file($requireFile)) {
-						t3lib_div::requireOnce($requireFile);
-						$this->testService = t3lib_div::makeInstance($info['className']);
+						\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce($requireFile);
+						$this->testService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($info['className']);
 						if ($this->testService) {
 							$this->testService->setInstance($this->getInstance());
 							$this->testService->setConfiguration($this->testServiceConfiguration);
@@ -235,7 +235,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	/**
 	 * Get the Test Interval
 	 *
-	 * @return unknown_type
+	 * @return int|bool
 	 */
 	public function getInterval() {
 		return $this->testInterval;
@@ -244,7 +244,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	/**
 	 * Get the test start hour
 	 *
-	 * @return unknown_type
+	 * @return int|bool
 	 */
 	public function getStartHour() {
 		return $this->startHour;
@@ -253,7 +253,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	/**
 	 * Get the test stop hour
 	 *
-	 * @return unknown_type
+	 * @return int|bool
 	 */
 	public function getStopHour() {
 		return $this->stopHour;
@@ -262,13 +262,13 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	/**
 	 * Set the testnode into acknowledged State
 	 *
-	 * @return void
+	 * @return tx_caretaker_TestResult
 	 */
 	public function setModeAck() {
 		$info = array(
-				'username' => 'unkown',
-				'realName' => 'unkown',
-				'email' => 'unkown'
+				'username' => 'unknown',
+				'realName' => 'unknown',
+				'email' => 'unknown'
 		);
 		if (TYPO3_MODE == "BE") {
 			$info['username'] = $GLOBALS['BE_USER']->user['username'];
@@ -290,13 +290,13 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	/**
 	 * End the wip state by running a forced update
 	 *
-	 * @return void
+	 * @return tx_caretaker_TestResult
 	 */
 	public function setModeDue() {
 		$info = array(
-				'username' => 'unkown',
-				'realName' => 'unkown',
-				'email' => 'unkown'
+				'username' => 'unknown',
+				'realName' => 'unknown',
+				'email' => 'unknown'
 		);
 		if (TYPO3_MODE == "BE") {
 			$info['username'] = $GLOBALS['BE_USER']->user['username'];
@@ -343,7 +343,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 			} else {
 				$testServiceRunnerClassName = 'tx_caretaker_TestServiceRunner';
 			}
-			$this->testServiceRunner = t3lib_div::makeInstance($testServiceRunnerClassName);
+			$this->testServiceRunner = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($testServiceRunnerClassName);
 		}
 		return $this->testServiceRunner;
 	}
@@ -370,7 +370,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getValueDescription()
 	 */
 	public function getValueDescription() {
-		$test_service = t3lib_div::makeInstanceService('caretaker_test_service', $this->testServiceType);
+		$test_service = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService('caretaker_test_service', $this->testServiceType);
 		if ($test_service) {
 			return $test_service->getValueDescription();
 		} else {
@@ -427,7 +427,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 *
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
 	 * @param int $offset
-	 * @param boolean $graph True by default. Used in the result range repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
+	 * @param int $limit
 	 * @return tx_caretaker_TestResultRange
 	 */
 	public function getTestResultRangeByOffset($offset = 0, $limit = 10) {
@@ -457,5 +457,3 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		return $this->testDue;
 	}
 }
-
-?>

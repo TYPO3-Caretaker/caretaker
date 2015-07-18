@@ -34,7 +34,7 @@
  * $Id$
  */
 
-require_once(t3lib_extMgm::extPath('caretaker') . '/classes/repositories/class.tx_caretaker_NodeRepository.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/classes/repositories/class.tx_caretaker_NodeRepository.php');
 
 class tx_caretaker_NodeRepository_testcase extends tx_phpunit_testcase {
 	private $repository;

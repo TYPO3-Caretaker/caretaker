@@ -232,7 +232,7 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 	 * @return unknown_type
 	 */
 	private function sendMail($subject, $recipient, $from, $message) {
-		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_mail_Message');
 		$mail->setFrom($from);
 		$mail->setTo($recipient);
 		$mail->setSubject($subject);

@@ -97,7 +97,7 @@ class tx_caretaker_ResultMessage {
 		$result = $this->text;
 
 		// check for LLL strings
-		$result = tx_caretaker_LocallizationHelper::locallizeString($result);
+		$result = tx_caretaker_LocalizationHelper::localizeString($result);
 
 		// insert Values
 		foreach ($this->values as $key => $value) {

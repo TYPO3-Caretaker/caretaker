@@ -51,7 +51,7 @@ class tx_caretaker_pi_abstract_wizicon {
 		$LL = $this->includeLocalLang();
 
 		$wizardItems['plugins_caretaker_pi_abstract'] = array(
-				'icon' => t3lib_extMgm::extRelPath('caretaker') . 'pi_abstract/ce_wiz.gif',
+				'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'pi_abstract/ce_wiz.gif',
 				'title' => $LANG->getLLL('pi_abstract_title', $LL),
 				'description' => $LANG->getLLL('pi_abstract_plus_wiz_description', $LL),
 				'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=caretaker_pi_abstract'

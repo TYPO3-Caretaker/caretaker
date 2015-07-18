@@ -33,7 +33,7 @@
  *
  * $Id$
  */
-// require_once (t3lib_extMgm::extPath('caretaker').'/services/class.tx_caretaker_TestServiceBase.php');
+// require_once (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker').'/services/class.tx_caretaker_TestServiceBase.php');
 
 class tx_caretaker_TestServiceBase_testcase extends tx_phpunit_testcase {
 

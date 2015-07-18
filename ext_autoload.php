@@ -38,14 +38,14 @@
  * Register necessary class names with autoloader
  */
 
-$caretakerExtPath = t3lib_extMgm::extPath('caretaker');
+$caretakerExtPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker');
 
 return array(
 
 	/* helpers */
 		'tx_caretaker_constants' => $caretakerExtPath . 'classes/class.tx_caretaker_Constants.php',
 		'tx_caretaker_servicehelper' => $caretakerExtPath . 'classes/helpers/class.tx_caretaker_ServiceHelper.php',
-		'tx_caretaker_locallizationhelper' => $caretakerExtPath . 'classes/helpers/class.tx_caretaker_LocallizationHelper.php',
+		'tx_caretaker_locallizationhelper' => $caretakerExtPath . 'classes/helpers/class.tx_caretaker_LocalizationHelper.php,
 		'tx_caretaker_extensionmanagerhelper' => $caretakerExtPath . 'classes/helpers/class.tx_caretaker_ExtensionManagerHelper.php',
 		'tx_caretaker_latestversionshelper' => $caretakerExtPath . 'classes/helpers/class.tx_caretaker_LatestVersionsHelper.php',
 
