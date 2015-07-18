@@ -51,5 +51,3 @@ interface tx_caretaker_NotificationExitPointInterface {
 	public function execute();
 
 }
-
-?>

@@ -33,7 +33,6 @@
  *
  * $Id: class.tx_caretaker_NotificationMailExitPoint.php 43024 2011-02-03 11:58:50Z matrikz $
  */
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker', 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationBaseExitPoint.php'));
 
 /**
  *
@@ -41,7 +40,7 @@ require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('careta
 class tx_caretaker_NotificationXmppExitPoint extends tx_caretaker_NotificationBaseExitPoint {
 
 	/**
-	 * @var XMPP
+	 * @var XMPPHP_XMPP
 	 */
 	protected $connection;
 
@@ -58,7 +57,6 @@ class tx_caretaker_NotificationXmppExitPoint extends tx_caretaker_NotificationBa
 	 * @return void
 	 */
 	protected function connectXmpp() {
-		require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker', 'res/php/xmpphp/XMPPHP/XMPP.php'));
 		$this->connection = new XMPPHP_XMPP($this->config['host'], $this->config['port'], $this->config['user'], $this->config['password'], $this->config['resource'], $this->config['server']);
 		// TODO configurable: $this->connection->useEncryption(FALSE);
 		$this->connection->connect();
@@ -73,7 +71,10 @@ class tx_caretaker_NotificationXmppExitPoint extends tx_caretaker_NotificationBa
 	public function addNotification($notification, $overrideConfig) {
 		$config = $this->getConfig($overrideConfig);
 		$message = $this->getMessageForNotification($notification);
-		$contacts = $notification['node']->getContacts($config['roles']);
+		/** @var tx_caretaker_AbstractNode $node */
+		$node = $notification['node'];
+		$contacts = $node->getContacts($config['roles']);
+		/** @var tx_caretaker_Contact $contact */
 		foreach ($contacts as $contact) {
 			$xmppAddress = $contact->getAddressProperty('tx_caretaker_xmpp');
 			if (!empty($xmppAddress)) {
@@ -90,4 +91,3 @@ class tx_caretaker_NotificationXmppExitPoint extends tx_caretaker_NotificationBa
 	}
 }
 
-?>

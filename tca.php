@@ -611,7 +611,6 @@ $TCA['tx_caretaker_testgroup'] = array(
 		'palettes' => array(
 				'1' => array('showitem' => 'starttime,endtime,fe_group'),
 				'2' => array('showitem' => 'instances')
-
 		)
 );
 
@@ -993,4 +992,3 @@ if ($advancedNotificationsEnabled) {
 			)
 	);
 }
-

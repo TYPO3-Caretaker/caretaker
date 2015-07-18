@@ -52,15 +52,14 @@ class tx_caretaker_NodeRepository {
 	/**
 	 * Retrieve a specific Node
 	 *
-	 * @param integer $instancegroupId
-	 * @param integer $instanceId
-	 * @param integer $testgroupId
-	 * @param integer $testId
+	 * @param bool|int $instancegroupId
+	 * @param bool|int $instanceId
+	 * @param bool|int $testgroupId
+	 * @param bool|int $testId
 	 * @param boolean $show_hidden
 	 * @return tx_caretaker_AbstractNode
 	 */
 	public function getNode($instancegroupId = false, $instanceId = false, $testgroupId = false, $testId = false, $show_hidden = false) {
-
 		$instancegroupId = (int)$instancegroupId;
 		$instanceId = (int)$instanceId;
 		$testgroupId = (int)$testgroupId;
@@ -370,7 +369,7 @@ class tx_caretaker_NodeRepository {
 	 * @param integer $uid
 	 * @param $parent
 	 * @param $show_hidden
-	 * @return unknown_type
+	 * @return tx_caretaker_InstanceNode
 	 */
 	public function getInstanceByUid($uid, $parent = NULL, $show_hidden = FALSE) {
 		$hidden = '';
@@ -451,7 +450,7 @@ class tx_caretaker_NodeRepository {
 	/**
 	 * Get all Testgroups
 	 *
-	 * @param tx_caretaker_AbstractNode $parent
+	 * @param bool|tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
 	 * @return tx_caretaker_TestgroupNode
 	 */
@@ -472,7 +471,7 @@ class tx_caretaker_NodeRepository {
 	 * Get all Testgroups of Instance X
 	 *
 	 * @param integer $instanceId
-	 * @param tx_caretaker_AbstractNode $parent
+	 * @param bool|tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
 	 * @return array
 	 */
@@ -488,21 +487,22 @@ class tx_caretaker_NodeRepository {
 			$item = $this->getTestgroupByUid($id, $parent, $show_hidden);
 			if ($item) $result[] = $item;
 		}
-
 		return $result;
 	}
 
 	/**
 	 * Get all Testgroups of Instance X all subgroups are included recursively
 	 *
-	 * @param <type> $instanceId
-	 * @param <type> $parent
-	 * @param <type> $show_hidden
+	 * @param int $instanceId
+	 * @param bool|tx_caretaker_AbstractNode $parent
+	 * @param bool $show_hidden
+	 * @return array
 	 */
 	public function getTestgroupsByInstanceUidRecursive($instanceId, $parent = false, $show_hidden = FALSE) {
 		// direct assigned results
 		$testgroups = $this->getTestgroupsByInstanceUid($instanceId, $parent, $show_hidden);
 		// include subresults
+		/** @var tx_caretaker_TestgroupNode $testgroup */
 		foreach ($testgroups as $testgroup) {
 			$subgroups = $this->getTestgroupsByParentGroupUidRecursive($testgroup->getUid(), $testgroup, $show_hidden);
 			$testgroups = array_merge($testgroups, $subgroups);
@@ -514,7 +514,7 @@ class tx_caretaker_NodeRepository {
 	 * Get Testgroup of UID X
 	 *
 	 * @param integer $uid
-	 * @param tx_caretaker_AbstractNode $parent
+	 * @param bool|tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
 	 * @return tx_caretaker_TestgroupNode
 	 */
@@ -523,7 +523,6 @@ class tx_caretaker_NodeRepository {
 		if (!$show_hidden) {
 			$hidden = ' AND hidden=0 ';
 		}
-		$instanceId = (int)$instanceId;
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_testgroup', 'deleted=0 ' . $hidden . 'AND uid=' . (int)$uid);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		if ($row) {
@@ -559,14 +558,16 @@ class tx_caretaker_NodeRepository {
 	/**
 	 * Get all Testgroups of Instance X all subgroups are included recursively
 	 *
-	 * @param <type> $groupId
-	 * @param <type> $parent
-	 * @param <type> $show_hidden
+	 * @param int $groupId
+	 * @param bool|tx_caretaker_AbstractNode $parent
+	 * @param bool $show_hidden
+	 * @return array
 	 */
 	public function getTestgroupsByParentGroupUidRecursive($groupId, $parent = false, $show_hidden = FALSE) {
 		// direct assigned results
 		$testgroups = $this->getTestgroupsByParentGroupUid($groupId, $parent, $show_hidden);
 		// include subresults
+		/** @var tx_caretaker_TestgroupNode $testgroup */
 		foreach ($testgroups as $testgroup) {
 			$subgroups = $this->getTestgroupsByParentGroupUidRecursive($testgroup->getUid(), $testgroup, $show_hidden);
 			$testgroups = array_merge($testgroups, $subgroups);
@@ -596,7 +597,7 @@ class tx_caretaker_NodeRepository {
 	 * Get Tests of Group X
 	 *
 	 * @param integer $group_id
-	 * @param tx_caretaker_AbstractNode $parent
+	 * @param bool|tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
 	 * @return array
 	 */
@@ -620,7 +621,7 @@ class tx_caretaker_NodeRepository {
 	 * Get Tests of Instance X
 	 *
 	 * @param integer $instance_id
-	 * @param tx_caretaker_AbstractNode $parent
+	 * @param bool|tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
 	 * @return array
 	 */
@@ -644,7 +645,7 @@ class tx_caretaker_NodeRepository {
 	 * Get Test of UID X
 	 *
 	 * @param integer $uid
-	 * @param tx_caretaker_AbstractNode $parent
+	 * @param bool|tx_caretaker_AbstractNode $parent
 	 * @param boolean $show_hidden
 	 * @return tx_caretaker_TestNode
 	 */
@@ -670,11 +671,10 @@ class tx_caretaker_NodeRepository {
 	 * Convert Test DB-Row to Object
 	 *
 	 * @param array $row
-	 * @param tx_caretaker_AbstractNode $parent
+	 * @param bool|tx_caretaker_AbstractNode $parent
 	 * @return tx_caretaker_TestNode
 	 */
 	private function dbrow2test($row, $parent = false) {
-
 		if (!$parent) {
 			return false;
 		}
@@ -683,10 +683,5 @@ class tx_caretaker_NodeRepository {
 		if ($row['description']) $test->setDescription($row['description']);
 		$test->setDbRow($row);
 		return $test;
-
 	}
-
-
 }
-
-?>

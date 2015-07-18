@@ -37,14 +37,14 @@
 /**
  *
  */
-abstract class tx_caretaker_pibase extends tslib_pibase {
+abstract class tx_caretaker_pibase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	/**
 	 * The main method of the PlugIn
 	 *
-	 * @param    string $content : The PlugIn content
-	 * @param    array $conf : The PlugIn configuration
-	 * @return    The content that is displayed on the website
+	 * @param  string $content The PlugIn content
+	 * @param  array $conf The PlugIn configuration
+	 * @return string The content that is displayed on the website
 	 */
 	function main($content, $conf) {
 		$this->conf = $conf;
@@ -53,20 +53,21 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		$this->pi_USER_INT_obj = 1;    // Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
 
 		$content = $this->getContent();
-
-		//$GLOBALS['TSFE']->additionalHeaderData['caretaker'] = '<link rel="stylesheet" type="text/css" href="'.\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('caretaker').'res/css/caretaker.css" />';
-
 		return $this->pi_wrapInBaseClass($content);
 	}
 
+	/**
+	 * @return mixed
+	 */
 	abstract function getContent();
 
+	/**
+	 * @param tx_caretaker_AbstractNode $node
+	 * @return string
+	 */
 	function showNodeInfo($node) {
-
-		$template; // = $this->cObj->cObjGetSingle($this->conf['template'], $this->conf['template.']);
-
 		// render first level Children
-		if (is_a($node, 'tx_caretaker_AggregatorNode')) {
+		if ($node instanceof tx_caretaker_AggregatorNode) {
 
 			$template = $this->cObj->cObjGetSingle($this->conf['template'], $this->conf['template.']);
 
@@ -75,7 +76,7 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 			$child_infos = '';
 			foreach ($children as $child) {
 				$data = $this->getNodeData($child);
-				$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
+				$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 				$lcObj->start($data);
 				$node_markers = array();
 				if ($this->conf['childMarkers.']) {
@@ -91,11 +92,8 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 
 			$template = $this->cObj->substituteSubpart($template, 'CARETAKER-CHILDREN', $child_infos);
 
-
 		} else {
-
 			$template = $this->cObj->cObjGetSingle($this->conf['templateChild'], $this->conf['templateChild.']);
-			$child_infos = '';
 		}
 
 		// render Rootline
@@ -104,7 +102,7 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		$rootline_node = $node;
 		do {
 			$data = $this->getNodeData($rootline_node);
-			$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
+			$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 			$lcObj->start($data);
 			$node_markers = array();
 			if ($this->conf['rootlineMarkers.']) {
@@ -124,7 +122,7 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		// render Node Infos
 		$data = $this->getNodeData($node, true);
 		$data['chart'] = $this->getNodeChart($node);
-		$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
+		$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 		$lcObj->start($data);
 		$node_markers = array();
 		if ($this->conf['nodeMarkers.']) {
@@ -138,7 +136,6 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 			$template = $this->cObj->substituteMarkerArray($template, $node_markers);
 		}
 
-
 		return $template;
 	}
 
@@ -148,7 +145,8 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 	 * @return array
 	 */
 	function getNodeData($node) {
-		$date = array();
+		$data = array();
+
 		// node data
 		$data['uid'] = $node->getUid();
 		$data['node_id'] = $node->getCaretakerNodeId();
@@ -164,10 +162,9 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 		$data['state_info'] = $result->getStateInfo();
 		$data['state_show'] = $result->getLocallizedStateInfo();
 		$data['state_msg'] = $result->getLocallizedInfotext();
-		$data['state_tstamp'] = $result->getTstamp();
+		$data['state_tstamp'] = $result->getTimestamp();
 
-		if (is_a($result, 'tx_caretaker_TestResult')) {
-
+		if ($result instanceof tx_caretaker_TestResult) {
 			$data['state_value'] = $result->getValue();
 		}
 
@@ -189,5 +186,3 @@ abstract class tx_caretaker_pibase extends tslib_pibase {
 	}
 
 }
-
-?>

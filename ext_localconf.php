@@ -80,5 +80,3 @@ $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretake
 if ($extConfig['eid.']['enabled']) {
 	$TYPO3_CONF_VARS['FE']['eID_include']['tx_caretaker'] = 'EXT:caretaker/classes/eid/class.tx_caretaker_Eid.php';
 }
-
-?>

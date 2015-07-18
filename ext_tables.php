@@ -259,7 +259,6 @@ $tempColumns = array(
 				)
 		),
 );
-\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('fe_users');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('fe_users', $tempColumns, 1);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('fe_users', 'tx_caretaker_api_key');
 
@@ -274,14 +273,9 @@ $tempColumns = array(
 		),
 );
 
-
-\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_address');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_address', $tempColumns, 1);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_address', 'tx_caretaker_xmpp;;;;1-1-1');
 
-
-// register FE-Plugins
-\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 
 // overview
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY . '_pi_overview'] = 'layout,select_key,pages';
@@ -322,6 +316,7 @@ if (TYPO3_MODE == "BE") {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule("txcaretakerNav", "", "", \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . "mod_nav/");
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule("txcaretakerNav", "txcaretakerOverview", "", \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . "mod_overview/");
 
+	$caretaker_modconf = NULL;
 	if (isset($TBE_MODULES['file'])) {
 		$caretaker_modconf = $TBE_MODULES['txcaretakerNav'];
 		unset($TBE_MODULES['txcaretakerNav']);
@@ -337,9 +332,6 @@ if (TYPO3_MODE == "BE") {
 		}
 	}
 	$TBE_MODULES = $temp_TBE_MODULES;
-
-
 }
 
 require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/ext_conf_include.php');
-?>

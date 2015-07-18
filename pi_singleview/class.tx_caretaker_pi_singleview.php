@@ -42,6 +42,9 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 	var $scriptRelPath = 'pi_singleview/class.tx_caretaker_pi_singleview.php';    // Path to this script relative to the extension dir.
 	var $extKey = 'caretaker';    // The extension key.
 
+	/**
+	 * @return string
+	 */
 	function getContent() {
 		$node = $this->getNode();
 		if ($node) {
@@ -52,10 +55,11 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		return $content;
 	}
 
+	/**
+	 * @return tx_caretaker_AbstractNode
+	 */
 	function getNode() {
-
 		$id = $this->piVars['id'];
-		$node = false;
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
 
 		if ($id) {
@@ -68,10 +72,12 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		return $node;
 	}
 
+	/**
+	 * @param tx_caretaker_AbstractNode $node
+	 * @return array
+	 */
 	function getNodeData($node) {
-
 		$data = parent::getNodeData($node);
-
 		$range = 24;
 		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
 		$data['range'] = $range / 24;
@@ -79,8 +85,11 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		return $data;
 	}
 
+	/**
+	 * @param tx_caretaker_AbstractNode $node
+	 * @return bool|string
+	 */
 	function getNodeChart($node) {
-
 		$chart = false;
 
 		$range = 24;
@@ -89,7 +98,6 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		$id = $node->getCaretakerNodeID();
 		$result_range = $node->getTestResultRange(time() - 3600 * $range, time());
 		$filename = 'typo3temp/caretaker/charts/' . $id . '_' . $range . '.png';
-		$filename2 = 'typo3temp/caretaker/charts/' . $id . '_' . $range . '.2.png';
 		$base = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 
 		if (is_a($node, 'tx_caretaker_TestNode')) {
@@ -117,9 +125,7 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 			} else {
 				$chart = 'Graph Error';
 			}
-
 		}
-
 		return $chart;
 	}
 }
@@ -128,5 +134,3 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_singleview/class.tx_caretaker_pi_singleview.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_singleview/class.tx_caretaker_pi_singleview.php']);
 }
-
-?>

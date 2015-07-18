@@ -92,7 +92,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	 * @param tx_caretaker_NodeResult $result
 	 */
 	public function addResult($result) {
-		$ts = (int)$result->getTstamp();
+		$ts = (int)$result->getTimestamp();
 		$this->array[$ts] = $result;
 
 		if ($ts < $this->last_timestamp) {
@@ -111,7 +111,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	}
 
 	/**
-	 * Return minimal timetamp
+	 * Return minimal timestamp
 	 *
 	 * @return int
 	 */
@@ -161,7 +161,6 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	 * @return array
 	 */
 	public function getInfos() {
-
 		$SecondsTotal = $this->end_timestamp - $this->start_timestamp;
 		$SecondsUNDEFINED = 0;
 		$SecondsOK = 0;
@@ -172,11 +171,13 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 
 		$lastTS = NULL;
 		$lastSTATE = NULL;
+		/**
+		 * @var int $ts
+		 * @var tx_caretaker_TestResult $result
+		 */
 		foreach ($this->array as $ts => $result) {
 			if ($lastTS) {
-
 				$range = $ts - $lastTS;
-
 				switch ($lastSTATE) {
 					case tx_caretaker_Constants::state_due :
 						$SecondsDUE += $range;
@@ -200,7 +201,6 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 			}
 			$lastTS = $ts;
 			$lastSTATE = $result->getState();
-
 		}
 
 		return array(
@@ -220,10 +220,8 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 				'PercentACK' => $SecondsACK / $SecondsTotal,
 				'PercentDUE' => $SecondsDUE / $SecondsTotal,
 		);
-
 	}
 
-	// Iterator methods
 	/**
 	 * Reset the counter and return the first result
 	 */
@@ -264,20 +262,15 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 
 	/**
 	 * Reverses the array of results
-	 * @return void
 	 */
 	public function reverse() {
-
 		$this->array = array_reverse($this->array);
 	}
 
 	/**
-	 *
 	 * @return integer
 	 */
 	public function count() {
 		return count($this->array);
 	}
 }
-
-?>

@@ -148,7 +148,7 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	public function getCurlOptions() {
 		$curl_options = array();
 		if ($this->testConfigurationOverlay) {
-			$fftools = new t3lib_flexformtools();
+			$fftools = new \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools();
 			$options = $fftools->getArrayValueByPath(
 					'data/sDEF/lDEF/testconfigurations/el',
 					$this->testConfigurationOverlay

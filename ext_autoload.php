@@ -45,7 +45,7 @@ return array(
 	/* helpers */
 		'tx_caretaker_constants' => $caretakerExtPath . 'classes/class.tx_caretaker_Constants.php',
 		'tx_caretaker_servicehelper' => $caretakerExtPath . 'classes/helpers/class.tx_caretaker_ServiceHelper.php',
-		'tx_caretaker_locallizationhelper' => $caretakerExtPath . 'classes/helpers/class.tx_caretaker_LocalizationHelper.php,
+		'tx_caretaker_localizationhelper' => $caretakerExtPath . 'classes/helpers/class.tx_caretaker_LocalizationHelper.php',
 		'tx_caretaker_extensionmanagerhelper' => $caretakerExtPath . 'classes/helpers/class.tx_caretaker_ExtensionManagerHelper.php',
 		'tx_caretaker_latestversionshelper' => $caretakerExtPath . 'classes/helpers/class.tx_caretaker_LatestVersionsHelper.php',
 
@@ -62,6 +62,7 @@ return array(
 		'tx_caretaker_notificationbaseexitpoint' => $caretakerExtPath . 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationBaseExitPoint.php',
 		'tx_caretaker_notificationmailexitpoint' => $caretakerExtPath . 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationMailExitPoint.php',
 		'tx_caretaker_notificationfileexitpoint' => $caretakerExtPath . 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationFileExitPoint.php',
+		'tx_caretaker_notificationfilexmpppoint' => $caretakerExtPath . 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationXmppExitPoint.php',
 
 	/* interfaces */
 		'tx_caretaker_resultrangerenderer' => $caretakerExtPath . 'interfaces/interface.tx_caretaker_ResultRangeRenderer.php',
@@ -114,5 +115,6 @@ return array(
 		'tx_caretaker_testservicebase' => $caretakerExtPath . 'classes/services/tests/class.tx_caretaker_TestServiceBase.php',
 		'tx_caretaker_testservicerunner' => $caretakerExtPath . 'classes/services/class.tx_caretaker_TestServiceRunner.php',
 
+		'xmpphp_xmpp' => $caretakerExtPath . 'res/php/xmpphp/XMPPHP/XMPP.php',
+
 );
-?>

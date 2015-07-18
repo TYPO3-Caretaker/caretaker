@@ -38,6 +38,7 @@
  * Plugin 'Overview' for the 'user_overview' extension.
  */
 class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
+
 	var $prefixId = 'tx_caretaker_pi_abstract';        // Same as class name
 	var $scriptRelPath = 'pi_abstract/class.tx_caretaker_pi_abstract.php';    // Path to this script relative to the extension dir.
 	var $extKey = 'caretaker';    // The extension key.
@@ -52,7 +53,6 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 		$node = $this->getNode();
 
 		if ($node) {
-
 
 			// getData
 			$data = $this->getNodeStatusData($node);
@@ -76,12 +76,13 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 				}
 			}
 
-			$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
+			$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 			$lcObj->start($renderData);
 
 
 			// substitute markers
 			if ($this->conf['markers.']) {
+				$markers = arary();
 				foreach (array_keys($this->conf['markers.']) as $key) {
 					if (substr($key, -1) != '.') {
 						$mark = $lcObj->cObjGetSingle($this->conf['markers.'][$key], $this->conf['markers.'][$key . '.']);
@@ -90,7 +91,6 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 				}
 				$template = $this->cObj->substituteMarkerArray($template, $markers);
 			}
-
 
 			$content = $template;
 
@@ -108,11 +108,10 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 	 * @return string
 	 */
 	function renderNodeList($nodeDataList, $template) {
-
 		$renderedNodelist = '';
 		if ($nodeDataList && is_array($nodeDataList)) {
 			foreach ($nodeDataList as $nodeData) {
-				$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
+				$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 				$lcObj->start($nodeData);
 				$node_markers = array();
 				if ($this->conf['childMarkers.']) {
@@ -133,14 +132,12 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 	/**
 	 * Get the node which is configured in the pi-flexform
 	 *
-	 * @return tx_caretaker_Node
+	 * @return tx_caretaker_AbstractNode
 	 */
 	function getNode() {
-
 		$this->pi_initPIflexForm();
 		$node_id = $this->pi_getFFValue($this->cObj->data['pi_flexform'], 'node_id');
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
-
 		$node = $node_repository->id2node($node_id);
 		return $node;
 	}
@@ -148,11 +145,10 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 	/**
 	 * Get the status of all test nodes and some extra informations
 	 *
-	 * @param tx_caretaker_Node $node
+	 * @param tx_caretaker_AbstractNode $node
 	 * @return array Associative Array with the keys 'nodeInfo' and 'testResults'
 	 */
 	function getNodeStatusData($node) {
-
 		if (is_a($node, 'tx_caretaker_AggregatorNode')) {
 			$testChildNodes = $node->getTestNodes();
 		} else if (is_a($node, 'tx_caretaker_TestNode')) {
@@ -178,6 +174,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 		$num_ack = 0;
 		$num_due = 0;
 
+		/** @var tx_caretaker_TestNode $testNode */
 		foreach ($testChildNodes as $testNode) {
 
 			$testResult = $testNode->getTestResult();
@@ -233,7 +230,6 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 					$num_undefined++;
 					break;
 			}
-
 		}
 
 		$data = array(
@@ -258,7 +254,6 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 
 		return $data;
 	}
-
 }
 
 
@@ -266,4 +261,3 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretak
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_abstract/class.tx_caretaker_pi_abstract.php']);
 }
 
-?>

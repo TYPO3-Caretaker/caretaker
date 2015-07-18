@@ -56,7 +56,7 @@ class tx_caretaker_TouchTestService extends tx_caretaker_TestServiceBase {
 	protected $valueDescription = '';
 
 	/**
-	 * Service type description in human readble form.
+	 * Service type description in human readable form.
 	 * @var string
 	 */
 	protected $typeDescription = 'LLL:EXT:caretaker/locallang_fe.xml:touch_service_description';
@@ -68,8 +68,7 @@ class tx_caretaker_TouchTestService extends tx_caretaker_TestServiceBase {
 	protected $configurationInfoTemplate = 'LLL:EXT:caretaker/locallang_fe.xml:touch_service_configuration';
 
 	/**
-	 * (non-PHPdoc)
-	 * @see caretaker/trunk/services/tx_caretaker_TestServiceBase#runTest()
+	 * @return tx_caretaker_TestResult
 	 */
 	function runTest() {
 		$filename = $this->getTimestampFilename();
@@ -89,5 +88,3 @@ class tx_caretaker_TouchTestService extends tx_caretaker_TestServiceBase {
 		return $this->getConfigValue('timestamp_filename');
 	}
 }
-
-?>

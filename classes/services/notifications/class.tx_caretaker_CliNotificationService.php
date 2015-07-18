@@ -69,7 +69,7 @@ class tx_caretaker_CliNotificationService extends tx_caretaker_AbstractNotificat
 			$msg .= chr(10) . $indent . '  +-> ' . $result->getLocallizedStateInfo() . ' (' . $event . ')';
 		} else {
 			if ($result == NULL) {
-				$msg = $indent . '--+ ' . $node->getTitle() . ' [' . $node->getCaretakerNodeId() . ']' . $infotext . ' ' . $event;
+				$msg = $indent . '--+ ' . $node->getTitle() . ' [' . $node->getCaretakerNodeId() . '] '  . $event;
 			} else {
 				$msg = $indent . '  +-> ' . $result->getLocallizedStateInfo() . ' ' . $event . ' [' . $node->getCaretakerNodeId() . ']';
 			}
@@ -93,5 +93,3 @@ class tx_caretaker_CliNotificationService extends tx_caretaker_AbstractNotificat
 		return $indentation;
 	}
 }
-
-?>

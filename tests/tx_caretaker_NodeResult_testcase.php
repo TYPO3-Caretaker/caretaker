@@ -34,9 +34,6 @@
  * $Id$
  */
 
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/classes/results/class.tx_caretaker_TestResult.php');
-
-
 /**
  *
  */

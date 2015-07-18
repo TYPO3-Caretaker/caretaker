@@ -45,7 +45,7 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_TestServiceInterface {
+class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractService implements tx_caretaker_TestServiceInterface {
 
 	/**
 	 * The instance the test is run for
@@ -74,7 +74,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 
 	/**
 	 * Testtype in human readable form. Can be a LLL Label.
-	 * @var sring
+	 * @var string
 	 */
 	protected $typeDescription = '';
 
@@ -85,16 +85,14 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	protected $configurationInfoTemplate = '';
 
 	/**
-	 * (non-PHPdoc)
-	 * @see caretaker/trunk/interfaces/tx_caretaker_TestService#setInstance($instance)
+	 * @param tx_caretaker_InstanceNode $instance
 	 */
 	public function setInstance($instance) {
 		$this->instance = $instance;
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see caretaker/trunk/interfaces/tx_caretaker_TestService#setConfiguration($configuration)
+	 * @param array $configuration
 	 */
 	public function setConfiguration($configuration) {
 		if (is_array($configuration) && !is_array($configuration['data'])) {
@@ -112,8 +110,8 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * Get a single Value from the test configuration
 	 *
 	 * @param string $key
-	 * @param string $default
-	 * @param string $sheet
+	 * @param bool|string $default
+	 * @param bool|string $sheet
 	 * @return string
 	 */
 	public function getConfigValue($key, $default = FALSE, $sheet = FALSE) {
@@ -232,8 +230,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see interfaces/tx_caretaker_TestService#isExecutable()
+	 * @return bool
 	 */
 	public function isExecutable() {
 		return TRUE;
@@ -242,11 +239,11 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	/**
 	 * Translate a given string in the current language
 	 *
-	 * @param string $string
+	 * @param $locallang_string
 	 * @return string
+	 * @internal param string $string
 	 */
 	protected function locallizeString($locallang_string) {
-
 		$locallang_parts = explode(':', $locallang_string);
 
 		if (array_shift($locallang_parts) != 'LLL') {
@@ -255,14 +252,14 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 
 		switch (TYPO3_MODE) {
 			case 'FE':
-				$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
+				$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 				return ($lcObj->TEXT(array('data' => $locallang_string)));
 
 			case 'BE':
 				$locallang_key = array_pop($locallang_parts);
 				$locallang_file = implode(':', $locallang_parts);
 				$language_key = $GLOBALS['BE_USER']->uc['lang'];
-				$LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('language');
+				$LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Lang\LanguageService');
 				$LANG->init($language_key);
 				return $LANG->getLLL($locallang_key, \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($locallang_file), $LANG->lang, $LANG->charSet));
 
@@ -271,5 +268,3 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 		}
 	}
 }
-
-?>

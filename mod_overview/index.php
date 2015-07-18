@@ -45,14 +45,15 @@ require_once($BACK_PATH . 'init.php');
 $GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
 $GLOBALS['BE_USER']->modAccess($MCONF, 1);
 
-class tx_caretaker_mod_nav extends t3lib_SCbase {
+class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
+
 	var $pageinfo;
 	var $node_repository;
 	var $instance_repository;
 	var $node_id;
 
 	/**
-	 * @var t3lib_PageRenderer
+	 * @var \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	var $pageRenderer;
 
@@ -85,7 +86,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 			if (!$node) $node = $node_repository->getRootNode();
 
 			// Draw the header.
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("template");
+			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Template\DocumentTemplate');
 			$this->doc->backPath = $BACK_PATH;
 			$this->pageRenderer = $this->doc->getPageRenderer();
 
@@ -111,8 +112,6 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 
 				// add ExtJs Panel
 				$panels[$extJsBackendPanel['id']] = $extJsBackendPanel['xtype'];
-
-
 			}
 
 			$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeToolbar.js');
@@ -184,10 +183,8 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 										]
 									}
 								],
-
 						}
 					 });
-
 				});
 			');
 
@@ -196,7 +193,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 		} else {
 			// If no access or if not admin
 
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("mediumDoc");
+			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Template\MediumDocumentTemplate');
 			$this->doc->backPath = $BACK_PATH;
 
 			$this->content .= $this->doc->startPage($LANG->getLL("title"));
@@ -232,4 +229,3 @@ foreach ($SOBE->include_once as $INC_FILE) {
 
 $SOBE->main();
 $SOBE->printContent();
-?>

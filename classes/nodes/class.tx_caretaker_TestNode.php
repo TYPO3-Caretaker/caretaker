@@ -146,10 +146,8 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		if ($this->testService === NULL) {
 			if ($this->testServiceType) {
 				$info = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findService('caretaker_test_service', $this->testServiceType);
-				if ($info && $info['classFile']) {
-					$requireFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($info['classFile']);
-					if (@is_file($requireFile)) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce($requireFile);
+				if ($info && $info['className']) {
+					if (class_exists($info['className'])) {
 						$this->testService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($info['className']);
 						if ($this->testService) {
 							$this->testService->setInstance($this->getInstance());
@@ -158,7 +156,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 							throw new Exception('testservice class ' . $info['className'] . ' could not be instantiated');
 						}
 					} else {
-						throw new Exception('testservice ' . $this->testServiceType . ' class file ' . $requireFile . ' not found');
+						throw new Exception('testservice ' . $this->testServiceType . ' class ' . $info['className'] . ' not found');
 					}
 				} else {
 					throw new Exception('caretaker testservice ' . $this->testServiceType . ' not found');

@@ -61,10 +61,9 @@ class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange {
 
 	/**
 	 * Add a TestResult to the ResultRange
-	 * @see caretaker/trunk/classes/results/tx_caretaker_NodeResultRange#addResult()
+	 * @param tx_caretaker_NodeResult $result
 	 */
 	public function addResult($result) {
-
 		parent::addResult($result);
 
 		$value = $result->getValue();
@@ -73,7 +72,6 @@ class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange {
 		} else if ($value > $this->max_value) {
 			$this->max_value = $value;
 		}
-
 	}
 
 	/**
@@ -99,6 +97,7 @@ class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange {
 	 */
 	public function getMedianValue() {
 		$values = array();
+		/** @var tx_caretaker_TestResult $result */
 		foreach ($this as $result) {
 			$state = $result->getState();
 			$value = $result->getValue();
@@ -110,9 +109,12 @@ class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange {
 		$num = count($values);
 		if ($num > 0) {
 			if ($num % 2 == 1) {
-				return ($values[(int)($num - 1) / 2]);
+				$index = (int)(($num - 1) / 2);
+				return ($values[$index]);
 			} else {
-				return (($values[(int)$num / 2] + $values[(int)($num / 2 - 1)]) / 2.0);
+				$index = (int)($num / 2);
+				$index2 = (int)($num / 2 - 1);
+				return (($values[$index] + $values[$index2]) / 2.0);
 			}
 		} else {
 			return 0;
@@ -125,24 +127,19 @@ class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange {
 	 * @return float
 	 */
 	public function getAverageValue() {
-
 		$value_area = 0;
 		$value_range = 0;
 		$currentResult = NULL;
 		$nextResult = NULL;
-		$length = $this->getLength();
 
-
-		// $currentResult = $this->
 		$this->rewind();
 		$currentResult = $this->current();
 		$nextResult = $this->next();
 		$index = 0;
-		$length = $this->count();
 		while ($currentResult) {
 			// start
 			if ($currentResult && $nextResult) {
-				$timeStart = $currentResult->getTstamp();
+				$timeStart = $currentResult->getTimestamp();
 				$timeStop = $nextResult->getTstamp();
 				$value = $currentResult->getValue();
 				$state = $currentResult->getState();
@@ -151,7 +148,6 @@ class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange {
 					$value_area += $timeRange * $value;
 					$value_range += $timeRange;
 				}
-
 			}
 
 			$index++;
@@ -159,14 +155,10 @@ class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange {
 			$nextResult = $this->next();
 		}
 
-
 		if ($value_range > 0) {
 			return ($value_area / $value_range);
 		} else {
 			return 0;
 		}
 	}
-
 }
-
-?>

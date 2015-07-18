@@ -45,13 +45,13 @@ require_once($BACK_PATH . 'init.php');
 $GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
 $GLOBALS['BE_USER']->modAccess($MCONF, 1);
 
-class tx_caretaker_mod_nav extends t3lib_SCbase {
+class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	var $pageinfo;
 	var $node_repository;
 	var $instance_repository;
 
 	/**
-	 * @var t3lib_PageRenderer
+	 * @var \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	var $pageRenderer;
 
@@ -69,8 +69,6 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 	/**
 	 * Main function of the module. Write the content to $this->content
 	 * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
-	 *
-	 * @return    [type]        ...
 	 */
 	function main() {
 		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
@@ -129,7 +127,7 @@ class tx_caretaker_mod_nav extends t3lib_SCbase {
 		} else {
 			// If no access or if not admin
 
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("mediumDoc");
+			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Template\MediumDocumentTemplate');
 			$this->doc->backPath = $BACK_PATH;
 
 			$this->content .= $this->doc->startPage($LANG->getLL("title"));
@@ -163,4 +161,3 @@ foreach ($SOBE->include_once as $INC_FILE) include_once($INC_FILE);
 
 $SOBE->main();
 $SOBE->printContent();
-?>

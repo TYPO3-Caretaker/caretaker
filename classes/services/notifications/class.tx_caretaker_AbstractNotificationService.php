@@ -58,7 +58,6 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
 	}
 
 	/**
-	 *
 	 * @param string $id
 	 */
 	public function setId($id) {
@@ -74,7 +73,6 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
 	}
 
 	/**
-	 *
 	 * @param mixed $notification
 	 * @param string $key
 	 */
@@ -82,6 +80,10 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
 		$this->notificationQueue[$key] = $notification;
 	}
 
+	/**
+	 * @param string $key
+	 * @return mixed
+	 */
 	public function getNotificationFromQueue($key = null) {
 		if ($key != null && isset($this->notificationQueue[$key])) {
 			return $this->notificationQueue[$key];
@@ -90,6 +92,9 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
 		}
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getNotificationQueue() {
 		return $this->notificationQueue;
 	}
@@ -123,6 +128,12 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
 		return ($enabled === TRUE && TYPO3_MODE == 'BE' && (defined('TYPO3_cliMode') && ($beUsername == '_cli_caretaker' || $beUsername == '_cli_scheduler') || $GLOBALS['MCONF']['name'] == 'tools_txschedulerM1'));
 	}
 
+	/**
+	 * @param string $event
+	 * @param tx_caretaker_AbstractNode $node
+	 * @param tx_caretaker_TestResult $result
+	 * @param tx_caretaker_TestResult $lastResult
+	 */
 	public function addNotification($event, $node, $result = NULL, $lastResult = NULL) {
 	}
 
@@ -130,5 +141,3 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
 	}
 
 }
-
-?>

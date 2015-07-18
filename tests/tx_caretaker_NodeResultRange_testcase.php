@@ -34,9 +34,6 @@
  * $Id$
  */
 
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/classes/results/class.tx_caretaker_NodeResult.php');
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/classes/results/class.tx_caretaker_NodeResultRange.php');
-
 /**
  * Stub calss to test the methods of the abstract Node Result Range Class
  */
@@ -99,8 +96,8 @@ class tx_caretaker_NodeResultRange_testcase extends tx_phpunit_testcase {
 		$range->addResult($res_3);
 		$range->addResult($res_4);
 
-		$this->assertEquals($range->getFirst()->getTstamp(), 123);
-		$this->assertEquals($range->getLast()->getTstamp(), 789);
+		$this->assertEquals($range->getFirst()->getTimestamp(), 123);
+		$this->assertEquals($range->getLast()->getTimestamp(), 789);
 
 	}
 

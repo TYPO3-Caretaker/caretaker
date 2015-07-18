@@ -37,26 +37,24 @@ interface tx_caretaker_TestServiceInterface {
 
 	/**
 	 * Initialize the Service
-	 * @return unknown_type
 	 */
 	public function init();
 
 	/**
 	 * Set the instance for the test execution
-	 * @param $instance
+	 * @param tx_caretaker_InstanceNode $instance
 	 */
 	function setInstance($instance);
 
 	/**
-	 * Set the configuttion for this test
-	 * @param $configuration
+	 * Set the configuration for this test
+	 * @param array $configuration
 	 */
 	function setConfiguration($configuration);
 
 	/**
 	 * Run the Test defined in TestConf and return a Testresult Object
 	 *
-	 * @param array $flexFormData Flexform Configuration
 	 * @return tx_caretaker_TestResult
 	 */
 	public function runTest();
@@ -84,6 +82,5 @@ interface tx_caretaker_TestServiceInterface {
 	 * @return string
 	 */
 	public function getConfigurationInfo();
-
 
 }

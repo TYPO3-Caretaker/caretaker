@@ -42,8 +42,8 @@ class tx_caretaker_pi_abstract_wizicon {
 	/**
 	 * Processing the wizard items array
 	 *
-	 * @param    array $wizardItems : The wizard items
-	 * @return    Modified array with wizard items
+	 * @param array $wizardItems The wizard items
+	 * @return array Modified array with wizard items
 	 */
 	function proc($wizardItems) {
 		global $LANG;
@@ -63,7 +63,7 @@ class tx_caretaker_pi_abstract_wizicon {
 	/**
 	 * Reads the [extDir]/locallang.xml and returns the \$LOCAL_LANG array found in that file.
 	 *
-	 * @return    The array with language labels
+	 * @return array The array with language labels
 	 */
 	function includeLocalLang() {
 		global $LANG;
@@ -77,5 +77,3 @@ class tx_caretaker_pi_abstract_wizicon {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_abstract/class.tx_caretaker_pi_abstract_wizicon.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_abstract/class.tx_caretaker_pi_abstract_wizicon.php']);
 }
-
-?>

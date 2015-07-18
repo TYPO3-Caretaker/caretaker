@@ -54,7 +54,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	protected $valueDescription = 'Milliseconds';
 
 	/**
-	 * Service type description in human readble form.
+	 * Service type description in human readable form.
 	 * @var string
 	 */
 	protected $typeDescription = 'LLL:EXT:caretaker/locallang_fe.xml:http_service_description';
@@ -71,7 +71,6 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @see caretaker/trunk/services/tx_caretaker_TestServiceBase#runTest()
 	 */
 	function runTest() {
-
 		$timeWarning = $this->getTimeWarning();
 		$timeError = $this->getTimeError();
 
@@ -285,10 +284,8 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 				break;
 		}
 
-
 		// Return
 		return tx_caretaker_TestResult::create($resultState, $time, new tx_caretaker_ResultMessage($message, $values), $submessages);
-
 	}
 
 
@@ -300,7 +297,6 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @return boolean
 	 */
 	protected function checkSingleHeader($headerValue, $expectedValue) {
-
 		if (!$headerValue || strlen(trim($headerValue)) == 0) return false;
 
 		// replace values in expectd headers
@@ -350,9 +346,9 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 
 
 	public function parseHeaderDate($datestring) {
-		// replace  wekkdays >> %u
+		// replace  weekdays >> %u
 		$datestring = str_replace(array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'), array(1, 2, 3, 4, 5, 6, 7), $datestring);
-		// replace Month >> %m or %e
+		// replace month >> %m or %e
 		$datestring = str_replace(array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'), array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), $datestring);
 		// convert
 		$date = strptime($datestring, '%u, %e %m %Y %H:%M:%S %Z');
@@ -361,7 +357,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	}
 
 	/**
-	 * Get the maximal time befor WARNING
+	 * Get the maximal time before WARNING
 	 * @return integer
 	 */
 	protected function getTimeWarning() {
@@ -377,7 +373,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	}
 
 	/**
-	 * Get the error type that is returned if the http status check is not successfull
+	 * Get the error type that is returned if the http status check is not successful
 	 * @return int
 	 */
 	protected function getErrorTypeOnFailure() {
@@ -394,13 +390,12 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		}
 	}
 
-
 	/**
 	 * Get the expected http status code from the test configuration
-	 * @return integer
+	 * @return array
 	 */
 	protected function getExpectedReturnCode() {
-		return $arr = explode(',', $this->getConfigValue('expected_status', false, 'sResponse'));
+		return explode(',', $this->getConfigValue('expected_status', false, 'sResponse'));
 	}
 
 	/**
@@ -442,7 +437,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 
 	/**
 	 * Get the expected headers from the test configuration
-	 * @return array an associative Array with headers as key and expectec values as sting value
+	 * @return array an associative Array with headers as key and expected values as string value
 	 */
 	protected function getExpectedRegex() {
 		$expectedRegex = array();
@@ -543,11 +538,11 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 	 * @param string $request_username
 	 * @param string $request_password
 	 * @param string $request_data
-	 * @param string $request_proxy
+	 * @param bool|string $request_proxy
+	 * @param bool|string $request_proxyport
 	 * @return array time in seconds and status information im associatie arrays
 	 */
 	protected function executeCurlRequest($request_url, $timeout = 0, $request_port = false, $request_method = 'GET', $request_username = '', $request_password = '', $request_data = '', $request_proxy = false, $request_proxyport = false) {
-
 		$curl = curl_init();
 
 		// url & timeout
@@ -626,5 +621,3 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase {
 		return array($time, $content, $info, $headers);
 	}
 }
-
-?>

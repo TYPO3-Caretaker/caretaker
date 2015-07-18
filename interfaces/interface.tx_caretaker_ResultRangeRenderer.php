@@ -37,7 +37,6 @@ interface tx_caretaker_ResultRangeRenderer {
 
 	/**
 	 * Render the Result Range for this testNode
-	 *
 	 * @param string $filename
 	 * @param tx_caretaker_TestResultRange $test_result_range
 	 * @param string $title
@@ -48,17 +47,15 @@ interface tx_caretaker_ResultRangeRenderer {
 
 	/**
 	 * Render the ResultRange
-	 *
 	 * @param string $filename
 	 * @param tx_caretaker_AggregatorResultRange $aggregator_result_range
-	 * @param string $itle
+	 * @param string $title
 	 * @return string HTML-Code to show the Chart
 	 */
 	public function renderAggregatorResultRange($filename, $aggregator_result_range, $title);
 
 	/**
 	 * Render multiple TestResultRanges
-	 *
 	 * @param string $filename
 	 * @param array $test_result_ranges
 	 * @param array $titles
@@ -67,5 +64,3 @@ interface tx_caretaker_ResultRangeRenderer {
 	public function renderMultipleTestResultRanges($filename, $test_result_ranges, $titles);
 
 }
-
-?>

@@ -38,14 +38,16 @@
  * Plugin 'Overview' for the 'user_overview' extension.
  */
 class tx_caretaker_pi_overview extends tx_caretaker_pibase {
+
 	var $prefixId = 'tx_caretaker_pi_overview';        // Same as class name
 	var $scriptRelPath = 'pi_overview/class.tx_caretaker_pi_overview.php';    // Path to this script relative to the extension dir.
 	var $extKey = 'caretaker';    // The extension key.
 
-
+	/**
+	 * @return string
+	 */
 	function getContent() {
 		$nodes = $this->getNodes();
-
 		if (count($nodes) > 0) {
 			$content = '';
 			foreach ($nodes as $node) {
@@ -57,6 +59,9 @@ class tx_caretaker_pi_overview extends tx_caretaker_pibase {
 		}
 	}
 
+	/**
+	 * @return array
+	 */
 	function getNodes() {
 		$this->pi_initPIflexForm();
 		$node_ids = $this->pi_getFFValue($this->cObj->data['pi_flexform'], 'node_ids');
@@ -79,5 +84,3 @@ class tx_caretaker_pi_overview extends tx_caretaker_pibase {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_overview/class.tx_caretaker_pi_overview.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_overview/class.tx_caretaker_pi_overview.php']);
 }
-
-?>

@@ -57,10 +57,9 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	 * Constructor
 	 *
 	 * @param integer $timestamp
-	 * @param integer $state
-	 * @param float $value
+	 * @param int $state
+	 * @param float|int $value
 	 * @param string $message
-	 * @param array $info
 	 * @param array $submessages
 	 */
 	public function __construct($timestamp = 0, $state = tx_caretaker_Constants::state_undefined, $value = 0, $message = '', $submessages = array()) {
@@ -81,9 +80,10 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	/**
 	 * Create a new testresult with current timestamp
 	 *
-	 * @param integer $status
-	 * @param float $value
+	 * @param int $status
+	 * @param float|int $value
 	 * @param string $message
+	 * @param array $submessages
 	 * @return tx_caretaker_TestResult
 	 */
 	static public function create($status = tx_caretaker_Constants::state_undefined, $value = 0, $message = '', $submessages = NULL) {
@@ -126,5 +126,3 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 		return md5(serialize($state));
 	}
 }
-
-?>

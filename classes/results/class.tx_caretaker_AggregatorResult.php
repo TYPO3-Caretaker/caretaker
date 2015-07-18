@@ -71,7 +71,6 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 	 */
 	protected $num_WARNING = 0;
 
-
 	/**
 	 * Constructor
 	 *
@@ -91,7 +90,6 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 		$this->num_OK = $num_ok;
 		$this->num_WARNING = $num_warning;
 		$this->num_ERROR = $num_error;
-
 	}
 
 	/**
@@ -116,9 +114,9 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 	 * @param array $submessages array of tx_caretaker_ResultMessage objects
 	 * @return tx_caretaker_AggregatorResult
 	 */
-	static public function create($state = tx_caretaker_Constants::state_undefined, $num_undefined = 0, $num_ok = 0, $num_warning = 0, $num_error = 0, $message = '', $submessges = NULL) {
+	static public function create($state = tx_caretaker_Constants::state_undefined, $num_undefined = 0, $num_ok = 0, $num_warning = 0, $num_error = 0, $message = '', $submessages = NULL) {
 		$timestamp = time();
-		return new tx_caretaker_AggregatorResult($timestamp, $state, $num_undefined, $num_ok, $num_warning, $num_error, $message, $submessges);
+		return new tx_caretaker_AggregatorResult($timestamp, $state, $num_undefined, $num_ok, $num_warning, $num_error, $message, $submessages);
 	}
 
 	/**
@@ -163,7 +161,6 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 		return $this->$variableName;
 	}
 
-
 	/**
 	 * Get a Hash for the given Status. If two results give the same hash they
 	 * are considered to be equal.
@@ -181,5 +178,3 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult {
 		return md5(serialize($state));
 	}
 }
-
-?>

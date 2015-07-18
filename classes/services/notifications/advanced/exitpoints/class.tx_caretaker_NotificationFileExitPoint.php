@@ -34,8 +34,6 @@
  * $Id$
  */
 
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker', 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationBaseExitPoint.php'));
-
 /**
  *
  */
@@ -74,5 +72,3 @@ class tx_caretaker_NotificationFileExitPoint extends tx_caretaker_NotificationBa
 		// nothing to do here
 	}
 }
-
-?>

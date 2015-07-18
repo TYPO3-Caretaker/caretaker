@@ -68,9 +68,10 @@ class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_Notificatio
 
 	/**
 	 * @param array $flexformConfig
-	 * @return
+	 * @return array
 	 */
 	protected function flattenFlexformConfig($flexformConfig) {
+		$config = array();
 		foreach ($flexformConfig['data']['sDEF']['lDEF'] as $key => $value) {
 			$config[$key] = $value['vDEF'];
 		}
@@ -94,39 +95,43 @@ class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_Notificatio
 	 * @return string
 	 */
 	protected function getMessageForNotification($notification) {
-		$ancestorResult = $notification['node']->getPreviousDifferingResult($notification['result']);
-		$ancestorResultPrev = $notification['node']->getPreviousDifferingResult($ancestorResult);
+		/** @var tx_caretaker_AbstractNode $node */
+		$node = $notification['node'];
+		/** @var tx_caretaker_TestResult $result */
+		$result = $notification['result'];
+		$ancestorResult = $node->getPreviousDifferingResult($result);
+		$ancestorResultPrev = $node->getPreviousDifferingResult($ancestorResult);
 
-		$durationStateBefore = ($notification['result'] && $ancestorResult->getTimestamp() > 0 && $ancestorResultPrev->getTimestamp() > 0 ?
+		$durationStateBefore = ($result && $ancestorResult->getTimestamp() > 0 && $ancestorResultPrev->getTimestamp() > 0 ?
 				$ancestorResult->getTimestamp() - $ancestorResultPrev->getTimestamp() :
 				0);
-		$durationState = ($notification['result'] && $notification['result']->getTimestamp() > 0 && $ancestorResult->getTimestamp() > 0 ?
-				$notification['result']->getTimestamp() - $ancestorResult->getTimestamp() :
+		$durationState = ($result && $result->getTimestamp() > 0 && $ancestorResult->getTimestamp() > 0 ?
+				$result->getTimestamp() - $ancestorResult->getTimestamp() :
 				0);
 
 		// TODO l10n
 		// TODO template
 
 		$messages = array();
-		$messages[] = ($notification['result'] ? 'Date/Time: ' . date('Y-m-d H:i:s', $notification['result']->getTimestamp()) : '');
+		$messages[] = ($result ? 'Date/Time: ' . date('Y-m-d H:i:s', $result->getTimestamp()) : '');
 		$messages[] = 'Instance: ' .
-				($notification['node'] instanceof tx_caretaker_AbstractNode && $notification['node']->getInstance() ?
-						'"' . $notification['node']->getInstance()->getTitle() . '"' :
+				($node instanceof tx_caretaker_AbstractNode && $node->getInstance() ?
+						'"' . $node->getInstance()->getTitle() . '"' :
 						'-'
 				) .
-				($notification['node'] instanceof tx_caretaker_AbstractNode ?
-						' [' . $notification['node']->getCaretakerNodeId() . ']' :
+				($node instanceof tx_caretaker_AbstractNode ?
+						' [' . $node->getCaretakerNodeId() . ']' :
 						'-'
 				);
-		$messages[] = 'Test: ' . $notification['node']->getTitle();
-		$messages[] = ($notification['result'] ? 'State is now: ' . $notification['result']->getLocallizedStateInfo() .
+		$messages[] = 'Test: ' . $node->getTitle();
+		$messages[] = ($result ? 'State is now: ' . $result->getLocallizedStateInfo() .
 				($durationState > 0 ? ' (since ' . $this->humanReadableTime($durationState) . ')' : '') :
 				'');
 		$messages[] = ($ancestorResult ?
 				'State before: ' . $ancestorResult->getLocallizedStateInfo() .
 				($durationStateBefore > 0 ? ' (was ' . $this->humanReadableTime($durationStateBefore) . ')' : '') :
 				'');
-		$messages[] = ($notification['result'] ? 'Info: ' . chr(10) . $notification['result']->getLocallizedInfotext() : '');
+		$messages[] = ($result ? 'Info: ' . chr(10) . $result->getLocallizedInfotext() : '');
 		$messages[] = '';
 		$messages[] = '----------------------------------------------------';
 
@@ -149,5 +154,3 @@ class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_Notificatio
 		return $time . ' ' . $periods[$j];
 	}
 }
-
-?>

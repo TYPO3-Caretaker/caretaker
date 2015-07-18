@@ -60,7 +60,6 @@ class tx_caretaker_ContactRepository {
 	 * Private constructor use getInstance instead
 	 */
 	private function __construct() {
-		//
 	}
 
 	/**
@@ -124,7 +123,6 @@ class tx_caretaker_ContactRepository {
 	 * @return array
 	 */
 	public function getContactsByNode(tx_caretaker_AbstractNode $node) {
-
 		$contacts = array();
 
 		// only Instancegroups and Instances store Contacts
@@ -175,8 +173,6 @@ class tx_caretaker_ContactRepository {
 	 * @parem array $row
 	 */
 	private function dbrow2contact($row) {
-
-
 		$address = false;
 		if ($row['uid_address']) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Addresses, 'uid=' . $row['uid_address'] . ' AND hidden=0  AND deleted=0', '', '', 1);
@@ -198,7 +194,5 @@ class tx_caretaker_ContactRepository {
 
 		return new tx_caretaker_Contact($address, $role);
 	}
-
 }
 
-?>

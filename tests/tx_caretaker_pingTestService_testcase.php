@@ -34,9 +34,6 @@
  * $Id$
  */
 
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . 'classes/services/tests/class.tx_caretaker_pingTestService.php');
-
-
 class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase {
 
 	/**

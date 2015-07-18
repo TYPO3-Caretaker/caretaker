@@ -84,5 +84,3 @@ class tx_caretaker_Constants {
 	const relationTable_Testgroup2Test =	 'tx_caretaker_testgroup_test_mm';
 	const relationTable_Instance2Test =		 'tx_caretaker_instance_test_mm';
 }
-
-?>

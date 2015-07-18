@@ -70,8 +70,8 @@ class tx_caretaker_LatestVersionsHelper {
 			}
 
 		}
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versions', $max);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versionsStable', $stable);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versions', $max);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versionsStable', $stable);
 		return TRUE;
 	}
 

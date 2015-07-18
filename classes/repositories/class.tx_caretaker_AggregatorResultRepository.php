@@ -78,7 +78,7 @@ class tx_caretaker_AggregatorResultRepository {
 	 * Get the latest Testresults for the given Node Object
 	 *
 	 * @param tx_caretaker_AbstractNode $node
-	 * @returm tx_caretaker_AggreagtorResult
+	 * @return tx_caretaker_AggregatorResult
 	 */
 	public function getLatestByNode($node) {
 
@@ -134,7 +134,7 @@ class tx_caretaker_AggregatorResultRepository {
 
 		// add first value if needed
 		$first = $result_range->getFirst();
-		if (!$first || ($first && $first->getTstamp() > $start_timestamp)) {
+		if (!$first || ($first && $first->getTimestamp() > $start_timestamp)) {
 			$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_aggregatorresult', $base_condition . ' AND tstamp <' . $start_timestamp, '', 'tstamp DESC', 1);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -145,8 +145,9 @@ class tx_caretaker_AggregatorResultRepository {
 		}
 
 		// add last value if needed
+		/** @var tx_caretaker_AggregatorResult $last */
 		$last = $result_range->getLast();
-		if ($last && $last->getTstamp() < $stop_timestamp) {
+		if ($last && $last->getTimestamp() < $stop_timestamp) {
 			$real_last = new tx_caretaker_AggregatorResult($stop_timestamp, $last->getState(), $last->getNumUNDEFINED(), $last->getNumOK(), $last->getNumWARNING(), $last->getNumERROR(), $last->getMessage()->getText());
 			$result_range->addResult($real_last);
 		}
@@ -184,6 +185,12 @@ class tx_caretaker_AggregatorResultRepository {
 
 	}
 
+	/**
+	 * @param tx_caretaker_AbstractNode $node
+	 * @param int $offset
+	 * @param int $limit
+	 * @return tx_caretaker_AggregatorResultRange
+	 */
 	public function getResultRangeByNodeAndOffset($node, $offset = 0, $limit = 10) {
 		$result_range = new tx_caretaker_AggregatorResultRange(NULL, NULL);
 
@@ -205,7 +212,6 @@ class tx_caretaker_AggregatorResultRepository {
 			$result_range->addResult($result);
 		}
 
-
 		return $result_range;
 	}
 
@@ -217,7 +223,6 @@ class tx_caretaker_AggregatorResultRepository {
 	 * @return integer UID of the new DB result Record
 	 */
 	public function addNodeResult(tx_caretaker_AggregatorNode $node, tx_caretaker_AggregatorResult $aggregator_result) {
-
 		//add an undefined row to the testresult column
 		$instance = $node->getInstance();
 		if ($instance) {
@@ -232,7 +237,7 @@ class tx_caretaker_AggregatorResultRepository {
 				'instance_uid' => $instanceUid,
 
 				'result_status' => $aggregator_result->getState(),
-				'tstamp' => $aggregator_result->getTstamp(),
+				'tstamp' => $aggregator_result->getTimestamp(),
 				'result_num_undefined' => $aggregator_result->getNumUNDEFINED(),
 				'result_num_ok' => $aggregator_result->getNumOK(),
 				'result_num_warnig' => $aggregator_result->getNumWARNING(),
@@ -267,8 +272,4 @@ class tx_caretaker_AggregatorResultRepository {
 		);
 		return $instance;
 	}
-
-
 }
-
-?>

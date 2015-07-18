@@ -77,6 +77,7 @@ abstract class tx_caretaker_NodeResult {
 	 * @param integer $timestamp Timestamp of the result
 	 * @param integer $state Status of the result
 	 * @param mixed $message Result message (string or tx_caretaker_ResultMessage Object )
+	 * @param array $submessages
 	 */
 	public function __construct($timestamp, $state, $message, $submessages) {
 		$this->timestamp = (int)$timestamp;
@@ -120,18 +121,7 @@ abstract class tx_caretaker_NodeResult {
 				return 'ACK';
 			case tx_caretaker_Constants::state_due:
 				return 'DUE';
-
 		}
-	}
-
-	/**
-	 * Get Timestamp of this Testresult
-	 * @return integer
-	 * @deprecated
-	 * @todo remove this method
-	 */
-	public function getTstamp() {
-		return $this->timestamp;
 	}
 
 	/**
@@ -177,16 +167,16 @@ abstract class tx_caretaker_NodeResult {
 	public function getLocallizedInfotext() {
 		$result = $this->message->getLocallizedInfotext();
 		if ($this->submessages) {
+			/** @var tx_caretaker_ResultMessage $submessage */
 			foreach ($this->submessages as $submessage) {
 				$result .= chr(10) . ' - ' . $submessage->getLocallizedInfotext();
 			}
 		}
-
 		return $result;
 	}
 
 	/**
-	 * Get the locallized StateInformation
+	 * Get the localized StateInformation
 	 *
 	 * @return string
 	 */
@@ -195,9 +185,9 @@ abstract class tx_caretaker_NodeResult {
 	}
 
 	/**
-	 * Check if another tx_caretaker_AggregatorResult is equal to this one
-	 * @param tx_caretaker_AggregatorResult $result
-	 * @return boolean
+	 * Check if another Result is equal to this one
+	 * @param tx_caretaker_NodeResult $result
+	 * @return bool
 	 */
 	public function equals(tx_caretaker_NodeResult $result) {
 		if ($this->getResultHash() == $result->getResultHash()) {
@@ -208,9 +198,9 @@ abstract class tx_caretaker_NodeResult {
 	}
 
 	/**
-	 * Check if another tx_caretaker_AggregatorResult is different from this one
-	 * @param tx_caretaker_AggregatorResult $result
-	 * @return boolean
+	 * Check if another Result is different from this one
+	 * @param tx_caretaker_NodeResult $result
+	 * @return bool
 	 */
 	public function isDifferent(tx_caretaker_NodeResult $result) {
 		if ($this->getResultHash() != $result->getResultHash()) {

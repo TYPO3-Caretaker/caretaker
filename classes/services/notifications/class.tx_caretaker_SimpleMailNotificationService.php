@@ -140,6 +140,7 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 			$contacts = $node->getContacts();
 		}
 
+		/** @var tx_caretaker_Contact $contact */
 		foreach ($contacts as $contact) {
 			$address = $contact->getAddress();
 			if (!$this->recipients_addresses[$address['uid']]) {
@@ -229,10 +230,11 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 	 * @param $recipient
 	 * @param $from
 	 * @param $message
-	 * @return unknown_type
+	 * @return int
 	 */
 	private function sendMail($subject, $recipient, $from, $message) {
-		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_mail_Message');
+		/** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
+		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Mail\MailMessage');
 		$mail->setFrom($from);
 		$mail->setTo($recipient);
 		$mail->setSubject($subject);
@@ -240,5 +242,3 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 		return $mail->send();
 	}
 }
-
-?>

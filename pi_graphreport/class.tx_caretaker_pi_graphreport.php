@@ -38,6 +38,7 @@
  * Plugin 'Overview' for the 'user_overview' extension.
  */
 class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
+
 	var $prefixId = 'tx_caretaker_pi_graphreport';        // Same as class name
 	var $scriptRelPath = 'pi_graphreport/class.tx_caretaker_pi_graphreport.php';    // Path to this script relative to the extension dir.
 	var $extKey = 'caretaker';    // The extension key.
@@ -47,13 +48,15 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 		return parent::main($content, $conf);
 	}
 
+	/**
+	 * @return string
+	 */
 	function getContent() {
-
 		$template = $this->cObj->cObjGetSingle($this->conf['template'], $this->conf['template.']);
 
 		// render Node Infos
 		$data = $this->getData();
-		$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
+		$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 		$lcObj->start($data);
 		$node_markers = array();
 		if ($this->conf['markers.']) {
@@ -68,6 +71,9 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 		return $template;
 	}
 
+	/**
+	 * @return array
+	 */
 	function getData() {
 		$data = $this->cObj->data;
 
@@ -77,26 +83,25 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 		$titles = array();
 
 		if (count($nodes) > 0) {
-
-			$content = '';
 			$result_ranges = array();
 			$id = '';
+			$lastTitle = '';
 			foreach ($nodes as $node) {
-				if (is_a($node, 'tx_caretaker_TestNode')) {
+				if ($node instanceof tx_caretaker_TestNode) {
 					$result_ranges[] = $node->getTestResultRange(time() - (3600 * $range), time());
 					$titles[] = $node->getInstance()->getTitle() . ' - ' . $node->getTitle();
 					$id .= $node->getCaretakerNodeId();
+					$lastTitle = $node->getTitle();
 				}
 			}
 
 			if (count($result_ranges) > 0) {
-
 				$filename = 'typo3temp/caretaker/charts/report_' . $id . '_' . $range . '.png';
 				$base = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 
 
 				$MultipleTestResultRangeChartRenderer = new tx_caretaker_MultipleTestResultRangeChartRenderer();
-				$MultipleTestResultRangeChartRenderer->setTitle($node->getTitle());
+				$MultipleTestResultRangeChartRenderer->setTitle($lastTitle);
 
 				foreach ($result_ranges as $key => $range) {
 					$MultipleTestResultRangeChartRenderer->addTestResultrange($range, $titles[$key]);
@@ -104,10 +109,6 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 
 				$result = $MultipleTestResultRangeChartRenderer->getChartImageTag($filename, $base);
 				$data['chart'] = $result;
-
-				// $renderer = tx_caretaker_ResultRangeRenderer_pChart::getInstance($this->LOCAL_LANG, $this->LLkey);
-				// $result   = $renderer->renderMultipleTestResultRanges(PATH_site.$filename, $result_ranges, $titles );
-				// $data['chart'] .= '<img src="'.$base.$filename.'" />';;
 			} else {
 				$data['chart'] = 'please select one or more test-nodes';
 			}
@@ -117,9 +118,11 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 		}
 
 		return $data;
-
 	}
 
+	/**
+	 * @return int
+	 */
 	function getTimeRange() {
 		$range = 24;
 
@@ -152,9 +155,6 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 	}
 }
 
-
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_graphreport/class.tx_caretaker_pi_graphreport.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_graphreport/class.tx_caretaker_pi_graphreport.php']);
 }
-
-?>

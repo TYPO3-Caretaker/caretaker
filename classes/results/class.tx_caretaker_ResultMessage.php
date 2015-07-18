@@ -48,7 +48,6 @@
  */
 class tx_caretaker_ResultMessage {
 
-
 	/**
 	 * The Result Message string. Can be a LLL: String or can contain {LLL:parts}
 	 * @var string;
@@ -90,10 +89,9 @@ class tx_caretaker_ResultMessage {
 
 	/**
 	 * Get the locallized and valuemerged message to show
-	 * @return sring
+	 * @return string
 	 */
 	public function getLocallizedInfotext() {
-
 		$result = $this->text;
 
 		// check for LLL strings
@@ -108,5 +106,3 @@ class tx_caretaker_ResultMessage {
 		return $result;
 	}
 }
-
-?>

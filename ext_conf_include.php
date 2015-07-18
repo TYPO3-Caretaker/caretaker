@@ -38,9 +38,6 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 
-// load Service Helper
-include_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . 'classes/helpers/class.tx_caretaker_ServiceHelper.php');
-
 // register Test-Services
 tx_caretaker_ServiceHelper::registerCaretakerTestService($_EXTKEY, 'classes/services/tests', 'tx_caretaker_ping', 'Ping', 'Retrieves System Informations');
 tx_caretaker_ServiceHelper::registerCaretakerTestService($_EXTKEY, 'classes/services/tests', 'tx_caretaker_http', 'HTTP', 'Call an URI and check the HTTP-Status');
@@ -96,7 +93,3 @@ tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
 		Array('EXT:caretaker/res/js/tx.caretaker.NodeProblems.js'),
 		$_EXTKEY
 );
-
-
-
-?>
