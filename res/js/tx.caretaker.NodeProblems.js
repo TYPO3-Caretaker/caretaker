@@ -26,7 +26,7 @@ tx.caretaker.NodeProblems = Ext.extend( Ext.grid.GridPanel , {
 				'state'
 			],
 			proxy: new Ext.data.HttpProxy({
-				url: config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodeproblems&node=' + config.node_id
+				url: TYPO3.settings.ajaxUrls['tx_caretaker::nodeproblems'] + '&node=' + config.node_id
 			})
 		});
 

@@ -20,37 +20,37 @@ tx.caretaker.NodeCharts = Ext.extend(Ext.Panel, {
 				items: [
 					{
 						title:'1 h',
-						autoLoad  : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + config.node_id +  '&duration= ' +  (60*60)
+						autoLoad  : TYPO3.settings.ajaxUrls['tx_caretaker::nodegraph'] + '&node=' + config.node_id +  '&duration= ' +  (60*60)
 					},{
 						title:'3 h',
-						autoLoad  : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + config.node_id + '&duration= ' +  (60*60*3)
+						autoLoad  : TYPO3.settings.ajaxUrls['tx_caretaker::nodegraph'] + '&node=' + config.node_id + '&duration= ' +  (60*60*3)
 					},{
 						title:'12 h',
-						autoLoad  : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + config.node_id + '&duration= ' +  (60*60*12)
+						autoLoad  : TYPO3.settings.ajaxUrls['tx_caretaker::nodegraph'] + '&node=' + config.node_id + '&duration= ' +  (60*60*12)
 					},{
 						title:'24 h',
-						autoLoad  : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + config.node_id + '&duration= ' +  (60*60*24)
+						autoLoad  : TYPO3.settings.ajaxUrls['tx_caretaker::nodegraph'] + '&node=' + config.node_id + '&duration= ' +  (60*60*24)
 					},{
 						title:'48 h',
-						autoLoad  : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + config.node_id + '&duration= ' +  (60*60*48)
+						autoLoad  : TYPO3.settings.ajaxUrls['tx_caretaker::nodegraph'] + '&node=' + config.node_id + '&duration= ' +  (60*60*48)
 					},{
 						title:'1 Week',
-						autoLoad  : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + config.node_id + '&duration= ' +  (60*60*24*7)
+						autoLoad  : TYPO3.settings.ajaxUrls['tx_caretaker::nodegraph'] + '&node=' + config.node_id + '&duration= ' +  (60*60*24*7)
 					},{
 						title:'2 Weeks',
-						autoLoad  : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + config.node_id + '&duration= ' +  (60*60*24*14)
+						autoLoad  : TYPO3.settings.ajaxUrls['tx_caretaker::nodegraph'] + '&node=' + config.node_id + '&duration= ' +  (60*60*24*14)
 					},{
 						title:'1 Month',
-						autoLoad  : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + config.node_id + '&duration= ' +  (60*60*24*31)
+						autoLoad  : TYPO3.settings.ajaxUrls['tx_caretaker::nodegraph'] + '&node=' + config.node_id + '&duration= ' +  (60*60*24*31)
 					},{
 						title:'3 Months',
-						autoLoad  : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + config.node_id + '&duration= ' +  (60*60*34*93)
+						autoLoad  : TYPO3.settings.ajaxUrls['tx_caretaker::nodegraph'] + '&node=' + config.node_id + '&duration= ' +  (60*60*34*93)
 					},{
 						title:'6 Months',
-						autoLoad  : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + config.node_id + '&duration= ' +  (60*60*34*182)
+						autoLoad  : TYPO3.settings.ajaxUrls['tx_caretaker::nodegraph'] + '&node=' + config.node_id + '&duration= ' +  (60*60*34*182)
 					},{
 						title:'12 Months',
-						autoLoad  : config.back_path + 'ajax.php?ajaxID=tx_caretaker::nodegraph&node=' + config.node_id + '&duration= ' +  (60*60*34*365)
+						autoLoad  : TYPO3.settings.ajaxUrls['tx_caretaker::nodegraph'] + '&node=' + config.node_id + '&duration= ' +  (60*60*34*365)
 					}
 				]
 

@@ -37,14 +37,6 @@
 /**
  * Module 'Caretaker' for the 'caretaker' extension.
  */
-
-unset($MCONF);
-require('conf.php');
-require_once($BACK_PATH . 'init.php');
-
-$GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
-$GLOBALS['BE_USER']->modAccess($MCONF, 1);
-
 class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	var $pageinfo;
 	var $node_repository;
@@ -54,6 +46,10 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @var \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	var $pageRenderer;
+
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
+	}
 
 	/**
 	 * Initializes the Module
@@ -86,11 +82,11 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->pageRenderer->loadExtJS(true, true);
 			$this->pageRenderer->enableExtJSQuickTips();
 			$this->pageRenderer->enableExtJsDebug();
-			$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.js', 'text/javascript', FALSE, FALSE);
-			$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeTree.js', 'text/javascript', FALSE, FALSE);
+			$this->pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.js', 'text/javascript', FALSE, FALSE);
+			$this->pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeTree.js', 'text/javascript', FALSE, FALSE);
 
 			//Add caretaker css
-			$this->pageRenderer->addCssFile('../res/css/tx.caretaker.nodetree.css', 'stylesheet', 'all', '', FALSE);
+			$this->pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/css/tx.caretaker.nodetree.css', 'stylesheet', 'all', '', FALSE);
 
 			// storage Pid
 			$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
@@ -106,8 +102,8 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					items: {
 						id: "cartaker-tree",
 						xtype: "caretaker-nodetree",
-                        autoScroll: true,
-						dataUrl: "' . $this->doc->backPath . 'ajax.php?ajaxID=tx_caretaker::treeloader",
+						autoScroll: true,
+						dataUrl: TYPO3.settings.ajaxUrls[\'tx_caretaker::treeloader\'],
 						addUrl: "' . $PATH_TYPO3 . 'alt_doc.php?edit[###NODE_TYPE###][' . $storagePid . ']=new",
 						editUrl: "' . $PATH_TYPO3 . 'alt_doc.php?edit[tx_caretaker_###NODE_TYPE###][###NODE_UID###]=edit",
 						hideUrl: "' . $PATH_TYPO3 . 'tce_db.php?&data[tx_caretaker_###NODE_TYPE###][###NODE_UID###][hidden]=1",

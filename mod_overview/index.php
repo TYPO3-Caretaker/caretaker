@@ -38,15 +38,7 @@
  * Module 'Caretaker' for the 'caretaker' extension.
  */
 
-unset($MCONF);
-require('conf.php');
-require_once($BACK_PATH . 'init.php');
-
-$GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
-$GLOBALS['BE_USER']->modAccess($MCONF, 1);
-
 class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
-
 	var $pageinfo;
 	var $node_repository;
 	var $instance_repository;
@@ -56,6 +48,10 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @var \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	var $pageRenderer;
+
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
+	}
 
 	/**
 	 * Initializes the Module
