@@ -59,6 +59,16 @@ class tx_caretaker_ServiceHelper {
 	protected static $tcaTestConfigDs = array();
 
 	/**
+	 * @var array
+	 */
+	protected static $tcaExitPointServiceItems = array();
+
+	/**
+	 * @var array
+	 */
+	protected static $tcaExitPointConfigDs = array();
+
+	/**
 	 * Array of all active Notification Services
 	 * @var array
 	 */
@@ -151,6 +161,20 @@ class tx_caretaker_ServiceHelper {
 	}
 
 	/**
+	 * @return array
+	 */
+	public static function getTcaExitPointServiceItems() {
+		return self::$tcaExitPointServiceItems;
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function getTcaExitPointConfigDs() {
+		return self::$tcaExitPointConfigDs;
+	}
+
+	/**
 	 * Register a new caretaker notification service. The ClassFile and
 	 *
 	 * @param string $extKey key of the extension wich is adding the service
@@ -219,37 +243,27 @@ class tx_caretaker_ServiceHelper {
 	 * @param string $description
 	 */
 	public static function registerNotificationExitPoint($extKey, $path, $key, $title, $description = '') {
-		global $TCA;
-
-		// Register test service
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
-				'caretaker',
-				'caretaker_exitpoint',
-				$key,
-				array(
-						'title' => $title,
-						'description' => $description,
-						'subtype' => $key,
-						'available' => TRUE,
-						'priority' => 50,
-						'quality' => 50,
-						'os' => '',
-						'exec' => '',
-						'classFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey) . $path . '/class.' . $key . 'ExitPoint.php',
-						'className' => $key . 'ExitPoint',
-				)
-		);
-
-		// Add exitpoint to TCA
-		if (is_array($TCA['tx_caretaker_exitpoints']['columns'])
-				&& is_array($TCA['tx_caretaker_exitpoints']['columns']['service']['config']['items'])) {
-			$TCA['tx_caretaker_exitpoints']['columns']['service']['config']['items'][] = array($title, $key);
-		}
-
-		// Add flexform to service-item
-		if (is_array($TCA['tx_caretaker_exitpoints']['columns'])
-				&& is_array($TCA['tx_caretaker_exitpoints']['columns']['config']['config']['ds'])) {
-			$TCA['tx_caretaker_exitpoints']['columns']['config']['config']['ds'][$key] = 'FILE:EXT:' . $extKey . '/' . $path . '/' . 'ds.' . $key . 'ExitPoint.xml';
+		if (!$GLOBALS['T3_SERVICES']['caretaker_exitpoint'][$key]) {
+			// Register test service
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
+					'caretaker',
+					'caretaker_exitpoint',
+					$key,
+					array(
+							'title' => $title,
+							'description' => $description,
+							'subtype' => $key,
+							'available' => TRUE,
+							'priority' => 50,
+							'quality' => 50,
+							'os' => '',
+							'exec' => '',
+							'classFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey) . $path . '/class.' . $key . 'ExitPoint.php',
+							'className' => $key . 'ExitPoint',
+					)
+			);
+			self::$tcaExitPointServiceItems[] = array($title, $key);
+			self::$tcaExitPointConfigDs[$key] = 'FILE:EXT:' . $extKey . '/' . $path . '/' . 'ds.' . $key . 'ExitPoint.xml';
 		}
 	}
 
@@ -275,4 +289,5 @@ class tx_caretaker_ServiceHelper {
 				'jsIncludes' => $jsIncludes
 		);
 	}
+
 }

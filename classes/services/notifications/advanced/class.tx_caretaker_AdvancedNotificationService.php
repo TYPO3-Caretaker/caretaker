@@ -107,7 +107,9 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	public function sendNotifications() {
 		/** @var tx_caretaker_NotificationBaseExitPoint $exitpoint */
 		foreach ($this->exitpoints as $exitpoint) {
-			$exitpoint->execute();
+			if ($exitpoint) {
+				$exitpoint->execute();
+			}
 		}
 	}
 
@@ -117,6 +119,7 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	 * @param array $notification
 	 */
 	protected function processStrategy($strategy, $config, $notification) {
+
 		$conditions = $this->defaultConditions;
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($conditions, $config['conditions.']);
 		if (count($config['rules.']) === 0 || !$this->doConditionsApply($conditions, $notification)) {
@@ -180,7 +183,7 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 		if ($exitpointRecord === NULL) {
 			return false;
 		}
-		$info = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findService($exitpointRecord['service'], '*');
+		$info = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findService('caretaker_exitpoint', $exitpointRecord['service']);
 		if (is_array($info) && !empty($info['className'])) {
 			$exitpoint = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($info['className']);
 			$config = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($exitpointRecord['config']);
