@@ -75,15 +75,19 @@ class tx_caretaker_TestrunnerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 
 		if (!$node) return false;
 
-		$lockObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Locking\Locker', 'tx_caretaker_update_' . $node->getCaretakerNodeId(), $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
-		// no output during scheduler runs
-		tx_caretaker_ServiceHelper::unregisterCaretakerNotificationService('CliNotificationService');
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode'] != 'disable') {
+			$lockObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Locking\Locker', 'tx_caretaker_update_' . $node->getCaretakerNodeId(), $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
+			// no output during scheduler runs
+			tx_caretaker_ServiceHelper::unregisterCaretakerNotificationService('CliNotificationService');
 
-		if ($lockObj->acquire()) {
-			$node->updateTestResult();
-			$lockObj->release();
+			if ($lockObj->acquire()) {
+				$node->updateTestResult();
+				$lockObj->release();
+			} else {
+				return false;
+			}
 		} else {
-			return false;
+			$node->updateTestResult();
 		}
 
 		// send aggregated notifications
