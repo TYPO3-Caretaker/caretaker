@@ -296,9 +296,13 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 					break;
 
 				case 'roles':
-					if ($node instanceof tx_caretaker_TestNode
-						&& !in_array($configValue, $node->getRolesIds())) {
-							$conditionApply = FALSE;
+					if ($node instanceof tx_caretaker_TestNode) {
+						$rolesToMatch = explode(',', $configValue);
+						foreach ($rolesToMatch as $roleToMatch) {
+							if (!in_array($roleToMatch, $node->getRolesIds())) {
+								$conditionApply = FALSE;
+							}
+						}
 					}
 					break;
 
