@@ -994,3 +994,10 @@ if ($advancedNotificationsEnabled) {
 	);
 }
 
+$GLOBALS['TCA']['tx_caretaker_instancegroup']['ctrl']['searchFields']	= 'title, description';
+$GLOBALS['TCA']['tx_caretaker_instance']['ctrl']['searchFields']		= 'title, description, url, host';
+$GLOBALS['TCA']['tx_caretaker_testgroup']['ctrl']['searchFields']		= 'title, description';
+$GLOBALS['TCA']['tx_caretaker_test']['ctrl']['searchFields']			= 'title, description';
+$GLOBALS['TCA']['tx_caretaker_roles']['ctrl']['searchFields']			= 'name, description';
+$GLOBALS['TCA']['tx_caretaker_exitpoints']['ctrl']['searchFields']		= 'name, description';
+$GLOBALS['TCA']['tx_caretaker_strategies']['ctrl']['searchFields']		= 'name, description';
