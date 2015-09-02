@@ -51,19 +51,27 @@ class tx_caretaker_LatestVersionsHelper {
 	/**
 	 * @var string JSON release feed
 	 */
-	protected static $releaseJsonFeed = 'http://get.typo3.org/json';
+	protected static $releaseJsonFeed = 'https://get.typo3.org/json';
 
 	public static function updateLatestTypo3VersionRegistry() {
 		$releases = json_decode(self::curlRequest(self::$releaseJsonFeed), TRUE);
+
+		if (!is_array($releases)) {
+			throw new Exception(
+				'It seems like ' . self::$releaseJsonFeed .
+				' did not return the json string for the TYPO3 releases. Maybe it has been moved!?'
+			);
+		}
+
 		foreach($releases as $major => $details) {
 			if (is_array($details) && !empty($details['latest'])) {
 				$max[$major] = $details['latest'];
 			}
-			
+
 			if (is_array($details) && !empty($details['stable'])) {
 				$stable[$major] = $details['stable'];
 			}
-			
+
 		}
 		t3lib_div::makeInstance('t3lib_Registry')->set('tx_caretaker', 'TYPO3versions', $max);
 		t3lib_div::makeInstance('t3lib_Registry')->set('tx_caretaker', 'TYPO3versionsStable', $stable);
@@ -83,6 +91,7 @@ class tx_caretaker_LatestVersionsHelper {
 		curl_setopt($curl, CURLOPT_TIMEOUT, 30);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, TRUE);
+		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
 
 		$headers = array(
 			"Cache-Control: no-cache",
