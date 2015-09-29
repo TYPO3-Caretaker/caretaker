@@ -57,7 +57,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 	/**
 	 * Configuration of the test
-	 * @var unknown_type
+	 * @var bool|array
 	 */
 	protected $testServiceConfiguration = FALSE;
 
@@ -69,7 +69,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 	/**
 	 * Interval of Tests in Seconds
-	 * @var integer
+	 * @var int
 	 */
 	protected $testInterval = FALSE;
 
@@ -103,6 +103,11 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	protected $testServiceRunner = NULL;
 
 	/**
+	 * @var array
+	 */
+	protected $rolesIds;
+
+	/**
 	 * Constructor
 	 *
 	 * @param integer $uid
@@ -113,13 +118,12 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @param integer $interval
 	 * @param integer $retry
 	 * @param integer $due
-	 * @param integer $startHour
-	 * @param integer $stopHour
+	 * @param bool|int $startHour
+	 * @param bool|int $stopHour
 	 * @param boolean $hidden
-	 * @return tx_caretaker_TestNode
 	 */
-	public function __construct($uid, $title, $parentNode, $serviceType, $serviceConfiguration, $interval = 86400, $retry = 0, $due = 0, $startHour = FALSE, $stopHour = FALSE, $hidden = FALSE) {
-			// Overwrite default test configuration
+	public function __construct($uid, $title, $parentNode, $serviceType, $serviceConfiguration, $interval = 86400, $retry = 0, $due = 0, $startHour = FALSE, $stopHour = FALSE, $hidden = FALSE, $rolesIds = NULL) {
+		// Overwrite default test configuration
 		$configurationOverlay = $parentNode->getTestConfigurationOverlayForTestUid($uid);
 		if ($configurationOverlay) {
 			$serviceConfiguration = $configurationOverlay;
@@ -137,20 +141,20 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		$this->testDue = $due;
 		$this->startHour = $startHour;
 		$this->stopHour = $stopHour;
+		$this->rolesIds = $rolesIds ? explode(',', $rolesIds) : array();
 	}
 
 	/**
 	 * @return tx_caretaker_TestServiceInterface
+	 * @throws Exception
 	 */
 	public function getTestService() {
 		if ($this->testService === NULL) {
 			if ($this->testServiceType) {
-				$info = t3lib_extMgm::findService('caretaker_test_service', $this->testServiceType);
-				if ($info && $info['classFile']) {
-					$requireFile = t3lib_div::getFileAbsFileName($info['classFile']);
-					if (@is_file($requireFile)) {
-						t3lib_div::requireOnce($requireFile);
-						$this->testService = t3lib_div::makeInstance($info['className']);
+				$info = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findService('caretaker_test_service', $this->testServiceType);
+				if ($info && $info['className']) {
+					if (class_exists($info['className'])) {
+						$this->testService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($info['className']);
 						if ($this->testService) {
 							$this->testService->setInstance($this->getInstance());
 							$this->testService->setConfiguration($this->testServiceConfiguration);
@@ -158,7 +162,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 							throw new Exception('testservice class ' . $info['className'] . ' could not be instantiated');
 						}
 					} else {
-						throw new Exception('testservice ' . $this->testServiceType . ' class file ' . $requireFile . ' not found');
+						throw new Exception('testservice ' . $this->testServiceType . ' class ' . $info['className'] . ' not found');
 					}
 				} else {
 					throw new Exception('caretaker testservice ' . $this->testServiceType . ' not found');
@@ -198,13 +202,14 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		if ($this->testServiceType) {
 			$configurationInfo = $this->getTestService()->getConfigurationInfo();
 			if (isset($this->testServiceConfiguration['overwritten_in'])
-			    && is_array($this->testServiceConfiguration['overwritten_in'])) {
+					&& is_array($this->testServiceConfiguration['overwritten_in'])
+			) {
 				$configurationInfo .= ' (overwritten in ' .
-					'<span title=" '.
-					$this->testServiceConfiguration['overwritten_in']['id'] .
-					'">' .
-					$this->testServiceConfiguration['overwritten_in']['title'] .
-					'</span>)';
+						'<span title=" ' .
+						$this->testServiceConfiguration['overwritten_in']['id'] .
+						'">' .
+						$this->testServiceConfiguration['overwritten_in']['title'] .
+						'</span>)';
 			}
 			return $configurationInfo;
 		}
@@ -217,14 +222,15 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 		$hiddenInfo = parent::getHiddenInfo();
 		if ($this->testServiceType) {
 			if (isset($this->testServiceConfiguration['overwritten_in'])
-			    && is_array($this->testServiceConfiguration['overwritten_in'])
-			    && $this->testServiceConfiguration['hidden']) {
+					&& is_array($this->testServiceConfiguration['overwritten_in'])
+					&& $this->testServiceConfiguration['hidden']
+			) {
 				$hiddenInfo .= ' (hidden in ' .
-					'<span title=" ' .
-					$this->testServiceConfiguration['overwritten_in']['id'] .
-					'">' .
-					$this->testServiceConfiguration['overwritten_in']['title'] .
-					'</span>)';
+						'<span title=" ' .
+						$this->testServiceConfiguration['overwritten_in']['id'] .
+						'">' .
+						$this->testServiceConfiguration['overwritten_in']['title'] .
+						'</span>)';
 			}
 		}
 		return $hiddenInfo;
@@ -233,42 +239,42 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	/**
 	 * Get the Test Interval
 	 *
-	 * @return unknown_type
+	 * @return int|bool
 	 */
-	public function getInterval(){
+	public function getInterval() {
 		return $this->testInterval;
 	}
 
 	/**
 	 * Get the test start hour
 	 *
-	 * @return unknown_type
+	 * @return int|bool
 	 */
-	public function getStartHour(){
+	public function getStartHour() {
 		return $this->startHour;
 	}
 
 	/**
 	 * Get the test stop hour
 	 *
-	 * @return unknown_type
+	 * @return int|bool
 	 */
-	public function getStopHour(){
+	public function getStopHour() {
 		return $this->stopHour;
 	}
 
 	/**
 	 * Set the testnode into acknowledged State
 	 *
-	 * @return void
+	 * @return tx_caretaker_TestResult
 	 */
 	public function setModeAck() {
 		$info = array(
-			'username' => 'unkown',
-			'realName' => 'unkown',
-			'email' => 'unkown'
+				'username' => 'unknown',
+				'realName' => 'unknown',
+				'email' => 'unknown'
 		);
-		if (TYPO3_MODE=="BE"){
+		if (TYPO3_MODE == "BE") {
 			$info['username'] = $GLOBALS['BE_USER']->user['username'];
 			$info['realName'] = $GLOBALS['BE_USER']->user['realName'];
 			$info['email'] = $GLOBALS['BE_USER']->user['email'];
@@ -288,15 +294,15 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	/**
 	 * End the wip state by running a forced update
 	 *
-	 * @return void
+	 * @return tx_caretaker_TestResult
 	 */
 	public function setModeDue() {
 		$info = array(
-			'username' => 'unkown',
-			'realName' => 'unkown',
-			'email' => 'unkown'
+				'username' => 'unknown',
+				'realName' => 'unknown',
+				'email' => 'unknown'
 		);
-		if (TYPO3_MODE=="BE") {
+		if (TYPO3_MODE == "BE") {
 			$info['username'] = $GLOBALS['BE_USER']->user['username'];
 			$info['realName'] = $GLOBALS['BE_USER']->user['realName'];
 			$info['email'] = $GLOBALS['BE_USER']->user['email'];
@@ -323,9 +329,9 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @return tx_caretaker_NodeResult
 	 */
 	public function updateTestResult($options = array()) {
-		if ($this->getHidden()){
+		if ($this->getHidden()) {
 			$result = tx_caretaker_TestResult::undefined('Node is disabled');
-			$this->notify('disabledTestResult', $result );
+			$this->notify('disabledTestResult', $result);
 			return $result;
 		}
 		return $this->getTestServiceRunner()->runTestService($this->getTestService(), $this, $options);
@@ -341,7 +347,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 			} else {
 				$testServiceRunnerClassName = 'tx_caretaker_TestServiceRunner';
 			}
-			$this->testServiceRunner = t3lib_div::makeInstance($testServiceRunnerClassName);
+			$this->testServiceRunner = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($testServiceRunnerClassName);
 		}
 		return $this->testServiceRunner;
 	}
@@ -359,7 +365,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @return array
 	 * @deprecated This should be only necessary for aggregator nodes
 	 */
-	public function getTestNodes(){
+	public function getTestNodes() {
 		return array($this);
 	}
 
@@ -368,8 +374,8 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getValueDescription()
 	 */
 	public function getValueDescription() {
-		$test_service = t3lib_div::makeInstanceService('caretaker_test_service', $this->testServiceType);
-		if ($test_service){
+		$test_service = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService('caretaker_test_service', $this->testServiceType);
+		if ($test_service) {
 			return $test_service->getValueDescription();
 		} else {
 			return 'unknown service ' . $this->testServiceType;
@@ -382,8 +388,8 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResult()
 	 * @return tx_caretaker_TestResult
 	 */
-	public function getTestResult(){
-		if ($this->getHidden()){
+	public function getTestResult() {
+		if ($this->getHidden()) {
 			$result = tx_caretaker_TestResult::undefined('Node is disabled');
 			return $result;
 		}
@@ -425,7 +431,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	 *
 	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
 	 * @param int $offset
-	 * @param boolean $graph True by default. Used in the result range repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
+	 * @param int $limit
 	 * @return tx_caretaker_TestResultRange
 	 */
 	public function getTestResultRangeByOffset($offset = 0, $limit = 10) {
@@ -454,5 +460,12 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	public function getTestDue() {
 		return $this->testDue;
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getRolesIds() {
+		return $this->rolesIds;
+	}
+
 }
-?>

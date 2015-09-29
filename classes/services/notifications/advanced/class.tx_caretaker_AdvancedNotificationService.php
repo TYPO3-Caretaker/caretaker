@@ -52,9 +52,17 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	 */
 	protected $exitpoints = array();
 
+	/**
+	 * @var array
+	 */
 	protected $defaultConditions = array(
-		'event' => 'updatedTestResult'
+			'event' => 'updatedTestResult'
 	);
+
+	/**
+	 * @var array
+	 */
+	protected $strategyConfig;
 
 	/**
 	 * Constructor
@@ -75,17 +83,17 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	 */
 	public function addNotification($event, $node, $result = NULL, $lastResult = NULL) {
 		$strategies = $node->getStrategies();
-		foreach($strategies as $strategy) {
+		foreach ($strategies as $strategy) {
 			$config = $this->getStrategyConfig($strategy);
 			$this->processStrategy(
-				$strategy,
-				$config,
-				array(
-				'event' => $event,
-				'node' => $node,
-				'result' => $result,
-				'lastResult' => $lastResult,
-			));
+					$strategy,
+					$config,
+					array(
+							'event' => $event,
+							'node' => $node,
+							'result' => $result,
+							'lastResult' => $lastResult,
+					));
 
 			if ($config['stop']) {
 				break;
@@ -97,57 +105,54 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	 * finish all used exitpoints
 	 */
 	public function sendNotifications() {
-		foreach($this->exitpoints as $identifier => $exitpoint) {
-			$exitpoint->execute();
+		/** @var tx_caretaker_NotificationBaseExitPoint $exitpoint */
+		foreach ($this->exitpoints as $exitpoint) {
+			if ($exitpoint) {
+				$exitpoint->execute();
+			}
 		}
 	}
 
 	/**
-	 * @param  $strategy
-	 * @param  $notification
-	 * @return void
+	 * @param array $strategy
+	 * @param array $config
+	 * @param array $notification
 	 */
 	protected function processStrategy($strategy, $config, $notification) {
-		// echo 'process strategy: ' . $strategy['name'] . chr(10);
-		$conditions = t3lib_div::array_merge_recursive_overrule($this->defaultConditions, $config['conditions.']);
+		$conditions = $this->defaultConditions;
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($conditions, $config['conditions.']);
 		if (count($config['rules.']) === 0 || !$this->doConditionsApply($conditions, $notification)) {
 			return;
 		}
-		foreach($config['rules.'] as $ruleName => $rule) {
+		foreach ($config['rules.'] as $ruleName => $rule) {
 			$this->processRule($ruleName, $rule, $notification);
 		}
-
-		// TODO
-		// $config['includeStrategy'] to include another strategy
 	}
 
 	/**
-	 * @param  $ruleName
-	 * @param  $rule
-	 * @param  $notification
+	 * @param string $ruleName
+	 * @param array $rule
+	 * @param array $notification
 	 * @return void
 	 */
 	protected function processRule($ruleName, $rule, $notification) {
-		$ruleName = rtrim($ruleName, '.');
-		// echo 'process rule: ' . $ruleName . chr(10);
 		if (count($rule['exit.']) === 0 || !$this->doConditionsApply($rule['conditions.'], $notification)) {
 			return;
 		}
 
-		foreach($rule['exit.'] as $exitName => $exit) {
+		foreach ($rule['exit.'] as $exitName => $exit) {
 			$this->processExitpoint($exitName, $exit, $notification);
 		}
 	}
 
 	/**
-	 * @param  $exitName
-	 * @param  $exit
-	 * @param  $notification
+	 * @param string $exitName
+	 * @param array $exit
+	 * @param array $notification
 	 * @return void
 	 */
 	protected function processExitpoint($exitName, $exit, $notification) {
 		$exitName = rtrim($exitName, '.');
-		// echo 'process exitpoint: ' . $exitName . chr(10);
 		if (!$this->doConditionsApply($exit['conditions.'], $notification)) {
 			return;
 		}
@@ -167,21 +172,20 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 		}
 		$exitpoint = FALSE;
 		list($exitpointRecord) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*',
-			tx_caretaker_Constants::table_Exitponts,
-			'id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, '') . ' AND deleted=0 AND hidden=0',
-			'',
-			'',
-			1
+				'*',
+				tx_caretaker_Constants::table_Exitponts,
+				'id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, '') . ' AND deleted=0 AND hidden=0',
+				'',
+				'',
+				1
 		);
 		if ($exitpointRecord === NULL) {
-			return;
+			return false;
 		}
-		$info = t3lib_extMgm::findService($exitpointRecord['service'], '*');
-		if (is_array($info) && !empty($info['classFile'])) {
-			require_once($info['classFile']);
-			$exitpoint = t3lib_div::makeInstance($info['className']);
-			$config = t3lib_div::xml2array($exitpointRecord['config']);
+		$info = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findService('caretaker_exitpoint', $exitpointRecord['service']);
+		if (is_array($info) && !empty($info['className'])) {
+			$exitpoint = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($info['className']);
+			$config = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($exitpointRecord['config']);
 			if (!is_array($config)) $config = array();
 			$exitpoint->init($config);
 		}
@@ -197,19 +201,26 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	protected function doConditionsApply($conditions, $notification) {
 		if (empty($conditions)) return TRUE;
 
-		foreach($conditions as $key => $configValue) {
+		/** @var tx_caretaker_AbstractNode $node */
+		$node = $notification['node'];
+		/** @var tx_caretaker_TestResult $result */
+		$result = $notification['result'];
+		/** @var tx_caretaker_TestResult $lastResult */
+		$lastResult = $notification['lastResult'];
+
+		foreach ($conditions as $key => $configValue) {
 			$conditionApply = TRUE;
-			switch($key) {
+			switch ($key) {
 				case 'event':
 					$conditionApply = $this->matchConditionValue($configValue, $notification['event']);
 					break;
 
 				case 'state':
 				case 'newState':
-					if (!$notification['result'] instanceof tx_caretaker_TestResult) {
+					if (!$result instanceof tx_caretaker_TestResult) {
 						break;
 					}
-					$conditionApply = $this->matchConditionValue($configValue, $notification['result']->getStateInfo());
+					$conditionApply = $this->matchConditionValue($configValue, $result->getStateInfo());
 					break;
 
 				case 'previousState':
@@ -220,45 +231,48 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 					break;
 
 				case 'previousDifferingState':
-					$diffResult = $notification['node']->getPreviousDifferingResult($notification['result']);
+					$diffResult = $node->getPreviousDifferingResult($result);
 					$conditionApply = $this->matchConditionValue($configValue, $diffResult->getStateInfo());
 					break;
 
 				case 'lastStateChangeOlderThen':
-					$diffResult = $notification['node']->getPreviousDifferingResult($notification['result']);
-					if ($notification['result']->getTimestamp() - $diffResult->getTimestamp() < $configValue) {
+					$diffResult = $node->getPreviousDifferingResult($result);
+					if ($result->getTimestamp() - $diffResult->getTimestamp() < $configValue) {
 						$conditionApply = FALSE;
 					}
 					break;
 
 				case 'lastStateChangeYoungerThen':
-					$diffResult = $notification['node']->getPreviousDifferingResult($notification['result']);
-					if ($notification['result']->getTimestamp() - $diffResult->getTimestamp() > $configValue) {
+					$diffResult = $node->getPreviousDifferingResult($result);
+					if ($result->getTimestamp() - $diffResult->getTimestamp() > $configValue) {
 						$conditionApply = FALSE;
 					}
 					break;
 
 				case 'testServices':
-					if ($notification['node'] instanceof tx_caretaker_TestNode
-							&& !$this->matchConditionValue($configValue, get_class($notification['node']->getTestService()))) {
+					/** @var tx_caretaker_TestNode $node */
+					if ($node instanceof tx_caretaker_TestNode
+							&& !$this->matchConditionValue($configValue, get_class($node->getTestService()))
+					) {
 						$conditionApply = FALSE;
 					}
 					break;
 
 				case 'onlyIfStateChanged':
 				case 'onlyIfStateChanges':
-					if ((bool)$configValue && $notification['result']->getState() === $notification['lastResult']->getState()) {
+					if ((bool)$configValue && $result->getState() === $lastResult->getState()) {
 						$conditionApply = FALSE;
 					}
 					break;
 
 				case 'stateChanges':
-					$allowedChanges = t3lib_div::trimExplode(',', $configValue);
+					$allowedChanges = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $configValue);
 					$conditionApply = FALSE;
 					foreach ($allowedChanges as $allowedChange) {
-						list($from, $to) = t3lib_div::trimExplode('>', $allowedChange);
-						if ($this->matchConditionValue($to, $notification['result']->getStateInfo())
-								&& $this->matchConditionValue($from, $notification['lastResult']->getStateInfo())) {
+						list($from, $to) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('>', $allowedChange);
+						if ($this->matchConditionValue($to, $result->getStateInfo())
+								&& $this->matchConditionValue($from, $lastResult->getStateInfo())
+						) {
 							$conditionApply = TRUE;
 							break;
 						}
@@ -270,14 +284,26 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 					break;
 
 				case 'threshold.':
-					if ((isset($configValue['min']) && $notification['result']->getValue() < $configValue['min'])
-							|| (isset($configValue['max']) && $notification['result']->getValue() > $configValue['max'])) {
+					if ((isset($configValue['min']) && $result->getValue() < $configValue['min'])
+							|| (isset($configValue['max']) && $result->getValue() > $configValue['max'])
+					) {
 						$conditionApply = FALSE;
 					}
 					break;
 
 				case 'infoRegexp':
-					$conditionApply = preg_match($configValue, $notification['result']->getLocallizedInfotext());
+					$conditionApply = preg_match($configValue, $result->getLocallizedInfotext());
+					break;
+
+				case 'roles':
+					if ($node instanceof tx_caretaker_TestNode) {
+						$rolesToMatch = explode(',', $configValue);
+						foreach ($rolesToMatch as $roleToMatch) {
+							if (!in_array($roleToMatch, $node->getRolesIds())) {
+								$conditionApply = FALSE;
+							}
+						}
+					}
 					break;
 
 				case 'not.':
@@ -287,16 +313,15 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 				case 'userFunc':
 					$conditionApply = TRUE;
 					$parameters = array(
-						'conditionApply' => &$conditionApply,
-						'event' => $notification['event'],
-						'node' => $notification['node'],
-						'result' => $notification['result'],
-						'lastResult' => $notification['lastResult']
+							'conditionApply' => &$conditionApply,
+							'event' => $notification['event'],
+							'node' => $node,
+							'result' => $result,
+							'lastResult' => $lastResult
 					);
-					t3lib_div::callUserFunction($configValue, $parameters, $this);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($configValue, $parameters, $this);
 			}
 			if (!$conditionApply) {
-				// echo 'condition does not apply: ' . $key . chr(10);
 				return FALSE;
 			}
 		}
@@ -316,22 +341,22 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 		$currentHour = intval(date('H'));
 		$currentDayOfWeek = date('w');
 
-			// schedule = 8-18
+		// schedule = 8-18
 		if (!empty($schedule) && strpos($schedule, '-') !== FALSE) {
-			list($start, $stop) = t3lib_div::intExplode('-', $schedule, FALSE, 2);
+			list($start, $stop) = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode('-', $schedule, FALSE, 2);
 		}
-			// schedule.start = 8
-			// schedule.end = 18
+		// schedule.start = 8
+		// schedule.end = 18
 		if (isset($scheduleSub['start'])) $start = $scheduleSub['start'];
 		if (isset($scheduleSub['end'])) $stop = $scheduleSub['end'];
 
-			// schedule.monday = 8-18
+		// schedule.monday = 8-18
 		if (!empty($scheduleSub[$weekdays[$currentDayOfWeek]]) && strpos($scheduleSub[$weekdays[$currentDayOfWeek]], '-') !== FALSE) {
-			list($start, $stop) = t3lib_div::intExplode('-', $scheduleSub[$weekdays[$currentDayOfWeek]], FALSE, 2);
+			list($start, $stop) = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode('-', $scheduleSub[$weekdays[$currentDayOfWeek]], FALSE, 2);
 		}
 
-			// schedule.monday.start = 8
-			// schedule.monday.end = 18
+		// schedule.monday.start = 8
+		// schedule.monday.end = 18
 		if (isset($scheduleSub[$weekdays[$currentDayOfWeek] . '.']['start'])) $start = $scheduleSub[$weekdays[$currentDayOfWeek] . '.']['start'];
 		if (isset($scheduleSub[$weekdays[$currentDayOfWeek] . '.']['end'])) $stop = $scheduleSub[$weekdays[$currentDayOfWeek] . '.']['end'];
 
@@ -350,11 +375,12 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	 */
 	protected function matchConditionValue($references, $value) {
 		$value = strtoupper($value);
-		foreach (t3lib_div::trimExplode(',', $references) as $reference) {
+		foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $references) as $reference) {
 			$reference = strtoupper($reference);
 			if ($reference === '*' || $reference === 'ALL') return TRUE;
 			if ((substr($reference, 0, 1) !== '!' && $reference !== $value)
-					|| (substr($reference, 0, 1) === '!' && substr($reference, 1) === $value)) {
+					|| (substr($reference, 0, 1) === '!' && substr($reference, 1) === $value)
+			) {
 				return FALSE;
 			}
 		}
@@ -367,8 +393,8 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	 */
 	protected function getStrategyConfig($strategy) {
 		if ($this->strategyConfig[$strategy['uid']] === NULL) {
-			$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
-			$config = t3lib_TSparser::checkIncludeLines($strategy['config']);
+			$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser');
+			$config = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines($strategy['config']);
 			$parseObj->parse($config);
 			$config = $parseObj->setup;
 			$this->strategyConfig[$strategy['uid']] = $config;
@@ -376,5 +402,3 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 		return $this->strategyConfig[$strategy['uid']];
 	}
 }
-
-?>

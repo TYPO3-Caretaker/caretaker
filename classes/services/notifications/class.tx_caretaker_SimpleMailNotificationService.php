@@ -118,17 +118,17 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 	 * @param tx_caretaker_TestResult $lastResult
 	 */
 	public function addNotification($event, $node, $result = NULL, $lastResult = NULL) {
-			// stop if event is not updatedTestResult of a TestNode
+		// stop if event is not updatedTestResult of a TestNode
 		if ($event != 'updatedTestResult' || is_a($node, 'tx_caretaker_TestNode') == false) {
 			return;
 		}
 
-			// Check that the result is not equal to the previous one
+		// Check that the result is not equal to the previous one
 		if ($lastResult && $result->getState() == $lastResult->getState()) {
 			return;
 		}
 
-			// collect the recipients from the node rootline
+		// collect the recipients from the node rootline
 		$recipientIds = array();
 
 		if (count($this->mail_roles) > 0) {
@@ -140,6 +140,7 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 			$contacts = $node->getContacts();
 		}
 
+		/** @var tx_caretaker_Contact $contact */
 		foreach ($contacts as $contact) {
 			$address = $contact->getAddress();
 			if (!$this->recipients_addresses[$address['uid']]) {
@@ -150,17 +151,17 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 
 		$recipientIds = array_unique($recipientIds);
 
-			// store the notifications for the recipients
+		// store the notifications for the recipients
 		foreach ($recipientIds as $recipientId) {
 			if (!isset($this->recipients_messages[$recipientId])) {
 				$this->recipients_messages[$recipientId] = array(
-					'messages' => array(),
-					'num_undefined' => 0,
-					'num_ok' => 0,
-					'num_warning' => 0,
-					'num_error' => 0,
-					'num_ack' => 0,
-					'num_due' => 0
+						'messages' => array(),
+						'num_undefined' => 0,
+						'num_ok' => 0,
+						'num_warning' => 0,
+						'num_error' => 0,
+						'num_ack' => 0,
+						'num_due' => 0
 				);
 			}
 			switch ($result->getState()) {
@@ -185,8 +186,8 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 			}
 			array_unshift($this->recipients_messages[$recipientId]['messages'],
 					'*' . ($lastResult ? $lastResult->getLocallizedStateInfo() . '->' : '') . $result->getLocallizedStateInfo() . ' ' . $node->getInstance()->getTitle() . ':' . $node->getTitle() . '* ' . $node->getCaretakerNodeId() . chr(10) . chr(10) .
-							$result->getLocallizedInfotext() . chr(10) .
-							str_replace('###', $node->getCaretakerNodeId(), $this->mail_link) . chr(10)
+					$result->getLocallizedInfotext() . chr(10) .
+					str_replace('###', $node->getCaretakerNodeId(), $this->mail_link) . chr(10)
 			);
 		}
 	}
@@ -229,10 +230,11 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 	 * @param $recipient
 	 * @param $from
 	 * @param $message
-	 * @return unknown_type
+	 * @return int
 	 */
 	private function sendMail($subject, $recipient, $from, $message) {
-		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+		/** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
+		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Mail\MailMessage');
 		$mail->setFrom($from);
 		$mail->setTo($recipient);
 		$mail->setSubject($subject);
@@ -240,5 +242,3 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
 		return $mail->send();
 	}
 }
-
-?>

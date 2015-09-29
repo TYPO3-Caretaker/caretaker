@@ -57,15 +57,14 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	 * Constructor
 	 *
 	 * @param integer $timestamp
-	 * @param integer $state
-	 * @param float   $value
-	 * @param string  $message
-	 * @param array   $info
-	 * @param array   $submessages
+	 * @param int $state
+	 * @param float|int $value
+	 * @param string $message
+	 * @param array $submessages
 	 */
 	public function __construct($timestamp = 0, $state = tx_caretaker_Constants::state_undefined, $value = 0, $message = '', $submessages = array()) {
 		parent::__construct($timestamp, $state, $message, $submessages);
-		$this->value   = $value;
+		$this->value = $value;
 	}
 
 	/**
@@ -81,20 +80,20 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	/**
 	 * Create a new testresult with current timestamp
 	 *
-	 * @param integer $status
-	 * @param float   $value
-	 * @param string  $message
+	 * @param int $status
+	 * @param float|int $value
+	 * @param string $message
+	 * @param array $submessages
 	 * @return tx_caretaker_TestResult
 	 */
-	static public function create($status=tx_caretaker_Constants::state_undefined, $value = 0, $message = '' , $submessages = NULL) {
+	static public function create($status = tx_caretaker_Constants::state_undefined, $value = 0, $message = '', $submessages = NULL) {
 		$ts = time();
-		return new tx_caretaker_TestResult($ts, $status, $value, $message, $submessages) ;
+		return new tx_caretaker_TestResult($ts, $status, $value, $message, $submessages);
 	}
 
 	/**
 	 * Return the value of the result
-	 *
-	 * @return unknown_type
+	 * @return float
 	 */
 	public function getValue() {
 		return $this->value;
@@ -106,8 +105,8 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	 */
 	public function getLocallizedInfotext() {
 		$result = parent::getLocallizedInfotext();
-		$result = str_replace ( '###STATE###'  , $this->getLocallizedStateInfo() , $result );
-		$result = str_replace ( '###VALUE###'  , $this->getValue() , $result );
+		$result = str_replace('###STATE###', $this->getLocallizedStateInfo(), $result);
+		$result = str_replace('###VALUE###', $this->getValue(), $result);
 		return $result;
 	}
 
@@ -118,13 +117,12 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
 	 * @return string ResultHash
 	 */
 	public function getResultHash() {
-		$state = array (
-			'state'   => (int)$this->getState(),
-			'value'   => (float)$this->getValue(),
-			'message' => $this->getMessage(),
-			'submessages' => $this->getSubMessages()
+		$state = array(
+				'state' => (int)$this->getState(),
+				'value' => (float)$this->getValue(),
+				'message' => $this->getMessage(),
+				'submessages' => $this->getSubMessages()
 		);
 		return md5(serialize($state));
 	}
 }
-?>

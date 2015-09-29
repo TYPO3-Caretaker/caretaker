@@ -46,7 +46,7 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_TestServiceRunner extends t3lib_svbase {
+class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractService {
 
 	/**
 	 * Run a test service for the given test node
@@ -91,7 +91,7 @@ class tx_caretaker_TestServiceRunner extends t3lib_svbase {
 						$returnLatestResult = TRUE;
 						break;
 					case tx_caretaker_Constants::state_ok:
-						if ($latestTestResult->getTstamp() > (time() - $node->getTestInterval())) {
+						if ($latestTestResult->getTimestamp() > (time() - $node->getTestInterval())) {
 							$returnLatestResult = TRUE;
 						}
 						break;
@@ -101,7 +101,7 @@ class tx_caretaker_TestServiceRunner extends t3lib_svbase {
 							// if due mode is 1 than retry
 						if ($node->getTestDue() == 1){
 							$returnLatestResult = FALSE;
-						} else if ($latestTestResult->getTstamp() > (time() - $node->getTestInterval())) {
+						} else if ($latestTestResult->getTimestamp() > (time() - $node->getTestInterval())) {
 							$returnLatestResult = TRUE;
 						}
 						break;
@@ -121,7 +121,6 @@ class tx_caretaker_TestServiceRunner extends t3lib_svbase {
 	}
 
 	/**
-	 *
 	 * @param tx_caretaker_TestServiceInterface $testService
 	 * @param tx_caretaker_TestNode $node
 	 * @param tx_caretaker_NodeResult $latestTestResult
@@ -129,7 +128,7 @@ class tx_caretaker_TestServiceRunner extends t3lib_svbase {
 	 * @return tx_caretaker_NodeResult
 	 */
 	protected function executeTestServiceRun($testService, $node, $latestTestResult, $options) {
-			// check wether the test can be executed
+			// check whether the test can be executed
 		if ($testService && $testService->isExecutable()) {
 			try {
 				$result = $testService->runTest();
@@ -167,6 +166,4 @@ class tx_caretaker_TestServiceRunner extends t3lib_svbase {
 			return $latestTestResult;
 		}
 	}
-
 }
-?>

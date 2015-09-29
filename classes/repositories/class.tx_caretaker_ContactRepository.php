@@ -49,7 +49,7 @@
  */
 class tx_caretaker_ContactRepository {
 
-    /**
+	/**
 	 * Reference to the current Instance
 	 *
 	 * @var $instance tx_caretaker_TestResultRepository
@@ -58,17 +58,16 @@ class tx_caretaker_ContactRepository {
 
 	/**
 	 * Private constructor use getInstance instead
-	 *
-	 * @return unknown_type
 	 */
-	private function __construct (){}
+	private function __construct() {
+	}
 
 	/**
 	 * Get the Singleton Object
 	 *
 	 * @return tx_caretaker_ContactRepository
 	 */
-	public function getInstance(){
+	public static function getInstance() {
 		if (!self::$instance) {
 			self::$instance = new tx_caretaker_ContactRepository();
 		}
@@ -80,11 +79,11 @@ class tx_caretaker_ContactRepository {
 	 * Get Role Object for given Uid
 	 *
 	 * @param <type> $uid
-	 * @return  tx_cretaker_ContactRole
+	 * @return  tx_caretaker_ContactRole
 	 */
-	public function getContactRoleByUid ( $uid ){
+	public function getContactRoleByUid($uid) {
 		$rolesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Roles, 'uid = ' . intval($uid) . ' AND hidden=0 AND deleted=0');
-		if ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rolesRes) ){
+		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rolesRes)) {
 			return $this->dbrow2contact_role($row);
 		} else {
 			return false;
@@ -95,11 +94,11 @@ class tx_caretaker_ContactRepository {
 	 * Get Role Object for given String
 	 *
 	 * @param string $id
-	 * @return tx_cretaker_ContactRole
+	 * @return tx_caretaker_ContactRole
 	 */
-	public function getContactRoleById ( $id ){
-		$rolesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Roles, 'id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($id, tx_caretaker_Constants::table_Roles ) . ' AND hidden=0 AND deleted=0');
-		if ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rolesRes) ){
+	public function getContactRoleById($id) {
+		$rolesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Roles, 'id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($id, tx_caretaker_Constants::table_Roles) . ' AND hidden=0 AND deleted=0');
+		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rolesRes)) {
 			return $this->dbrow2contact_role($row);
 		} else {
 			return false;
@@ -110,10 +109,10 @@ class tx_caretaker_ContactRepository {
 	 * Convert dbrow to ContactRole Object
 	 *
 	 * @param array $dbrow
-	 * @return tx_cretaker_ContactRole
+	 * @return tx_caretaker_ContactRole
 	 */
-	private function dbrow2contact_role ( $dbrow ){
-		$role = new tx_caretaker_ContactRole( $dbrow['uid'] , $dbrow['id'] , $dbrow['name'] , $dbrow['description'] );
+	private function dbrow2contact_role($dbrow) {
+		$role = new tx_caretaker_ContactRole($dbrow['uid'], $dbrow['id'], $dbrow['name'], $dbrow['description']);
 		return $role;
 	}
 
@@ -123,20 +122,19 @@ class tx_caretaker_ContactRepository {
 	 * @param tx_caretaker_AbstractNode $node
 	 * @return array
 	 */
-	public function getContactsByNode( tx_caretaker_AbstractNode $node ){
-
+	public function getContactsByNode(tx_caretaker_AbstractNode $node) {
 		$contacts = array();
 
-			// only Instancegroups and Instances store Contacts
+		// only Instancegroups and Instances store Contacts
 		$nodeType = $node->getType();
 		if ($nodeType != tx_caretaker_Constants::nodeType_Instance && $nodeType != tx_caretaker_Constants::nodeType_Instancegroup) {
 			return $contacts;
 		}
 
 		$storageTable = $node->getStorageTable();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::relationTable_Node2Address, 'uid_node='.$node->getUid() . ' AND node_table=\'' . $storageTable . '\'');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::relationTable_Node2Address, 'uid_node=' . $node->getUid() . ' AND node_table=\'' . $storageTable . '\'');
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			if ( $contact = $this->dbrow2contact($row) ){
+			if ($contact = $this->dbrow2contact($row)) {
 				$contacts[] = $contact;
 			}
 		}
@@ -147,23 +145,23 @@ class tx_caretaker_ContactRepository {
 	 * Get All Contacts for the given node that match the given role
 	 *
 	 * @param tx_caretaker_AbstractNode $node
-	 * @param tx_caretaker_ContactRole  $role
+	 * @param tx_caretaker_ContactRole $role
 	 * @return array
 	 */
-	public function getContactsByNodeAndRole( tx_caretaker_AbstractNode $node, tx_caretaker_ContactRole $role){
+	public function getContactsByNodeAndRole(tx_caretaker_AbstractNode $node, tx_caretaker_ContactRole $role) {
 
 		$contacts = array();
 
-			// only Instancegroups and Instances store Contacts
+		// only Instancegroups and Instances store Contacts
 		$nodeType = $node->getType();
 		if ($nodeType != tx_caretaker_Constants::nodeType_Instance && $nodeType != tx_caretaker_Constants::nodeType_Instancegroup) {
 			return $contacts;
 		}
 
 		$storageTable = $node->getStorageTable();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::relationTable_Node2Address, 'uid_node='.$node->getUid() . ' AND node_table=\'' . $storageTable . '\'' . ' AND role=' . $role->getUid() );
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::relationTable_Node2Address, 'uid_node=' . $node->getUid() . ' AND node_table=\'' . $storageTable . '\'' . ' AND role=' . $role->getUid());
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			if ( $contact = $this->dbrow2contact($row) ){
+			if ($contact = $this->dbrow2contact($row)) {
 				$contacts[] = $contact;
 			}
 		}
@@ -174,14 +172,12 @@ class tx_caretaker_ContactRepository {
 	 * Convert node address relation record to contact object
 	 * @parem array $row
 	 */
-	private function dbrow2contact( $row ){
-
-
+	private function dbrow2contact($row) {
 		$address = false;
-		if ( $row['uid_address'] ){
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Addresses, 'uid='.$row['uid_address'] . ' AND hidden=0  AND deleted=0' , '', '', 1);
+		if ($row['uid_address']) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Addresses, 'uid=' . $row['uid_address'] . ' AND hidden=0  AND deleted=0', '', '', 1);
 			$address_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			if ( $address_row ) {
+			if ($address_row) {
 				$address = $address_row;
 			} else {
 				return false;
@@ -190,14 +186,13 @@ class tx_caretaker_ContactRepository {
 			return false;
 		}
 
-		if ($row['role']){
-			$role = $this->getContactRoleByUid( $row['role'] );
+		if ($row['role']) {
+			$role = $this->getContactRoleByUid($row['role']);
 		} else {
 			$role = false;
 		}
 
-		return new tx_caretaker_Contact( $address, $role );
+		return new tx_caretaker_Contact($address, $role);
 	}
-
 }
-?>
+

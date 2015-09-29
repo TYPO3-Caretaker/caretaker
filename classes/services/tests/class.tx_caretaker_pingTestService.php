@@ -44,7 +44,8 @@
  *
  * @package TYPO3
  * @subpackage caretaker
- */class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
+ */
+class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
 
 	/**
 	 * Value Description
@@ -65,8 +66,7 @@
 	protected $configurationInfoTemplate = 'LLL:EXT:caretaker/locallang_fe.xml:ping_service_configuration';
 
 	/**
-	 * (non-PHPdoc)
-	 * @see caretaker/trunk/services/tx_caretaker_TestServiceBase#runTest()
+	 * @return tx_caretaker_TestResult
 	 */
 	public function runTest() {
 		$time_warning = $this->getTimeWarning();
@@ -78,24 +78,24 @@
 
 			if ($returnCode === 0) {
 				if ($time_error && $time > $time_error) {
-					return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' );
+					return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time, 'LLL:EXT:caretaker/locallang_fe.xml:ping_info');
 				}
 				if ($time_warning && $time > $time_warning) {
-					return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_warning, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' );
+					return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_warning, $time, 'LLL:EXT:caretaker/locallang_fe.xml:ping_info');
 				}
-				return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_ok, $time , 'LLL:EXT:caretaker/locallang_fe.xml:ping_info' ) ;
+				return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_ok, $time, 'LLL:EXT:caretaker/locallang_fe.xml:ping_info');
 			} else {
-				$message = new tx_caretaker_ResultMessage( 'LLL:EXT:caretaker/locallang_fe.xml:ping_error', array('command'=>$command, 'message'=>$message) );
-				return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time , $message );
+				$message = new tx_caretaker_ResultMessage('LLL:EXT:caretaker/locallang_fe.xml:ping_error', array('command' => $command, 'message' => $message));
+				return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time, $message);
 			}
 		} else {
-			return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0 , 'LLL:EXT:caretaker/locallang_fe.xml:ping_no_command_template');
+			return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, 'LLL:EXT:caretaker/locallang_fe.xml:ping_no_command_template');
 		}
 	}
 
 	/**
 	 * Get the maximal time befor WARNING
-	 * @return unknown_type
+	 * @return int
 	 */
 	protected function getTimeWarning() {
 		return $this->getConfigValue('max_time_warning');
@@ -103,47 +103,41 @@
 
 	/**
 	 * Get the maximal time before ERROR
-	 * @return integer
+	 * @return int
 	 */
 	protected function getTimeError() {
 		return $this->getConfigValue('max_time_error');
 	}
 
 	/**
-	 * Bild the Build Ping Command for this System
-	 *
+	 * Build Ping Command for this System
 	 * @return string
 	 */
 	protected function buildPingCommand() {
 		$hostname = $this->instance->getHostname();
-		$confArray = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+		$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
 		$commandTemplate = $confArray['ping.']['cli_command'];
-		$command = str_replace('###' , $hostname, $commandTemplate);
+		$command = str_replace('###', $hostname, $commandTemplate);
 		return $command;
 	}
 
 	/**
 	 * Execute a system command
-	 *
 	 * @param string $command
 	 * @return array Array of ($returnCode, $message, $time)
 	 */
-	protected function executeSystemCommand($command){
+	protected function executeSystemCommand($command) {
 		$starttime = microtime(TRUE);
 
 		$returnCode = FALSE;
-		$messages   = array();
-		$message    = '';
+		$messages = array();
 
-		exec( $command , $messages , $returnCode );
-		$message = implode( chr(10) , $messages );
+		exec($command, $messages, $returnCode);
+		$message = implode(chr(10), $messages);
 
 		$endtime = microtime(TRUE);
-		$time =  ($endtime - $starttime)*1000;
+		$time = ($endtime - $starttime) * 1000;
 
-		return array( $returnCode , $message , $time );
+		return array($returnCode, $message, $time);
 	}
-
 }
-
-?>

@@ -42,20 +42,13 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_Typo3versionnumbersupdateTask extends tx_scheduler_Task {
-
+class tx_caretaker_Typo3versionnumbersupdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	public function execute() {
-
-		$success = tx_caretaker_LatestVersionsHelper::updateLatestTypo3VersionRegistry();
-		return $success;
-
+		return tx_caretaker_LatestVersionsHelper::updateLatestTypo3VersionRegistry();
 	}
-
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_typo3versionnumbersupdatetask.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_typo3versionnumbersupdatetask.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_typo3versionnumbersupdatetask.php']);
 }
-
-?>

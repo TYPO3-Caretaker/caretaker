@@ -75,18 +75,17 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 	 * Set the test result range
 	 * @param tx_caretaker_TestResultRange $testResultRange
 	 */
-	public function setTestResultRange( tx_caretaker_TestResultRange $testResultRange ){
-
+	public function setTestResultRange(tx_caretaker_TestResultRange $testResultRange) {
 		$this->testResultRange = $testResultRange;
-		$this->testResultRangeInfos   = $this->testResultRange->getInfos();
-		$this->testResultRangeMedian  = $this->testResultRange->getMedianValue();
+		$this->testResultRangeInfos = $this->testResultRange->getInfos();
+		$this->testResultRangeMedian = $this->testResultRange->getMedianValue();
 		$this->testResultRangeAverage = $this->testResultRange->getAverageValue();
 
-		$this->setStartTimestamp( $this->testResultRange->getStartTimestamp() );
-		$this->setEndTimestamp( $this->testResultRange->getEndTimestamp() );
+		$this->setStartTimestamp($this->testResultRange->getStartTimestamp());
+		$this->setEndTimestamp($this->testResultRange->getEndTimestamp());
 
-		$this->setMinValue( $this->testResultRange->getMinValue() );
-		$this->setMaxValue( $this->testResultRange->getMaxValue() );
+		$this->setMinValue($this->testResultRange->getMinValue());
+		$this->setMaxValue($this->testResultRange->getMaxValue());
 
 		$this->init();
 	}
@@ -95,21 +94,24 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 	 * draw the chart-background into the given chart image
 	 * @param resource $image
 	 */
-    protected function drawChartImageBackground( &$image ){
-
-		$lastX     = NULL;
+	protected function drawChartImageBackground(&$image) {
+		$lastX = NULL;
 		$lastState = NULL;
-
 		$count = $this->testResultRange->count();
-		$step  = 0;
-		foreach ( $this->testResultRange as $key=>$testResult ){
-			$step ++;
+		$step = 0;
+		$backgroundColor = 0;
+		/**
+		 * @var mixed $key
+		 * @var tx_caretaker_TestResult $testResult
+		 */
+		foreach ($this->testResultRange as $key => $testResult) {
+			$step++;
 
-			$newX = intval( $this->transformX( $testResult->getTimestamp() ) );
+			$newX = intval($this->transformX($testResult->getTimestamp()));
 			$newState = $testResult->getState();
 
-			if( $lastX !== NULL ){
-				switch ( $lastState ){
+			if ($lastX !== NULL) {
+				switch ($lastState) {
 					case tx_caretaker_Constants::state_ok:
 						$colorRGB = $this->getColorRgbByKey("OK");
 						break;
@@ -129,46 +131,40 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 						$colorRGB = $this->getColorRgbByKey("UNDEFINED");
 						break;
 				}
-				$backgroundColor =  imagecolorallocatealpha( $image, $colorRGB[0], $colorRGB[1], $colorRGB[2], 100 );
+				$backgroundColor = imagecolorallocatealpha($image, $colorRGB[0], $colorRGB[1], $colorRGB[2], 100);
 			}
 
-			$isLast = ( $step == $count );
+			$isLast = ($step == $count);
 
-			if( $lastX !== NULL && $backgroundColor && ($newState != $lastState || $isLast ) ){
-				imagefilledrectangle( $image, $lastX, $this->marginTop, $newX , $this->height-$this->marginBottom, $backgroundColor);
+			if ($lastX !== NULL && $backgroundColor && ($newState != $lastState || $isLast)) {
+				imagefilledrectangle($image, $lastX, $this->marginTop, $newX, $this->height - $this->marginBottom, $backgroundColor);
 			}
 
-			if ($newState !== $lastState){
+			if ($newState !== $lastState) {
 				$lastX = $newX;
 			}
 			$lastState = $newState;
-
 		}
-
 	}
 
 	/**
 	 * draw the chart-foreground into the given chart image
 	 * @param resource $image
 	 */
-	protected function drawChartImageForeground( &$image ){
-
+	protected function drawChartImageForeground(&$image) {
 		$colorBg = imagecolorallocatealpha($image, 0, 0, 255, 100);
-		$color   = imagecolorallocate($image, 0, 0, 255);
-
-
-
+		$color = imagecolorallocate($image, 0, 0, 255);
 		$lastX = NULL;
 		$lastY = NULL;
-
 		$bgPoints = array();
 		$feLines = array();
 
-		foreach ( $this->testResultRange as $testResult ){
-			$newX = intval( $this->transformX( $testResult->getTimestamp() ) );
-			$newY = intval( $this->transformY( $testResult->getValue() ) );
-			if( $lastX !== NULL  ){
-					// bg
+		/** @var tx_caretaker_TestResult $testResult */
+		foreach ($this->testResultRange as $testResult) {
+			$newX = intval($this->transformX($testResult->getTimestamp()));
+			$newY = intval($this->transformY($testResult->getValue()));
+			if ($lastX !== NULL) {
+				// bg
 				$bgPoints[] = $lastX;
 				$bgPoints[] = $lastY;
 				$bgPoints[] = $newX;
@@ -176,28 +172,28 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 				$bgPoints[] = $newX;
 				$bgPoints[] = $newY;
 
-					// fe
-				$feLines[] = array($lastX,$lastY,$newX,$lastY);
-				$feLines[] = array($newX,$lastY,$newX,$newY);
+				// fe
+				$feLines[] = array($lastX, $lastY, $newX, $lastY);
+				$feLines[] = array($newX, $lastY, $newX, $newY);
 
 			}
 			$lastX = $newX;
 			$lastY = $newY;
 		}
 
-		$bgPoints[] = intval( $this->transformX( $this->testResultRange->getLast()->getTimestamp() ) );
-		$bgPoints[] = intval( $this->transformY( 0 ) );
-		$bgPoints[] = intval( $this->transformX( $this->testResultRange->getFirst()->getTimestamp() ) );
-		$bgPoints[] = intval( $this->transformY( 0 ) );
+		$bgPoints[] = intval($this->transformX($this->testResultRange->getLast()->getTimestamp()));
+		$bgPoints[] = intval($this->transformY(0));
+		$bgPoints[] = intval($this->transformX($this->testResultRange->getFirst()->getTimestamp()));
+		$bgPoints[] = intval($this->transformY(0));
 
-			// draw filled chart background
-		if ( count($bgPoints) > 7 ){
-			imagefilledpolygon ($image, $bgPoints , count($bgPoints)/2 , $colorBg );
+		// draw filled chart background
+		if (count($bgPoints) > 7) {
+			imagefilledpolygon($image, $bgPoints, count($bgPoints) / 2, $colorBg);
 		}
-			// draw line
-		if ( count($feLines) > 1 ){
-			foreach ($feLines as $line){
-				imageline ( $image , $line[0], $line[1], $line[2], $line[3],  $color );
+		// draw line
+		if (count($feLines) > 1) {
+			foreach ($feLines as $line) {
+				imageline($image, $line[0], $line[1], $line[2], $line[3], $color);
 			}
 		}
 	}
@@ -206,58 +202,51 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
 	 * Get the title to display in the chart.
 	 * @return string
 	 */
-	protected function getChartTitle (){
-
-		$title = $this->title.' '.round(($this->testResultRangeInfos['PercentAVAILABLE']*100),2 )."% available" ;
-		if ( $this->testResultRangeMedian != 0 || $this->testResultRangeAverage != 0 ){
-			$title .= ' [Median: ' . number_format( $this->testResultRangeMedian , 2 ) . ', Average: ' . number_format( $this->testResultRangeAverage, 2 ) . ']';
+	protected function getChartTitle() {
+		$title = $this->title . ' ' . round(($this->testResultRangeInfos['PercentAVAILABLE'] * 100), 2) . "% available";
+		if ($this->testResultRangeMedian != 0 || $this->testResultRangeAverage != 0) {
+			$title .= ' [Median: ' . number_format($this->testResultRangeMedian, 2) . ', Average: ' . number_format($this->testResultRangeAverage, 2) . ']';
 		}
 		return $title;
-
 	}
 
 	/**
 	 * draw the chart-legend into the given chart image
 	 * @param resource $image
 	 */
-	protected function drawChartImageLegend( &$image ){
-
-		$chartLegendColor = imagecolorallocate( $image, 1, 1, 1 );
-
+	protected function drawChartImageLegend(&$image) {
+		$chartLegendColor = imagecolorallocate($image, 1, 1, 1);
 		$legendItems = array(
-			'OK'        => $this->testResultRangeInfos['PercentOK'],
-			'Warning'   => $this->testResultRangeInfos['PercentWARNING'],
-			'Error'     => $this->testResultRangeInfos['PercentERROR'],
-			'Undefined' => $this->testResultRangeInfos['PercentUNDEFINED'],
-			'ACK'       => $this->testResultRangeInfos['PercentACK'],
-			'DUE'       => $this->testResultRangeInfos['PercentDUE']
+				'OK' => $this->testResultRangeInfos['PercentOK'],
+				'Warning' => $this->testResultRangeInfos['PercentWARNING'],
+				'Error' => $this->testResultRangeInfos['PercentERROR'],
+				'Undefined' => $this->testResultRangeInfos['PercentUNDEFINED'],
+				'ACK' => $this->testResultRangeInfos['PercentACK'],
+				'DUE' => $this->testResultRangeInfos['PercentDUE']
 		);
 
-		$offset = $this->marginTop + 10 ;
+		$offset = $this->marginTop + 10;
 
-		foreach (  $legendItems as $key => $value ){
-
-			$colorRGB  = $this->getColorRgbByKey( $key );
-			$itemColor = imagecolorallocate($image, $colorRGB[0], $colorRGB[1], $colorRGB[2] );
+		/**
+		 * @var string $key
+		 * @var float $value
+		 */
+		foreach ($legendItems as $key => $value) {
+			$colorRGB = $this->getColorRgbByKey($key);
+			$itemColor = imagecolorallocate($image, $colorRGB[0], $colorRGB[1], $colorRGB[2]);
 
 			$x = $this->width - $this->marginRight + 20;
 			$y = $offset;
 
-			imagefilledrectangle( $image , $x-5,  $y-8, $x, $y-3, $itemColor );
-			imagerectangle (  $image ,  $x-5,  $y-8, $x, $y-3, $chartLegendColor);
+			imagefilledrectangle($image, $x - 5, $y - 8, $x, $y - 3, $itemColor);
+			imagerectangle($image, $x - 5, $y - 8, $x, $y - 3, $chartLegendColor);
 
-			$font  = t3lib_extMgm::extPath('caretaker').'/lib/Fonts/tahoma.ttf';
-			$size  = 9;
+			$font = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/lib/Fonts/tahoma.ttf';
+			$size = 9;
 			$angle = 0;
-			imagettftext( $image, $size, $angle, $x + 10, $y, $chartLegendColor, $font, $key . ' ' . number_format( $value * 100 , 2  ). ' %' );
+			imagettftext($image, $size, $angle, $x + 10, $y, $chartLegendColor, $font, $key . ' ' . number_format($value * 100, 2) . ' %');
 
 			$offset += 18;
 		}
-
-
 	}
-
-
-
 }
-?>

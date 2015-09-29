@@ -34,62 +34,49 @@
  * $Id$
  */
 
-if (TYPO3_MODE=='BE')    {
-    $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array('EXT:'.$_EXTKEY.'/classes/class.tx_caretaker_Cli.php','_CLI_caretaker');
+if (TYPO3_MODE == 'BE') {
+	$TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array('EXT:' . $_EXTKEY . '/classes/class.tx_caretaker_Cli.php', '_CLI_caretaker');
 }
 
-	// register Plugins
-t3lib_extMgm::addPItoST43($_EXTKEY,'pi_overview/class.tx_caretaker_pi_overview.php','_pi_overview','list_type',0);
-t3lib_extMgm::addPItoST43($_EXTKEY,'pi_singleview/class.tx_caretaker_pi_singleview.php','_pi_singleview','list_type',0);
-t3lib_extMgm::addPItoST43($_EXTKEY,'pi_graphreport/class.tx_caretaker_pi_graphreport.php','_pi_graphreport','list_type',0);
-t3lib_extMgm::addPItoST43($_EXTKEY,'pi_abstract/class.tx_caretaker_pi_abstract.php','_pi_abstract','list_type',0);
+// register Plugins
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'pi_overview/class.tx_caretaker_pi_overview.php', '_pi_overview', 'list_type', 0);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'pi_singleview/class.tx_caretaker_pi_singleview.php', '_pi_singleview', 'list_type', 0);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'pi_graphreport/class.tx_caretaker_pi_graphreport.php', '_pi_graphreport', 'list_type', 0);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'pi_abstract/class.tx_caretaker_pi_abstract.php', '_pi_abstract', 'list_type', 0);
 
-	// Add eID script for caretaker tree loader
-$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::treeloader']   = 'EXT:caretaker/classes/ajax/class.tx_caretaker_TreeLoader.php:tx_caretaker_TreeLoader->ajaxLoadTree';
-$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodeinfo']     = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeInfo';
-$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::noderefresh']  = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxRefreshNode';
-$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodegraph']    = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeGraph';
-$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodelog']      = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeLog';
+// Add eID script for caretaker tree loader
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::treeloader'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_TreeLoader.php:tx_caretaker_TreeLoader->ajaxLoadTree';
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodeinfo'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeInfo';
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::noderefresh'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxRefreshNode';
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodegraph'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeGraph';
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodelog'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeLog';
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodeproblems'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeProblems';
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodecontacts'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeContacts';
-$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodeSetAck']   = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxNodeSetAck';
-$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodeSetDue']   = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxNodeSetDue';
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodeSetAck'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxNodeSetAck';
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_caretaker::nodeSetDue'] = 'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxNodeSetDue';
 
 
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass'][] = 'EXT:caretaker/classes/hooks/class.tx_caretaker_hooks_tceforms_getSingleFieldClass.php:tx_caretaker_hooks_tceforms_getSingleFieldClass';
 
-	// Register scheduler tasks for caretaker testrunner
+// Register scheduler tasks for caretaker testrunner
 $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TestrunnerTask'] = array(
-	'extension'        => $_EXTKEY,
-	'title'            => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:testrunnerTask.name',
-	'description'      => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:testrunnerTask.description',
-	'additionalFields' => 'tx_caretaker_TestrunnerTask_AdditionalFieldProvider'
+		'extension' => $_EXTKEY,
+		'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:testrunnerTask.name',
+		'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:testrunnerTask.description',
+		'additionalFields' => 'tx_caretaker_TestrunnerTask_AdditionalFieldProvider'
 );
 
-	// Register scheduler tasks for caretaker typo3 version number update
+// Register scheduler tasks for caretaker typo3 version number update
 $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_Typo3versionnumbersupdateTask'] = array(
-	'extension'        => $_EXTKEY,
-	'title'            => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:typo3versionnumbersupdateTask.name',
-	'description'      => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:typo3versionnumbersupdateTask.description'
+		'extension' => $_EXTKEY,
+		'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:typo3versionnumbersupdateTask.name',
+		'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:typo3versionnumbersupdateTask.description'
 );
 
-	// ter update is only suportet until 4.5 which has an own sceduler task for this purpose
-if ( t3lib_div::int_from_ver( TYPO3_version ) < t3lib_div::int_from_ver( '4.5.0' ) ){
-	$TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TerupdateTask'] = array(
-		'extension'        => $_EXTKEY,
-		'title'            => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:terupdateTask.name',
-		'description'      => 'LLL:EXT:'.$_EXTKEY.'/locallang.xml:terupdateTask.description',
-		'additionalFields' => 'tx_caretaker_TerupdateTask_AdditionalFieldProvider'
-	);
-}
+require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/ext_conf_include.php');
 
-
-require(t3lib_extMgm::extPath('caretaker') . '/ext_conf_include.php');
-
-	// eid script
+// eid script
 $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
-if ( $extConfig['eid.']['enabled'] ){
+if ($extConfig['eid.']['enabled']) {
 	$TYPO3_CONF_VARS['FE']['eID_include']['tx_caretaker'] = 'EXT:caretaker/classes/eid/class.tx_caretaker_Eid.php';
 }
-
-?>

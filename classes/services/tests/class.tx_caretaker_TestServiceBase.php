@@ -45,7 +45,7 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_TestServiceInterface {
+class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractService implements tx_caretaker_TestServiceInterface {
 
 	/**
 	 * The instance the test is run for
@@ -74,7 +74,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 
 	/**
 	 * Testtype in human readable form. Can be a LLL Label.
-	 * @var sring
+	 * @var string
 	 */
 	protected $typeDescription = '';
 
@@ -85,16 +85,14 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	protected $configurationInfoTemplate = '';
 
 	/**
-	 * (non-PHPdoc)
-	 * @see caretaker/trunk/interfaces/tx_caretaker_TestService#setInstance($instance)
+	 * @param tx_caretaker_InstanceNode $instance
 	 */
 	public function setInstance($instance) {
 		$this->instance = $instance;
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see caretaker/trunk/interfaces/tx_caretaker_TestService#setConfiguration($configuration)
+	 * @param array $configuration
 	 */
 	public function setConfiguration($configuration) {
 		if (is_array($configuration) && !is_array($configuration['data'])) {
@@ -104,7 +102,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 			$this->flexform_configuration = $configuration;
 
 		} else if (!is_array($configuration)) {
-			$this->flexform_configuration = t3lib_div::xml2array($configuration);
+			$this->flexform_configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($configuration);
 		}
 	}
 
@@ -112,8 +110,8 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * Get a single Value from the test configuration
 	 *
 	 * @param string $key
-	 * @param string $default
-	 * @param string $sheet
+	 * @param bool|string $default
+	 * @param bool|string $sheet
 	 * @return string
 	 */
 	public function getConfigValue($key, $default = FALSE, $sheet = FALSE) {
@@ -143,7 +141,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 * @return string
 	 */
 	public function getTypeDescription() {
-		return tx_caretaker_LocallizationHelper::locallizeString($this->typeDescription);
+		return tx_caretaker_LocalizationHelper::localizeString($this->typeDescription);
 	}
 
 	/**
@@ -152,17 +150,17 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	 */
 	public function getConfigurationInfo() {
 		$markers = array();
-		if ($this->flexform_configuration && is_array($this->flexform_configuration['data'])){
-			foreach($this->flexform_configuration['data'] as $sheetName => $sheet) {
-				foreach( $this->flexform_configuration['data'][$sheetName]['lDEF'] as $key => $value ){
-					$markers['###'.strtoupper($key).'###'] = $value['vDEF'];
+		if ($this->flexform_configuration && is_array($this->flexform_configuration['data'])) {
+			foreach ($this->flexform_configuration['data'] as $sheetName => $sheet) {
+				foreach ($this->flexform_configuration['data'][$sheetName]['lDEF'] as $key => $value) {
+					$markers['###' . strtoupper($key) . '###'] = $value['vDEF'];
 				}
 			}
 		}
 
-		$result = $this->locallizeString(  $this->configurationInfoTemplate );
-		foreach ($markers as $marker => $content){
-			$result = str_replace( $marker, $content , $result);
+		$result = $this->locallizeString($this->configurationInfoTemplate);
+		foreach ($markers as $marker => $content) {
+			$result = str_replace($marker, $content, $result);
 		}
 		return $result;
 	}
@@ -196,12 +194,13 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 		curl_setopt($curl, CURLOPT_TIMEOUT, 30);
 
 		$headers = array(
-			"Cache-Control: no-cache",
-			"Pragma: no-cache"
+				"Cache-Control: no-cache",
+				"Pragma: no-cache"
 		);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
 		if (is_array($postValues)) {
+			$postQuery = '';
 			foreach ($postValues as $key => $value) {
 				$postQuery .= urlencode($key) . '=' . urlencode($value) . '&';
 			}
@@ -216,8 +215,8 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 		curl_close($curl);
 
 		return array(
-			'response' => $response,
-			'info' => $info
+				'response' => $response,
+				'info' => $info
 		);
 	}
 
@@ -231,8 +230,7 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see interfaces/tx_caretaker_TestService#isExecutable()
+	 * @return bool
 	 */
 	public function isExecutable() {
 		return TRUE;
@@ -241,11 +239,11 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 	/**
 	 * Translate a given string in the current language
 	 *
-	 * @param string $string
+	 * @param $locallang_string
 	 * @return string
+	 * @internal param string $string
 	 */
 	protected function locallizeString($locallang_string) {
-
 		$locallang_parts = explode(':', $locallang_string);
 
 		if (array_shift($locallang_parts) != 'LLL') {
@@ -254,21 +252,19 @@ class tx_caretaker_TestServiceBase extends t3lib_svbase implements tx_caretaker_
 
 		switch (TYPO3_MODE) {
 			case 'FE':
-				$lcObj = t3lib_div::makeInstance('tslib_cObj');
+				$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 				return ($lcObj->TEXT(array('data' => $locallang_string)));
 
 			case 'BE':
 				$locallang_key = array_pop($locallang_parts);
 				$locallang_file = implode(':', $locallang_parts);
 				$language_key = $GLOBALS['BE_USER']->uc['lang'];
-				$LANG = t3lib_div::makeInstance('language');
+				$LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Lang\LanguageService');
 				$LANG->init($language_key);
-				return $LANG->getLLL($locallang_key, t3lib_div::readLLfile(t3lib_div::getFileAbsFileName($locallang_file), $LANG->lang, $LANG->charSet));
+				return $LANG->getLLL($locallang_key, \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($locallang_file), $LANG->lang, $LANG->charSet));
 
 			default :
 				return $locallang_string;
 		}
 	}
 }
-
-?>

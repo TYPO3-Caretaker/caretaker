@@ -38,65 +38,58 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 
-	// load Service Helper
-include_once(t3lib_extMgm::extPath('caretaker').'classes/helpers/class.tx_caretaker_ServiceHelper.php');
+// register Test-Services
+tx_caretaker_ServiceHelper::registerCaretakerTestService($_EXTKEY, 'classes/services/tests', 'tx_caretaker_ping', 'Ping', 'Retrieves System Informations');
+tx_caretaker_ServiceHelper::registerCaretakerTestService($_EXTKEY, 'classes/services/tests', 'tx_caretaker_http', 'HTTP', 'Call an URI and check the HTTP-Status');
+tx_caretaker_ServiceHelper::registerCaretakerTestService($_EXTKEY, 'classes/services/tests', 'tx_caretaker_Touch', 'Touch', 'Write a timestamp in a local file');
 
-	// register Test-Services
-tx_caretaker_ServiceHelper::registerCaretakerTestService ($_EXTKEY , 'classes/services/tests' , 'tx_caretaker_ping',  'Ping' , 'Retrieves System Informations' );
-tx_caretaker_ServiceHelper::registerCaretakerTestService ($_EXTKEY , 'classes/services/tests' , 'tx_caretaker_http',  'HTTP' , 'Call an URI and check the HTTP-Status' );
-tx_caretaker_ServiceHelper::registerCaretakerTestService ($_EXTKEY , 'classes/services/tests' , 'tx_caretaker_Touch',  'Touch' , 'Write a timestamp in a local file' );
+//register Notification-Services
+tx_caretaker_ServiceHelper::registerCaretakerNotificationService($_EXTKEY, 'SimpleMailNotificationService', 'classes/services/notifications/class.tx_caretaker_SimpleMailNotificationService.php', 'tx_caretaker_SimpleMailNotificationService');
+tx_caretaker_ServiceHelper::registerCaretakerNotificationService($_EXTKEY, 'CliNotificationService', 'classes/services/notifications/class.tx_caretaker_CliNotificationService.php', 'tx_caretaker_CliNotificationService');
+tx_caretaker_ServiceHelper::registerCaretakerNotificationService($_EXTKEY, 'AdvancedNotificationService', 'classes/services/notifications/advanced/class.tx_caretaker_AdvancedNotificationService.php', 'tx_caretaker_AdvancedNotificationService');
 
-	//register Notification-Services
-tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'SimpleMailNotificationService', 'classes/services/notifications/class.tx_caretaker_SimpleMailNotificationService.php', 'tx_caretaker_SimpleMailNotificationService' );
-tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'CliNotificationService', 'classes/services/notifications/class.tx_caretaker_CliNotificationService.php', 'tx_caretaker_CliNotificationService' );
-tx_caretaker_ServiceHelper::registerCaretakerNotificationService( $_EXTKEY, 'AdvancedNotificationService', 'classes/services/notifications/advanced/class.tx_caretaker_AdvancedNotificationService.php', 'tx_caretaker_AdvancedNotificationService' );
-
-	// register ExitPoint services
+// register ExitPoint services
 tx_caretaker_ServiceHelper::registerNotificationExitPoint($_EXTKEY, 'classes/services/notifications/advanced/exitpoints', 'tx_caretaker_NotificationMail', 'E-Mail', 'Sends an e-mail');
 tx_caretaker_ServiceHelper::registerNotificationExitPoint($_EXTKEY, 'classes/services/notifications/advanced/exitpoints', 'tx_caretaker_NotificationFile', 'File', 'Writes to a file');
 tx_caretaker_ServiceHelper::registerNotificationExitPoint($_EXTKEY, 'classes/services/notifications/advanced/exitpoints', 'tx_caretaker_NotificationXmpp', 'XMPP/Jabber', 'Sends XMPP/Jabber messages');
 
-	// register ExtJS Panels
-tx_caretaker_ServiceHelper::registerExtJsBackendPanel (
-	'node-info',
-	'caretaker-nodeinfo',
-	Array( 'EXT:caretaker/res/css/tx.caretaker.overview.css' ),
-	Array( 'EXT:caretaker/res/js/tx.caretaker.NodeInfo.js' ),
-	$_EXTKEY
+// register ExtJS Panels
+tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
+		'node-info',
+		'caretaker-nodeinfo',
+		Array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+		Array('EXT:caretaker/res/js/tx.caretaker.NodeInfo.js'),
+		$_EXTKEY
 );
 
-tx_caretaker_ServiceHelper::registerExtJsBackendPanel (
-	'node-charts',
-	'caretaker-nodecharts',
-	Array( 'EXT:caretaker/res/css/tx.caretaker.overview.css' ),
-	Array( 'EXT:caretaker/res/js/tx.caretaker.NodeCharts.js' ),
-	$_EXTKEY
+tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
+		'node-charts',
+		'caretaker-nodecharts',
+		Array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+		Array('EXT:caretaker/res/js/tx.caretaker.NodeCharts.js'),
+		$_EXTKEY
 );
 
-tx_caretaker_ServiceHelper::registerExtJsBackendPanel (
-	'node-log',
-	'caretaker-nodelog',
-	Array( 'EXT:caretaker/res/css/tx.caretaker.overview.css' ),
-	Array( 'EXT:caretaker/res/js/tx.caretaker.NodeLog.js' ),
-	$_EXTKEY
+tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
+		'node-log',
+		'caretaker-nodelog',
+		Array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+		Array('EXT:caretaker/res/js/tx.caretaker.NodeLog.js'),
+		$_EXTKEY
 );
 
-tx_caretaker_ServiceHelper::registerExtJsBackendPanel (
-	'node-contacts',
-	'caretaker-nodecontacts',
-	Array( 'EXT:caretaker/res/css/tx.caretaker.overview.css' ),
-	Array( 'EXT:caretaker/res/js/tx.caretaker.NodeContacts.js' ),
-	$_EXTKEY
+tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
+		'node-contacts',
+		'caretaker-nodecontacts',
+		Array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+		Array('EXT:caretaker/res/js/tx.caretaker.NodeContacts.js'),
+		$_EXTKEY
 );
 
-tx_caretaker_ServiceHelper::registerExtJsBackendPanel (
-	'node-problems',
-	'caretaker-nodeproblems',
-	Array( 'EXT:caretaker/res/css/tx.caretaker.overview.css' ),
-	Array( 'EXT:caretaker/res/js/tx.caretaker.NodeProblems.js' ),
-	$_EXTKEY
+tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
+		'node-problems',
+		'caretaker-nodeproblems',
+		Array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+		Array('EXT:caretaker/res/js/tx.caretaker.NodeProblems.js'),
+		$_EXTKEY
 );
-
-
-
-?>

@@ -47,22 +47,23 @@
  */
 interface tx_caretaker_NotificationServiceInterface {
 
+	/**
+	 * @param int $id
+	 */
 	public function setId($id);
 
 	/**
 	 * Check weather the notificationService is enabled
-	 *
 	 * @return boolean
 	 */
 	public function isEnabled();
 
-    /**
+	/**
 	 * Notify the service about a test status
-	 *
 	 * @param string $event
 	 * @param tx_caretaker_AbstractNode $node
 	 * @param tx_caretaker_TestResult $result
-	 * @param tx_caretaKer_TestResult $lastResult
+	 * @param tx_caretaker_TestResult $lastResult
 	 */
 	public function addNotification($event, $node, $result = NULL, $lastResult = NULL);
 
@@ -72,4 +73,3 @@ interface tx_caretaker_NotificationServiceInterface {
 	public function sendNotifications();
 
 }
-?>

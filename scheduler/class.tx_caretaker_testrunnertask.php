@@ -45,56 +45,62 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_TestrunnerTask extends tx_scheduler_Task {
+class tx_caretaker_TestrunnerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
-	private $node_id;
+	/**
+	 * @var string
+	 */
+	protected $node_id;
 
-
-	public function setNodeId($id){
+	/**
+	 * @param string $id
+	 */
+	public function setNodeId($id) {
 		$this->node_id = $id;
 	}
 
-	public function getNodeId(){
+	/**
+	 * @return string
+	 */
+	public function getNodeId() {
 		return $this->node_id;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function execute() {
-
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
 		$node = $node_repository->id2node($this->node_id);
 
-		if (!$node)return false;
+		if (!$node) return false;
 
-		$lockObj = t3lib_div::makeInstance('t3lib_lock', 'tx_caretaker_update_'.$node->getCaretakerNodeId() , $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode'] );
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode'] != 'disable') {
+			$lockObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Locking\Locker', 'tx_caretaker_update_' . $node->getCaretakerNodeId(), $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
 			// no output during scheduler runs
-		tx_caretaker_ServiceHelper::unregisterCaretakerNotificationService( 'CliNotificationService' );
+			tx_caretaker_ServiceHelper::unregisterCaretakerNotificationService('CliNotificationService');
 
-		if( $lockObj->acquire() ) {
-		   	$node->updateTestResult();
-			$lockObj->release();
+			if ($lockObj->acquire()) {
+				$node->updateTestResult();
+				$lockObj->release();
+			} else {
+				return false;
+			}
 		} else {
-			return false;
+			$node->updateTestResult();
 		}
 
-			// send aggregated notifications
+		// send aggregated notifications
 		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
-		foreach ( $notificationServices as $notificationService ){
+		/** @var tx_caretaker_AbstractNotificationService $notificationService */
+		foreach ($notificationServices as $notificationService) {
 			$notificationService->sendNotifications();
 		}
-
-
-		$success = true;
-
-		return $success;
+		return true;
 	}
 
-	public function getAdditionalInformation() {
-		// return $GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xml:label.email') . ': ' . $this->email;
-	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_testrunnertask.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_testrunnertask.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_testrunnertask.php']);
 }
-
-?>

@@ -33,7 +33,6 @@
  *
  * $Id$
  */
-require_once (t3lib_extMgm::extPath('caretaker', 'classes/services/notifications/advanced/exitpoints/class.tx_caretaker_NotificationBaseExitPoint.php'));
 
 class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBaseExitPoint {
 
@@ -47,9 +46,14 @@ class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBa
 	public function addNotification($notification, $overrideConfig) {
 		$config = $this->getConfig($overrideConfig);
 
-		$contacts = array();
-		$contacts = $notification['node']->getContacts($config['roles']);
-		foreach($contacts as $contact) {
+		/** @var tx_caretaker_TestNode $node */
+		$node = $notification['node'];
+		/** @var tx_caretaker_TestResult $result */
+		$result = $notification['result'];
+
+		$contacts = $node->getContacts($config['roles']);
+		/** @var tx_caretaker_Contact $contact */
+		foreach ($contacts as $contact) {
 			$address = $contact->getAddress();
 			if (!$config['aggregateByRecipient']) {
 				$this->sendMail($address['email'], $this->compileMail(array($notification)));
@@ -76,8 +80,8 @@ class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBa
 	 */
 	protected function compileMail($notifications) {
 		$mail = array(
-			'subject' => $this->config['emailSubject'], // TODO compile a proper subject
-			'message' => '',
+				'subject' => $this->config['emailSubject'], // TODO compile a proper subject
+				'message' => '',
 		);
 
 		foreach ($notifications as $notification) {
@@ -92,7 +96,7 @@ class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBa
 	 * @return
 	 */
 	protected function sendMail($recipient, $mailContent) {
-		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Mail\MailMessage');
 		$mail->setFrom($this->config['emailSenderAddress'], $this->config['emailSenderName']);
 		$mail->setTo($recipient);
 		$mail->setSubject($mailContent['subject']);
@@ -115,5 +119,3 @@ class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBa
 		return $time . ' ' . $periods[$j];
 	}
 }
-
-?>

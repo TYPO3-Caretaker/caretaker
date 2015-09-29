@@ -123,7 +123,7 @@ abstract class tx_caretaker_AbstractNode {
 		$this->parent = $parent;
 		$this->type = $type;
 		$this->storageTable = $storageTable;
-		if ($parent && $parent->getHidden()){
+		if ($parent && $parent->getHidden()) {
 			$this->hidden = TRUE;
 		} else {
 			$this->hidden = (boolean)$hidden;
@@ -178,7 +178,6 @@ abstract class tx_caretaker_AbstractNode {
 	 * Set hidden state
 	 *
 	 * @param boolean
-	 * @return void
 	 */
 	public function setHidden($hidden = TRUE) {
 		$this->hidden = (boolean)$hidden;
@@ -247,18 +246,16 @@ abstract class tx_caretaker_AbstractNode {
 			return FALSE;
 		}
 
-		if (isset($this->dbRow[$fieldname])){
+		if (isset($this->dbRow[$fieldname])) {
 			return $this->dbRow[$fieldname];
-		}  else {
+		} else {
 			return FALSE;
 		}
-
 	}
 
 	/**
 	 * Get the description of the Testservice
 	 * @return string
-	 * @deprecated
 	 */
 	public function getTypeDescription() {
 		return '';
@@ -268,9 +265,8 @@ abstract class tx_caretaker_AbstractNode {
 	 * Get the configuration info text
 	 *
 	 * @return string
-	 * @deprecated
 	 */
-	public function getConfigurationInfo(){
+	public function getConfigurationInfo() {
 		return '';
 	}
 
@@ -278,9 +274,8 @@ abstract class tx_caretaker_AbstractNode {
 	 * Get the info weather a node is hidden
 	 *
 	 * @return string
-	 * @deprecated
 	 */
-	public function getHiddenInfo(){
+	public function getHiddenInfo() {
 		return ($this->getHidden() ? 'yes' : 'no');
 	}
 
@@ -296,8 +291,8 @@ abstract class tx_caretaker_AbstractNode {
 	 * Get the current instance
 	 * @return tx_caretaker_InstanceNode
 	 */
-	public function getInstance(){
-		if (is_a($this, 'tx_caretaker_InstanceNode')) {
+	public function getInstance() {
+		if ($this instanceof tx_caretaker_InstanceNode) {
 			return $this;
 		} else if ($this->parent) {
 			return $this->parent->getInstance();
@@ -309,7 +304,7 @@ abstract class tx_caretaker_AbstractNode {
 	/**
 	 * Update the Node State (Execute Test)
 	 *
- 	 * @param array $options
+	 * @param array $options
 	 * @return tx_caretaker_NodeResult
 	 */
 	abstract public function updateTestResult($options = array());
@@ -336,7 +331,6 @@ abstract class tx_caretaker_AbstractNode {
 	 */
 	abstract public function getTestResultNumber();
 
-
 	/**
 	 * Get Test Result Objects
 	 *
@@ -344,7 +338,7 @@ abstract class tx_caretaker_AbstractNode {
 	 * @param integer $limit
 	 * @return tx_caretaker_NodeResultRange
 	 */
-	abstract public function getTestResultRangeByOffset($offset=0, $limit=10);
+	abstract public function getTestResultRangeByOffset($offset = 0, $limit = 10);
 
 	/**
 	 * @param tx_caretaker_TestResult $result
@@ -358,14 +352,15 @@ abstract class tx_caretaker_AbstractNode {
 	/**
 	 * Send a notification to all registered notification services
 	 *
-	 * @param tx_caretaker_TestResult $result
-	 * @param tx_caretaker_TestResult $lastResult
-	 * @return void
+	 * @param string $event
+	 * @param tx_caretaker_NodeResult $result
+	 * @param tx_caretaker_NodeResult $lastResult
 	 */
 	public function notify($event, $result = NULL, $lastResult = NULL) {
-			// find all registered notification services
+		// find all registered notification services
 		$notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
-		foreach($notificationServices as $notificationService) {
+		/** @var tx_caretaker_AbstractNotificationService $notificationService */
+		foreach ($notificationServices as $notificationService) {
 			$notificationService->addNotification($event, $this, $result, $lastResult);
 		}
 	}
@@ -385,7 +380,7 @@ abstract class tx_caretaker_AbstractNode {
 		} else if (is_string($roles)) {
 			$roleIds = $roles;
 			$roles = array();
-			foreach (t3lib_div::trimExplode(',', $roleIds) as $roleId) {
+			foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $roleIds) as $roleId) {
 				if ($roleId === '*') {
 					$roles = NULL;
 					break;
@@ -407,7 +402,8 @@ abstract class tx_caretaker_AbstractNode {
 			}
 			$contacts = $this->contacts['__all__'];
 		} else {
-			foreach($roles as $role) {
+			/** @var tx_caretaker_ContactRole $role */
+			foreach ($roles as $role) {
 				if ($this->contacts[$role->getId()] === NULL) {
 					$this->contacts[$role->getId()] = $contactRepository->getContactsByNodeAndRole($this, $role);
 				}
@@ -423,19 +419,17 @@ abstract class tx_caretaker_AbstractNode {
 	}
 
 	/**
-	 * @deprecated use getContacts instead
-	 * @see getContacts
-	 * @todo remove this method
-	 */
-	public function findContacts($roles = NULL, $returnFirst = NULL) {
-		throw new Exception('deprecated method: use getContacts instead', 1297445757);
-	}
-
-	/**
 	 * @return array|bool
 	 */
 	public function getStrategies() {
 		return $this->getParent() ? $this->getParent()->getStrategies() : FALSE;
 	}
+
+	/**
+	 * @param int $testUid
+	 * @return bool
+	 */
+	public function getTestConfigurationOverlayForTestUid($testUid) {
+		return FALSE;
+	}
 }
-?>

@@ -33,8 +33,7 @@
  *
  * $Id$
  */
-
-class tx_caretaker_TestNodeRunner_testcase extends tx_phpunit_testcase  {
+class tx_caretaker_TestNodeRunner_testcase extends tx_phpunit_testcase {
 
 
 	protected function setUp() {
@@ -45,10 +44,10 @@ class tx_caretaker_TestNodeRunner_testcase extends tx_phpunit_testcase  {
 
 	}
 
-	public function provider_test_foo(){
+	public function provider_test_foo() {
 		return array(
-			array( 1, 1, 'true is not true but i knew this before' ),
-			array( 1, 1, 'true is not false add unit tests here'   )
+				array(1, 1, 'true is not true but i knew this before'),
+				array(1, 1, 'true is not false add unit tests here')
 		);
 	}
 

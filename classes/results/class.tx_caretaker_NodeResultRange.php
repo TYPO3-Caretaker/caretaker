@@ -57,21 +57,21 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	/**
 	 * Minimal Timestamp of this Result Range
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $start_timestamp = NULL;
 
 	/**
 	 * Maximal Timestamp of this Result Range
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $end_timestamp = NULL;
 
 	/**
 	 * timestamp of last existing value
 	 *
-	 * @var unknown_type
+	 * @var int
 	 */
 	private $last_timestamp = 0;
 
@@ -81,7 +81,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	 * @param integer $start_timestamp
 	 * @param integer $end_timestamp
 	 */
-	public function __construct($start_timestamp, $end_timestamp){
+	public function __construct($start_timestamp, $end_timestamp) {
 		$this->end_timestamp = $end_timestamp;
 		$this->start_timestamp = $start_timestamp;
 	}
@@ -91,22 +91,21 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	 *
 	 * @param tx_caretaker_NodeResult $result
 	 */
-	public function addResult($result){
-
-		$ts = (int)$result->getTstamp();
+	public function addResult($result) {
+		$ts = (int)$result->getTimestamp();
 		$this->array[$ts] = $result;
 
-		if ($ts < $this->last_timestamp){
-			ksort( $this->array );
+		if ($ts < $this->last_timestamp) {
+			ksort($this->array);
 		} else {
 			$this->last_timestamp = $ts;
 		}
 
-		if ($this->start_timestamp !== NULL && $ts < $this->start_timestamp ){
-			$this->start_timestamp  = $ts;
+		if ($this->start_timestamp !== NULL && $ts < $this->start_timestamp) {
+			$this->start_timestamp = $ts;
 		}
 
-		if ($this->end_timestamp  !== NULL && $ts > $this->end_timestamp){
+		if ($this->end_timestamp !== NULL && $ts > $this->end_timestamp) {
 			$this->end_timestamp = $ts;
 		}
 	}
@@ -114,42 +113,18 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	/**
 	 * Return minimal timestamp
 	 *
-	 * @return integer
-	 * @depricated
-	 * @todo remove this method
+	 * @return int
 	 */
-	public function getMinTstamp(){
-		return $this->start_timestamp;
-	}
-
-	/**
-	 * Return minimal timetamp
-	 *
-	 * @return unknown_type
-	 */
-	public function getStartTimestamp(){
+	public function getStartTimestamp() {
 		return $this->start_timestamp;
 	}
 
 	/**
 	 * Return maximal timestamp
 	 *
-	 * @return unknown_type
-	 * @depricated
-	 * @todo remove this method
+	 * @return int
 	 */
-	public function getMaxTstamp(){
-		return $this->end_timestamp;
-	}
-
-	/**
-	 * Return maximal timestamp
-	 *
-	 * @return unknown_type
-	 * @depricated
-	 * @todo remove this method
-	 */
-	public function getEndTimestamp(){
+	public function getEndTimestamp() {
 		return $this->end_timestamp;
 	}
 
@@ -158,7 +133,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	 *
 	 * @return integer
 	 */
-	public function getLength(){
+	public function getLength() {
 		return count($this->array);
 	}
 
@@ -167,7 +142,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	 *
 	 * @return tx_caretaker_NodeResult
 	 */
-	public function getFirst(){
+	public function getFirst() {
 		return reset($this->array);
 	}
 
@@ -176,7 +151,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	 *
 	 * @return tx_caretaker_NodeResult
 	 */
-	public function getLast(){
+	public function getLast() {
 		return end($this->array);
 	}
 
@@ -185,24 +160,25 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	 *
 	 * @return array
 	 */
-	public function getInfos(){
-
-		$SecondsTotal     = $this->end_timestamp - $this->start_timestamp;
+	public function getInfos() {
+		$SecondsTotal = $this->end_timestamp - $this->start_timestamp;
 		$SecondsUNDEFINED = 0;
-		$SecondsOK        = 0;
-		$SecondsWARNING   = 0;
-		$SecondsERROR     = 0;
-		$SecondsACK       = 0;
-		$SecondsDUE       = 0;
+		$SecondsOK = 0;
+		$SecondsWARNING = 0;
+		$SecondsERROR = 0;
+		$SecondsACK = 0;
+		$SecondsDUE = 0;
 
-		$lastTS    = NULL;
+		$lastTS = NULL;
 		$lastSTATE = NULL;
-		foreach( $this->array as $ts=>$result ){
-			if ($lastTS){
-
+		/**
+		 * @var int $ts
+		 * @var tx_caretaker_TestResult $result
+		 */
+		foreach ($this->array as $ts => $result) {
+			if ($lastTS) {
 				$range = $ts - $lastTS;
-
-				switch ($lastSTATE){
+				switch ($lastSTATE) {
 					case tx_caretaker_Constants::state_due :
 						$SecondsDUE += $range;
 						break;
@@ -223,32 +199,29 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 						break;
 				}
 			}
-			$lastTS    = $ts;
+			$lastTS = $ts;
 			$lastSTATE = $result->getState();
-
 		}
 
 		return array(
-			'SecondsTotal'      =>$SecondsTotal,
-			'SecondsUNDEFINED'  =>$SecondsUNDEFINED,
-			'SecondsOK'         =>$SecondsOK,
-			'SecondsWARNING'    =>$SecondsWARNING,
-			'SecondsERROR'      =>$SecondsERROR,
-			'SecondsACK'        =>$SecondsACK,
-			'SecondsDUE'        =>$SecondsACK,
+				'SecondsTotal' => $SecondsTotal,
+				'SecondsUNDEFINED' => $SecondsUNDEFINED,
+				'SecondsOK' => $SecondsOK,
+				'SecondsWARNING' => $SecondsWARNING,
+				'SecondsERROR' => $SecondsERROR,
+				'SecondsACK' => $SecondsACK,
+				'SecondsDUE' => $SecondsACK,
 
-			'PercentAVAILABLE'  => ($SecondsTotal - $SecondsERROR - $SecondsWARNING - $SecondsUNDEFINED )/$SecondsTotal,
-			'PercentUNDEFINED'  => $SecondsUNDEFINED/$SecondsTotal,
-			'PercentOK'         => $SecondsOK/$SecondsTotal,
-			'PercentWARNING'    => $SecondsWARNING/$SecondsTotal,
-			'PercentERROR'      => $SecondsERROR/$SecondsTotal,
-			'PercentACK'        => $SecondsACK/$SecondsTotal,
-			'PercentDUE'        => $SecondsDUE/$SecondsTotal,
- 		);
-
+				'PercentAVAILABLE' => ($SecondsTotal - $SecondsERROR - $SecondsWARNING - $SecondsUNDEFINED) / $SecondsTotal,
+				'PercentUNDEFINED' => $SecondsUNDEFINED / $SecondsTotal,
+				'PercentOK' => $SecondsOK / $SecondsTotal,
+				'PercentWARNING' => $SecondsWARNING / $SecondsTotal,
+				'PercentERROR' => $SecondsERROR / $SecondsTotal,
+				'PercentACK' => $SecondsACK / $SecondsTotal,
+				'PercentDUE' => $SecondsDUE / $SecondsTotal,
+		);
 	}
 
-		// Iterator methods
 	/**
 	 * Reset the counter and return the first result
 	 */
@@ -284,25 +257,20 @@ abstract class tx_caretaker_NodeResultRange implements Iterator {
 	 * @return boolean
 	 */
 	public function valid() {
-		return isset( $this->array[key($this->array)] );
+		return isset($this->array[key($this->array)]);
 	}
 
 	/**
 	 * Reverses the array of results
-	 * @return void
 	 */
 	public function reverse() {
-
 		$this->array = array_reverse($this->array);
 	}
 
 	/**
-	 *
 	 * @return integer
 	 */
-	public function count(){
+	public function count() {
 		return count($this->array);
 	}
 }
-
-?>

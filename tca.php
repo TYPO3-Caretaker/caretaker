@@ -611,7 +611,6 @@ $TCA['tx_caretaker_testgroup'] = array(
 		'palettes' => array(
 				'1' => array('showitem' => 'starttime,endtime,fe_group'),
 				'2' => array('showitem' => 'instances')
-
 		)
 );
 
@@ -921,8 +920,9 @@ if ($advancedNotificationsEnabled) {
 							'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service',
 							'config' => Array(
 									'type' => 'select',
-									'items' => array(
-											0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service.select_exitpoint', '')
+									'items' => array_merge(
+											array(0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service.select_exitpoint', '')),
+											\tx_caretaker_ServiceHelper::getTcaExitPointServiceItems()
 									),
 									'size' => 1,
 									'maxitems' => 1,
@@ -931,11 +931,11 @@ if ($advancedNotificationsEnabled) {
 					'config' => array(
 							'displayCond' => 'FIELD:service:REQ:true',
 							'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.config',
-							'config' => Array(
+							'config' => [
 									'type' => 'flex',
 									'ds_pointerField' => 'service',
-									'ds' => array()
-							)
+									'ds' => \tx_caretaker_ServiceHelper::getTcaExitPointConfigDs()
+							]
 					)
 			),
 			'types' => array(

@@ -37,13 +37,15 @@
 /**
  * Plugin 'Overview' for the 'user_overview' extension.
  */
-
 class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
-	var $prefixId = 'tx_caretaker_pi_singleview';		// Same as class name
-	var $scriptRelPath = 'pi_singleview/class.tx_caretaker_pi_singleview.php';	// Path to this script relative to the extension dir.
-	var $extKey = 'caretaker';	// The extension key.
+	var $prefixId = 'tx_caretaker_pi_singleview';        // Same as class name
+	var $scriptRelPath = 'pi_singleview/class.tx_caretaker_pi_singleview.php';    // Path to this script relative to the extension dir.
+	var $extKey = 'caretaker';    // The extension key.
 
-	function getContent(){
+	/**
+	 * @return string
+	 */
+	function getContent() {
 		$node = $this->getNode();
 		if ($node) {
 			$content = $this->showNodeInfo($node);
@@ -53,82 +55,82 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		return $content;
 	}
 
-	function getNode(){
-
-		$id   = $this->piVars['id'];
-		$node = false;
+	/**
+	 * @return tx_caretaker_AbstractNode
+	 */
+	function getNode() {
+		$id = $this->piVars['id'];
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
 
-		if ($id){
+		if ($id) {
 			$node = $node_repository->id2node($id);
 		} else {
 			$this->pi_initPIflexForm();
-			$node_id =  $this->pi_getFFValue($this->cObj->data['pi_flexform'],'node_id');
+			$node_id = $this->pi_getFFValue($this->cObj->data['pi_flexform'], 'node_id');
 			$node = $node_repository->id2node($node_id);
 		}
 		return $node;
 	}
 
-	function getNodeData( $node ){
-
+	/**
+	 * @param tx_caretaker_AbstractNode $node
+	 * @return array
+	 */
+	function getNodeData($node) {
 		$data = parent::getNodeData($node);
-
 		$range = 24;
 		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
-		$data['range'] = $range/24;
+		$data['range'] = $range / 24;
 
 		return $data;
 	}
 
-	function getNodeChart($node){
-
+	/**
+	 * @param tx_caretaker_AbstractNode $node
+	 * @return bool|string
+	 */
+	function getNodeChart($node) {
 		$chart = false;
 
 		$range = 24;
 		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
 
 		$id = $node->getCaretakerNodeID();
-		$result_range = $node->getTestResultRange(time()-3600*$range , time() );
-		$filename = 'typo3temp/caretaker/charts/'.$id.'_'.$range.'.png';
-		$filename2 = 'typo3temp/caretaker/charts/'.$id.'_'.$range.'.2.png';
-		$base = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		$result_range = $node->getTestResultRange(time() - 3600 * $range, time());
+		$filename = 'typo3temp/caretaker/charts/' . $id . '_' . $range . '.png';
+		$base = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 
-		if (is_a($node, 'tx_caretaker_TestNode' ) ){
+		if (is_a($node, 'tx_caretaker_TestNode')) {
 
-			$TestResultRangeChartRenderer = new tx_caretaker_TestResultRangeChartRenderer( );
-			$TestResultRangeChartRenderer->setTitle( $node->getTitle() );
-			$TestResultRangeChartRenderer->setTestResultRange( $result_range );
-			$result = $TestResultRangeChartRenderer->getChartImageTag( $filename , $base);
+			$TestResultRangeChartRenderer = new tx_caretaker_TestResultRangeChartRenderer();
+			$TestResultRangeChartRenderer->setTitle($node->getTitle());
+			$TestResultRangeChartRenderer->setTestResultRange($result_range);
+			$result = $TestResultRangeChartRenderer->getChartImageTag($filename, $base);
 
-			if ($result){
+			if ($result) {
 				$chart = $result;
 			} else {
 				$chart = 'Graph Error';
 			}
 
-		} else  if (is_a( $node, 'tx_caretaker_AggregatorNode')){
+		} else if (is_a($node, 'tx_caretaker_AggregatorNode')) {
 
-			$TestResultRangeChartRenderer = new tx_caretaker_AggregatorResultRangeChartRenderer( );
-			$TestResultRangeChartRenderer->setTitle( $node->getTitle() );
-			$TestResultRangeChartRenderer->setAggregatorResultRange( $result_range );
-			$result = $TestResultRangeChartRenderer->getChartImageTag( $filename , $base);
+			$TestResultRangeChartRenderer = new tx_caretaker_AggregatorResultRangeChartRenderer();
+			$TestResultRangeChartRenderer->setTitle($node->getTitle());
+			$TestResultRangeChartRenderer->setAggregatorResultRange($result_range);
+			$result = $TestResultRangeChartRenderer->getChartImageTag($filename, $base);
 
-			if ($result){
+			if ($result) {
 				$chart = $result;
 			} else {
 				$chart = 'Graph Error';
 			}
-
 		}
-
 		return $chart;
 	}
 }
 
 
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_singleview/class.tx_caretaker_pi_singleview.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_singleview/class.tx_caretaker_pi_singleview.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_singleview/class.tx_caretaker_pi_singleview.php']);
 }
-
-?>

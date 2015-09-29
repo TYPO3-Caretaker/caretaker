@@ -65,7 +65,7 @@ class tx_caretaker_Contact {
 	 * @param array $address
 	 * @param tx_caretaker_ContactRole $role
 	 */
-	public function __construct ($address, $role){
+	public function __construct($address, $role) {
 		$this->role = $role;
 		$this->address = $address;
 	}
@@ -75,7 +75,7 @@ class tx_caretaker_Contact {
 	 *
 	 * @return tx_caretaker_ContactRole
 	 */
-	public function getRole(){
+	public function getRole() {
 		return $this->role;
 	}
 
@@ -84,7 +84,7 @@ class tx_caretaker_Contact {
 	 *
 	 * @return array
 	 */
-	public function getAddress(){
+	public function getAddress() {
 		return $this->address;
 	}
 
@@ -94,13 +94,12 @@ class tx_caretaker_Contact {
 	 * @param string $propertyName
 	 * @return mixed
 	 */
-	public function getAddressProperty( $propertyName ){
-		if ($this->address[$propertyName]){
+	public function getAddressProperty($propertyName) {
+		if ($this->address[$propertyName]) {
 			return $this->address[$propertyName];
 		} else {
 			return '';
 		}
 	}
-
 }
-?>
+
