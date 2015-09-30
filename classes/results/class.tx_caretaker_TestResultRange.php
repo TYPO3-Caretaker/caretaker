@@ -140,7 +140,7 @@ class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange {
 			// start
 			if ($currentResult && $nextResult) {
 				$timeStart = $currentResult->getTimestamp();
-				$timeStop = $nextResult->getTstamp();
+				$timeStop = $nextResult->getTimestamp();
 				$value = $currentResult->getValue();
 				$state = $currentResult->getState();
 				$timeRange = $timeStop - $timeStart;
