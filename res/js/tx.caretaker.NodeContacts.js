@@ -18,7 +18,7 @@ tx.caretaker.NodeContacts = Ext.extend( Ext.grid.GridPanel , {
 				
 				'role_id','role_name','role_description',
 
-				'address_title','address_first_name', 'address_middle_name', 'address_last_name',
+				'address_name','address_title','address_first_name', 'address_middle_name', 'address_last_name',
 				'address_email','address_email_md5','address_phone','address_mobile',
 				'address_company','address_address','address_city','address_zip','address_country'
 			],
@@ -45,11 +45,13 @@ tx.caretaker.NodeContacts = Ext.extend( Ext.grid.GridPanel , {
 			
 			var full_name = '';
 
+			if ( record.data.address_name ) full_name += record.data.address_name ;
 			if ( record.data.address_title       )  full_name += ' ' + record.data.address_title ;
 			if ( record.data.address_first_name  )  full_name += ' ' + record.data.address_first_name ;
 			if ( record.data.address_middle_name )  full_name += ' ' + record.data.address_middle_name ;
 			if ( record.data.address_last_name   )  full_name += ' ' + record.data.address_last_name ;
-				
+
+
 			return full_name;
 		}
 
@@ -91,10 +93,10 @@ tx.caretaker.NodeContacts = Ext.extend( Ext.grid.GridPanel , {
 			},
 			columns: [
 			{
-				header: "Photo",
-				dataIndex: 'address_email',
-				renderer:{ fn: this.renderPhoto, scope: this }
-			},{
+			//	header: "Photo",
+			//	dataIndex: 'address_email',
+			//	renderer:{ fn: this.renderPhoto, scope: this }
+			//},{
 				header: "Role",
 				dataIndex: 'role_name',
 				renderer:{ fn: this.renderRole, scope: this }
@@ -111,14 +113,14 @@ tx.caretaker.NodeContacts = Ext.extend( Ext.grid.GridPanel , {
 				header: 'E-Mail',
 				dataIndex: 'address_email',
 				renderer:{ fn: this.renderMail, scope: this }
-			},{
-				header: 'Phone',
-				dataIndex: 'address_phone',
-				renderer:{ fn: this.renderPhone, scope: this }
-			},{
-				header: 'Mobile',
-				dataIndex: 'address_mobile',
-				renderer:{ fn: this.renderMobile, scope: this }
+			//},{
+			//	header: 'Phone',
+			//	dataIndex: 'address_phone',
+			//	renderer:{ fn: this.renderPhone, scope: this }
+			//},{
+			//	header: 'Mobile',
+			//	dataIndex: 'address_mobile',
+			//	renderer:{ fn: this.renderMobile, scope: this }
 			}
 			]
 		});

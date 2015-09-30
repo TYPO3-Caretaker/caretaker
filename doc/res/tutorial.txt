@@ -8,10 +8,10 @@ Step 1 : Get TYPO3 up and running
 
 You are about to install a TYPO3 Monitoring System. I really hope you know how to setup TYPO3. The only thing you probably want to know is that caretaker does not run under php4. So go for php5.
 
-Step 2 : Install the Prerequisites (tt_address and css_styled_content)
+Step 2 : Install the Prerequisites
 ----------------------------------------------------------------------
 
-Before installing caretaker you have to install the TYPO3-Extensions css_styled_content (For content display) and tt_address for the management of notifications. 
+Nothing to do as the caretaker does not depend on tt_address anymore
 
 Step 3: Install Extension Caretaker (Checkout from SVN)
 -------------------------------------------------------

@@ -327,6 +327,23 @@ CREATE TABLE tx_caretaker_node_address_mm (
 	KEY uid_foreign (uid_address)
 );
 
+CREATE TABLE tx_caretaker_contactaddress (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+
+	name varchar(255) DEFAULT '' NOT NULL,
+	email varchar(255) DEFAULT '' NOT NULL,
+	xmpp varchar(255) DEFAULT '' NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
 #
 # Table structure for table 'tx_caretaker_exitpoints'
 #
@@ -373,12 +390,5 @@ CREATE TABLE tx_caretaker_strategies (
 # Table structure for table 'fe_users'
 #
 CREATE TABLE fe_users (
-	tx_caretaker_api_key text NOT NULL,
-);
-
-#
-# Table structure for table 'tt_address'
-#
-CREATE TABLE tt_address (
-	tx_caretaker_xmpp text NOT NULL,
+	tx_caretaker_api_key text NOT NULL
 );

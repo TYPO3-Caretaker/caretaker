@@ -175,7 +175,11 @@ class tx_caretaker_ContactRepository {
 	private function dbrow2contact($row) {
 		$address = false;
 		if ($row['uid_address']) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Addresses, 'uid=' . $row['uid_address'] . ' AND hidden=0  AND deleted=0', '', '', 1);
+			$table = tx_caretaker_Constants::table_ContactAddresses;
+			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address')) {
+				$table = tx_caretaker_Constants::table_TTAddressAddresses;
+			}
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid=' . $row['uid_address'] . ' AND hidden=0 AND deleted=0', '', '', 1);
 			$address_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			if ($address_row) {
 				$address = $address_row;

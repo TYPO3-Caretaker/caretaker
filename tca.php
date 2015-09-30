@@ -118,7 +118,7 @@ $TCA['tx_caretaker_instancegroup'] = array(
 						'config' => Array(
 								'type' => 'select',
 								'form_type' => 'user',
-								'userFunc' => 'tx_ttaddress_treeview->displayGroupTree',
+								'userFunc' => 'tx_caretaker_treeview->displayGroupTree',
 								'treeView' => 1,
 								'foreign_table' => 'tx_caretaker_instancegroup',
 								'size' => 1,
@@ -265,7 +265,7 @@ $TCA['tx_caretaker_instance'] = array(
 						'config' => Array(
 								'type' => 'select',
 								'form_type' => 'user',
-								'userFunc' => 'tx_ttaddress_treeview->displayGroupTree',
+								'userFunc' => 'tx_caretaker_treeview->displayGroupTree',
 								'treeView' => 1,
 								'foreign_table' => 'tx_caretaker_testgroup',
 								'size' => 5,
@@ -339,7 +339,7 @@ $TCA['tx_caretaker_instance'] = array(
 						'config' => Array(
 								'type' => 'group',
 								'internal_type' => 'db',
-								'allowed' => 'tt_address',
+								'allowed' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address') ? 'tt_address' : 'tx_caretaker_contactaddress',
 								'size' => 5,
 								'autoSizeMax' => 25,
 								'minitems' => 0,
@@ -407,7 +407,7 @@ $TCA['tx_caretaker_node_address_mm'] = array(
 						'label' => 'LLL:EXT:tt_address/locallang_tca.xml:tt_address',
 						'config' => array(
 								'type' => 'select',
-								'foreign_table' => 'tt_address',
+								'foreign_table' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address') ? 'tt_address' : 'tx_caretaker_contactaddress',
 								'wizards' => Array(
 										'_PADDING' => 1,
 										'_VERTICAL' => 1,
@@ -416,7 +416,7 @@ $TCA['tx_caretaker_node_address_mm'] = array(
 												'title' => 'Create new address',
 												'icon' => 'add.gif',
 												'params' => Array(
-														'table' => 'tt_address',
+														'table' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address') ? 'tt_address' : 'tx_caretaker_contactaddress',
 														'pid' => '0',
 														'setValue' => 'prepend'
 												),
@@ -441,6 +441,53 @@ $TCA['tx_caretaker_node_address_mm'] = array(
 		)
 );
 
+$TCA['tx_caretaker_contactaddress'] = array(
+		'ctrl' => $TCA['tx_caretaker_contactaddress']['ctrl'],
+		'interface' => array(
+				'showRecordFieldList' => 'hidden,name,email,xmpp'
+		),
+		'feInterface' => $TCA['tx_caretaker_contactaddress']['feInterface'],
+		'columns' => Array(
+				'hidden' => Array(
+						'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+						'config' => Array(
+								'type' => 'check',
+								'default' => '0'
+						),
+				),
+				'name' => Array(
+						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_contactaddress.name',
+						'config' => Array(
+								'type' => 'input',
+								'size' => '30',
+								'eval' => 'trim',
+						)
+				),
+				'email' => Array(
+						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_contactaddress.email',
+						'config' => Array(
+								'type' => 'input',
+								'size' => '30',
+								'eval' => 'trim',
+						)
+				),
+				'xmpp' => Array(
+						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_contactaddress.xmpp',
+						'config' => Array(
+								'type' => 'input',
+								'size' => '30',
+								'eval' => 'trim',
+						)
+				),
+		),
+		'types' => array(
+				'0' => array('showitem' => 'id;;;;1-1-1, name, email, xmpp')
+		),
+		'palettes' => array(
+				'1' => array('showitem' => 'hidden')
+		)
+);
+
 if ($advancedNotificationsEnabled) {
 	$TCA['tx_caretaker_node_strategy_mm'] = array(
 			'ctrl' => $TCA['tx_caretaker_node_strategy_mm']['ctrl'],
@@ -449,7 +496,7 @@ if ($advancedNotificationsEnabled) {
 			),
 			'columns' => array(
 					'uid_strategy' => array(
-							'label' => 'LLL:EXT:tt_address/locallang_tca.xml:tx_caretaker_strategies',
+							'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies',
 							'config' => array(
 									'type' => 'select',
 									'foreign_table' => 'tx_caretaker_strategies'
@@ -539,7 +586,7 @@ $TCA['tx_caretaker_testgroup'] = array(
 						'config' => Array(
 								'type' => 'select',
 								'form_type' => 'user',
-								'userFunc' => 'tx_ttaddress_treeview->displayGroupTree',
+								'userFunc' => 'tx_caretaker_treeview->displayGroupTree',
 								'treeView' => 1,
 								'foreign_table' => 'tx_caretaker_testgroup',
 								'size' => 1,

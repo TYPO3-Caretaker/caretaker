@@ -104,6 +104,11 @@
 			<label index="tx_caretaker_roles.name">Name</label>
 			<label index="tx_caretaker_roles.description">Description</label>
 
+			<label index="tx_caretaker_contactaddress">Contact address</label>
+			<label index="tx_caretaker_contactaddress.name">Name</label>
+			<label index="tx_caretaker_contactaddress.email">E-Mail</label>
+			<label index="tx_caretaker_contactaddress.xmpp">XMPP</label>
+
 			<label index="tx_caretaker_exitpoints">Exitpoint</label>
 			<label index="tx_caretaker_exitpoints.id">Unique identifier</label>
 			<label index="tx_caretaker_exitpoints.name">Name</label>

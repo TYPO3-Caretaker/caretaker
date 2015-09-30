@@ -76,7 +76,7 @@ class tx_caretaker_NotificationXmppExitPoint extends tx_caretaker_NotificationBa
 		$contacts = $node->getContacts($config['roles']);
 		/** @var tx_caretaker_Contact $contact */
 		foreach ($contacts as $contact) {
-			$xmppAddress = $contact->getAddressProperty('tx_caretaker_xmpp');
+			$xmppAddress = $contact->getAddressProperty('xmpp');
 			if (!empty($xmppAddress)) {
 				$this->connection->message($xmppAddress, $message);
 			}

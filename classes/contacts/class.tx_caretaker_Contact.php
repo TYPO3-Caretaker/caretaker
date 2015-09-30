@@ -54,7 +54,7 @@ class tx_caretaker_Contact {
 	private $role;
 
 	/**
-	 * tt_address row
+	 * tt_address/tx_caretaker_contactaddress row
 	 * @var array
 	 */
 	private $address;
@@ -95,6 +95,9 @@ class tx_caretaker_Contact {
 	 * @return mixed
 	 */
 	public function getAddressProperty($propertyName) {
+		if ($propertyName == 'xmpp' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address')) {
+			$propertyName = 'tx_caretaker_xmpp';
+		}
 		if ($this->address[$propertyName]) {
 			return $this->address[$propertyName];
 		} else {

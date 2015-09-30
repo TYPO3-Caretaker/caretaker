@@ -160,6 +160,29 @@ $TCA['tx_caretaker_node_address_mm'] = array(
 		),
 );
 
+
+$TCA['tx_caretaker_contactaddress'] = array(
+		'ctrl' => array(
+				'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_contactaddress',
+				'label' => 'name',
+				'tstamp' => 'tstamp',
+				'crdate' => 'crdate',
+				'cruser_id' => 'cruser_id',
+				'default_sortby' => 'ORDER BY name',
+				'delete' => 'deleted',
+				'rootLevel' => -1,
+				'enablecolumns' => array(
+						'disabled' => 'hidden',
+				),
+				'dividers2tabs' => 1,
+				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
+				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/contactaddress.png',
+		),
+		'feInterface' => array(
+				'fe_admin_fieldList' => '',
+		)
+);
+
 if ($advancedNotificationsEnabled) {
 	/*
 	 * Register strategy tables
@@ -262,19 +285,21 @@ $tempColumns = array(
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('fe_users', $tempColumns, 1);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('fe_users', 'tx_caretaker_api_key');
 
-$tempColumns = array(
-		'tx_caretaker_xmpp' => array(
-				'exclude' => 0,
-				'label' => 'LLL:EXT:caretaker/locallang_db.xml:tt_address.tx_caretaker_xmpp',
-				'config' => array(
-						'type' => 'input',
-						'size' => '30',
-				)
-		),
-);
+if ($advancedNotificationsEnabled && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address')) {
+	$tempColumns = array(
+			'tx_caretaker_xmpp' => array(
+					'exclude' => 0,
+					'label' => 'LLL:EXT:caretaker/locallang_db.xml:tt_address.tx_caretaker_xmpp',
+					'config' => array(
+							'type' => 'input',
+							'size' => '30',
+					)
+			),
+	);
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_address', $tempColumns, 1);
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_address', 'tx_caretaker_xmpp;;;;1-1-1');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_address', $tempColumns, 1);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_address', 'tx_caretaker_xmpp;;;;1-1-1');
+}
 
 
 // overview

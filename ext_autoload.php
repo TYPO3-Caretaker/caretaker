@@ -68,6 +68,8 @@ return array(
 	'tx_caretaker_resultrangerenderer' => $extensionPath . 'interfaces/interface.tx_caretaker_ResultRangeRenderer.php',
 	'tx_caretaker_rootnode' => $extensionClassesPath . 'nodes/class.tx_caretaker_RootNode.php',
 	'tx_caretaker_servicehelper' => $extensionClassesPath . 'helpers/class.tx_caretaker_ServiceHelper.php',
+	'tx_caretaker_treeview' => $extensionClassesPath . 'helpers/tt_address/class.tx_caretaker_treeview.php',
+	'tx_caretaker_tcefunc_selecttreeview' => $extensionClassesPath . 'helpers/tt_address/class.tx_caretaker_tceFunc_selectTreeView.php',
 	'tx_caretaker_simplemailnotificationservice' => $extensionClassesPath . 'services/notifications/class.tx_caretaker_SimpleMailNotificationService.php',
 	'tx_caretaker_testgroupnode' => $extensionClassesPath . 'nodes/class.tx_caretaker_TestgroupNode.php',
 	'tx_caretaker_testnode' => $extensionClassesPath . 'nodes/class.tx_caretaker_TestNode.php',

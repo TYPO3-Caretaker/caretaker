@@ -62,7 +62,8 @@ class tx_caretaker_Constants {
 
 		/* tables */
 		/* foreign tables */
-	const table_Addresses = 'tt_address';
+	const table_TTAddressAddresses = 'tt_address';
+	const table_ContactAddresses = 'tx_caretaker_contactaddress';
 
 		/* data tables */
 	const table_Instances =			'tx_caretaker_instance';

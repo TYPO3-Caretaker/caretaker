@@ -51,7 +51,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'author' => 'Martin Ficzel,Thomas Hempel,Christopher Hlubek,Tobias Liebig',
 		'author_email' => 'ficzel@work.de,hempel@work.de,hlubek@networkteam.com,typo3@etobi.de',
 		'shy' => '',
-		'dependencies' => 'cms,tt_address',
+		'dependencies' => 'cms',
 		'conflicts' => '',
 		'priority' => '',
 		'module' => '',
@@ -69,15 +69,12 @@ $EM_CONF[$_EXTKEY] = array(
 		'constraints' => array(
 				'depends' => array(
 						'cms' => '',
-						'tt_address' => '2.2.1-',
 						'caretaker_instance' => '0.7.0-',
 						'typo3' => '6.2.0-7.99.99',
 						'php' => '5.3.0-'
 				),
 				'conflicts' => array(),
-				'suggests' => array(
-						'css_styled_content' => '',
-				),
+				'suggests' => array(),
 		),
 		'_md5_values_when_last_written' => 'a:5:{s:9:"ChangeLog";s:4:"9c48";s:10:"README.txt";s:4:"ee2d";s:12:"ext_icon.gif";s:4:"1bdc";s:19:"doc/wizard_form.dat";s:4:"c49e";s:20:"doc/wizard_form.html";s:4:"c565";}',
 );
