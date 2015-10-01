@@ -153,7 +153,9 @@ $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_caretaker_mod_n
 $SOBE->init();
 
 // Include files?
-foreach ($SOBE->include_once as $INC_FILE) include_once($INC_FILE);
+if ($SOBE->include_once) {
+	foreach ($SOBE->include_once as $INC_FILE) include_once($INC_FILE);
+}
 
 $SOBE->main();
 $SOBE->printContent();
