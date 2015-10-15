@@ -82,7 +82,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 
 			// substitute markers
 			if ($this->conf['markers.']) {
-				$markers = arary();
+				$markers = array();
 				foreach (array_keys($this->conf['markers.']) as $key) {
 					if (substr($key, -1) != '.') {
 						$mark = $lcObj->cObjGetSingle($this->conf['markers.'][$key], $this->conf['markers.'][$key . '.']);
