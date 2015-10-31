@@ -22,6 +22,7 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 
 /**
  * This is a file of the caretaker project.
@@ -33,7 +34,7 @@
  *
  * $Id$
  */
-class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements tx_scheduler_AdditionalFieldProvider {
+class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements AdditionalFieldProviderInterface {
 
 	/**
 	 * This method is used to define new fields for adding or editing a task

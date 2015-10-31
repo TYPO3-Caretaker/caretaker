@@ -12,25 +12,25 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
                     {
                           text    : "Refresh",
 						  xtype   : 'splitbutton',
-                          icon    : "../res/icons/arrow_refresh_small.png",
+                          icon    : "../typo3conf/ext/caretaker/res/icons/arrow_refresh_small.png",
                           handler : this.refreschNode,
 							scope   : this
                     },
                     {
                           text    : "Actions",
                           xtype   : 'splitbutton',
-                          icon    : "../res/icons/arrow_refresh_small.png",
+                          icon    : "../typo3conf/ext/caretaker/res/icons/arrow_refresh_small.png",
                           menu    : [
                                 
                                  {
                                      text    : "Refresh forced",
-                                     icon    : "../res/icons/arrow_refresh.png",
+                                     icon    : "../typo3conf/ext/caretaker/res/icons/arrow_refresh.png",
                                      handler : this.refreschNodeForced,
              						 scope   : this
                                  },
                                  {
                                      text    : "Acknowledge Problem",
-                                     icon    : "../res/icons/wip.png",
+                                     icon    : "../typo3conf/ext/caretaker/res/icons/wip.png",
                                      handler : this.setAck,
                                      id      : 'tx_caretaker_NodeToolbar_Ack',
                                      disabled  : ( config.node_type == "test" && config.node_state_info == "ACK") ? true:false,
@@ -39,7 +39,7 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
              	                },
              	                {
                                      text    : "Set Due to Execution",
-                                     icon    : "../res/icons/wip.png",
+                                     icon    : "../typo3conf/ext/caretaker/res/icons/wip.png",
                                      handler : this.setDue,
                                      id      : 'tx_caretaker_NodeToolbar_Due',
                                      disabled  : ( config.node_type == "test" && config.node_state_info == "DUE") ? true:false,
@@ -51,40 +51,40 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
                     {
                             text    : "Edit",
 							xtype   : 'splitbutton',
-                            icon    : "../res/icons/pencil.png",
+                            icon    : "../typo3conf/ext/caretaker/res/icons/pencil.png",
                             disabled: (config.node_type =='root')?true:false,
                             handler : this.editNode,
 							scope   : this
                     },{
                             text    : "Add Child Record",
 							xtype   : 'splitbutton',
-                            icon    : "../res/icons/add.png",
+                            icon    : "../typo3conf/ext/caretaker/res/icons/add.png",
 							menu    : [
 								{
 									text    : "Add Instancegroup",
 				                	id      : 'toolbar-menu-add-instancegroup',
-									icon    : "../res/icons/instancegroup.png",
+									icon    : "../typo3conf/ext/caretaker/res/icons/instancegroup.png",
 									disabled: true,
 									handler : this.addInstancegroup,
 									scope   : this
 								},{
 									text    : "Add Instance",
 				                	id      : 'toolbar-menu-add-instance',
-									icon    : "../res/icons/instance.png",
+									icon    : "../typo3conf/ext/caretaker/res/icons/instance.png",
 									disabled: true,
 									handler : this.addInstance,
 									scope   : this
 								},{
 									text    : "Add Testgroup",
 									id      : 'toolbar-menu-add-testgroup',
-									icon    : "../res/icons/group.png",
+									icon    : "../typo3conf/ext/caretaker/res/icons/group.png",
 									disabled: true,
 									handler : this.addTestgroup,
 									scope   : this
 								},{
 									text    : "Add Test",
 									id      : 'toolbar-menu-add-test',
-									icon    : "../res/icons/test.png",
+									icon    : "../typo3conf/ext/caretaker/res/icons/test.png",
 									disabled: true,
 									handler : this.addTest,
 									scope   : this
@@ -95,14 +95,14 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
                             text    : "Enable",
 							xtype   : 'splitbutton',
                             disabled: (config.node_hidden==0 || config.node_type=='root')?true:false,
-                            icon    : "../res/icons/lightbulb.png",
+                            icon    : "../typo3conf/ext/caretaker/res/icons/lightbulb.png",
                             handler : this.enableNode,
 							scope   : this
                     },
                     {
                             text    : "Disable",
 							xtype   : 'splitbutton',
-                            icon    : "../res/icons/lightbulb_off.png",
+                            icon    : "../typo3conf/ext/caretaker/res/icons/lightbulb_off.png",
                             disabled: (config.node_hidden==1 || config.node_type=='root')?true:false,
                             handler : this.disableNode,
 							scope   : this

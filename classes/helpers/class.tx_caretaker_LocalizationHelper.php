@@ -95,7 +95,7 @@ class tx_caretaker_LocalizationHelper {
 					$locallang_file = implode(':', $locallangParts);
 
 					$language_key = $GLOBALS['BE_USER']->uc['lang'];
-					$LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('language');
+					$LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Lang\LanguageService');
 					$LANG->init($language_key);
 					$result = $LANG->getLLL(
 							$locallang_key,

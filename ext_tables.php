@@ -47,6 +47,7 @@ $TCA['tx_caretaker_instancegroup'] = array(
 				'label' => 'title',
 				'tstamp' => 'tstamp',
 				'crdate' => 'crdate',
+				'type' => '',
 				'cruser_id' => 'cruser_id',
 				'default_sortby' => 'ORDER BY title',
 				'delete' => 'deleted',
@@ -60,7 +61,7 @@ $TCA['tx_caretaker_instancegroup'] = array(
 				),
 				'dividers2tabs' => 1,
 				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/instancegroup.png',
+				'iconfile' => 'EXT:caretaker/res/icons/instancegroup.png',
 		),
 		'feInterface' => array(
 				'fe_admin_fieldList' => '',
@@ -85,7 +86,7 @@ $TCA['tx_caretaker_instance'] = array(
 				),
 				'dividers2tabs' => 1,
 				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/instance.png',
+				'iconfile' => 'EXT:caretaker/res/icons/instance.png',
 		),
 		'feInterface' => array(
 				'fe_admin_fieldList' => '',
@@ -112,7 +113,7 @@ $TCA['tx_caretaker_testgroup'] = array(
 				),
 				'dividers2tabs' => 1,
 				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/group.png',
+				'iconfile' => 'EXT:caretaker/res/icons/group.png',
 		),
 		'feInterface' => array(
 				'fe_admin_fieldList' => '',
@@ -137,7 +138,7 @@ $TCA['tx_caretaker_roles'] = array(
 						'disabled' => 'hidden',
 				),
 				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/role.png',
+				'iconfile' => 'EXT:caretaker/res/icons/role.png',
 		),
 		'feInterface' => array(
 				'fe_admin_fieldList' => '',
@@ -153,7 +154,7 @@ $TCA['tx_caretaker_node_address_mm'] = array(
 				'label_alt_force' => 1,
 
 				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/nodeaddressrelation.png',
+				'iconfile' => 'EXT:caretaker/res/icons/nodeaddressrelation.png',
 		),
 		'feInterface' => array(
 				'fe_admin_fieldList' => '',
@@ -176,7 +177,7 @@ $TCA['tx_caretaker_contactaddress'] = array(
 				),
 				'dividers2tabs' => 1,
 				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/contactaddress.png',
+				'iconfile' => 'EXT:caretaker/res/icons/contactaddress.png',
 		),
 		'feInterface' => array(
 				'fe_admin_fieldList' => '',
@@ -195,7 +196,7 @@ if ($advancedNotificationsEnabled) {
 					'label' => 'uid_strategy',
 
 					'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-					'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/nodeaddressrelation.png',
+					'iconfile' => 'EXT:caretaker/res/icons/nodeaddressrelation.png',
 			),
 			'feInterface' => array(
 					'fe_admin_fieldList' => '',
@@ -216,7 +217,7 @@ if ($advancedNotificationsEnabled) {
 							'disabled' => 'hidden',
 					),
 					'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-					'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/exitpoint.png',
+					'iconfile' => 'EXT:caretaker/res/icons/exitpoint.png',
 					'requestUpdate' => 'service',
 			),
 			'feInterface' => array(
@@ -238,7 +239,7 @@ if ($advancedNotificationsEnabled) {
 							'disabled' => 'hidden',
 					),
 					'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-					'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/strategy.png',
+					'iconfile' => 'EXT:caretaker/res/icons/strategy.png',
 			),
 			'feInterface' => array(
 					'fe_admin_fieldList' => '',
@@ -265,7 +266,7 @@ $TCA['tx_caretaker_test'] = array(
 						'fe_group' => 'fe_group',
 				),
 				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/icons/test.png',
+				'iconfile' => 'EXT:caretaker/res/icons/test.png',
 		),
 		'feInterface' => array(
 				'fe_admin_fieldList' => '',
