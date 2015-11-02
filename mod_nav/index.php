@@ -73,14 +73,13 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		if ($BE_USER->user["admin"]) {
 			// Draw the header.
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("template");
+			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Backend\\Template\\DocumentTemplate");
 			$this->doc->backPath = $BACK_PATH;
 
 			$this->pageRenderer = $this->doc->getPageRenderer();
 
 			// Include Ext JS
 			$this->pageRenderer->loadExtJS(true, true);
-			$this->pageRenderer->enableExtJSQuickTips();
 			$this->pageRenderer->enableExtJsDebug();
 			$this->pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.js', 'text/javascript', FALSE, FALSE);
 			$this->pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeTree.js', 'text/javascript', FALSE, FALSE);

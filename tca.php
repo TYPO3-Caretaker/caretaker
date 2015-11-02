@@ -292,7 +292,9 @@ $TCA['tx_caretaker_instance'] = array(
 										'edit' => Array(
 												'type' => 'popup',
 												'title' => 'Edit Test',
-												'script' => 'wizard_edit.php',
+												'module' => array(
+													'name' => 'wizard_edit'
+												),
 												'icon' => 'edit2.gif',
 												'popup_onlyOpenIfSelected' => 1,
 												'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
@@ -306,7 +308,9 @@ $TCA['tx_caretaker_instance'] = array(
 														'pid' => '###CURRENT_PID###',
 														'setValue' => 'prepend'
 												),
-												'script' => 'wizard_add.php',
+												'module' => array(
+													'name' => 'wizard_add'
+												)
 										),
 								),
 						)
@@ -420,7 +424,9 @@ $TCA['tx_caretaker_node_address_mm'] = array(
 														'pid' => '0',
 														'setValue' => 'prepend'
 												),
-												'script' => 'wizard_add.php'
+												'module' => array(
+													'name' => 'wizard_add'
+												)
 										)
 								)
 						)
@@ -629,7 +635,9 @@ $TCA['tx_caretaker_testgroup'] = array(
 										'edit' => Array(
 												'type' => 'popup',
 												'title' => 'Edit Test',
-												'script' => 'wizard_edit.php',
+												'module' => array(
+													'name' => 'wizard_edit'
+												),
 												'icon' => 'edit2.gif',
 												'popup_onlyOpenIfSelected' => 1,
 												'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
@@ -643,7 +651,9 @@ $TCA['tx_caretaker_testgroup'] = array(
 														'pid' => '###CURRENT_PID###',
 														'setValue' => 'prepend'
 												),
-												'script' => 'wizard_add.php',
+												'module' => array(
+													'name' => 'wizard_add'
+												)
 										),
 								),
 						)

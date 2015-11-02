@@ -6,6 +6,7 @@
 	height: 14px;
 	border: none;
 	color:white;
+	box-sizing: content-box;
 }
 
 #ext-caretaker-mod-nav-index-php .x-panel-bwrap {

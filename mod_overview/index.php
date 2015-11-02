@@ -88,7 +88,6 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 			// Include Ext JS
 			$this->pageRenderer->loadExtJS();
-			$this->pageRenderer->enableExtJSQuickTips();
 			$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.js');
 
 			$panels = array();
@@ -130,8 +129,6 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->pageRenderer->addJsInlineCode('Caretaker_Overview', '
 				Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 				Ext.namespace("tx","tx.caretaker");
-
-				Ext.QuickTips.init();
 
 				Ext.onReady( function() {
 
