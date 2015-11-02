@@ -38,7 +38,7 @@
  * Module 'Caretaker' for the 'caretaker' extension.
  */
 
-class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
+class tx_caretaker_mod_overview extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	var $pageinfo;
 	var $node_repository;
 	var $instance_repository;
@@ -214,7 +214,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretak
 }
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_caretaker_mod_nav');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_caretaker_mod_overview');
 $SOBE->init();
 
 // Include files?
