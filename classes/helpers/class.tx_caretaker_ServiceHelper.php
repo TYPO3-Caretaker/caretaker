@@ -157,7 +157,19 @@ class tx_caretaker_ServiceHelper {
 	 * @return array
 	 */
 	public static function getTcaTestConfigDs() {
-		return self::$tcaTestConfigDs;
+		$ds = self::$tcaTestConfigDs;
+		$ds['default'] = '
+            <T3DataStructure>
+              <ROOT>
+                <type>array</type>
+                <el>
+                  <dummy>
+                  </dummy>
+                </el>
+              </ROOT>
+            </T3DataStructure>
+        ';
+		return $ds;
 	}
 
 	/**
