@@ -84,7 +84,7 @@ class tx_caretaker_TestrunnerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 				$node->updateTestResult();
 				$lockObj->release();
 			} else {
-				return false;
+				return true;
 			}
 		} else {
 			$node->updateTestResult();
