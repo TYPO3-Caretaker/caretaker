@@ -91,6 +91,11 @@ if (TYPO3_MODE == 'BE') {
 	'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxNodeSetDue',
 	FALSE
 );
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
+	'tx_caretaker::getModuleUrl',
+	'EXT:caretaker/classes/ajax/class.tx_caretaker_Utility.php:tx_caretaker_Utility->getModuleUrl',
+	FALSE
+);
 
 
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass'][] = 'EXT:caretaker/classes/hooks/class.tx_caretaker_hooks_tceforms_getSingleFieldClass.php:tx_caretaker_hooks_tceforms_getSingleFieldClass';

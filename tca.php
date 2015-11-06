@@ -84,6 +84,7 @@ $TCA['tx_caretaker_instancegroup'] = array(
 						'label' => 'LLL:EXT:lang/locallang_general.php:LGL.fe_group',
 						'config' => Array(
 								'type' => 'select',
+								'renderType' => 'selectMultipleSideBySide',
 								'items' => Array(
 										Array('LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login', -1),
 										Array('LLL:EXT:lang/locallang_general.xml:LGL.any_login', -2),
@@ -101,7 +102,7 @@ $TCA['tx_caretaker_instancegroup'] = array(
 						'config' => Array(
 								'type' => 'input',
 								'size' => '30',
-								'eval' => 'trim',
+								'eval' => 'trim,required',
 						)
 				),
 				'description' => Array(
@@ -117,18 +118,17 @@ $TCA['tx_caretaker_instancegroup'] = array(
 						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.parent_group',
 						'config' => Array(
 								'type' => 'select',
-								'form_type' => 'user',
-								'userFunc' => 'tx_caretaker_treeview->displayGroupTree',
-								'treeView' => 1,
-								'foreign_table' => 'tx_caretaker_instancegroup',
-								'size' => 1,
-								'autoSizeMax' => 10,
-								'minitems' => 0,
-								'maxitems' => 2,
-
-								'items' => Array(
-										Array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.parent_group.select', 0),
+								'renderMode' => 'tree',
+								'renderType' => 'selectTree',
+								'treeConfig' => array(
+									'parentField' => 'parent_group',
+									'appearance' => array(
+										'showHeader' => TRUE
+									)
 								),
+								'foreign_table' => 'tx_caretaker_instancegroup',
+								'minitems' => 0,
+								'maxitems' => 1
 						)
 				),
 				'contacts' => array(
@@ -215,6 +215,7 @@ $TCA['tx_caretaker_instance'] = array(
 						'label' => 'LLL:EXT:lang/locallang_general.php:LGL.fe_group',
 						'config' => Array(
 								'type' => 'select',
+								'renderType' => 'selectMultipleSideBySide',
 								'items' => Array(
 										Array('LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login', -1),
 										Array('LLL:EXT:lang/locallang_general.xml:LGL.any_login', -2),
@@ -264,12 +265,15 @@ $TCA['tx_caretaker_instance'] = array(
 						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.groups',
 						'config' => Array(
 								'type' => 'select',
-								'form_type' => 'user',
-								'userFunc' => 'tx_caretaker_treeview->displayGroupTree',
-								'treeView' => 1,
+								'renderMode' => 'tree',
+								'renderType' => 'selectTree',
+								'treeConfig' => array(
+									'parentField' => 'parent_group',
+									'appearance' => array(
+										'showHeader' => TRUE
+									)
+								),
 								'foreign_table' => 'tx_caretaker_testgroup',
-								'size' => 5,
-								'autoSizeMax' => 25,
 								'minitems' => 0,
 								'maxitems' => 50,
 								'MM' => 'tx_caretaker_instance_testgroup_mm',
@@ -279,6 +283,7 @@ $TCA['tx_caretaker_instance'] = array(
 						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tests',
 						'config' => Array(
 								'type' => 'select',
+								'renderType' => 'selectMultipleSideBySide',
 								'foreign_table' => 'tx_caretaker_test',
 								'MM' => 'tx_caretaker_instance_test_mm',
 								'MM_opposite_field' => 'instances',
@@ -328,6 +333,7 @@ $TCA['tx_caretaker_instance'] = array(
 						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.instancegroup',
 						'config' => Array(
 								'type' => 'select',
+								'renderType' => 'selectSingle',
 								'foreign_table' => 'tx_caretaker_instancegroup',
 								'size' => 1,
 								'minitems' => 0,
@@ -411,6 +417,7 @@ $TCA['tx_caretaker_node_address_mm'] = array(
 						'label' => 'LLL:EXT:tt_address/locallang_tca.xml:tt_address',
 						'config' => array(
 								'type' => 'select',
+								'renderType' => 'selectSingle',
 								'foreign_table' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address') ? 'tt_address' : 'tx_caretaker_contactaddress',
 								'wizards' => Array(
 										'_PADDING' => 1,
@@ -435,6 +442,7 @@ $TCA['tx_caretaker_node_address_mm'] = array(
 						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles',
 						'config' => array(
 								'type' => 'select',
+								'renderType' => 'selectSingle',
 								'foreign_table' => 'tx_caretaker_roles',
 								'items' => array(
 										Array('', 0),
@@ -505,6 +513,7 @@ if ($advancedNotificationsEnabled) {
 							'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies',
 							'config' => array(
 									'type' => 'select',
+									'renderType' => 'selectSingle',
 									'foreign_table' => 'tx_caretaker_strategies'
 							)
 					)
@@ -561,6 +570,7 @@ $TCA['tx_caretaker_testgroup'] = array(
 						'label' => 'LLL:EXT:lang/locallang_general.php:LGL.fe_group',
 						'config' => Array(
 								'type' => 'select',
+								'renderType' => 'selectSingle',
 								'items' => Array(
 										Array('', 0),
 										Array('LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login', -1),
@@ -591,18 +601,17 @@ $TCA['tx_caretaker_testgroup'] = array(
 						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.parent_group',
 						'config' => Array(
 								'type' => 'select',
-								'form_type' => 'user',
-								'userFunc' => 'tx_caretaker_treeview->displayGroupTree',
-								'treeView' => 1,
-								'foreign_table' => 'tx_caretaker_testgroup',
-								'size' => 1,
-								'autoSizeMax' => 10,
-								'minitems' => 0,
-								'maxitems' => 2,
-
-								'items' => Array(
-										Array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.parent_group.select', 0),
+								'renderMode' => 'tree', // for old versions
+								'renderType' => 'selectTree', // for 7.4 and higher
+								'treeConfig' => array(
+									'parentField' => 'parent_group',
+									'appearance' => array(
+										'showHeader' => TRUE
+									),
 								),
+								'foreign_table' => 'tx_caretaker_testgroup',
+								'minitems' => 0,
+								'maxitems' => 1,
 						)
 				),
 				'instances' => Array(
@@ -622,6 +631,7 @@ $TCA['tx_caretaker_testgroup'] = array(
 						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tests',
 						'config' => Array(
 								'type' => 'select',
+								'renderType' => 'selectMultipleSideBySide',
 								'foreign_table' => 'tx_caretaker_test',
 								'MM' => 'tx_caretaker_testgroup_test_mm',
 								'MM_opposite_field' => 'groups',
@@ -660,14 +670,15 @@ $TCA['tx_caretaker_testgroup'] = array(
 				)
 		),
 		'types' => array(
-				'0' => array('showitem' => 'hidden;;1;;1-1-1, title;;2;;2-2-2, parent_group;;;;3-3-3,
+				'0' => array('showitem' => 'hidden;;1;;1-1-1, title, parent_group;;;;3-3-3,
 		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.description,description,
-		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.relations,tests;;;;4-4-4
+		--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.relations,tests;;;;4-4-4,
+		--palette--;Instances;instances
 		')
 		),
 		'palettes' => array(
 				'1' => array('showitem' => 'starttime,endtime,fe_group'),
-				'2' => array('showitem' => 'instances')
+				'instances' => array('showitem' => 'instances', 'isHiddenPalette' => TRUE)
 		)
 );
 
@@ -746,6 +757,7 @@ $TCA['tx_caretaker_test'] = array(
 						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_interval',
 						'config' => Array(
 								'type' => 'select',
+								'renderType' => 'selectSingle',
 								'items' => Array(
 										Array('always', 0),
 										Array('1 Minute', 60),
@@ -778,6 +790,7 @@ $TCA['tx_caretaker_test'] = array(
 						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_interval_start_hour',
 						'config' => Array(
 								'type' => 'select',
+								'renderType' => 'selectSingle',
 								'items' => Array(
 										Array('', 0), Array(1, 1), Array(2, 2), Array(3, 3), Array(4, 4), Array(5, 5), Array(6, 6), Array(7, 7), Array(8, 8), Array(9, 9), Array(10, 10), Array(11, 11), Array(12, 12),
 										Array(13, 13), Array(14, 14), Array(15, 15), Array(16, 16), Array(17, 17), Array(18, 18), Array(19, 19), Array(20, 20), Array(21, 21), Array(22, 22), Array(23, 23), Array(24, 24),
@@ -788,6 +801,7 @@ $TCA['tx_caretaker_test'] = array(
 						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_interval_stop_hour',
 						'config' => Array(
 								'type' => 'select',
+								'renderType' => 'selectSingle',
 								'items' => Array(
 										Array('', 0), Array(1, 1), Array(2, 2), Array(3, 3), Array(4, 4), Array(5, 5), Array(6, 6), Array(7, 7), Array(8, 8), Array(9, 9), Array(10, 10), Array(11, 11), Array(12, 12),
 										Array(13, 13), Array(14, 14), Array(15, 15), Array(16, 16), Array(17, 17), Array(18, 18), Array(19, 19), Array(20, 20), Array(21, 21), Array(22, 22), Array(23, 23), Array(24, 24),
@@ -798,6 +812,7 @@ $TCA['tx_caretaker_test'] = array(
 						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service',
 						'config' => Array(
 								'type' => 'select',
+								'renderType' => 'selectSingle',
 								'items' => array_merge(
 										array(0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service.select_service', '')),
 										\tx_caretaker_ServiceHelper::getTcaTestServiceItems()
@@ -819,6 +834,7 @@ $TCA['tx_caretaker_test'] = array(
 						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry',
 						'config' => Array(
 								'type' => 'select',
+								'renderType' => 'selectSingle',
 								'items' => array(
 										0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_0', 0),
 										2 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_1', 1),
@@ -842,6 +858,7 @@ $TCA['tx_caretaker_test'] = array(
 						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.roles',
 						'config' => array(
 								'type' => 'select',
+								'renderType' => 'selectMultipleSideBySide',
 								'foreign_table' => 'tx_caretaker_roles',
 								'size' => 5,
 								'autoSizeMax' => 25,
@@ -854,6 +871,7 @@ $TCA['tx_caretaker_test'] = array(
 						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.groups',
 						'config' => Array(
 								'type' => 'select',
+								'renderType' => 'selectMultipleSideBySide',
 								'foreign_table' => 'tx_caretaker_testgroup',
 								'size' => 5,
 								'autoSizeMax' => 25,
@@ -866,6 +884,7 @@ $TCA['tx_caretaker_test'] = array(
 						'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.instances',
 						'config' => Array(
 								'type' => 'select',
+								'renderType' => 'selectMultipleSideBySide',
 								'foreign_table' => 'tx_caretaker_instance',
 								'size' => 5,
 								'autoSizeMax' => 25,
@@ -876,15 +895,16 @@ $TCA['tx_caretaker_test'] = array(
 				)
 		),
 		'types' => array(
-				'0' => array('showitem' => 'test_service;;;;1-1-1, hidden;;1;;2-2-2, title;;3;;3-3-3,test_interval;;2,test_retry, test_due, test_conf;;;;4-4-4,
+				'0' => array('showitem' => 'test_service;;;;1-1-1, hidden;;1;;2-2-2, title,test_interval;;2,test_retry, test_due, test_conf;;;;4-4-4,
 					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.description, description,
-					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.notifications, roles'
+					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.notifications, roles,
+					--palette--;Groups and Instances; 3'
 				)
 		),
 		'palettes' => array(
 				'1' => array('showitem' => 'starttime,endtime,fe_group'),
 				'2' => array('showitem' => 'test_interval_start_hour,test_interval_stop_hour'),
-				'3' => array('showitem' => 'groups,instances')
+				'3' => array('showitem' => 'groups,instances', 'isHiddenPalette' => TRUE)
 		)
 );
 
@@ -977,6 +997,7 @@ if ($advancedNotificationsEnabled) {
 							'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service',
 							'config' => Array(
 									'type' => 'select',
+									'renderType' => 'selectSingle',
 									'items' => array_merge(
 											array(0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service.select_exitpoint', '')),
 											\tx_caretaker_ServiceHelper::getTcaExitPointServiceItems()
