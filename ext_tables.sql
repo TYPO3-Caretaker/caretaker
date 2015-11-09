@@ -59,6 +59,7 @@ CREATE TABLE tx_caretaker_instance (
 	instancegroup int(11) DEFAULT '0' NOT NULL,
 
 	contacts int(11) DEFAULT '0' NOT NULL,
+	notifications text,
 	notification_strategies int(11) DEFAULT '0' NOT NULL,
 
 	testconfigurations text NOT NULL,
