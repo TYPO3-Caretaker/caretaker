@@ -122,3 +122,6 @@ $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretake
 if ($extConfig['eid.']['enabled']) {
 	$TYPO3_CONF_VARS['FE']['eID_include']['tx_caretaker'] = 'EXT:caretaker/Classes/eid/class.tx_caretaker_Eid.php';
 }
+
+// register migration command controller
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = \Caretaker\Caretaker\Command\MigrationCommandController::class;
