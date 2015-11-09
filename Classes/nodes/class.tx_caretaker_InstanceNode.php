@@ -150,8 +150,8 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 		if ($this->testConfigurationOverlay) {
 			$fftools = new \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools();
 			$options = $fftools->getArrayValueByPath(
-					'data/sDEF/lDEF/testconfigurations/el',
-					$this->testConfigurationOverlay
+				'data/sDEF/lDEF/testconfigurations/el',
+				$this->testConfigurationOverlay
 			);
 			if ($options && is_array($options)) {
 				foreach ($options as $key => $el) {
@@ -187,6 +187,7 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 				}
 			}
 		}
+
 		return $curl_options;
 	}
 
@@ -201,8 +202,8 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 		if ($this->testConfigurationOverlay) {
 			$fftools = new \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools();
 			$tests = $fftools->getArrayValueByPath(
-					'data/sDEF/lDEF/testconfigurations/el',
-					$this->testConfigurationOverlay
+				'data/sDEF/lDEF/testconfigurations/el',
+				$this->testConfigurationOverlay
 			);
 			if (is_array($tests)) {
 				foreach ($tests as $key => $el) {
@@ -219,6 +220,7 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 		if (!$overlayConfig) {
 			$overlayConfig = parent::getTestConfigurationOverlayForTestUid($testUid);
 		}
+
 		return $overlayConfig;
 	}
 }

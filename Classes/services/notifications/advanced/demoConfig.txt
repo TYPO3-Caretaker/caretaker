@@ -70,7 +70,7 @@ conditions {
 	#####
 	# execute a UserFunction
 	# An array with the node and the new result is passed. Set TRUE or FALSE to the item "conditionsApply" in that array.
-	userFunc = EXT:caretaker/classes/services/notifications/advanced/class.tx_caretaker_AdvancedNotificationService.php:tx_caretaker_AdvancedNotificationService->testUserFunc
+	userFunc = EXT:caretaker/Classes/services/notifications/advanced/class.tx_caretaker_AdvancedNotificationService.php:tx_caretaker_AdvancedNotificationService->testUserFunc
 }
 
 #####

@@ -56,7 +56,7 @@ class tx_caretaker_ServiceHelper {
 	/**
 	 * @var array
 	 */
-	protected static $tcaTestConfigDs = array('default' => 'FILE:EXT:caretaker/classes/services/tests/ds.tx_caretaker_default.xml');
+	protected static $tcaTestConfigDs = array('default' => 'FILE:EXT:caretaker/Classes/services/tests/ds.tx_caretaker_default.xml');
 
 	/**
 	 * @var array
