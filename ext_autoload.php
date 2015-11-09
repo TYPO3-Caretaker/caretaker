@@ -3,7 +3,7 @@
 // This file was generated on 2015-07-20 23:10
 
 $extensionPath = t3lib_extMgm::extPath('caretaker');
-$extensionClassesPath = $extensionPath . 'classes/';
+$extensionClassesPath = $extensionPath . 'Classes/';
 return array(
 	'tx_caretaker_abstractnode' => $extensionClassesPath . 'nodes/class.tx_caretaker_AbstractNode.php',
 	'tx_caretaker_abstractnode_stub' => $extensionPath . 'tests/tx_caretaker_AbstractNode_testcase.php',

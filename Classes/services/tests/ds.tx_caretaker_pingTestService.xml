@@ -16,10 +16,12 @@
 	<meta>
 		<langDisable>1</langDisable>
 	</meta>
+	<sheets>
+		<sDEF>
 			<ROOT>
-				<TCEforms> 
-                        <sheetTitle>OS</sheetTitle> 
-                </TCEforms> 
+				<TCEforms>
+					<sheetTitle>OS</sheetTitle>
+				</TCEforms>
 				<type>array</type>
 				<el>
 					<max_time_warning>
@@ -43,8 +45,9 @@
 								<default>0</default>
 							</config>
 						</TCEforms>
-					</max_time_error>>				
+					</max_time_error>>
 				</el>
 			</ROOT>
-
+		</sDEF>
+	</sheets>
 </T3DataStructure>
