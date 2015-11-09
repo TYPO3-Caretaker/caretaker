@@ -22,6 +22,8 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * This is a file of the caretaker project.
@@ -72,6 +74,20 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	protected $testConfigurationOverlay;
 
 	/**
+	 * cURL options for this instance
+	 *
+	 * @var array
+	 */
+	protected $curlOptions;
+
+	/**
+	 *
+	 * True, if the new configuration override mechanism is enabled
+	 * @var bool
+	 */
+	protected $newConfigurationOverrideEnabled = FALSE;
+
+	/**
 	 * Constructor
 	 *
 	 * @param integer $uid
@@ -87,6 +103,13 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 		$this->url = $url;
 		$this->hostname = $hostname;
 		$this->publicKey = $publicKey;
+		// check if the new configuration overrides are enabled
+		$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+		$this->newConfigurationOverrideEnabled = $extConfig['features.']['newConfigurationOverrides.']['enabled'] == '1';
+		if(VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getCurrentTypo3Version()) >= VersionNumberUtility::convertVersionNumberToInteger('7.5.0')) {
+			// enable new configurations overrides automatically with 7.5 and later
+			$this->newConfigurationOverrideEnabled = TRUE;
+		}
 	}
 
 	/**
@@ -139,7 +162,15 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	 * @return void
 	 */
 	public function setTestConfigurations($data) {
-		$this->testConfigurationOverlay = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($data);
+		if($this->newConfigurationOverrideEnabled) {
+			$this->testConfigurationOverlay = $data;
+		} else {
+			$this->testConfigurationOverlay = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($data);
+		}
+	}
+
+	public function setCurlOptions($curlOptions) {
+		$this->curlOptions = $curlOptions;
 	}
 
 	/**
@@ -147,42 +178,70 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	 */
 	public function getCurlOptions() {
 		$curl_options = array();
-		if ($this->testConfigurationOverlay) {
-			$fftools = new \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools();
-			$options = $fftools->getArrayValueByPath(
-				'data/sDEF/lDEF/testconfigurations/el',
-				$this->testConfigurationOverlay
-			);
-			if ($options && is_array($options)) {
-				foreach ($options as $key => $el) {
-					if (is_array($el['curl_option'])) {
-						$currentEl = $el['curl_option']['el'];
-						$value = '';
-						if (!defined($currentEl['option']['vDEF'])) {
-							continue;
+		if($this->newConfigurationOverrideEnabled) {
+			foreach($this->curlOptions as $option) {
+				$value = NULL;
+				switch ($option['curl_option']) {
+					case 'CURLOPT_SSL_VERIFYPEER':
+						$value = (boolean)($option['curl_value_bool'] != 'false');
+						break;
+
+					case 'CURLOPT_TIMEOUT_MS':
+						$value = intval($option['curl_value_int']);
+						break;
+
+					case 'CURLOPT_INTERFACE':
+						$value = $option['curl_value_string'];
+						break;
+
+					case 'CURLOPT_USERPWD':
+						$value = $option['curl_value_string'];
+						break;
+
+					case 'CURLOPT_HTTPAUTH':
+						$value = intval($option['curl_value_httpauth']);
+						break;
+				}
+				$curl_options[constant($option['curl_option'])] = $value;
+			}
+		} else {
+			if ($this->testConfigurationOverlay) {
+				$fftools = new \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools();
+				$options = $fftools->getArrayValueByPath(
+					'data/sDEF/lDEF/testconfigurations/el',
+					$this->testConfigurationOverlay
+				);
+				if ($options && is_array($options)) {
+					foreach ($options as $key => $el) {
+						if (is_array($el['curl_option'])) {
+							$currentEl = $el['curl_option']['el'];
+							$value = '';
+							if (!defined($currentEl['option']['vDEF'])) {
+								continue;
+							}
+							switch ($currentEl['option']['vDEF']) {
+								case 'CURLOPT_SSL_VERIFYPEER':
+									$value = (boolean)($currentEl['value_bool']['vDEF'] != 'false');
+									break;
+
+								case 'CURLOPT_TIMEOUT_MS':
+									$value = intval($currentEl['value_int']['vDEF']);
+									break;
+
+								case 'CURLOPT_INTERFACE':
+									$value = (string)$currentEl['value_ip']['vDEF'];
+									break;
+
+								case 'CURLOPT_USERPWD':
+									$value = (string)$currentEl['value_string']['vDEF'];
+									break;
+
+								case 'CURLOPT_HTTPAUTH':
+									$value = intval($currentEl['value_httpauth']['vDEF']);
+									break;
+							}
+							$curl_options[constant($currentEl['option']['vDEF'])] = $value;
 						}
-						switch ($currentEl['option']['vDEF']) {
-							case 'CURLOPT_SSL_VERIFYPEER':
-								$value = (boolean)($currentEl['value_bool']['vDEF'] != 'false');
-								break;
-
-							case 'CURLOPT_TIMEOUT_MS':
-								$value = intval($currentEl['value_int']['vDEF']);
-								break;
-
-							case 'CURLOPT_INTERFACE':
-								$value = (string)$currentEl['value_ip']['vDEF'];
-								break;
-
-							case 'CURLOPT_USERPWD':
-								$value = (string)$currentEl['value_string']['vDEF'];
-								break;
-
-							case 'CURLOPT_HTTPAUTH':
-								$value = intval($currentEl['value_httpauth']['vDEF']);
-								break;
-						}
-						$curl_options[constant($currentEl['option']['vDEF'])] = $value;
 					}
 				}
 			}
@@ -199,20 +258,31 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	 */
 	public function getTestConfigurationOverlayForTestUid($testUid) {
 		$overlayConfig = FALSE;
-		if ($this->testConfigurationOverlay) {
-			$fftools = new \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools();
-			$tests = $fftools->getArrayValueByPath(
-				'data/sDEF/lDEF/testconfigurations/el',
-				$this->testConfigurationOverlay
-			);
-			if (is_array($tests)) {
-				foreach ($tests as $key => $el) {
-					if ($tests[$key]['test']['el']['test_service']['vDEF'] == $testUid) {
-						$overlayConfig = $tests[$key]['test']['el']['test_conf']['vDEF'];
-						$overlayConfig['hidden'] = $tests[$key]['test']['el']['test_hidden']['vDEF'];
-						$overlayConfig['overwritten_in']['title'] = $this->title;
-						$overlayConfig['overwritten_in']['uid'] = $this->uid;
-						$overlayConfig['overwritten_in']['id'] = $this->getCaretakerNodeId();
+		if($this->newConfigurationOverrideEnabled) {
+			foreach($this->testConfigurationOverlay as $configurationOverlay) {
+				if($configurationOverlay['test'] == $testUid) {
+					$overlayConfig = GeneralUtility::xml2array($configurationOverlay['test_configuration']);
+					$overlayConfig['hidden'] = $configurationOverlay['test_hidden'];
+					$overlayConfig['overwritten_in']['title'] = $this->title;
+					$overlayConfig['overwritten_in']['uid'] = $this->uid;
+					$overlayConfig['overwritten_in']['id'] = $this->getCaretakerNodeId();			}
+			}
+		} else {
+			if ($this->testConfigurationOverlay) {
+				$fftools = new \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools();
+				$tests = $fftools->getArrayValueByPath(
+					'data/sDEF/lDEF/testconfigurations/el',
+					$this->testConfigurationOverlay
+				);
+				if (is_array($tests)) {
+					foreach ($tests as $key => $el) {
+						if ($tests[$key]['test']['el']['test_service']['vDEF'] == $testUid) {
+							$overlayConfig = $tests[$key]['test']['el']['test_conf']['vDEF'];
+							$overlayConfig['hidden'] = $tests[$key]['test']['el']['test_hidden']['vDEF'];
+							$overlayConfig['overwritten_in']['title'] = $this->title;
+							$overlayConfig['overwritten_in']['uid'] = $this->uid;
+							$overlayConfig['overwritten_in']['id'] = $this->getCaretakerNodeId();
+						}
 					}
 				}
 			}

@@ -1,7 +1,14 @@
 <?php
 
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+
 $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
 $advancedNotificationsEnabled = $extConfig['notifications.']['advanced.']['enabled'] == '1';
+$enableNewConfigurationOverrides = $extConfig['features.']['newConfigurationOverrides.']['enabled'] == '1';
+if(VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getCurrentTypo3Version()) >= VersionNumberUtility::convertVersionNumberToInteger('7.5.0')) {
+	// enable new configurations overrides automatically with 7.5 and later
+	$enableNewConfigurationOverrides = TRUE;
+}
 
 $GLOBALS['TCA']['tx_caretaker_instance'] = array(
 	'ctrl' => array(
@@ -214,6 +221,31 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
 				)
 			)
 		),
+		'configuration_overrides' => array(
+			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_conf',
+			'config' => Array(
+				'type' => 'inline',
+				'foreign_table' => 'tx_caretaker_instance_override',
+				'foreign_field' => 'instance',
+				'appearance' => array(
+					'newRecordLinkAddTitle' => TRUE,
+					'levelLinksPosition' => 'both',
+					'useSortable' => TRUE,
+					'enabledControls' => array(
+						'info' => FALSE,
+						'new' => TRUE,
+						'dragdrop' => TRUE,
+						'sort' => FALSE,
+						'hide' => TRUE,
+						'delete' => TRUE,
+						'localize' => FALSE
+					)
+				),
+				'behavior' => array(
+					'enableCascadingDelete' => TRUE
+				)
+			)
+		),
 		'contacts' => array(
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.contacts',
 			'config' => array(
@@ -249,7 +281,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests, ' .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.contacts, contacts, ' .
 			($advancedNotificationsEnabled ? '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, notification_strategies, ' : '') .
-			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.testconfigurations, testconfigurations,' .
+			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.testconfigurations, ' . ($enableNewConfigurationOverrides ? 'configuration_overrides, ' : 'testconfigurations,') .
 			'--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.access, hidden, starttime, endtime, fe_group'
 		)
 	),
