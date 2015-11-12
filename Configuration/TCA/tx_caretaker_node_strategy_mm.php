@@ -4,7 +4,7 @@ $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretake
 $advancedNotificationsEnabled = $extConfig['notifications.']['advanced.']['enabled'] == '1';
 
 if ($advancedNotificationsEnabled) {
-	$TCA['tx_caretaker_node_strategy_mm'] = array(
+	$GLOBALS['TCA']['tx_caretaker_node_strategy_mm'] = array(
 		'ctrl' => array(
 			'hideTable' => 1,
 			'label' => 'uid_strategy',

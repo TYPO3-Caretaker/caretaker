@@ -157,24 +157,12 @@ class tx_caretaker_ServiceHelper {
 	 * @return array
 	 */
 	public static function getTcaTestConfigDs() {
-		$ds = self::$tcaTestConfigDs;
-		$ds['default'] = '
-            <T3DataStructure>
-              <ROOT>
-                <type>array</type>
-                <el>
-                  <dummy>
-                  </dummy>
-                </el>
-              </ROOT>
-            </T3DataStructure>
-        ';
-		return $ds;
+		return self::$tcaTestConfigDs;
 	}
 
 	public static function getTcaTestConfigDsWithIds() {
 		$dsArray = array(
-			'default' => self::$tcaTestConfigDs
+			'default' => self::$tcaTestConfigDs['default']
 		);
 		foreach($GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_caretaker_test', 'deleted=0') as $testRecord) {
 			if(array_key_exists($testRecord['test_service'], self::$tcaTestConfigDs)) {
