@@ -11,7 +11,12 @@
         "classmap": [
             "Classes",
             "interfaces",
-            "scheduler"
+            "scheduler",
+			"pi_abstract",
+			"pi_base",
+			"pi_graphreport",
+			"pi_overview",
+			"pi_singleview"
         ]
     }
 }
