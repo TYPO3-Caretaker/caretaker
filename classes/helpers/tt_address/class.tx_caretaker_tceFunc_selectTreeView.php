@@ -65,7 +65,7 @@ class tx_caretaker_tceFunc_selectTreeView extends t3lib_treeview {
 	
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/class.tx_caretaker_tcefunc_selecttreeview.php'])    {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/class.tx_caretaker_tcefunc_selecttreeview.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/class.tx_caretaker_tceFunc_selectTreeView.php'])    {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/class.tx_caretaker_tceFunc_selectTreeView.php']);
 }
 ?>
