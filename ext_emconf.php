@@ -78,7 +78,7 @@ $EM_CONF[$_EXTKEY] = array(
 		),
 		'autoload' => array(
 				'classmap' => array(
-						'classes',
+						'Classes',
 						'interfaces',
 						'scheduler',
 				)
