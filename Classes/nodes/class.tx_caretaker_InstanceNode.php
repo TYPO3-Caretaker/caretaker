@@ -179,31 +179,33 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	public function getCurlOptions() {
 		$curl_options = array();
 		if($this->newConfigurationOverrideEnabled) {
-			foreach($this->curlOptions as $option) {
-				$value = NULL;
-				switch ($option['curl_option']) {
-					case 'CURLOPT_SSL_VERIFYPEER':
-						$value = (boolean)($option['curl_value_bool'] != 'false');
-						break;
+            if (is_array($this->curlOptions)) {
+                foreach ($this->curlOptions as $option) {
+                    $value = NULL;
+                    switch ($option['curl_option']) {
+                        case 'CURLOPT_SSL_VERIFYPEER':
+                            $value = (boolean)($option['curl_value_bool'] != 'false');
+                            break;
 
-					case 'CURLOPT_TIMEOUT_MS':
-						$value = intval($option['curl_value_int']);
-						break;
+                        case 'CURLOPT_TIMEOUT_MS':
+                            $value = intval($option['curl_value_int']);
+                            break;
 
-					case 'CURLOPT_INTERFACE':
-						$value = $option['curl_value_string'];
-						break;
+                        case 'CURLOPT_INTERFACE':
+                            $value = $option['curl_value_string'];
+                            break;
 
-					case 'CURLOPT_USERPWD':
-						$value = $option['curl_value_string'];
-						break;
+                        case 'CURLOPT_USERPWD':
+                            $value = $option['curl_value_string'];
+                            break;
 
-					case 'CURLOPT_HTTPAUTH':
-						$value = intval($option['curl_value_httpauth']);
-						break;
-				}
-				$curl_options[constant($option['curl_option'])] = $value;
-			}
+                        case 'CURLOPT_HTTPAUTH':
+                            $value = intval($option['curl_value_httpauth']);
+                            break;
+                    }
+                    $curl_options[constant($option['curl_option'])] = $value;
+                }
+            }
 		} else {
 			if ($this->testConfigurationOverlay) {
 				$fftools = new \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools();
@@ -259,14 +261,17 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode {
 	public function getTestConfigurationOverlayForTestUid($testUid) {
 		$overlayConfig = FALSE;
 		if($this->newConfigurationOverrideEnabled) {
-			foreach($this->testConfigurationOverlay as $configurationOverlay) {
-				if($configurationOverlay['test'] == $testUid) {
-					$overlayConfig = GeneralUtility::xml2array($configurationOverlay['test_configuration']);
-					$overlayConfig['hidden'] = $configurationOverlay['test_hidden'];
-					$overlayConfig['overwritten_in']['title'] = $this->title;
-					$overlayConfig['overwritten_in']['uid'] = $this->uid;
-					$overlayConfig['overwritten_in']['id'] = $this->getCaretakerNodeId();			}
-			}
+            if(is_array($this->testConfigurationOverlay)) {
+                foreach ($this->testConfigurationOverlay as $configurationOverlay) {
+                    if ($configurationOverlay['test'] == $testUid) {
+                        $overlayConfig = GeneralUtility::xml2array($configurationOverlay['test_configuration']);
+                        $overlayConfig['hidden'] = $configurationOverlay['test_hidden'];
+                        $overlayConfig['overwritten_in']['title'] = $this->title;
+                        $overlayConfig['overwritten_in']['uid'] = $this->uid;
+                        $overlayConfig['overwritten_in']['id'] = $this->getCaretakerNodeId();
+                    }
+                }
+            }
 		} else {
 			if ($this->testConfigurationOverlay) {
 				$fftools = new \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools();
