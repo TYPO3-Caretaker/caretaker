@@ -77,7 +77,22 @@ class tx_caretaker_pi_overview extends tx_caretaker_pibase {
 
 		foreach ($ids as $id) {
 			$node = $node_repository->id2node($id);
-			if ($node) $nodes[] = $node;
+			if (!$node) {
+				continue;
+			}
+
+			if ($this->root_id !== 'root') {
+				// Check if node is in the specified subtree
+				$parent_node = $node;
+				while ($parent_node = $parent_node->getParent()) {
+					// One parent of node should be the subtree root
+					if ($parent_node->getCaretakerNodeId() == $this->root_id) {
+						$nodes[] = $node;
+					}
+				}
+			} else {
+				$nodes[] = $node;
+			}
 		}
 
 		return $nodes;

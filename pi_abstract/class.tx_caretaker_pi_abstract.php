@@ -143,7 +143,21 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase {
 		}
 		$node_repository = tx_caretaker_NodeRepository::getInstance();
 		$node = $node_repository->id2node($node_id);
-		return $node;
+
+		if ($this->root_id !== 'root') {
+			// Check if node is in the specified subtree
+			$parent_node = $node;
+			while ($parent_node = $parent_node->getParent()) {
+				// One parent of node should be the subtree root
+				if ($parent_node->getCaretakerNodeId() == $this->root_id) {
+					return $node;
+				}
+			}
+
+			return false;
+		} else {
+			return $node;
+		}
 	}
 
 	/**
