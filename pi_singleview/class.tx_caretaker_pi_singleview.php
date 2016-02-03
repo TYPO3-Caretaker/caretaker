@@ -67,6 +67,11 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
 		} else {
 			$this->pi_initPIflexForm();
 			$node_id = $this->pi_getFFValue($this->cObj->data['pi_flexform'], 'node_id');
+			// Node id not specified? Try TypoScript instead
+			if (!$node_id && $this->conf['node_id']) {
+				$node_id = $this->conf['node_id'];
+			}
+
 			$node = $node_repository->id2node($node_id);
 		}
 		return $node;

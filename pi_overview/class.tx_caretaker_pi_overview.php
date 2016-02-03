@@ -65,6 +65,10 @@ class tx_caretaker_pi_overview extends tx_caretaker_pibase {
 	function getNodes() {
 		$this->pi_initPIflexForm();
 		$node_ids = $this->pi_getFFValue($this->cObj->data['pi_flexform'], 'node_ids');
+		// Node ids not specified? Try TypoScript instead
+		if (!$node_ids && $this->conf['node_ids']) {
+			$node_ids = $this->conf['node_ids'];
+		}
 
 		$nodes = array();
 		$ids = explode(chr(10), $node_ids);
