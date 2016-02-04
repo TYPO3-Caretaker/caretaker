@@ -159,12 +159,12 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase {
 			if ($this->root_id !== 'root') {
 				// Check if node is in the specified subtree
 				$parent_node = $node;
-				while ($parent_node = $parent_node->getParent()) {
+				do {
 					// One parent of node should be the subtree root
 					if ($parent_node->getCaretakerNodeId() == $this->root_id) {
 						$nodes[] = $node;
 					}
-				}
+				} while ($parent_node = $parent_node->getParent());
 			} else {
 				$nodes[] = $node;
 			}
