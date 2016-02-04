@@ -55,6 +55,14 @@
 					</config>
 				</TCEforms>
 			</emailSubject>
+			<template>
+				<TCEforms>
+					<label>Message template</label>
+					<config>
+						<type>text</type>
+					</config>
+				</TCEforms>
+			</template>
 			<!--roles>
 				<TCEforms>
 					<label>Recipient Roles</label>
