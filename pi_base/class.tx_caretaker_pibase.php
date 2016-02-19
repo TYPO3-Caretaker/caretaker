@@ -38,6 +38,7 @@
  *
  */
 abstract class tx_caretaker_pibase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
+	protected $root_id = 'root';
 
 	/**
 	 * The main method of the PlugIn
@@ -51,6 +52,10 @@ abstract class tx_caretaker_pibase extends \TYPO3\CMS\Frontend\Plugin\AbstractPl
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
 		$this->pi_USER_INT_obj = 1;    // Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
+
+		if ($this->conf['root_id']) {
+			$this->root_id = trim($this->conf['root_id']);
+		}
 
 		$content = $this->getContent();
 		return $this->pi_wrapInBaseClass($content);
@@ -113,6 +118,11 @@ abstract class tx_caretaker_pibase extends \TYPO3\CMS\Frontend\Plugin\AbstractPl
 					}
 				}
 				$rootline_items[] = $this->cObj->substituteMarkerArray($rootline_subpart, $node_markers);
+			}
+
+			// Stop rootline if we reached the root node of the (sub)tree
+			if ($rootline_node->getCaretakerNodeId() == $this->root_id) {
+				break;
 			}
 		} while ($rootline_node = $rootline_node->getParent());
 

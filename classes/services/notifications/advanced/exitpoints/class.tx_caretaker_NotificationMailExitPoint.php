@@ -80,11 +80,17 @@ class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBa
 	 */
 	protected function compileMail($notifications) {
 		$mail = array(
-				'subject' => $this->config['emailSubject'], // TODO compile a proper subject
-				'message' => '',
+			'subject' => '',
+			'message' => '',
 		);
 
 		foreach ($notifications as $notification) {
+			if (!$mail['subject']) {
+				$mail['subject'] = $this->cObj->substituteMarkerArray(
+					$this->config['emailSubject'],
+					$this->getMarkersForNotification($notification)
+				);
+			}
 			$mail['message'] .= $this->getMessageForNotification($notification);
 		}
 		return $mail;

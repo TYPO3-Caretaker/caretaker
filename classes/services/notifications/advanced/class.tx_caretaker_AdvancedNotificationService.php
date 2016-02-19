@@ -378,13 +378,12 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 		foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $references) as $reference) {
 			$reference = strtoupper($reference);
 			if ($reference === '*' || $reference === 'ALL') return TRUE;
-			if ((substr($reference, 0, 1) !== '!' && $reference !== $value)
-					|| (substr($reference, 0, 1) === '!' && substr($reference, 1) === $value)
-			) {
-				return FALSE;
+			if ((substr($reference, 0, 1) !== '!' && $reference === $value)
+					|| (substr($reference, 0, 1) === '!' && substr($reference, 1) !== $value)) {
+				return TRUE;
 			}
 		}
-		return TRUE;
+		return FALSE;
 	}
 
 	/**

@@ -153,6 +153,28 @@ class tx_caretaker_Eid {
 	 * @return array
 	 */
 	public function getEidData() {
+		// Check for valid API key
+		// Ugly temporary solution. Only check if provided API key exists in users table
+		$apiKey = t3lib_div::_GP('apiKey');
+		if (!$apiKey) {
+			$node = false;
+		}
+
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'uid',
+			'fe_users',
+			'tx_caretaker_api_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($apiKey),
+			'',
+			'',
+			1
+		);
+
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		if (empty($row) || empty($row['uid'])) {
+			return array('success' => false);
+		}
+
 		$nodeId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
 		$node = $this->getRequestedNode($nodeId);
 

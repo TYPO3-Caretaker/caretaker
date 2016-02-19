@@ -45,6 +45,26 @@ class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_Notificatio
 	protected $config = array();
 
 	/**
+	 * @var string
+	 */
+	protected $template = '
+Date/Time: ###DATETIME###
+Instance: ###INSTANCE_TITLE### [###INSTANCE_ID###]
+Test: ###TEST_TITLE###
+State is now: ###STATE_NOW### (since ###STATE_NOW_TIME###)
+State before: ###STATE_BEFORE### (was ###STATE_BEFORE_TIME###)
+Info:
+###TEST_INFO###
+
+----------------------------------------------------
+';
+
+	/**
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 */
+	protected $cObj;
+
+	/**
 	 * @param array $notification
 	 * @param array $config
 	 * @return void
@@ -58,6 +78,13 @@ class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_Notificatio
 	 */
 	public function init(array $config) {
 		$this->config = $this->flattenFlexformConfig($config);
+		if ($this->config['template']) {
+			$this->template = $this->config['template'];
+		}
+
+		$this->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
+		);
 	}
 
 	/**
@@ -92,10 +119,10 @@ class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_Notificatio
 	}
 
 	/**
-	 * @param array $notification
-	 * @return string
+	 * @param  array $notification
+	 * @return array
 	 */
-	protected function getMessageForNotification($notification) {
+	protected function getMarkersForNotification($notification) {
 		/** @var tx_caretaker_AbstractNode $node */
 		$node = $notification['node'];
 		/** @var tx_caretaker_TestResult $result */
@@ -104,39 +131,38 @@ class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_Notificatio
 		$ancestorResultPrev = $node->getPreviousDifferingResult($ancestorResult);
 
 		$durationStateBefore = ($result && $ancestorResult->getTimestamp() > 0 && $ancestorResultPrev->getTimestamp() > 0 ?
-				$ancestorResult->getTimestamp() - $ancestorResultPrev->getTimestamp() :
-				0);
+			$ancestorResult->getTimestamp() - $ancestorResultPrev->getTimestamp() :
+			0);
 		$durationState = ($result && $result->getTimestamp() > 0 && $ancestorResult->getTimestamp() > 0 ?
-				$result->getTimestamp() - $ancestorResult->getTimestamp() :
-				0);
+			$result->getTimestamp() - $ancestorResult->getTimestamp() :
+			0);
 
-		// TODO l10n
-		// TODO template
+		return array(
+			'###DATETIME###' => date('Y-m-d H:i:s', $result->getTimestamp()),
+			'###INSTANCE_TITLE###' => ($node instanceof tx_caretaker_AbstractNode && $node->getInstance() ?
+				'"' . $node->getInstance()->getTitle() . '"' :
+				'-'),
+			'###INSTANCE_ID###' => ($node instanceof tx_caretaker_AbstractNode ?
+				$node->getCaretakerNodeId() :
+				'-'),
+			'###TEST_TITLE###' => $node->getTitle(),
+			'###STATE_NOW###' => ($result ? $result->getLocallizedStateInfo() : ''),
+			'###STATE_NOW_TIME###' => ($durationState > 0 ? $this->humanReadableTime($durationState) : ''),
+			'###STATE_BEFORE###' => ($ancestorResult ? $ancestorResult->getLocallizedStateInfo() : ''),
+			'###STATE_BEFORE_TIME###' => ($durationStateBefore > 0 ? $this->humanReadableTime($durationStateBefore) : ''),
+			'###TEST_INFO###' => ($result ? $result->getLocallizedInfotext() : '')
+		);
+	}
 
-		$messages = array();
-		$messages[] = ($result ? 'Date/Time: ' . date('Y-m-d H:i:s', $result->getTimestamp()) : '');
-		$messages[] = 'Instance: ' .
-				($node instanceof tx_caretaker_AbstractNode && $node->getInstance() ?
-						'"' . $node->getInstance()->getTitle() . '"' :
-						'-'
-				) .
-				($node instanceof tx_caretaker_AbstractNode ?
-						' [' . $node->getCaretakerNodeId() . ']' :
-						'-'
-				);
-		$messages[] = 'Test: ' . $node->getTitle();
-		$messages[] = ($result ? 'State is now: ' . $result->getLocallizedStateInfo() .
-				($durationState > 0 ? ' (since ' . $this->humanReadableTime($durationState) . ')' : '') :
-				'');
-		$messages[] = ($ancestorResult ?
-				'State before: ' . $ancestorResult->getLocallizedStateInfo() .
-				($durationStateBefore > 0 ? ' (was ' . $this->humanReadableTime($durationStateBefore) . ')' : '') :
-				'');
-		$messages[] = ($result ? 'Info: ' . chr(10) . $result->getLocallizedInfotext() : '');
-		$messages[] = '';
-		$messages[] = '----------------------------------------------------';
-
-		return implode(chr(10), $messages) . chr(10);
+	/**
+	 * @param array $notification
+	 * @return string
+	 */
+	protected function getMessageForNotification($notification) {
+		return $this->cObj->substituteMarkerArray(
+			$this->template,
+			$this->getMarkersForNotification($notification)
+		);
 	}
 
 	/**
