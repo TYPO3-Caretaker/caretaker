@@ -22,6 +22,7 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * This is a file of the caretaker project.
@@ -434,7 +435,24 @@ class tx_caretaker_NodeRepository {
 		// create Node
 		$instance = new tx_caretaker_InstanceNode($row['uid'], $row['title'], $parent, $row['url'], $row['host'], $row['public_key'], $row['hidden']);
 		if ($row['description']) $instance->setDescription($row['description']);
-		if ($row['testconfigurations']) $instance->setTestConfigurations($row['testconfigurations']);
+		$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+		$newConfigurationOverrideEnabled = $extConfig['features.']['newConfigurationOverrides.']['enabled'] == '1';
+		if(VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getCurrentTypo3Version()) >= VersionNumberUtility::convertVersionNumberToInteger('7.5.0')) {
+			// enable new configurations overrides automatically with 7.5 and later
+			$newConfigurationOverrideEnabled = TRUE;
+		}
+		if ($newConfigurationOverrideEnabled) {
+			$configurationOverrides = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_caretaker_instance_override', 'type="test_configuration" AND instance=' . (int)$row['uid'] . ' AND deleted=0');
+			if (is_array($configurationOverrides) && count($configurationOverrides) > 0) {
+				$instance->setTestConfigurations($configurationOverrides);
+			}
+			$curlOptions = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_caretaker_instance_override', 'type="curl_option" AND instance=' . (int)$row['uid'] . ' AND deleted=0');
+			if (is_array($curlOptions) && count($curlOptions) > 0) {
+				$instance->setCurlOptions($curlOptions);
+			}
+		} else {
+			if ($row['testconfigurations']) $instance->setTestConfigurations($row['testconfigurations']);
+		}
 		$instance->setDbRow($row);
 		return $instance;
 	}

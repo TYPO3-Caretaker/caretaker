@@ -371,7 +371,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 
 	/**
 	 * Get the Value Description for this test
-	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getValueDescription()
+	 * @see caretaker/trunk/Classes/nodes/tx_caretaker_AbstractNode#getValueDescription()
 	 */
 	public function getValueDescription() {
 		$test_service = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService('caretaker_test_service', $this->testServiceType);
@@ -385,7 +385,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	/**
 	 * Get the current Test Result from Cache
 	 *
-	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResult()
+	 * @see caretaker/trunk/Classes/nodes/tx_caretaker_AbstractNode#getTestResult()
 	 * @return tx_caretaker_TestResult
 	 */
 	public function getTestResult() {
@@ -414,7 +414,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	/**
 	 * Get the TestResultRange for the given time range
 	 *
-	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
+	 * @see caretaker/trunk/Classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
 	 * @param int $start_timestamp
 	 * @param int $stop_timestamp
 	 * @param boolean $graph True by default. Used in the result range repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
@@ -429,7 +429,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode {
 	/**
 	 * Get the TestResultRange for the Offset and Limit
 	 *
-	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
+	 * @see caretaker/trunk/Classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
 	 * @param int $offset
 	 * @param int $limit
 	 * @return tx_caretaker_TestResultRange

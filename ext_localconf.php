@@ -35,7 +35,7 @@
  */
 
 if (TYPO3_MODE == 'BE') {
-	$TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array('EXT:' . $_EXTKEY . '/classes/class.tx_caretaker_Cli.php', '_CLI_caretaker');
+	$TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array('EXT:' . $_EXTKEY . '/Classes/class.tx_caretaker_Cli.php', '_CLI_caretaker');
 }
 
 // register Plugins
@@ -48,52 +48,57 @@ if (TYPO3_MODE == 'BE') {
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
 	'tx_caretaker::treeloader',
-	'EXT:caretaker/classes/ajax/class.tx_caretaker_TreeLoader.php:tx_caretaker_TreeLoader->ajaxLoadTree',
+	'EXT:caretaker/Classes/ajax/class.tx_caretaker_TreeLoader.php:tx_caretaker_TreeLoader->ajaxLoadTree',
 	FALSE
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
 	'tx_caretaker::nodeinfo',
-	'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeInfo',
+	'EXT:caretaker/Classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeInfo',
 	FALSE
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
 	'tx_caretaker::noderefresh',
-	'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxRefreshNode',
+	'EXT:caretaker/Classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxRefreshNode',
 	FALSE
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
 	'tx_caretaker::nodegraph',
-	'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeGraph',
+	'EXT:caretaker/Classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeGraph',
 	FALSE
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
 	'tx_caretaker::nodelog',
-	'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeLog',
+	'EXT:caretaker/Classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeLog',
 	FALSE
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
 	'tx_caretaker::nodeproblems',
-	'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeProblems',
+	'EXT:caretaker/Classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeProblems',
 	FALSE
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
 	'tx_caretaker::nodecontacts',
-	'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeContacts',
+	'EXT:caretaker/Classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxGetNodeContacts',
 	FALSE
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
 	'tx_caretaker::nodeSetAck',
-	'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxNodeSetAck',
+	'EXT:caretaker/Classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxNodeSetAck',
 	FALSE
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
 	'tx_caretaker::nodeSetDue',
-	'EXT:caretaker/classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxNodeSetDue',
+	'EXT:caretaker/Classes/ajax/class.tx_caretaker_NodeInfo.php:tx_caretaker_nodeinfo->ajaxNodeSetDue',
+	FALSE
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
+	'tx_caretaker::getModuleUrl',
+	'EXT:caretaker/Classes/ajax/class.tx_caretaker_Utility.php:tx_caretaker_Utility->getModuleUrl',
 	FALSE
 );
 
 
-$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass'][] = 'EXT:caretaker/classes/hooks/class.tx_caretaker_hooks_tceforms_getSingleFieldClass.php:tx_caretaker_hooks_tceforms_getSingleFieldClass';
+$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass'][] = 'EXT:caretaker/Classes/hooks/class.tx_caretaker_hooks_tceforms_getSingleFieldClass.php:tx_caretaker_hooks_tceforms_getSingleFieldClass';
 
 // Register scheduler tasks for caretaker testrunner
 $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TestrunnerTask'] = array(
@@ -115,5 +120,8 @@ require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker')
 // eid script
 $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
 if ($extConfig['eid.']['enabled']) {
-	$TYPO3_CONF_VARS['FE']['eID_include']['tx_caretaker'] = 'EXT:caretaker/classes/eid/class.tx_caretaker_Eid.php';
+	$TYPO3_CONF_VARS['FE']['eID_include']['tx_caretaker'] = 'EXT:caretaker/Classes/eid/class.tx_caretaker_Eid.php';
 }
+
+// register migration command controller
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = \Caretaker\Caretaker\Command\MigrationCommandController::class;

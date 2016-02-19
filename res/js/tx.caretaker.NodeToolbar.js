@@ -13,7 +13,7 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
                           text    : "Refresh",
 						  xtype   : 'splitbutton',
                           icon    : "../typo3conf/ext/caretaker/res/icons/arrow_refresh_small.png",
-                          handler : this.refreschNode,
+                          handler : this.refreshNode,
 							scope   : this
                     },
                     {
@@ -25,7 +25,7 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
                                  {
                                      text    : "Refresh forced",
                                      icon    : "../typo3conf/ext/caretaker/res/icons/arrow_refresh.png",
-                                     handler : this.refreschNodeForced,
+                                     handler : this.refreshNodeForced,
              						 scope   : this
                                  },
                                  {
@@ -112,6 +112,8 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 		}, config);
 
 		this.addUrl = config.add_url;
+		this.getModuleUrlUrl = config.getModuleUrlUrl;
+		this.storagePid = config.storagePid;
 
 		tx.caretaker.NodeToolbar.superclass.constructor.call(this, config);
 
@@ -139,92 +141,149 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 	},
 	
 	addTest: function() {
-		var url = '';
-		var add_record_type = 'tx_caretaker_test';
-
-		if ( this.node_type == 'instance'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-			url += '&defVals[' + add_record_type + '][instances]=' + this.node_uid ;
-
-		}
-
-		if ( this.node_type == 'testgroup'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-			url += '&defVals[' + add_record_type + '][groups]=' + this.node_uid ;
-		}
-
-		if (url) {
-			url += "&returnUrl=" + this.back_url;
-			window.location.href = url;
-		}
-
+		Ext.Ajax.request({
+			url: this.getModuleUrlUrl,
+			params: {
+				"tx_caretaker[mode]": 'add',
+				"tx_caretaker[parent]": this.node_uid,
+				"tx_caretaker[isInInstance]": (this.node_type == 'instance' ? 1 : 0),
+				"tx_caretaker[type]": 'test',
+				"tx_caretaker[storagePid]": this.storagePid,
+				"tx_caretaker[returnUrl]": encodeURIComponent(window.location)
+			},
+			success: function(response) {
+				if(response.status == 200 && response.responseText && response.responseText.length > 0) {
+					window.location.href = response.responseText + "&returnUrl=" + encodeURIComponent(window.location.href);
+				} else {
+					// here should be some error handling
+					if(console && console.log == 'function') {
+						console.debug('There was an error while getting the edit module url');
+					}
+					//Ext.Msg.show({
+					//	title: 'Error',
+					//	text: 'An error occurred while getting the edit form',
+					//	icon: Ext.MessageBox.ERROR
+					//});
+				}
+			},
+			scope: this
+		});
 	},
 
 	addTestgroup: function() {
-		var url = '';
-		var add_record_type = 'tx_caretaker_testgroup';
-
-		if ( this.node_type == 'instance'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-			url += '&defVals[' + add_record_type + '][instances]=' + this.node_uid ;
-
-		}
-
-		if ( this.node_type == 'testgroup'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-			url += '&defVals[' + add_record_type + '][parent_group]=' + this.node_uid ;
-		}
-
-		if (url) {
-			url += "&returnUrl=" + this.back_url;
-            window.location.href = url;
-		}
-
+		Ext.Ajax.request({
+			url: this.getModuleUrlUrl,
+			params: {
+				"tx_caretaker[mode]": 'add',
+				"tx_caretaker[parent]": this.node_uid,
+				"tx_caretaker[isInInstance]": (this.node_type == 'instance' ? 1 : 0),
+				"tx_caretaker[type]": 'testgroup',
+				"tx_caretaker[storagePid]": this.storagePid,
+				"tx_caretaker[returnUrl]": encodeURIComponent(parent.list_frame.document.location)
+			},
+			success: function(response) {
+				if(response.status == 200 && response.responseText && response.responseText.length > 0) {
+					window.location.href = response.responseText  + "&returnUrl=" + encodeURIComponent(window.location.href);
+				} else {
+					// here should be some error handling
+					if(console && console.log == 'function') {
+						console.debug('There was an error while getting the edit module url');
+					}
+					//Ext.Msg.show({
+					//	title: 'Error',
+					//	text: 'An error occurred while getting the edit form',
+					//	icon: Ext.MessageBox.ERROR
+					//});
+				}
+			},
+			scope: this
+		});
 	},
 
 	addInstance: function() {
-		var url = '';
-		var add_record_type = 'tx_caretaker_instance';
-
-		if ( this.node_type == 'instancegroup'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-			url += '&defVals[' + add_record_type + '][instancegroup]=' + this.node_uid ;
-		}
-
-		if ( this.node_type == 'root'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-		}
-
-		if (url) {
-			url += "&returnUrl=" +  this.back_url;
-            window.location.href = url;
-		}
+		Ext.Ajax.request({
+			url: this.getModuleUrlUrl,
+			params: {
+				"tx_caretaker[mode]": 'add',
+				"tx_caretaker[parent]": this.node_type == "root" ? "root" : this.node_uid,
+				"tx_caretaker[type]": 'instance',
+				"tx_caretaker[storagePid]": this.storagePid,
+				"tx_caretaker[returnUrl]": encodeURIComponent(parent.list_frame.document.location)
+			},
+			success: function(response) {
+				if(response.status == 200 && response.responseText && response.responseText.length > 0) {
+					window.location.href = response.responseText  + "&returnUrl=" + encodeURIComponent(window.location.href);
+				} else {
+					// here should be some error handling
+					if(console && console.log == 'function') {
+						console.debug('There was an error while getting the edit module url');
+					}
+					//Ext.Msg.show({
+					//	title: 'Error',
+					//	text: 'An error occurred while getting the edit form',
+					//	icon: Ext.MessageBox.ERROR
+					//});
+				}
+			},
+			scope: this
+		});
 	},
 
 	addInstancegroup: function() {
-		var url = '';
-		var add_record_type = 'tx_caretaker_instancegroup';
-
-		if ( this.node_type == 'instancegroup'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-			url += '&defVals[' + add_record_type + '][parent_group]=' + this.node_uid ;
-		}
-
-		if ( this.node_type == 'root'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-		}
-
-		if (url) {
-			url += "&returnUrl=" + this.back_url;
-            window.location.href = url;
-		}
-
+		Ext.Ajax.request({
+			url: this.getModuleUrlUrl,
+			params: {
+				"tx_caretaker[mode]": 'add',
+				"tx_caretaker[parent]": this.node_type == "root" ? "root" : this.node_uid,
+				"tx_caretaker[type]": 'instancegroup',
+				"tx_caretaker[storagePid]": this.storagePid,
+				"tx_caretaker[returnUrl]": encodeURIComponent(parent.list_frame.document.location)
+			},
+			success: function(response) {
+				if(response.status == 200 && response.responseText && response.responseText.length > 0) {
+					window.location.href = response.responseText  + "&returnUrl=" + encodeURIComponent(window.location.href);
+				} else {
+					// here should be some error handling
+					if(console && console.log == 'function') {
+						console.debug('There was an error while getting the edit module url');
+					}
+					//Ext.Msg.show({
+					//	title: 'Error',
+					//	text: 'An error occurred while getting the edit form',
+					//	icon: Ext.MessageBox.ERROR
+					//});
+				}
+			},
+			scope: this
+		});
 	},
 
 	editNode : function (){
         if (this.node_type != 'root'){
-            var url = this.path_typo3 + 'alt_doc.php?edit[tx_caretaker_' + this.node_type + '][' + this.node_uid + ']=edit&returnUrl=' + this.back_url;
-            window.location.href = url;
+			Ext.Ajax.request({
+				url: this.getModuleUrlUrl,
+				params: {
+					"tx_caretaker[mode]": 'edit',
+					"tx_caretaker[node]": this.node_uid,
+					"tx_caretaker[type]": this.node_type
+				},
+				success: function(response) {
+					if(response.status == 200 && response.responseText && response.responseText.length > 0) {
+						window.location.href = response.responseText + "&returnUrl=" + encodeURIComponent(window.location.href);
+					} else {
+						// here should be some error handling
+						if(console && console.log == 'function') {
+							console.debug('There was an error while getting the edit module url');
+						}
+						//Ext.Msg.show({
+						//	title: 'Error',
+						//	text: 'An error occurred while getting the edit form',
+						//	icon: Ext.MessageBox.ERROR
+						//});
+					}
+				},
+				scope: this
+			});
         } else {
              top.Ext.MessageBox.alert('Sorry', 'The root node cannot be edited!');
         }
@@ -232,29 +291,99 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 
     enableNode : function() {
         if (this.node_hidden == 1 && this.node_type != 'root'){
-            var url = this.path_typo3 + 'tce_db.php?&data[tx_caretaker_' + this.node_type + '][' + this.node_uid + '][hidden]=0&redirect=' + this.back_url;
-			this.refreshNavigationTree(2000);
-            this.redirectUrl(url);
+			Ext.Ajax.request({
+				url: this.getModuleUrlUrl,
+				params: {
+					"tx_caretaker[mode]": 'unhide',
+					"tx_caretaker[node]": this.node_uid,
+					"tx_caretaker[type]": this.node_type
+				},
+				success: function(response) {
+					if(response.status == 200 && response.responseText && response.responseText.length > 0) {
+						Ext.Ajax.request({
+							url: response.responseText,
+							success: function() {
+								this.refreshNavigationTree(0);
+								this.redirectUrl(window.location.href);
+							},
+							failure: function() {
+								Ext.Msg.show({
+									title: 'Failure',
+									text: 'Could not hide node',
+									icon: Ext.MessageBox.WARNING
+								});
+							},
+							scope: this
+						});
+					} else {
+						// here should be some error handling
+						if(console && console.log == 'function') {
+							console.debug('There was an error while getting the hide ajax url');
+						}
+						//Ext.Msg.show({
+						//	title: 'Error',
+						//	text: 'An error occurred while getting the edit form',
+						//	icon: Ext.MessageBox.ERROR
+						//});
+					}
+				},
+				scope: this
+			});
         } else {
             top.Ext.MessageBox.alert('Sorry', 'The node is already enabled');
         }
     },
 
     disableNode : function() {
-        if (this.node_hidden == 0 && this.node_type != 'root'){
-            var url = this.path_typo3 + 'tce_db.php?&data[tx_caretaker_' + this.node_type + '][' + this.node_uid + '][hidden]=1&redirect=' + this.back_url;
-			this.refreshNavigationTree(2000);
-            this.redirectUrl(url);
-        } else {
-            top.Ext.MessageBox.alert('Sorry', 'The node is already hidden');
-        }
+		if (this.node_hidden == 0 && this.node_type != 'root'){
+			Ext.Ajax.request({
+				url: this.getModuleUrlUrl,
+				params: {
+					"tx_caretaker[mode]": 'hide',
+					"tx_caretaker[node]": this.node_uid,
+					"tx_caretaker[type]": this.node_type
+				},
+				success: function(response) {
+					if(response.status == 200 && response.responseText && response.responseText.length > 0) {
+						Ext.Ajax.request({
+							url: response.responseText,
+							success: function() {
+								this.refreshNavigationTree(0);
+								this.redirectUrl(window.location.href);
+							},
+							failure: function() {
+								Ext.Msg.show({
+									title: 'Failure',
+									text: 'Could not hide node',
+									icon: Ext.MessageBox.WARNING
+								});
+							},
+							scope: this
+						});
+					} else {
+						// here should be some error handling
+						if(console && console.log == 'function') {
+							console.debug('There was an error while getting the hide ajax url');
+						}
+						//Ext.Msg.show({
+						//	title: 'Error',
+						//	text: 'An error occurred while getting the edit form',
+						//	icon: Ext.MessageBox.ERROR
+						//});
+					}
+				},
+				scope: this
+			});
+		} else {
+			top.Ext.MessageBox.alert('Sorry', 'The node is already enabled');
+		}
     },
 
-	refreschNode : function (){
+	refreshNode : function (){
         Ext.Ajax.request({
 			url: TYPO3.settings.ajaxUrls['tx_caretaker::noderefresh'],
-			success: this.refreschSuccess,
-			failure: this.refreschFailure,
+			success: this.refreshSuccess,
+			failure: this.refreshFailure,
 			scope  : this,
 			params: {
                node:   this.node_id,
@@ -263,11 +392,11 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
         });
     },
 
-    refreschNodeForced : function (){
+    refreshNodeForced : function (){
          Ext.Ajax.request({
            url: TYPO3.settings.ajaxUrls['tx_caretaker::noderefresh'],
-		   success: this.refreschSuccess,
-           failure: this.refreschFailure,
+		   success: this.refreshSuccess,
+           failure: this.refreshFailure,
 		   scope  : this,
            params: {
                node:   this.node_id,
@@ -279,8 +408,8 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
     setAck : function (){
         Ext.Ajax.request({
 			url: TYPO3.settings.ajaxUrls['tx_caretaker::nodeSetAck'],
-			success: this.refreschSuccess,
-			failure: this.refreschFailure,
+			success: this.refreshSuccess,
+			failure: this.refreshFailure,
 			scope  : this,
 			params: {
                node:   this.node_id,
@@ -292,8 +421,8 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
     setDue : function (){
         Ext.Ajax.request({
 			url: TYPO3.settings.ajaxUrls['tx_caretaker::nodeSetDue'],
-			success: this.refreschSuccess,
-			failure: this.refreschFailure,
+			success: this.refreshSuccess,
+			failure: this.refreshFailure,
 			scope  : this,
 			params: {
                node:   this.node_id,
@@ -302,7 +431,7 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
         });
     },
 
-    refreschSuccess : function (response, opts){
+    refreshSuccess : function (response, opts){
     	
     	var	result = Ext.decode(response.responseText);
     	
@@ -334,7 +463,7 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
         
     },
 
-    refreschFailure : function (response, opts){
+    refreshFailure : function (response, opts){
         var node_info_panel = Ext.getCmp('node-info');
         node_info_panel.load( TYPO3.settings.ajaxUrls['tx_caretaker::nodeinfo'] + '&node=' + this.node_id);
 		this.refreshTree();
@@ -352,8 +481,8 @@ tx.caretaker.NodeToolbar = Ext.extend(Ext.Toolbar, {
 	},
 	
 	refreshNavigationTree : function ( defer ){
-		if (top.content.nav_frame && top.content.nav_frame.tx.caretaker.view){
-			var cartaker_tree = top.content.nav_frame.tx.caretaker.view.get('cartaker-tree');
+		if (top.frames.navigation && top.frames.navigation.tx.caretaker.view){
+			var cartaker_tree = top.frames.navigation.tx.caretaker.view.get('cartaker-tree');
 			if (!defer) defer = false;
 			cartaker_tree.reloadTreeDeferred(defer);
 		}
