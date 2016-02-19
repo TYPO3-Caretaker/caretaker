@@ -68,15 +68,15 @@ class tx_caretaker_NodeResultRange_testcase extends tx_phpunit_testcase {
 
 		$this->assertEquals($range->getLength(), 0);
 
-		$res_1 = new tx_caretaker_NodeResult_Stub(123, 0);
+		$res_1 = new tx_caretaker_NodeResult_Stub(123, 0, '', array());
 		$range->addResult($res_1);
 		$this->assertEquals($range->getLength(), 1);
 
-		$res_2 = new tx_caretaker_NodeResult_Stub(456, 1);
+		$res_2 = new tx_caretaker_NodeResult_Stub(456, 1, '', array());
 		$range->addResult($res_2);
 		$this->assertEquals($range->getLength(), 2);
 
-		$res_3 = new tx_caretaker_NodeResult_Stub(789, 2);
+		$res_3 = new tx_caretaker_NodeResult_Stub(789, 2, '', array());
 		$range->addResult($res_3);
 		$this->assertEquals($range->getLength(), 3);
 
@@ -86,10 +86,10 @@ class tx_caretaker_NodeResultRange_testcase extends tx_phpunit_testcase {
 
 		$range = new tx_caretaker_NodeResultRange_Stub(123, 789);
 
-		$res_1 = new tx_caretaker_NodeResult_Stub(456, 1);
-		$res_2 = new tx_caretaker_NodeResult_Stub(123, 0);
-		$res_3 = new tx_caretaker_NodeResult_Stub(789, 2);
-		$res_4 = new tx_caretaker_NodeResult_Stub(678, 2);
+		$res_1 = new tx_caretaker_NodeResult_Stub(456, 1, '', array());
+		$res_2 = new tx_caretaker_NodeResult_Stub(123, 0, '', array());
+		$res_3 = new tx_caretaker_NodeResult_Stub(789, 2, '', array());
+		$res_4 = new tx_caretaker_NodeResult_Stub(678, 2, '', array());
 
 		$range->addResult($res_1);
 		$range->addResult($res_2);
@@ -108,14 +108,14 @@ class tx_caretaker_NodeResultRange_testcase extends tx_phpunit_testcase {
 		$this->assertEquals($range->getStartTimestamp(), 100);
 		$this->assertEquals($range->getEndTimestamp(), 600);
 
-		$res_1 = new tx_caretaker_NodeResult_Stub(456, 1);
+		$res_1 = new tx_caretaker_NodeResult_Stub(456, 1, '', array());
 		$range->addResult($res_1);
 
 		$this->assertEquals($range->getStartTimestamp(), 100);
 		$this->assertEquals($range->getEndTimestamp(), 600);
 
-		$res_2 = new tx_caretaker_NodeResult_Stub(789, 2);
-		$res_3 = new tx_caretaker_NodeResult_Stub(50, 2);
+		$res_2 = new tx_caretaker_NodeResult_Stub(789, 2, '', array());
+		$res_3 = new tx_caretaker_NodeResult_Stub(50, 2, '', array());
 
 		$range->addResult($res_2);
 		$range->addResult($res_3);

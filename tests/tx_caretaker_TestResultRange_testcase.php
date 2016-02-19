@@ -72,11 +72,6 @@ class tx_caretaker_TestResultRange_testcase extends tx_phpunit_testcase {
 
 	}
 
-	function test_MinMaxTS() {
-		$this->assertEquals($this->test_result_range->getMinTstamp(), 500);
-		$this->assertEquals($this->test_result_range->getMaxTstamp(), 1000);
-	}
-
 	function test_get_state_infos() {
 
 		$info = $this->test_result_range->getInfos();

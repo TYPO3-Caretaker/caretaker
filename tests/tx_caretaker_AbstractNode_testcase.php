@@ -78,7 +78,7 @@ class tx_caretaker_AbstractNode_testcase extends tx_phpunit_testcase {
 
 	function test_getPropertyMethods() {
 
-		$aggregator = new tx_caretaker_AbstractNode_Stub(0, 'foo', false);
+		$aggregator = new tx_caretaker_AbstractNode_Stub(0, 'foo', null, '');
 
 		$this->assertEquals(false, $aggregator->getProperty('foo'), "wrong result");
 

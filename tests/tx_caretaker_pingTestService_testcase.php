@@ -65,7 +65,7 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase {
 
 		$result = $stub->runTest();
 
-		$this->assertType('tx_caretaker_TestResult', $result);
+		$this->assertInstanceOf('tx_caretaker_TestResult', $result);
 		$this->assertEquals(2, $result->getState());
 		$this->assertEquals(0, $result->getValue());
 
@@ -85,7 +85,7 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase {
 
 		$result = $stub->runTest();
 
-		$this->assertType('tx_caretaker_TestResult', $result);
+		$this->assertInstanceOf('tx_caretaker_TestResult', $result);
 		$this->assertEquals(0, $result->getState());
 		$this->assertEquals(5, $result->getValue());
 
@@ -105,7 +105,7 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase {
 
 		$result = $stub->runTest();
 
-		$this->assertType('tx_caretaker_TestResult', $result);
+		$this->assertInstanceOf('tx_caretaker_TestResult', $result);
 		$this->assertEquals(1, $result->getState());
 		$this->assertEquals(20, $result->getValue());
 
@@ -125,7 +125,7 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase {
 
 		$result = $stub->runTest();
 
-		$this->assertType('tx_caretaker_TestResult', $result);
+		$this->assertInstanceOf('tx_caretaker_TestResult', $result);
 		$this->assertEquals(2, $result->getState());
 		$this->assertEquals(201, $result->getValue());
 
@@ -145,7 +145,7 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase {
 
 		$result = $stub->runTest();
 
-		$this->assertType('tx_caretaker_TestResult', $result);
+		$this->assertInstanceOf('tx_caretaker_TestResult', $result);
 		$this->assertEquals(2, $result->getState());
 		$this->assertEquals(5, $result->getValue());
 

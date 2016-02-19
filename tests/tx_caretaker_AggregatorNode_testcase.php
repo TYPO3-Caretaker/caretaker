@@ -57,8 +57,8 @@ class tx_caretaker_AggregatorNode_testcase extends tx_phpunit_testcase {
 
 	function test_aggregation_of_results() {
 
-		$aggregator = new tx_caretaker_AggregatorNode_Stub(0, 'foo', false);
-		$instance = new tx_caretaker_InstanceNode (0, 'bar', false);
+		$aggregator = new tx_caretaker_AggregatorNode_Stub(0, 'foo', null, '');
+		$instance = new tx_caretaker_InstanceNode (0, 'bar', null);
 		$node = new tx_caretaker_TestNode (0, 'baz', $instance, 'tx_caretaker_ping', '');
 
 		$results = array();

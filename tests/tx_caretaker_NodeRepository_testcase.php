@@ -60,6 +60,7 @@ class tx_caretaker_NodeRepository_testcase extends tx_phpunit_testcase {
 	}
 
 	function test_testgroup_repository() {
+		$this->markTestIncomplete('TODO: do not depend on records in database');
 		$all_instances = $this->repository->getAllTestgroups();
 		$test_instance = $all_instances[0];
 		$groups = $test_instance->getChildren();
