@@ -51,6 +51,17 @@
 			<label index="tx_caretaker_instance.contacts">Contacts</label>
 			<label index="tx_caretaker_instance.testconfigurations">Overwrite Test Configuration</label>
 
+			<label index="tx_caretaker_instance_override">Test configuration/curl option override</label>
+			<label index="tx_caretaker_instance_override.type">Type</label>
+			<label index="tx_caretaker_instance_override.type.test_configuration">Test configuration</label>
+			<label index="tx_caretaker_instance_override.type.curl_option">cURL option</label>
+			<label index="tx_caretaker_instance_override.test">Test</label>
+			<label index="tx_caretaker_instance_override.test_configuration">Test configuration</label>
+			<label index="tx_caretaker_instance_override.curl_option">cURL option</label>
+			<label index="tx_caretaker_instance_override.curl_value">cURL value</label>
+			<label index="tx_caretaker_instance_override.curl_value.true">True</label>
+			<label index="tx_caretaker_instance_override.curl_value.false">False</label>
+
 			<label index="tx_caretaker_testgroup">Testgroup</label>
 			<label index="tx_caretaker_testgroup.tab.description">Description</label>
 			<label index="tx_caretaker_testgroup.tab.relations">Tests</label>

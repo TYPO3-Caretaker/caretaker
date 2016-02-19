@@ -67,7 +67,7 @@ class tx_caretaker_RootNode extends tx_caretaker_AggregatorNode {
 	 * Find Child nodes
 	 * @param boolean $show_hidden
 	 * @return array
-	 * @see caretaker/trunk/classes/nodes/tx_caretaker_AggregatorNode#findChildren()
+	 * @see caretaker/trunk/Classes/nodes/tx_caretaker_AggregatorNode#findChildren()
 	 */
 	protected function findChildren($show_hidden = FALSE) {
 		$node_repository = tx_caretaker_NodeRepository::getInstance();

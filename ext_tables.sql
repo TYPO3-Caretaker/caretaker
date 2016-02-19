@@ -59,13 +59,39 @@ CREATE TABLE tx_caretaker_instance (
 	instancegroup int(11) DEFAULT '0' NOT NULL,
 
 	contacts int(11) DEFAULT '0' NOT NULL,
+	notifications text,
 	notification_strategies int(11) DEFAULT '0' NOT NULL,
 
 	testconfigurations text NOT NULL,
+	configuration_overrides int(11) NOT NULL DEFAULT '0',
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
+
+
+CREATE TABLE tx_caretaker_instance_override (
+	uid int(11) DEFAULT '0' NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+	type varchar(20) NOT NULL DEFAULT '',
+	instance int(11) NOT NULL DEFAULT '0',
+	test int(11) NOT NULL DEFAULT '0',
+	test_hidden tinyint(1) NOT NULL DEFAULT '0',
+	test_configuration text,
+	curl_option varchar(100) NOT NULL DEFAULT '',
+	curl_value_int int(11) NOT NULL DEFAULT '0',
+	curl_value_string varchar(200) NOT NULL DEFAULT '',
+	curl_value_bool varchar(5) NOT NULL DEFAULT '0',
+	curl_value_httpauth varchar(100) NOT NULL DEFAULT '',
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+) Engine=InnoDB;
 
 
 CREATE TABLE tx_caretaker_node_strategy_mm (

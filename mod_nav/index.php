@@ -22,6 +22,7 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * This is a file of the caretaker project.
@@ -103,10 +104,9 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						xtype: "caretaker-nodetree",
 						autoScroll: true,
 						dataUrl: TYPO3.settings.ajaxUrls[\'tx_caretaker::treeloader\'],
-						addUrl: "' . $PATH_TYPO3 . 'alt_doc.php?edit[###NODE_TYPE###][' . $storagePid . ']=new",
-						editUrl: "' . $PATH_TYPO3 . 'alt_doc.php?edit[tx_caretaker_###NODE_TYPE###][###NODE_UID###]=edit",
-						hideUrl: "' . $PATH_TYPO3 . 'tce_db.php?&data[tx_caretaker_###NODE_TYPE###][###NODE_UID###][hidden]=1",
-						unhideUrl: "' . $PATH_TYPO3 . 'tce_db.php?&data[tx_caretaker_###NODE_TYPE###][###NODE_UID###][hidden]=0"
+						getModuleUrlUrl: TYPO3.settings.ajaxUrls[\'tx_caretaker::getModuleUrl\'],
+						storagePid: ' . $storagePid . ',
+						addUrl: "' . $PATH_TYPO3 . 'alt_doc.php?edit[###NODE_TYPE###][' . $storagePid . ']=new"
 					}
 				});
 

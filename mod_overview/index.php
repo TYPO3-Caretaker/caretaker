@@ -163,7 +163,9 @@ class tx_caretaker_mod_overview extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 									node_uid: node_uid,
 									node_hidden: node_hidden,
 									node_state: node_state,
-									node_state_info: node_state_info
+									node_state_info: node_state_info,
+									getModuleUrlUrl: TYPO3.settings.ajaxUrls[\'tx_caretaker::getModuleUrl\'],
+									storagePid: ' . $storagePid . '
 								},
 								items    : [
 									{
