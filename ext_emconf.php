@@ -65,7 +65,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'TYPO3_version' => '6.2.0-7.99.99',
 		'PHP_version' => '5.3.0-',
 		'author_company' => '',
-		'version' => '0.7.3',
+		'version' => '0.7.4',
 		'constraints' => array(
 				'depends' => array(
 						'cms' => '',
@@ -83,7 +83,5 @@ $EM_CONF[$_EXTKEY] = array(
 						'scheduler',
 				)
 		),
-		'_md5_values_when_last_written' => 'a:5:{s:9:"ChangeLog";s:4:"9c48";s:10:"README.txt";s:4:"ee2d";s:12:"ext_icon.gif";s:4:"1bdc";s:19:"doc/wizard_form.dat";s:4:"c49e";s:20:"doc/wizard_form.html";s:4:"c565";}',
+		'_md5_values_when_last_written' => '',
 );
-
-?>
