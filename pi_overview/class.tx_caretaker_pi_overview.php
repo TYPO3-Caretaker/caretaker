@@ -65,6 +65,10 @@ class tx_caretaker_pi_overview extends tx_caretaker_pibase {
 	function getNodes() {
 		$this->pi_initPIflexForm();
 		$node_ids = $this->pi_getFFValue($this->cObj->data['pi_flexform'], 'node_ids');
+		// Node ids not specified? Try TypoScript instead
+		if (!$node_ids && $this->conf['node_ids']) {
+			$node_ids = $this->conf['node_ids'];
+		}
 
 		$nodes = array();
 		$ids = explode(chr(10), $node_ids);
@@ -73,7 +77,22 @@ class tx_caretaker_pi_overview extends tx_caretaker_pibase {
 
 		foreach ($ids as $id) {
 			$node = $node_repository->id2node($id);
-			if ($node) $nodes[] = $node;
+			if (!$node) {
+				continue;
+			}
+
+			if ($this->root_id !== 'root') {
+				// Check if node is in the specified subtree
+				$parent_node = $node;
+				do {
+					// One parent of node should be the subtree root
+					if ($parent_node->getCaretakerNodeId() == $this->root_id) {
+						$nodes[] = $node;
+					}
+				} while ($parent_node = $parent_node->getParent());
+			} else {
+				$nodes[] = $node;
+			}
 		}
 
 		return $nodes;

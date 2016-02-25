@@ -3,6 +3,9 @@ plugin.tx_caretaker_pi_overview{
 	template = FILE
 	template.file = EXT:caretaker/res/html/pi_overview.html
 
+	node_ids =
+	root_id = root
+
 	nodeMarkers {
 		STATE = TEXT
 		STATE.field = state_info
@@ -79,6 +82,9 @@ plugin.tx_caretaker_pi_singleview {
 	
 	templateChild = FILE
 	templateChild.file = EXT:caretaker/res/html/pi_singleview.html
+
+	node_id =
+	root_id = root
 
 	nodeMarkers {
 	
@@ -245,6 +251,9 @@ plugin.tx_caretaker_pi_singleview {
 plugin.tx_caretaker_pi_graphreport{
 	template = FILE
 	template.file = EXT:caretaker/res/html/pi_graphreport.html
+
+	node_ids =
+	root_id = root
 	
 	markers {
 	
@@ -284,6 +293,9 @@ plugin.tx_caretaker_pi_abstract {
 
 	template = FILE
 	template.file = EXT:caretaker/res/html/pi_abstract.html
+
+	node_id =
+	root_id = root
 
 	markers {
 

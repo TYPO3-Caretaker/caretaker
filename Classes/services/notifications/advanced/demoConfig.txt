@@ -1,0 +1,130 @@
+#
+# Demo strategy configuration
+#
+
+#####
+# apply this strategy only if these conditions apply:
+conditions {
+
+	#####
+	# match the event:
+	# updatedTestResult|updatedAggregatorResult|...
+	event = updatedTestResult
+
+	#####
+	# match the new state of the test result
+	# [!](ok|error|warning|undefined|*)[,...]
+	newState = ok,!undefined
+
+	#####
+	# match the state of the last test run
+	# [!](ok|error|warning|undefined|*)[,...]
+	previousState = *
+
+	#####
+	# match the last differing state
+	# [!](ok|error|warning|undefined|*)[,...]
+	previousDifferingState = *
+
+	#####
+	# age in seconds, how long the previous state lasts
+	lastStateChangeOlderThen = 3600
+	lastStateChangeYoungerThen = 36000
+
+	#####
+	# match certain testServices (* matches all)
+	testServices = tx_caretaker_ping
+
+	#####
+	# match only if status changed since last execution (0|1)
+	onlyIfStateChanged = 1
+
+	#####
+	# match certain state changes
+	# [!](ok|error|warning|undefined|*)>[!](ok|error|warning|undefined|*)[,...]
+	# *>error,*>warning,!undefined>ok
+	stateChanges = *>error,*>warning,!undefined>ok
+
+	#####
+	# check the 'value' of the testresult
+	threshold {
+		min = 1
+		max = 1000
+	}
+
+	#####
+	# Schedule checks against the current time.
+	# set start/end to 0-24. start/end can be set/overridden per weekday
+	schedule {
+		start = 7
+		end = 18
+		saturday {
+			end = 24
+		}
+		sunday {
+			start = 10
+			end = 24
+		}
+	}
+
+	#####
+	# execute a UserFunction
+	# An array with the node and the new result is passed. Set TRUE or FALSE to the item "conditionsApply" in that array.
+	userFunc = EXT:caretaker/Classes/services/notifications/advanced/class.tx_caretaker_AdvancedNotificationService.php:tx_caretaker_AdvancedNotificationService->testUserFunc
+}
+
+#####
+# execute these rules:
+rules {
+	#####
+	# name of the rule (free to choose)
+	logAll {
+		#####
+		# conditions like above
+		conditions {
+			# ...
+		}
+
+		#####
+		# execute these exit points:
+		exit {
+			# identifier of the exitpoint (identifier from database record)
+			mail {
+				# exitpoint specific configuration.
+				# you can override the flexform config here
+
+				# role identifiers (identifier from database records)
+				roles = admin,customer
+			}
+
+			# exit point, which has no specific configuration override
+			syslog = 1
+		}
+	}
+
+	# another rule
+	sendToAdmin {
+		conditions {
+			threshold {
+				min = 1
+				max = 10
+			}
+
+			# [nameOfService|all]
+			testServices = all
+
+		}
+
+		exit.sms {
+			roles = admin
+
+			# conditions like above
+			conditions {
+				schedule {
+					sunday.start = 0
+					sunday.stop = 24
+				}
+			}
+		}
+	}
+}

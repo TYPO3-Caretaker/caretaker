@@ -240,132 +240,227 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 		this.openUrlInContent(url);
 	},
 	editNode: function(node) {
-		var url = this.editUrl.
-			replace('###NODE_TYPE###', node.attributes.type).
-			replace('###NODE_UID###', node.attributes.uid);
-		url += "&returnUrl=" + encodeURIComponent(parent.list_frame.document.location);
-		this.openUrlInContent(url);
+		Ext.Ajax.request({
+			url: this.getModuleUrlUrl,
+			params: {
+				"tx_caretaker[mode]": 'edit',
+				"tx_caretaker[node]": node.attributes.uid,
+				"tx_caretaker[type]": node.attributes.type
+			},
+			success: function(response) {
+				if(response.status == 200 && response.responseText && response.responseText.length > 0) {
+					this.openUrlInContent(response.responseText);
+				} else {
+					// here should be some error handling
+					if(console && console.log == 'function') {
+						console.debug('There was an error while getting the edit module url');
+					}
+					//Ext.Msg.show({
+					//	title: 'Error',
+					//	text: 'An error occurred while getting the edit form',
+					//	icon: Ext.MessageBox.ERROR
+					//});
+				}
+			},
+			scope: this
+		});
 	},
 	hideNode: function(node) {
-		var url = this.hideUrl.
-			replace('###NODE_TYPE###', node.attributes.type).
-			replace('###NODE_UID###', node.attributes.uid);
 		Ext.Ajax.request({
-			url: url,
-			success: function() {
-				tx.caretaker.fireEvent('nodeChanged', node);
-				this.reloadTree();
+			url: this.getModuleUrlUrl,
+			params: {
+				"tx_caretaker[mode]": 'hide',
+				"tx_caretaker[node]": node.attributes.uid,
+				"tx_caretaker[type]": node.attributes.type
 			},
-			failure: function() {
-				Ext.Msg.show({
-					title: 'Failure',
-					text: 'Could not hide node',
-					icon: Ext.MessageBox.WARNING
-				});
+			success: function(response) {
+				if(response.status == 200 && response.responseText && response.responseText.length > 0) {
+					Ext.Ajax.request({
+						url: response.responseText,
+						success: function() {
+							tx.caretaker.fireEvent('nodeChanged', node);
+							this.reloadTree();
+						},
+						failure: function() {
+							Ext.Msg.show({
+								title: 'Failure',
+								text: 'Could not hide node',
+								icon: Ext.MessageBox.WARNING
+							});
+						},
+						scope: this
+					});
+				} else {
+					// here should be some error handling
+					if(console && console.log == 'function') {
+						console.debug('There was an error while getting the hide ajax url');
+					}
+					//Ext.Msg.show({
+					//	title: 'Error',
+					//	text: 'An error occurred while getting the edit form',
+					//	icon: Ext.MessageBox.ERROR
+					//});
+				}
 			},
 			scope: this
 		});
 	},
 	unhideNode: function(node) {
-		var url = this.unhideUrl.
-			replace('###NODE_TYPE###', node.attributes.type).
-			replace('###NODE_UID###', node.attributes.uid);
 		Ext.Ajax.request({
-			url: url,
-			success: function() {
-				this.reloadTree();
+			url: this.getModuleUrlUrl,
+			params: {
+				"tx_caretaker[mode]": 'unhide',
+				"tx_caretaker[node]": node.attributes.uid,
+				"tx_caretaker[type]": node.attributes.type
 			},
-			failure: function() {
-				Ext.Msg.show({
-					title: 'Failure',
-					text: 'Could not unhide node',
-					icon: Ext.MessageBox.WARNING
-				});
+			success: function(response) {
+				if(response.status == 200 && response.responseText && response.responseText.length > 0) {
+					Ext.Ajax.request({
+						url: response.responseText,
+						success: function() {
+							tx.caretaker.fireEvent('nodeChanged', node);
+							this.reloadTree();
+						},
+						failure: function() {
+							Ext.Msg.show({
+								title: 'Failure',
+								text: 'Could not unhide node',
+								icon: Ext.MessageBox.WARNING
+							});
+						},
+						scope: this
+					});
+				} else {
+					// here should be some error handling
+					if(console && console.log == 'function') {
+						console.debug('There was an error while getting the unhide ajax url');
+					}
+					//Ext.Msg.show({
+					//	title: 'Error',
+					//	text: 'An error occurred while getting the edit form',
+					//	icon: Ext.MessageBox.ERROR
+					//});
+				}
 			},
 			scope: this
 		});
 	},
 	addTest: function(node) {
-		var url = '';
-		var add_record_type = 'tx_caretaker_test';
-
-		if (node.attributes.type == 'instance'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-			url += '&defVals[' + add_record_type + '][instances]=' + node.attributes.uid ;
-
-		}
-
-		if (node.attributes.type == 'testgroup'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-			url += '&defVals[' + add_record_type + '][groups]=' + node.attributes.uid ;
-		}
-
-		if (url) {
-			url += "&returnUrl=" + encodeURIComponent(parent.list_frame.document.location);
-			this.openUrlInContent(url);
-		}
-
+		Ext.Ajax.request({
+			url: this.getModuleUrlUrl,
+			params: {
+				"tx_caretaker[mode]": 'add',
+				"tx_caretaker[parent]": node.attributes.uid,
+				"tx_caretaker[isInInstance]": (node.attributes.type == 'instance' ? 1 : 0),
+				"tx_caretaker[type]": 'test',
+				"tx_caretaker[storagePid]": this.storagePid,
+				"tx_caretaker[returnUrl]": encodeURIComponent(parent.list_frame.document.location)
+			},
+			success: function(response) {
+				if(response.status == 200 && response.responseText && response.responseText.length > 0) {
+					this.openUrlInContent(response.responseText);
+				} else {
+					// here should be some error handling
+					if(console && console.log == 'function') {
+						console.debug('There was an error while getting the edit module url');
+					}
+					//Ext.Msg.show({
+					//	title: 'Error',
+					//	text: 'An error occurred while getting the edit form',
+					//	icon: Ext.MessageBox.ERROR
+					//});
+				}
+			},
+			scope: this
+		});
 	},
 	
 	addTestgroup: function(node) {
-		var url = '';
-		var add_record_type = 'tx_caretaker_testgroup';
-
-		if (node.attributes.type == 'instance'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-			url += '&defVals[' + add_record_type + '][instances]=' + node.attributes.uid ;
-
-		}
-
-		if (node.attributes.type == 'testgroup'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-			url += '&defVals[' + add_record_type + '][parent_group]=' + node.attributes.uid ;
-		}
-
-		if (url) {
-			url += "&returnUrl=" + encodeURIComponent(parent.list_frame.document.location);
-			this.openUrlInContent(url);
-		}
-
+		Ext.Ajax.request({
+			url: this.getModuleUrlUrl,
+			params: {
+				"tx_caretaker[mode]": 'add',
+				"tx_caretaker[parent]": node.attributes.uid,
+				"tx_caretaker[isInInstance]": (node.attributes.type == 'instance' ? 1 : 0),
+				"tx_caretaker[type]": 'testgroup',
+				"tx_caretaker[storagePid]": this.storagePid,
+				"tx_caretaker[returnUrl]": encodeURIComponent(parent.list_frame.document.location)
+			},
+			success: function(response) {
+				if(response.status == 200 && response.responseText && response.responseText.length > 0) {
+					this.openUrlInContent(response.responseText);
+				} else {
+					// here should be some error handling
+					if(console && console.log == 'function') {
+						console.debug('There was an error while getting the edit module url');
+					}
+					//Ext.Msg.show({
+					//	title: 'Error',
+					//	text: 'An error occurred while getting the edit form',
+					//	icon: Ext.MessageBox.ERROR
+					//});
+				}
+			},
+			scope: this
+		});
 	},
 	
 	addInstance: function(node) {
-		var url = '';
-		var add_record_type = 'tx_caretaker_instance';
-
-		if (node.attributes.type == 'instancegroup'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-			url += '&defVals[' + add_record_type + '][instancegroup]=' + node.attributes.uid ;
-		}
-
-		if (node.attributes.id == 'root'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-		}
-
-		if (url) {
-			url += "&returnUrl=" + encodeURIComponent(parent.list_frame.document.location);
-			this.openUrlInContent(url);
-		}
+		Ext.Ajax.request({
+			url: this.getModuleUrlUrl,
+			params: {
+				"tx_caretaker[mode]": 'add',
+				"tx_caretaker[parent]": node.attributes.uid,
+				"tx_caretaker[type]": 'instance',
+				"tx_caretaker[storagePid]": this.storagePid,
+				"tx_caretaker[returnUrl]": encodeURIComponent(parent.list_frame.document.location)
+			},
+			success: function(response) {
+				if(response.status == 200 && response.responseText && response.responseText.length > 0) {
+					this.openUrlInContent(response.responseText);
+				} else {
+					// here should be some error handling
+					if(console && console.log == 'function') {
+						console.debug('There was an error while getting the edit module url');
+					}
+					//Ext.Msg.show({
+					//	title: 'Error',
+					//	text: 'An error occurred while getting the edit form',
+					//	icon: Ext.MessageBox.ERROR
+					//});
+				}
+			},
+			scope: this
+		});
 	},
 
 	addInstancegroup: function(node) {
-		var url = '';
-		var add_record_type = 'tx_caretaker_instancegroup';
-
-		if (node.attributes.type == 'instancegroup'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-			url += '&defVals[' + add_record_type + '][parent_group]=' + node.attributes.uid ;
-		}
-
-		if (node.attributes.id == 'root'){
-			url = this.addUrl.replace('###NODE_TYPE###', add_record_type);
-		}
-
-		if (url) {
-			url += "&returnUrl=" + encodeURIComponent(parent.list_frame.document.location);
-			this.openUrlInContent(url);
-		}
-
+		Ext.Ajax.request({
+			url: this.getModuleUrlUrl,
+			params: {
+				"tx_caretaker[mode]": 'add',
+				"tx_caretaker[parent]": node.attributes.uid,
+				"tx_caretaker[type]": 'instancegroup',
+				"tx_caretaker[storagePid]": this.storagePid,
+				"tx_caretaker[returnUrl]": encodeURIComponent(parent.list_frame.document.location)
+			},
+			success: function(response) {
+				if(response.status == 200 && response.responseText && response.responseText.length > 0) {
+					this.openUrlInContent(response.responseText);
+				} else {
+					// here should be some error handling
+					if(console && console.log == 'function') {
+						console.debug('There was an error while getting the edit module url');
+					}
+					//Ext.Msg.show({
+					//	title: 'Error',
+					//	text: 'An error occurred while getting the edit form',
+					//	icon: Ext.MessageBox.ERROR
+					//});
+				}
+			},
+			scope: this
+		});
 	},
 	
 	reloadTree: function() {

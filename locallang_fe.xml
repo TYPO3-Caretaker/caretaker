@@ -6,7 +6,6 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-
 			<label index="test">Test</label>
 			<label index="testgroup">Testgroup</label>
 			<label index="instance">Instance</label>
@@ -29,11 +28,11 @@
 			<label index="state_undefined">Undefined</label>
 			<label index="state_due">Due to execution</label>
 			<label index="state_ack">Acknowledged</label>
-			
+
 			<label index="message_due">node was set to Due state by user: ###VALUE_USERNAME###</label>
 			<label index="message_ack">node was set to Acknowledged state by user: ###VALUE_USERNAME###</label>
-			
-			
+
+
 			<label index="available">available</label>
 			<label index="description">Description</label>
 			<label index="lastRunHeader">Last run:</label>
@@ -83,7 +82,7 @@
 			<label index="testgroup">Testgruppe</label>
 			<label index="instance">Instanz</label>
 			<label index="instancegroup">Instanzgruppe</label>
-			
+
 			<label index="state">Status</label>
 			<label index="lastRun">Datum</label>
 			<label index="value">Messwert</label>
@@ -99,6 +98,13 @@
 			<label index="state_warning">Warnung</label>
 			<label index="state_error">Fehler</label>
 			<label index="state_undefined">Undefiniert</label>
+			<label index="state_due">Fällig</label>
+			<label index="state_ack">Akzeptiert</label>
+
+			<label index="message_due">Test wird beim nächsten Testdurchlauf durchgeführt: ###VALUE_USERNAME###</label>
+			<label index="message_ack">Das aktuelle Testergebnis wurde akzeptiert: ###VALUE_USERNAME###</label>
+
+
 			<label index="available">verfügbar</label>
 			<label index="description">Beschreibung</label>
 			<label index="lastRunHeader">Letzter Lauf:</label>
@@ -106,29 +112,42 @@
 			<label index="service_exception">Die Testausführung schlug mit dem folgenden PHP-Fehler fehl: </label>
 			<label index="retry_info">Der Test wurde ###VALUE_NUMBER### mal wiederholt.</label>
 
+
 			<label index="aggregator_result_message">###VALUE_NUM_OK### von ###VALUE_NUM_TESTS### Unterelementen haben die Tests bestanden (###VALUE_NUM_ERROR### Fehler ###VALUE_NUM_WARNING### Warnungen)</label>
 			<label index="aggregator_result_submessage_error">Fehler in Unterelement ###VALUE_TITLE###</label>
 			<label index="aggregator_result_submessage_warning">Warnung in Unterelement ###VALUE_TITLE###</label>
 			<label index="aggregator_result_submessage_undefined">Undefinierter Status in Unterelement ###VALUE_TITLE###</label>
+			<label index="aggregator_result_submessage_ack">Akzeptierter Status im Unterelement ###VALUE_TITLE###</label>
+			<label index="aggregator_result_submessage_due">Unterelement ###VALUE_TITLE### wird beim nächsten Testdurchlauf durchgeführt</label>
 
+			<label index="ping_service_description">Ping Test</label>
+			<label index="ping_service_configuration">Warnung: ###MAX_TIME_WARNING### Ms Fehler: ###MAX_TIME_ERROR### Ms</label>
 
 			<label index="ping_info">Ping dauerte ###VALUE### Millisekunden</label>
 			<label index="ping_error">Das Ping Kommando (###VALUE_COMMAND###) konnte nicht ausgeführt werden. Fehler: ###VALUE_RESULT### </label>
 			<label index="ping_no_command_template">Das Ping Kommandotemplate muss in der Extension Konfiguration definiert werden.</label>
 
+			<label index="http_service_description">HTTP Test</label>
+			<label index="http_service_configuration">Erwarteter HTTP-Status: ###EXPECTED_STATUS### Warnung: ###MAX_TIME_WARNING### Ms Fehler: ###MAX_TIME_ERROR### Ms</label>
+
 			<label index="http_error">HTTP Test der URL ###VALUE_URL### ergab einen FEHLER</label>
 			<label index="http_warning">HTTP Test der URL ###VALUE_URL### ergab eine WARNUNG</label>
 			<label index="http_ok">HTTP Test der URL ###VALUE_URL### war erfolgreich in ###VALUE_TIME### Millisekuden und gab den Status ###VALUE_STATE### zurück</label>
 
-			<label index="http_no_query">Kein HTTP-Status-Code oder kein Query wurde eingegeben</label>
 			<label index="http_time_error">Der HTTP-Request dauerte ###VALUE_TIME### Millisekunden gab einen Fehler aufgrund Zeitüberschreitung zurück</label>
 			<label index="http_time_warning">Der HTTP-Request dauerte ###VALUE_TIME### Millisekunden gab eine Warnung aufgrund Zeitüberschreitung zurück</label>
 			<label index="http_state_error">Der HTTP Status ###VALUE_STATE_RETURNED### entspricht nicht dem erwarteten Wert von ###VALUE_STATE_EXPECTED###</label>
 			<label index="http_header_error">Der Wert "###VALUE_RETURNED###" im HTTP-Header "###VALUE_NAME###" entsprach nicht der Erwartung "###VALUE_EXPECTED###"</label>
+			<label index="http_header_ok">Der Wert im HTTP-Header "###VALUE_NAME###" entsprach dem erwarteten Wert von "###VALUE_EXPECTED###"</label>
 			<label index="http_header_missing">Der erwartete HTTP-Header ###VALUE_NAME### wurde nicht gefunden</label>
+			<label index="http_regex_error">Der reguläre Ausdruck ###VALUE_REGEX### passte nicht auf die HTTP-Antwort</label>
+			<label index="http_regex_ok">Der reguläre Ausdruck ###VALUE_REGEX### passte auf die HTTP-Antwort</label>
 			<label index="http_date_error">HTTP-Date-Header ###VALUE_PLAIN### (###VALUE_PARSED###) ist älter als ###VALUE_MAX_AGE### Sekunden</label>
 			<label index="http_modified_error">HTTP-Last-Modified-Header  ###VALUE_PLAIN### (###VALUE_PARSED###) ist älter als ###VALUE_MAX_AGE### Sekunden</label>
+			<label index="http_no_query">Kein HTTP-Status-Code oder kein Query wurde eingegeben</label>
 
+			<label index="touch_service_description">Touch Test</label>
+			<label index="touch_service_configuration">Touch-Befehl auf Datei: ###TIMESTAMP_FILENAME###</label>
 		</languageKey>
 	</data>
 </T3locallang>

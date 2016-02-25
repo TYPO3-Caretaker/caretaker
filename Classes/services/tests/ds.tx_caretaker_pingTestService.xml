@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- 
+/**
+ * This is a file of the caretaker project.
+ * Copyright 2008 by n@work Internet Informationssystem GmbH (www.work.de)
+ * 
+ * @Author	Thomas Hempel 		<thomas@work.de>
+ * @Author	Martin Ficzel		<martin@work.de>
+ * @Author	Patrick Kollodzik	<patrick@work.de>
+ * 
+ * $$Id$$
+ */
+-->
+
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+	<sheets>
+		<sDEF>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>OS</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<max_time_warning>
+						<TCEforms>
+							<label>Milliseconds for Warning</label>
+							<config>
+								<type>input</type>
+								<size>10</size>
+								<eval>int</eval>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</max_time_warning>>
+					<max_time_error>
+						<TCEforms>
+							<label>Milliseconds for Error</label>
+							<config>
+								<type>input</type>
+								<size>10</size>
+								<eval>int</eval>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</max_time_error>>
+				</el>
+			</ROOT>
+		</sDEF>
+	</sheets>
+</T3DataStructure>

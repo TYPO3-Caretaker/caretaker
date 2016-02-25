@@ -31,3 +31,5 @@ notifications.send_states = -2,-1,0,1,2
 # cat=caretaker/notifications/cli/config; type=string; label=CLI Command used for ping tests: ### is replaced by Hostname.
 ping.cli_command = /sbin/ping -c 1 ### 2>&1
 
+# cat=caretaker/features; type=boolean; label=Enable new configuration overrides: Enable new configuration override mechanism, that is compatible with 7.5 and later. This is enable by default for 7.5 and later.
+features.newConfigurationOverrides.enabled = 0
