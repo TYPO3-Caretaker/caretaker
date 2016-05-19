@@ -3,7 +3,7 @@
     "description": "TYPO3 caretaker server",
     "type": "typo3-cms-extension",
     "homepage": "https://github.com/TYPO3-Caretaker/",
-    "version": "0.7.4",
+    "version": "0.7.5",
     "autoload": {
         "psr-4": {
             "Caretaker\\Caretaker\\": "Classes/"
