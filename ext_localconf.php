@@ -124,4 +124,4 @@ if ($extConfig['eid.']['enabled']) {
 }
 
 // register migration command controller
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = \Caretaker\Caretaker\Command\MigrationCommandController::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'Caretaker\\Caretaker\\Command\\MigrationCommandController';
