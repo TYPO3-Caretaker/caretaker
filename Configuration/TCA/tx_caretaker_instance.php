@@ -130,6 +130,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
 					)
 				),
 				'foreign_table' => 'tx_caretaker_testgroup',
+				'foreign_table_where' => 'ORDER BY tx_caretaker_testgroup.sorting ASC',
 				'minitems' => 0,
 				'maxitems' => 50,
 				'MM' => 'tx_caretaker_instance_testgroup_mm',
@@ -141,6 +142,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
 				'type' => 'select',
 				'renderType' => 'selectMultipleSideBySide',
 				'foreign_table' => 'tx_caretaker_test',
+				'foreign_table_where' => 'ORDER BY tx_caretaker_test.title ASC',
 				'MM' => 'tx_caretaker_instance_test_mm',
 				'MM_opposite_field' => 'instances',
 				'size' => 5,
@@ -191,6 +193,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'foreign_table' => 'tx_caretaker_instancegroup',
+				'foreign_table_where' => 'ORDER BY tx_caretaker_instancegroup.title ASC',
 				'size' => 1,
 				'minitems' => 0,
 				'maxitems' => 1,
@@ -199,18 +202,6 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
 				),
 
 			)
-		),
-		'notifications' => Array(
-			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.notifications',
-			'config' => Array(
-				'type' => 'group',
-				'internal_type' => 'db',
-				'allowed' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address') ? 'tt_address' : 'tx_caretaker_contactaddress',
-				'size' => 5,
-				'autoSizeMax' => 25,
-				'minitems' => 0,
-				'maxitems' => 50,
-			),
 		),
 		'testconfigurations' => array(
 			'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_conf',
