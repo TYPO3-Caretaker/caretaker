@@ -120,7 +120,7 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 	 */
 	protected function processStrategy($strategy, $config, $notification) {
 		$conditions = $this->defaultConditions;
-		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($conditions, $config['conditions.']);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($conditions, is_array($config['conditions.']) ? $config['conditions.'] : array());
 		if (count($config['rules.']) === 0 || !$this->doConditionsApply($conditions, $notification)) {
 			return;
 		}
