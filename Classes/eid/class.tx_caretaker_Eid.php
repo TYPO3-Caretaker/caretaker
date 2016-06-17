@@ -155,7 +155,7 @@ class tx_caretaker_Eid {
 	public function getEidData() {
 		// Check for valid API key
 		// Ugly temporary solution. Only check if provided API key exists in users table
-		$apiKey = t3lib_div::_GP('apiKey');
+		$apiKey = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('apiKey');
 		if (!$apiKey) {
 			$node = false;
 		}
