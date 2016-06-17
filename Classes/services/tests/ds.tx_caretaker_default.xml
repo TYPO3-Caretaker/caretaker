@@ -17,11 +17,14 @@
 	<meta>
 		<langDisable>1</langDisable>
 	</meta>
-    <ROOT>
-        <type>array</type>
-        <el>
-            <dummy>
-            </dummy>
-        </el>
-    </ROOT>
+	<ROOT>
+		<type>array</type>
+		<el>
+			<dummy>
+				<config>
+					<default></default>
+				</config>
+			</dummy>
+		</el>
+	</ROOT>
 </T3DataStructure>
