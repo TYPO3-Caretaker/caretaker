@@ -174,7 +174,7 @@ class tx_caretaker_Eid {
 				return false;
 			}
 		} finally {
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 
 		return true;
