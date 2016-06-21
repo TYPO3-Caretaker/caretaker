@@ -20,8 +20,6 @@
     <ROOT>
         <type>array</type>
         <el>
-            <dummy>
-            </dummy>
         </el>
     </ROOT>
 </T3DataStructure>

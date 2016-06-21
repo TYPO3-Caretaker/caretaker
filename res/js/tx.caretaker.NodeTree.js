@@ -245,7 +245,8 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 			params: {
 				"tx_caretaker[mode]": 'edit',
 				"tx_caretaker[node]": node.attributes.uid,
-				"tx_caretaker[type]": node.attributes.type
+				"tx_caretaker[type]": node.attributes.type,
+				"tx_caretaker[returnUrl]": parent.list_frame.document.location
 			},
 			success: function(response) {
 				if(response.status == 200 && response.responseText && response.responseText.length > 0) {
@@ -354,7 +355,7 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 				"tx_caretaker[isInInstance]": (node.attributes.type == 'instance' ? 1 : 0),
 				"tx_caretaker[type]": 'test',
 				"tx_caretaker[storagePid]": this.storagePid,
-				"tx_caretaker[returnUrl]": encodeURIComponent(parent.list_frame.document.location)
+				"tx_caretaker[returnUrl]": parent.list_frame.document.location
 			},
 			success: function(response) {
 				if(response.status == 200 && response.responseText && response.responseText.length > 0) {
@@ -384,7 +385,7 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 				"tx_caretaker[isInInstance]": (node.attributes.type == 'instance' ? 1 : 0),
 				"tx_caretaker[type]": 'testgroup',
 				"tx_caretaker[storagePid]": this.storagePid,
-				"tx_caretaker[returnUrl]": encodeURIComponent(parent.list_frame.document.location)
+				"tx_caretaker[returnUrl]": parent.list_frame.document.location
 			},
 			success: function(response) {
 				if(response.status == 200 && response.responseText && response.responseText.length > 0) {
@@ -413,7 +414,7 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 				"tx_caretaker[parent]": node.attributes.uid,
 				"tx_caretaker[type]": 'instance',
 				"tx_caretaker[storagePid]": this.storagePid,
-				"tx_caretaker[returnUrl]": encodeURIComponent(parent.list_frame.document.location)
+				"tx_caretaker[returnUrl]": parent.list_frame.document.location
 			},
 			success: function(response) {
 				if(response.status == 200 && response.responseText && response.responseText.length > 0) {
@@ -442,7 +443,7 @@ tx.caretaker.NodeTree = Ext.extend(Ext.tree.TreePanel, {
 				"tx_caretaker[parent]": node.attributes.uid,
 				"tx_caretaker[type]": 'instancegroup',
 				"tx_caretaker[storagePid]": this.storagePid,
-				"tx_caretaker[returnUrl]": encodeURIComponent(parent.list_frame.document.location)
+				"tx_caretaker[returnUrl]": parent.list_frame.document.location
 			},
 			success: function(response) {
 				if(response.status == 200 && response.responseText && response.responseText.length > 0) {

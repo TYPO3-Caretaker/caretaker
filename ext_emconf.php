@@ -44,38 +44,38 @@
 # "version" and "dependencies" must not be touched!
 ########################################################################
 
-$EM_CONF[$_EXTKEY] = array(
-		'title' => 'Caretaker',
-		'description' => 'Server for caretaker observation system',
-		'category' => 'misc',
-		'author' => 'Martin Ficzel,Thomas Hempel,Christopher Hlubek,Tobias Liebig',
-		'author_email' => 'ficzel@work.de,hempel@work.de,hlubek@networkteam.com,typo3@etobi.de',
+$EM_CONF[$_EXTKEY] = array (
+  'title' => 'Caretaker',
+  'description' => 'Server for caretaker observation system',
+  'category' => 'misc',
+  'author' => 'Martin Ficzel,Thomas Hempel,Christopher Hlubek,Tobias Liebig',
+  'author_email' => 'ficzel@work.de,hempel@work.de,hlubek@networkteam.com,typo3@etobi.de',
 		'shy' => '',
 		'dependencies' => 'cms',
 		'conflicts' => '',
 		'priority' => '',
 		'module' => '',
-		'state' => 'stable',
+  'state' => 'stable',
 		'internal' => '',
 		'uploadfolder' => 0,
-		'createDirs' => 'typo3temp/caretaker/charts',
+  'createDirs' => 'typo3temp/caretaker/charts',
 		'modify_tables' => '',
-		'clearCacheOnLoad' => 0,
+  'clearCacheOnLoad' => 0,
 		'lockType' => '',
 		'TYPO3_version' => '6.2.0-7.99.99',
 		'PHP_version' => '5.3.0-',
-		'author_company' => '',
-		'version' => '0.7.6',
+  'author_company' => '',
+  'version' => '0.7.6',
 		'constraints' => array(
 				'depends' => array(
-						'cms' => '',
-						'caretaker_instance' => '0.7.0-',
-						'typo3' => '6.2.0-7.99.99',
+      'cms' => '',
+      'caretaker_instance' => '0.7.0-',
+      'typo3' => '6.2.0-7.99.99',
 						'php' => '5.3.0-'
-				),
+    ),
 				'conflicts' => array(),
 				'suggests' => array(),
-		),
+    ),
 		'autoload' => array(
 				'classmap' => array(
 						'Classes',
@@ -87,6 +87,6 @@ $EM_CONF[$_EXTKEY] = array(
 						'pi_overview',
 						'pi_singleview',
 				)
-		),
-		'_md5_values_when_last_written' => '',
+  ),
+  '_md5_values_when_last_written' => '',
 );

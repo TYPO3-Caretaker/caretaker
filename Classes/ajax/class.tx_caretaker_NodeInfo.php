@@ -48,6 +48,8 @@
  */
 class tx_caretaker_NodeInfo {
 
+	const PATH_CHARTS = 'typo3temp/caretaker/charts';
+
 	/**
 	 * @param array $params
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj
@@ -248,7 +250,12 @@ class tx_caretaker_NodeInfo {
 		if ($node_id && $node) {
 			$result_range = $node->getTestResultRange($date_start, $date_stop);
 			if ($result_range->count()) {
-				$filename = 'typo3temp/caretaker/charts/' . $node_id . '_' . $duration . '.png';
+				if (!is_dir(PATH_site . self::PATH_CHARTS)) {
+					if (!mkdir(PATH_site . self::PATH_CHARTS, 0770, true)) {
+						throw new \TYPO3\CMS\Core\Cache\Exception('can\'t create path "'.PATH_site.self::PATH_CHARTS.'"', 1465993775);
+					}
+				}
+				$filename = self::PATH_CHARTS . DIRECTORY_SEPARATOR . $node_id . '_' . $duration . '.png';
 				$base_url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 
 				if ($node instanceof tx_caretaker_TestNode) {
