@@ -83,7 +83,7 @@ Info:
 		}
 
 		$this->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
+			'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
 		);
 	}
 
