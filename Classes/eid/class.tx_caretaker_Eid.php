@@ -150,28 +150,42 @@ class tx_caretaker_Eid {
 	}
 
 	/**
-	 * @return array
+	 * Check for valid API key
+	 * Ugly temporary solution. Only check if provided API key exists in users table
+	 *
+	 * @return bool
 	 */
-	public function getEidData() {
-		// Check for valid API key
-		// Ugly temporary solution. Only check if provided API key exists in users table
-		$apiKey = t3lib_div::_GP('apiKey');
-		if (!$apiKey) {
-			$node = false;
-		}
+	private function validApiKey()
+	{
+		$apiKey = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('apiKey');
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'uid',
 			'fe_users',
-			'tx_caretaker_api_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($apiKey),
+			'tx_caretaker_api_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($apiKey, 'fe_users'),
 			'',
 			'',
 			1
 		);
 
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		if (empty($row) || empty($row['uid'])) {
+		try {
+			if (empty($row) || empty($row['uid'])) {
+				return false;
+			}
+		} finally {
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		}
+
+		return true;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getEidData() {
+
+		if (!$this->validApiKey()) {
 			return array('success' => false);
 		}
 
