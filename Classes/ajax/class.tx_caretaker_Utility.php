@@ -118,7 +118,10 @@ class tx_caretaker_Utility {
 				} else {
 					$moduleUrl = BackendUtility::getModuleUrl(
 						'record_edit',
-						array('edit' => array($table => array($node => 'edit')))
+						array(
+							'edit' => array($table => array($node => 'edit')),
+							'returnUrl' => $requestParameters['returnUrl']
+						)
 					);
 				}
 				break;
