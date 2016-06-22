@@ -169,13 +169,10 @@ class tx_caretaker_Eid {
 		);
 
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		try {
-			if (empty($row) || empty($row['uid'])) {
-				return false;
-			}
-		} finally {
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		if (empty($row) || empty($row['uid'])) {
+			return false;
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 		return true;
 	}

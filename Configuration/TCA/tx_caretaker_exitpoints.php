@@ -76,11 +76,11 @@ if ($advancedNotificationsEnabled) {
 			'config' => array(
 				'displayCond' => 'FIELD:service:REQ:true',
 				'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.config',
-				'config' => [
+				'config' => array(
 					'type' => 'flex',
 					'ds_pointerField' => 'service',
 					'ds' => \tx_caretaker_ServiceHelper::getTcaExitPointConfigDs()
-				]
+				)
 			)
 		),
 		'types' => array(
