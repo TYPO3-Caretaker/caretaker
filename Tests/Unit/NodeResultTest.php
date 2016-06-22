@@ -1,4 +1,8 @@
 <?php
+namespace Caretaker\Caretaker\Tests\Unit;
+
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+
 /***************************************************************
  * Copyright notice
  *
@@ -34,29 +38,35 @@
  * $Id$
  */
 
-class tx_caretaker_TestResultRepository_testcase extends tx_phpunit_testcase {
+/**
+ *
+ */
+class NodeResultTest extends UnitTestCase {
 
-	function test_getLatest() {
-		$instance = new tx_caretaker_InstanceNode(1, 'title', false, '', '');
-		$test = new tx_caretaker_TestNode(0, 'title', $instance, 'tx_caretaker_ping', '');
+	function test_TestResult_stores_data() {
+		$result = new \tx_caretaker_TestResult(123, 1, 1.75, 'This is a Message');
 
-		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
-		$result = $test_result_repository->getLatestByNode($test);
-		$this->assertEquals(get_class($result), 'tx_caretaker_TestResult', 'a testresult was found');
+		$this->assertEquals($result->getTimestamp(), 123);
+		$this->assertEquals($result->getState(), 1);
+		$this->assertEquals($result->getStateInfo(), 'WARNING');
+		$this->assertEquals($result->getValue(), 1.75);
+		$this->assertEquals($result->getMessage()->getText(), 'This is a Message');
 	}
 
-	function test_getResultRange() {
+	function test_AggregatorResult_stores_data() {
+		$result = new \tx_caretaker_AggregatorResult(123, 2, 2, 1, 3, 5, 'This is a Message');
 
-		$instance = new tx_caretaker_InstanceNode(1, 'title', false, '');
-		$test = new tx_caretaker_TestNode(0, 'title', $instance, 'tx_caretaker_ping', '');
+		$this->assertEquals($result->getTimestamp(), 123);
+		$this->assertEquals($result->getState(), 2);
+		$this->assertEquals($result->getStateInfo(), 'ERROR');
+		$this->assertEquals($result->getMessage()->getText(), 'This is a Message');
 
-		$test_result_repository = tx_caretaker_TestResultRepository::getInstance();
+		$this->assertEquals($result->getNumUNDEFINED(), 2);
+		$this->assertEquals($result->getNumOK(), 1);
+		$this->assertEquals($result->getNumWARNING(), 3);
+		$this->assertEquals($result->getNumERROR(), 5);
 
-		$result_range = $test_result_repository->getRangeByNode($test, time() - 10000, time());
-		$this->assertNotNull(count($result_range), 'there are tests found in range');
 
 	}
 
 }
-
-?>

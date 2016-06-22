@@ -1,4 +1,8 @@
 <?php
+namespace Caretaker\Caretaker\Tests\Unit;
+
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+
 /***************************************************************
  * Copyright notice
  *
@@ -33,36 +37,29 @@
  *
  * $Id$
  */
-class tx_caretaker_TestNodeRunner_testcase extends tx_phpunit_testcase {
 
+class TestResultRepositoryTest extends UnitTestCase {
 
-	protected function setUp() {
+	function test_getLatest() {
+		$this->markTestIncomplete('stub tx_caretaker_TestResultRepository');
+		$instance = new \tx_caretaker_InstanceNode(1, 'title', false, '', '');
+		$test = new \tx_caretaker_TestNode(0, 'title', $instance, '\tx_caretaker_ping', '');
+
+		$test_result_repository = \tx_caretaker_TestResultRepository::getInstance();
+		$result = $test_result_repository->getLatestByNode($test);
+		$this->assertEquals(get_class($result), '\tx_caretaker_TestResult', 'a testresult was found');
+	}
+
+	function test_getResultRange() {
+		$this->markTestIncomplete('stub tx_caretaker_TestResultRepository');
+		$instance = new \tx_caretaker_InstanceNode(1, 'title', false, '');
+		$test = new \tx_caretaker_TestNode(0, 'title', $instance, '\tx_caretaker_ping', '');
+
+		$test_result_repository = \tx_caretaker_TestResultRepository::getInstance();
+
+		$result_range = $test_result_repository->getRangeByNode($test, time() - 10000, time());
+		$this->assertNotNull(count($result_range), 'there are tests found in range');
 
 	}
 
-	protected function tearDown() {
-
-	}
-
-	public function provider_test_foo() {
-		return array(
-				array(1, 1, 'true is not true but i knew this before'),
-				array(1, 1, 'true is not false add unit tests here')
-		);
-	}
-
-	/**
-	 * @dataProvider provider_test_foo
-	 * @param unknown_type $foo
-	 * @param unknown_type $bar
-	 * @param unknown_type $baz
-	 */
-	/*
-	public function test_foo( $foo, $bar, $baz ){
-		$this->assertEquals( $foo, $bar, $baz );
-
-	}
-	*/
 }
-
-?>

@@ -1,4 +1,5 @@
 <?php
+namespace Caretaker\Caretaker\Tests\Unit\Stubs;
 /***************************************************************
  * Copyright notice
  *
@@ -33,13 +34,32 @@
  *
  * $Id$
  */
-class tx_caretaker_Base_testcase extends tx_phpunit_testcase {
+class AbstractNodeStub extends \tx_caretaker_AbstractNode {
 
-	function test_services_are_present() {
-		global $T3_SERVICES;
-		$this->assertNotNull(count($T3_SERVICES['caretaker_test_service']), 'No testservices are present');
+	public function getCaretakerNodeId() {
+		return "abstract_node";
 	}
 
-}
+	public function getTestNodes() {
+		return array();
+	}
 
-?>
+	public function getValueDescription() {
+		return '';
+	}
+
+	public function updateTestResult($force_update = false) {
+	}
+
+	public function getTestResult() {
+	}
+
+	public function getTestResultRange($startdate, $stopdate) {
+	}
+
+	public function getTestResultNumber() {
+	}
+
+	public function getTestResultRangeByOffset($offset = 0, $limit = 10) {
+	}
+}

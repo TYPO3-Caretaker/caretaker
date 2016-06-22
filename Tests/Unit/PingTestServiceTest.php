@@ -1,4 +1,8 @@
 <?php
+namespace Caretaker\Caretaker\Tests\Unit;
+
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+
 /***************************************************************
  * Copyright notice
  *
@@ -34,15 +38,14 @@
  * $Id$
  */
 
-class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase {
+class PingTestServiceTest extends UnitTestCase {
 
 	/**
 	 * Set the Return Value of a Method
 	 *
-	 * @param $stub
+	 * @param \PHPUnit_Framework_MockObject_MockObject $stub
 	 * @param $method_name
 	 * @param $return_value
-	 * @return unknown_type
 	 */
 	private function setMethodReturnValue(&$stub, $method_name, $return_value) {
 		$stub->expects($this->any())
@@ -53,8 +56,9 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase {
 
 	public function testIfNoCommandIsSetAnErrorOccurs() {
 
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_pingTestService $stub */
 		$stub = $this->getMock(
-				'tx_caretaker_pingTestService',
+				'\tx_caretaker_pingTestService',
 				array('getTimeError', 'getTimeWarning', 'buildPingCommand')
 		);
 
@@ -73,8 +77,9 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase {
 
 	public function testReturnOkIfAllWentWell() {
 
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_pingTestService $stub */
 		$stub = $this->getMock(
-				'tx_caretaker_pingTestService',
+				'\tx_caretaker_pingTestService',
 				array('getTimeError', 'getTimeWarning', 'buildPingCommand', 'executeSystemCommand')
 		);
 
@@ -93,8 +98,9 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase {
 
 	public function testReturnsWarningIfTimeoutIsReached() {
 
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_pingTestService $stub */
 		$stub = $this->getMock(
-				'tx_caretaker_pingTestService',
+				'\tx_caretaker_pingTestService',
 				array('getTimeError', 'getTimeWarning', 'buildPingCommand', 'executeSystemCommand')
 		);
 
@@ -113,8 +119,9 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase {
 
 	public function testReturnsErrorIfTimeoutIsReached() {
 
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_pingTestService $stub */
 		$stub = $this->getMock(
-				'tx_caretaker_pingTestService',
+				'\tx_caretaker_pingTestService',
 				array('getTimeError', 'getTimeWarning', 'buildPingCommand', 'executeSystemCommand')
 		);
 
@@ -133,8 +140,9 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase {
 
 	public function testReturnsErrorIfCommandFailes() {
 
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_pingTestService $stub */
 		$stub = $this->getMock(
-				'tx_caretaker_pingTestService',
+				'\tx_caretaker_pingTestService',
 				array('getTimeError', 'getTimeWarning', 'buildPingCommand', 'executeSystemCommand')
 		);
 
@@ -152,5 +160,3 @@ class tx_caretaker_pingTestService_testcase extends tx_phpunit_testcase {
 	}
 
 }
-
-?>

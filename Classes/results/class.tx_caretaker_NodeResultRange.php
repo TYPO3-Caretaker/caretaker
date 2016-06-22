@@ -46,7 +46,7 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-abstract class tx_caretaker_NodeResultRange implements Iterator {
+abstract class tx_caretaker_NodeResultRange implements Iterator, Countable {
 
 	/**
 	 * Array of testResults

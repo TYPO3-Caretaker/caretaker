@@ -1,4 +1,8 @@
 <?php
+namespace Caretaker\Caretaker\Tests\Unit;
+
+use Caretaker\Caretaker\Tests\Unit\Stubs\AbstractNodeStub;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 /***************************************************************
  * Copyright notice
  *
@@ -33,64 +37,22 @@
  *
  * $Id$
  */
+class AbstractNodeTest extends UnitTestCase
+{
 
-/**
- * StubClass to allow the testing of the tx_caretaker_AbstractNode Class
- *
- * @author martin
- */
-class tx_caretaker_AbstractNode_Stub extends tx_caretaker_AbstractNode {
+    function test_getPropertyMethods()
+    {
 
-	public function getCaretakerNodeId() {
-		return "abstract_node";
-	}
+        $aggregator = new AbstractNodeStub(0, 'foo', null, '');
 
-	public function getTestNodes() {
-		return array();
-	}
+        $this->assertEquals(false, $aggregator->getProperty('foo'), "wrong result");
 
-	public function getValueDescription() {
-		return '';
-	}
+        $aggregator->setDbRow(array('foo' => 'bar'));
 
-	public function updateTestResult($force_update = false) {
-	}
+        $this->assertEquals('bar', $aggregator->getProperty('foo'), "wrong result");
 
-	public function getTestResult() {
-	}
+        $this->assertEquals(false, $aggregator->getProperty('bar'), "wrong result");
 
-	public function getTestResultRange($startdate, $stopdate) {
-	}
-
-	public function getTestResultNumber() {
-	}
-
-	public function getTestResultRangeByOffset($offset = 0, $limit = 10) {
-	}
-}
-
-/**
- * Description of tx_caretaker_AbstractNode_testcase
- *
- * @author martin
- */
-class tx_caretaker_AbstractNode_testcase extends tx_phpunit_testcase {
-
-	function test_getPropertyMethods() {
-
-		$aggregator = new tx_caretaker_AbstractNode_Stub(0, 'foo', null, '');
-
-		$this->assertEquals(false, $aggregator->getProperty('foo'), "wrong result");
-
-		$aggregator->setDbRow(array('foo' => 'bar'));
-
-		$this->assertEquals('bar', $aggregator->getProperty('foo'), "wrong result");
-
-		$this->assertEquals(false, $aggregator->getProperty('bar'), "wrong result");
-
-
-	}
+    }
 
 }
-
-?>
