@@ -7,6 +7,7 @@ $GLOBALS['TCA']['tx_caretaker_node_address_mm'] = array(
         'label_alt' => 'role',
         'label_alt_force' => 1,
         'iconfile' => 'EXT:caretaker/res/icons/nodeaddressrelation.png',
+        'rootLevel' => -1,
     ),
     'interface' => array(
         'showRecordFieldList' => '',
