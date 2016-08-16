@@ -164,7 +164,9 @@ class tx_caretaker_ServiceHelper {
 		$dsArray = array(
 			'default' => self::$tcaTestConfigDs['default']
 		);
-		$tests = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_caretaker_test', 'deleted=0');
+		if (isset($GLOBALS['TYPO3_DB'])) {
+		    $tests = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_caretaker_test', 'deleted=0');
+		}
 		if (!empty($tests)) {
 			foreach($tests as $testRecord) {
 				if(array_key_exists($testRecord['test_service'], self::$tcaTestConfigDs)) {
