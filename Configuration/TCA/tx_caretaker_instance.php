@@ -142,7 +142,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
 				'type' => 'select',
 				'renderType' => 'selectMultipleSideBySide',
 				'foreign_table' => 'tx_caretaker_test',
-				'foreign_table_where' => 'ORDER BY tx_caretaker_test.title ASC',
+				'foreign_table_where' => ' AND deleted = 0 AND hidden = 0 ORDER BY tx_caretaker_test.title ASC',
 				'MM' => 'tx_caretaker_instance_test_mm',
 				'MM_opposite_field' => 'instances',
 				'size' => 5,
