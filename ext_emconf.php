@@ -25,7 +25,6 @@ $EM_CONF[$_EXTKEY] = array (
   array (
     'depends' => 
     array (
-      'cms' => '',
       'caretaker_instance' => '0.7.0-',
       'typo3' => '6.2.0-7.99.99',
       'php' => '5.3.0-',
