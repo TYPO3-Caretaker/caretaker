@@ -11,7 +11,6 @@
     ],
   "require": {
     "typo3/cms-core": "^6.2.14|^7.6.0",
-    "typo3/cms": "*",
     "caretaker/caretaker_instance": "*"
   },
   "require-dev": {
