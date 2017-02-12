@@ -66,7 +66,9 @@ class tx_caretaker_ServiceHelper {
 	/**
 	 * @var array
 	 */
-	protected static $tcaExitPointConfigDs = array();
+	protected static $tcaExitPointConfigDs = array(
+	    'default' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?><T3DataStructure><meta></meta></T3DataStructure>',
+    );
 
 	/**
 	 * Array of all active Notification Services
