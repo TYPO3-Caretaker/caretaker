@@ -39,12 +39,9 @@
  *
  * @author Thomas Hempel <thomas@work.de>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_Constants
 {
-
     /* result states */
     const state_ok = 0;
     const state_warning = 1;

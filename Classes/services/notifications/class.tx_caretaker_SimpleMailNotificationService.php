@@ -42,25 +42,22 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNotificationService
 {
-
     /**
      * The notification storage
      *
      * @var array
      */
-    private $recipients_messages = [];
+    private $recipients_messages = array();
 
     /**
      * The addresses for the recipients
      *
      * @var array
      */
-    private $recipients_addresses = [];
+    private $recipients_addresses = array();
 
     /**
      * Notification Email from Address
@@ -88,7 +85,7 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
      *
      * @var array
      */
-    private $mail_roles = [];
+    private $mail_roles = array();
 
     /**
      * Constructor
@@ -104,7 +101,7 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
         $this->mail_subject = $this->getConfigValue('mail_subject');
         $this->mail_link = $this->getConfigValue('mail_link');
         $this->mail_link = $this->getConfigValue('mail_link');
-        $this->mail_roles = [];
+        $this->mail_roles = array();
         $role_ids = explode(',', $this->getConfigValue('role_ids'));
         foreach ($role_ids as $role_id) {
             $role = $contactRepository->getContactRoleById(trim($role_id));
@@ -138,10 +135,10 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
         }
 
         // collect the recipients from the node rootline
-        $recipientIds = [];
+        $recipientIds = array();
 
         if (count($this->mail_roles) > 0) {
-            $contacts = [];
+            $contacts = array();
             foreach ($this->mail_roles as $role) {
                 $contacts = array_merge($contacts, $node->getContacts($role));
             }
@@ -163,15 +160,15 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
         // store the notifications for the recipients
         foreach ($recipientIds as $recipientId) {
             if (!isset($this->recipients_messages[$recipientId])) {
-                $this->recipients_messages[$recipientId] = [
-                    'messages' => [],
+                $this->recipients_messages[$recipientId] = array(
+                    'messages' => array(),
                     'num_undefined' => 0,
                     'num_ok' => 0,
                     'num_warning' => 0,
                     'num_error' => 0,
                     'num_ack' => 0,
                     'num_due' => 0,
-                ];
+                );
             }
             switch ($result->getState()) {
                 case tx_caretaker_Constants::state_undefined:

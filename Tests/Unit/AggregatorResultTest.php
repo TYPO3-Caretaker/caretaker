@@ -39,10 +39,8 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  */
 class AggregatorResultTest extends UnitTestCase
 {
-
-    function test_comparisonOfAggreagtorResults()
+    public function test_comparisonOfAggreagtorResults()
     {
-
         $result = \tx_caretaker_AggregatorResult::create(\tx_caretaker_Constants::state_undefined);
 
         $compareResult = \tx_caretaker_AggregatorResult::create(\tx_caretaker_Constants::state_undefined);
@@ -70,7 +68,5 @@ class AggregatorResultTest extends UnitTestCase
         $compareResult = \tx_caretaker_AggregatorResult::create(\tx_caretaker_Constants::state_undefined, 0, 0, 0, 1);
         $this->assertFalse($result->equals($compareResult),
             'result with state undefined and but numError = 1 is not equal to empty result');
-
     }
-
 }

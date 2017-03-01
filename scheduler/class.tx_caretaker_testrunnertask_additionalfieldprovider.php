@@ -36,7 +36,6 @@ use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
  */
 class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements AdditionalFieldProviderInterface
 {
-
     /**
      * This method is used to define new fields for adding or editing a task
      * In this case, it adds an email field
@@ -74,12 +73,12 @@ class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements AdditionalF
 
         $fieldID = 'update_node_id';
         $fieldCode = '<input type="text" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="' . $taskInfo['update_node_id'] . '" size="30" />';
-        $additionalFields[$fieldID] = [
+        $additionalFields[$fieldID] = array(
             'code' => $fieldCode,
             'label' => 'LLL:EXT:caretaker/locallang.xml:scheduler_update_node',
             'cshKey' => '_MOD_tools_txschedulerM1',
             'cshLabel' => $fieldID,
-        ];
+        );
 
         return $additionalFields;
     }
@@ -90,7 +89,7 @@ class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements AdditionalF
      *
      * @param    array $submittedData : reference to the array containing the data submitted by the user
      * @param     \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject : reference to the calling object (Scheduler's BE module)
-     * @return    boolean                    True if validation was ok (or selected class is not relevant), false otherwise
+     * @return    bool                    True if validation was ok (or selected class is not relevant), false otherwise
      */
     public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
     {
@@ -122,4 +121,3 @@ class tx_caretaker_TestrunnerTask_AdditionalFieldProvider implements AdditionalF
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_testrunnertask_additionalfieldprovider.php']) {
     include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_testrunnertask_additionalfieldprovider.php']);
 }
-

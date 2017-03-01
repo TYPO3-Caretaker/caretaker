@@ -39,8 +39,7 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  */
 class TestResultRepositoryTest extends UnitTestCase
 {
-
-    function test_getLatest()
+    public function test_getLatest()
     {
         $this->markTestIncomplete('stub tx_caretaker_TestResultRepository');
         $instance = new \tx_caretaker_InstanceNode(1, 'title', false, '', '');
@@ -51,7 +50,7 @@ class TestResultRepositoryTest extends UnitTestCase
         $this->assertEquals(get_class($result), '\tx_caretaker_TestResult', 'a testresult was found');
     }
 
-    function test_getResultRange()
+    public function test_getResultRange()
     {
         $this->markTestIncomplete('stub tx_caretaker_TestResultRepository');
         $instance = new \tx_caretaker_InstanceNode(1, 'title', false, '');
@@ -61,7 +60,5 @@ class TestResultRepositoryTest extends UnitTestCase
 
         $result_range = $test_result_repository->getRangeByNode($test, time() - 10000, time());
         $this->assertNotNull(count($result_range), 'there are tests found in range');
-
     }
-
 }

@@ -42,49 +42,46 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult
 {
-
     /**
      * Number of subtests with state UNDEFINED
      *
-     * @var integer
+     * @var int
      */
     protected $num_UNDEFINED = 0;
 
     /**
      * Number of subtests with state OK
      *
-     * @var integer
+     * @var int
      */
     protected $num_OK = 0;
 
     /**
      * Number of subtests with state ERROR
      *
-     * @var integer
+     * @var int
      */
     protected $num_ERROR = 0;
 
     /**
      * Number of subtests with state WARNING
      *
-     * @var integer
+     * @var int
      */
     protected $num_WARNING = 0;
 
     /**
      * Constructor
      *
-     * @param integer $timestamp
-     * @param integer $state
-     * @param integer $num_undefined
-     * @param integer $num_ok
-     * @param integer $num_warning
-     * @param integer $num_error
+     * @param int $timestamp
+     * @param int $state
+     * @param int $num_undefined
+     * @param int $num_ok
+     * @param int $num_warning
+     * @param int $num_error
      * @param mixed $message String or tx_caretaker_ResultMessage object
      * @param array $submessages array of tx_caretaker_ResultMessage objects
      *
@@ -101,38 +98,39 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult
     /**
      * Create an undefined result with current timestamp
      *
+     * @param mixed $message
      * @return tx_caretaker_AggregatorResult
      */
-    static public function undefined($message = 'Result is undefined')
+    public static function undefined($message = 'Result is undefined')
     {
         $ts = time();
 
-        return new tx_caretaker_AggregatorResult($ts, tx_caretaker_Constants::state_undefined, $undefined = 0, $ok = 0, $warning = 0, $error = 0, $message);
+        return new self($ts, tx_caretaker_Constants::state_undefined, $undefined = 0, $ok = 0, $warning = 0, $error = 0, $message);
     }
 
     /**
      * Create a result with current timestamp
      *
-     * @param integer $state
-     * @param integer $num_undefined
-     * @param integer $num_ok
-     * @param integer $num_warning
-     * @param integer $num_error
+     * @param int $state
+     * @param int $num_undefined
+     * @param int $num_ok
+     * @param int $num_warning
+     * @param int $num_error
      * @param mixed $message String or tx_caretaker_ResultMessage object
      * @param array $submessages array of tx_caretaker_ResultMessage objects
      * @return tx_caretaker_AggregatorResult
      */
-    static public function create($state = tx_caretaker_Constants::state_undefined, $num_undefined = 0, $num_ok = 0, $num_warning = 0, $num_error = 0, $message = '', $submessages = null)
+    public static function create($state = tx_caretaker_Constants::state_undefined, $num_undefined = 0, $num_ok = 0, $num_warning = 0, $num_error = 0, $message = '', $submessages = null)
     {
         $timestamp = time();
 
-        return new tx_caretaker_AggregatorResult($timestamp, $state, $num_undefined, $num_ok, $num_warning, $num_error, $message, $submessages);
+        return new self($timestamp, $state, $num_undefined, $num_ok, $num_warning, $num_error, $message, $submessages);
     }
 
     /**
      * Return number of children with state UNDEFINED
      *
-     * @return integer
+     * @return int
      */
     public function getNumUNDEFINED()
     {
@@ -142,7 +140,7 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult
     /**
      * Return number of children with state OK
      *
-     * @return integer
+     * @return int
      */
     public function getNumOK()
     {
@@ -152,7 +150,7 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult
     /**
      * Return number of children with state WARNING
      *
-     * @return integer
+     * @return int
      */
     public function getNumWARNING()
     {
@@ -162,7 +160,7 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult
     /**
      * Return number of children with state ERROR
      *
-     * @return integer
+     * @return int
      */
     public function getNumERROR()
     {
@@ -173,7 +171,7 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult
      * Returns the number of children with state that fits the given name.
      *
      * @param string $stateName state name (valid values: UNDEFINED, OK, WARNING, ERROR)
-     * @return integer
+     * @return int
      */
     public function getNumGENERIC($stateName)
     {
@@ -190,13 +188,13 @@ class tx_caretaker_AggregatorResult extends tx_caretaker_NodeResult
      */
     public function getResultHash()
     {
-        $state = [
+        $state = array(
             'state' => (int)$this->getState(),
             'STATE_UNDEFINED' => (int)$this->getNumUNDEFINED(),
             'STATE_OK' => (int)$this->getNumOK(),
             'STATE_WARNING' => (int)$this->getNumWARNING(),
             'STATE_ERROR' => (int)$this->getNumERROR(),
-        ];
+        );
 
         return md5(serialize($state));
     }

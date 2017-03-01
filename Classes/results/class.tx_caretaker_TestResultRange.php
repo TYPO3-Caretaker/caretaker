@@ -42,25 +42,22 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange
 {
-
     /**
      * Minimal value of this result range
      *
      * @var float
      */
-    var $min_value = 0;
+    public $min_value = 0;
 
     /**
      * Maximal value of this result range
      *
      * @var float
      */
-    var $max_value = 0;
+    public $max_value = 0;
 
     /**
      * Add a TestResult to the ResultRange
@@ -74,7 +71,7 @@ class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange
         $value = $result->getValue();
         if ($value < $this->min_value) {
             $this->min_value = $value;
-        } else if ($value > $this->max_value) {
+        } elseif ($value > $this->max_value) {
             $this->max_value = $value;
         }
     }
@@ -107,16 +104,16 @@ class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange
      */
     public function getMedianValue()
     {
-        $values = [];
+        $values = array();
         /** @var tx_caretaker_TestResult $result */
         foreach ($this as $result) {
             $state = $result->getState();
             $value = $result->getValue();
-            if (in_array($state, [
+            if (in_array($state, array(
                     tx_caretaker_Constants::state_ok,
                     tx_caretaker_Constants::state_warning,
                     tx_caretaker_Constants::state_error,
-                ]) && $value > 0
+                )) && $value > 0
             ) {
                 $values[] = $result->getValue();
             }
@@ -127,16 +124,14 @@ class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange
             if ($num % 2 == 1) {
                 $index = (int)(($num - 1) / 2);
 
-                return ($values[$index]);
-            } else {
-                $index = (int)($num / 2);
-                $index2 = (int)($num / 2 - 1);
-
-                return (($values[$index] + $values[$index2]) / 2.0);
+                return $values[$index];
             }
-        } else {
-            return 0;
+            $index = (int)($num / 2);
+            $index2 = (int)($num / 2 - 1);
+
+            return ($values[$index] + $values[$index2]) / 2.0;
         }
+        return 0;
     }
 
     /**
@@ -164,11 +159,11 @@ class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange
                 $value = $currentResult->getValue();
                 $state = $currentResult->getState();
                 $timeRange = $timeStop - $timeStart;
-                if (in_array($state, [
+                if (in_array($state, array(
                         tx_caretaker_Constants::state_ok,
                         tx_caretaker_Constants::state_warning,
                         tx_caretaker_Constants::state_error,
-                    ]) && $value > 0
+                    )) && $value > 0
                 ) {
                     $value_area += $timeRange * $value;
                     $value_range += $timeRange;
@@ -181,9 +176,8 @@ class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange
         }
 
         if ($value_range > 0) {
-            return ($value_area / $value_range);
-        } else {
-            return 0;
+            return $value_area / $value_range;
         }
+        return 0;
     }
 }

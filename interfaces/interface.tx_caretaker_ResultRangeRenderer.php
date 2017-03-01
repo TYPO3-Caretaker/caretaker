@@ -35,7 +35,6 @@
  */
 interface tx_caretaker_ResultRangeRenderer
 {
-
     /**
      * Render the Result Range for this testNode
      *
@@ -66,5 +65,4 @@ interface tx_caretaker_ResultRangeRenderer
      * @return string
      */
     public function renderMultipleTestResultRanges($filename, $test_result_ranges, $titles);
-
 }

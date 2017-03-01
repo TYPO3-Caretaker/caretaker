@@ -42,25 +42,22 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_ChartRendererBase
 {
-
     /**
      * the result range to render
      *
      * @var tx_caretaker_AggregatorResultRange
      */
-    var $aggregatorResultRange = [];
+    public $aggregatorResultRange = array();
 
     /**
      * informations about the current result range
      *
      * @var array
      */
-    var $aggregatorResultRangeInfos = [];
+    public $aggregatorResultRangeInfos = array();
 
     /**
      * Set the result Range
@@ -101,7 +98,7 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
      */
     protected function getChartTitle()
     {
-        return $this->getTitle() . ' ' . round(($this->aggregatorResultRangeInfos['PercentAVAILABLE'] * 100), 2) . "% " . "available";
+        return $this->getTitle() . ' ' . round(($this->aggregatorResultRangeInfos['PercentAVAILABLE'] * 100), 2) . '% ' . 'available';
     }
 
     /**
@@ -134,7 +131,7 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
         foreach ($this->aggregatorResultRange as $aggregatorResult) {
             if ($lastResult !== null) {
                 $total = 0;
-                foreach (['OK', 'WARNING', 'ERROR', 'UNDEFINED'] as $state) {
+                foreach (array('OK', 'WARNING', 'ERROR', 'UNDEFINED') as $state) {
                     $number = $lastResult->getNumGENERIC($state);
                     if ($number > 0) {
                         $colorRGB = $this->getColorRgbByKey($state);
@@ -173,12 +170,12 @@ class tx_caretaker_AggregatorResultRangeChartRenderer extends tx_caretaker_Chart
     {
         $chartLegendColor = imagecolorallocate($image, 1, 1, 1);
 
-        $legendItems = [
+        $legendItems = array(
             'OK' => $this->aggregatorResultRangeInfos['PercentOK'],
             'Warning' => $this->aggregatorResultRangeInfos['PercentWARNING'],
             'Error' => $this->aggregatorResultRangeInfos['PercentERROR'],
             'Undefined' => $this->aggregatorResultRangeInfos['PercentUNDEFINED'],
-        ];
+        );
 
         $offset = $this->marginTop + 10;
 

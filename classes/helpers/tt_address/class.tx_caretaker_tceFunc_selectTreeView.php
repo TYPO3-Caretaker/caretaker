@@ -33,15 +33,12 @@
  *
  * @author    Ren� Fritz <r.fritz@colorcube.de>
  * @author    Ingo Renner <typo3@ingo-renner.com>
- * @package TYPO3
- * @subpackage tt_address
  */
 class tx_caretaker_tceFunc_selectTreeView extends t3lib_treeview
 {
+    public $TCEforms_itemFormElName = '';
 
-    var $TCEforms_itemFormElName = '';
-
-    var $TCEforms_nonSelectableItemsArray = [];
+    public $TCEforms_nonSelectableItemsArray = array();
 
     /**
      * wraps the record titles in the tree with links or not depending on if
@@ -51,25 +48,21 @@ class tx_caretaker_tceFunc_selectTreeView extends t3lib_treeview
      * @param    array $v : an array with uid and title of the current item.
      * @return    string        the wrapped title
      */
-    function wrapTitle($title, $v)
+    public function wrapTitle($title, $v)
     {
         if ($v['uid'] > 0) {
             if (in_array($v['uid'], $this->TCEforms_nonSelectableItemsArray)) {
                 return '<a href="#" title="' . $v['description'] . '"><span style="color:#999;cursor:default;">' . $title . '</span></a>';
-            } else {
-                $hrefTitle = $v['description'];
-                $aOnClick = 'setFormValueFromBrowseWin(\'' . $this->TCEforms_itemFormElName . '\',' . $v['uid'] . ',\'' . addslashes($title) . '\'); return false;';
-
-                return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" title="' . htmlentities($v['description']) . '">' . $title . '</a>';
             }
-        } else {
-            return $title;
-        }
-    }
+            $hrefTitle = $v['description'];
+            $aOnClick = 'setFormValueFromBrowseWin(\'' . $this->TCEforms_itemFormElName . '\',' . $v['uid'] . ',\'' . addslashes($title) . '\'); return false;';
 
+            return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" title="' . htmlentities($v['description']) . '">' . $title . '</a>';
+        }
+        return $title;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/class.tx_caretaker_tceFunc_selectTreeView.php']) {
     include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/class.tx_caretaker_tceFunc_selectTreeView.php']);
 }
-?>

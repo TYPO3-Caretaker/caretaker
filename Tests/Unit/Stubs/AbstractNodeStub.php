@@ -37,15 +37,14 @@ namespace Caretaker\Caretaker\Tests\Unit\Stubs;
  */
 class AbstractNodeStub extends \tx_caretaker_AbstractNode
 {
-
     public function getCaretakerNodeId()
     {
-        return "abstract_node";
+        return 'abstract_node';
     }
 
     public function getTestNodes()
     {
-        return [];
+        return array();
     }
 
     public function getValueDescription()

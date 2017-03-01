@@ -33,12 +33,11 @@
  *
  * $Id$
  */
-
 if (TYPO3_MODE == 'BE') {
-    $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = [
+    $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array(
         'EXT:' . $_EXTKEY . '/Classes/class.tx_caretaker_Cli.php',
         '_CLI_caretaker',
-    ];
+    );
 }
 
 // register Plugins
@@ -103,19 +102,19 @@ if (TYPO3_MODE == 'BE') {
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass'][] = 'EXT:caretaker/Classes/hooks/class.tx_caretaker_hooks_tceforms_getSingleFieldClass.php:tx_caretaker_hooks_tceforms_getSingleFieldClass';
 
 // Register scheduler tasks for caretaker testrunner
-$TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TestrunnerTask'] = [
+$TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TestrunnerTask'] = array(
     'extension' => $_EXTKEY,
     'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:testrunnerTask.name',
     'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:testrunnerTask.description',
     'additionalFields' => 'tx_caretaker_TestrunnerTask_AdditionalFieldProvider',
-];
+);
 
 // Register scheduler tasks for caretaker typo3 version number update
-$TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_Typo3versionnumbersupdateTask'] = [
+$TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_Typo3versionnumbersupdateTask'] = array(
     'extension' => $_EXTKEY,
     'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:typo3versionnumbersupdateTask.name',
     'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:typo3versionnumbersupdateTask.description',
-];
+);
 
 require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/ext_conf_include.php');
 

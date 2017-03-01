@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category   xmpphp
- * @package    XMPPHP
  * @author     Nathanael C. Fritz <JID: fritzy@netflint.net>
  * @author     Stephan Wentz <JID: stephan@jabber.wentz.it>
  * @author     Michael Garvin <JID: gar@netflint.net>
@@ -27,14 +26,13 @@
  */
 
 /** XMPPHP_XMLStream */
-require_once dirname(__FILE__) . "/XMLStream.php";
-require_once dirname(__FILE__) . "/Roster.php";
+require_once dirname(__FILE__) . '/XMLStream.php';
+require_once dirname(__FILE__) . '/Roster.php';
 
 /**
  * XMPPHP Main Class
  *
  * @category   xmpphp
- * @package    XMPPHP
  * @author     Nathanael C. Fritz <JID: fritzy@netflint.net>
  * @author     Stephan Wentz <JID: stephan@jabber.wentz.it>
  * @author     Michael Garvin <JID: gar@netflint.net>
@@ -74,24 +72,24 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
     protected $basejid;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $authed = false;
 
     protected $session_started = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $auto_subscribe = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $use_encryption = true;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $track_presence = true;
 
@@ -104,12 +102,12 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
      * Constructor
      *
      * @param string $host
-     * @param integer $port
+     * @param int $port
      * @param string $user
      * @param string $password
      * @param string $resource
      * @param string $server
-     * @param boolean $printlog
+     * @param bool $printlog
      * @param string $loglevel
      */
     public function __construct($host, $port, $user, $password, $resource, $server = null, $printlog = false, $loglevel = null)
@@ -143,7 +141,7 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
     /**
      * Turn encryption on/ff
      *
-     * @param boolean $useEncryption
+     * @param bool $useEncryption
      */
     public function useEncryption($useEncryption = true)
     {
@@ -153,7 +151,7 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
     /**
      * Turn on auto-authorization of subscription requests.
      *
-     * @param boolean $autoSubscribe
+     * @param bool $autoSubscribe
      */
     public function autoSubscribe($autoSubscribe = true)
     {
@@ -167,6 +165,7 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
      * @param string $body
      * @param string $type
      * @param string $subject
+     * @param null|mixed $payload
      */
     public function message($to, $body, $type = 'chat', $subject = null, $payload = null)
     {
@@ -186,7 +185,7 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
         if ($payload) {
             $out .= $payload;
         }
-        $out .= "</message>";
+        $out .= '</message>';
 
         $this->send($out);
     }
@@ -197,6 +196,8 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
      * @param string $status
      * @param string $show
      * @param string $to
+     * @param mixed $type
+     * @param mixed $priority
      */
     public function presence($status = null, $show = 'available', $to = null, $type = 'available', $priority = 0)
     {
@@ -209,7 +210,7 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
             $type = 'unavailable';
         }
 
-        $out = "<presence";
+        $out = '<presence';
         if ($to) {
             $out .= " to=\"$to\"";
         }
@@ -217,9 +218,9 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
             $out .= " type='$type'";
         }
         if ($show == 'available' and !$status) {
-            $out .= "/>";
+            $out .= '/>';
         } else {
-            $out .= ">";
+            $out .= '>';
             if ($show != 'available') {
                 $out .= "<show>$show</show>";
             }
@@ -229,7 +230,7 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
             if ($priority) {
                 $out .= "<priority>$priority</priority>";
             }
-            $out .= "</presence>";
+            $out .= '</presence>';
         }
 
         $this->send($out);
@@ -243,7 +244,7 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
     public function subscribe($jid)
     {
         $this->send("<presence type='subscribe' to='{$jid}' from='{$this->fulljid}' />");
-        #$this->send("<presence type='subscribed' to='{$jid}' from='{$this->fulljid}' />");
+        //$this->send("<presence type='subscribed' to='{$jid}' from='{$this->fulljid}' />");
     }
 
     /**
@@ -309,9 +310,9 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
             $this->addIdHandler($id, 'resource_bind_handler');
             $this->send("<iq xmlns=\"jabber:client\" type=\"set\" id=\"$id\"><bind xmlns=\"urn:ietf:params:xml:ns:xmpp-bind\"><resource>{$this->resource}</resource></bind></iq>");
         } else {
-            $this->log->log("Attempting Auth...");
+            $this->log->log('Attempting Auth...');
             if ($this->password) {
-                $this->send("<auth xmlns='urn:ietf:params:xml:ns:xmpp-sasl' mechanism='PLAIN'>" . base64_encode("\x00" . $this->user . "\x00" . $this->password) . "</auth>");
+                $this->send("<auth xmlns='urn:ietf:params:xml:ns:xmpp-sasl' mechanism='PLAIN'>" . base64_encode("\x00" . $this->user . "\x00" . $this->password) . '</auth>');
             } else {
                 $this->send("<auth xmlns='urn:ietf:params:xml:ns:xmpp-sasl' mechanism='ANONYMOUS'/>");
             }
@@ -325,7 +326,7 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
      */
     protected function sasl_success_handler($xml)
     {
-        $this->log->log("Auth success!");
+        $this->log->log('Auth success!');
         $this->authed = true;
         $this->reset();
     }
@@ -337,7 +338,7 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
      */
     protected function sasl_failure_handler($xml)
     {
-        $this->log->log("Auth failed!", XMPPHP_Log::LEVEL_ERROR);
+        $this->log->log('Auth failed!', XMPPHP_Log::LEVEL_ERROR);
         $this->disconnect();
 
         throw new XMPPHP_Exception('Auth failed!');
@@ -351,7 +352,7 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
     protected function resource_bind_handler($xml)
     {
         if ($xml->attrs['type'] == 'result') {
-            $this->log->log("Bound to " . $xml->sub('bind')->sub('jid')->data);
+            $this->log->log('Bound to ' . $xml->sub('bind')->sub('jid')->data);
             $this->fulljid = $xml->sub('bind')->sub('jid')->data;
             $jidarray = explode('/', $this->fulljid);
             $this->jid = $jidarray[0];
@@ -379,10 +380,10 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
      */
     protected function roster_iq_handler($xml)
     {
-        $status = "result";
+        $status = 'result';
         $xmlroster = $xml->sub('query');
         foreach ($xmlroster->subs as $item) {
-            $groups = [];
+            $groups = array();
             if ($item->name == 'item') {
                 $jid = $item->attrs['jid']; //REQUIRED
                 $name = $item->attrs['name']; //MAY
@@ -392,12 +393,12 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
                         $groups[] = $subitem->data;
                     }
                 }
-                $contacts[] = [$jid, $subscription, $name, $groups]; //Store for action if no errors happen
+                $contacts[] = array($jid, $subscription, $name, $groups); //Store for action if no errors happen
             } else {
-                $status = "error";
+                $status = 'error';
             }
         }
-        if ($status == "result") { //No errors, add contacts
+        if ($status == 'result') { //No errors, add contacts
             foreach ($contacts as $contact) {
                 $this->roster->addContact($contact[0], $contact[1], $contact[2], $contact[3]);
             }
@@ -414,7 +415,7 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
      */
     protected function session_start_handler($xml)
     {
-        $this->log->log("Session started");
+        $this->log->log('Session started');
         $this->session_started = true;
         $this->event('session_start');
     }
@@ -426,7 +427,7 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
      */
     protected function tls_proceed_handler($xml)
     {
-        $this->log->log("Starting TLS encryption");
+        $this->log->log('Starting TLS encryption');
         stream_socket_enable_crypto($this->socket, true, STREAM_CRYPTO_METHOD_SSLv23_CLIENT);
         $this->reset();
     }
@@ -434,6 +435,7 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
     /**
      * Retrieves the vcard
      *
+     * @param null|mixed $jid
      */
     public function getVCard($jid = null)
     {
@@ -453,12 +455,12 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream
      */
     protected function vcard_get_handler($xml)
     {
-        $vcard_array = [];
+        $vcard_array = array();
         $vcard = $xml->sub('vcard');
         // go through all of the sub elements and add them to the vcard array
         foreach ($vcard->subs as $sub) {
             if ($sub->subs) {
-                $vcard_array[$sub->name] = [];
+                $vcard_array[$sub->name] = array();
                 foreach ($sub->subs as $sub_child) {
                     $vcard_array[$sub->name][$sub_child->name] = $sub_child->data;
                 }

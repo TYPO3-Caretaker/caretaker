@@ -43,18 +43,15 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  *
  * @author     Thorben Kapp <thorben.kapp@kapp-hamburg.de>
  *
- * @package    TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_Utility
 {
-
-    private $nodeTypeTables = [
+    private $nodeTypeTables = array(
         'instance' => 'tx_caretaker_instance',
         'instancegroup' => 'tx_caretaker_instancegroup',
         'testgroup' => 'tx_caretaker_testgroup',
         'test' => 'tx_caretaker_test',
-    ];
+    );
 
     public function getModuleUrl()
     {
@@ -66,48 +63,48 @@ class tx_caretaker_Utility
         switch ($requestParameters['mode']) {
             case 'add':
                 $storagePid = $requestParameters['storagePid'];
-                $defaultValues = [];
+                $defaultValues = array();
                 switch ($requestParameters['type']) {
                     case 'instance':
                         if ($requestParameters['parent'] != 'root') {
-                            $defaultValues = [$table => ['instancegroup' => $requestParameters['parent']]];
+                            $defaultValues = array($table => array('instancegroup' => $requestParameters['parent']));
                         }
                         break;
                     case 'instancegroup':
                         if ($requestParameters['parent'] != 'root') {
-                            $defaultValues = [$table => ['parent_group' => $requestParameters['parent']]];
+                            $defaultValues = array($table => array('parent_group' => $requestParameters['parent']));
                         }
                         break;
                     case 'testgroup':
                         if ($requestParameters['isInInstance'] == 1) {
-                            $defaultValues = [$table => ['instances' => $requestParameters['parent']]];
+                            $defaultValues = array($table => array('instances' => $requestParameters['parent']));
                         } else {
-                            $defaultValues = [$table => ['parent_group' => $requestParameters['parent']]];
+                            $defaultValues = array($table => array('parent_group' => $requestParameters['parent']));
                         }
                         break;
                     case 'test':
                         if ($requestParameters['isInInstance'] == 1) {
-                            $defaultValues = [$table => ['instances' => $requestParameters['parent']]];
+                            $defaultValues = array($table => array('instances' => $requestParameters['parent']));
                         } else {
-                            $defaultValues = [$table => ['groups' => $requestParameters['parent']]];
+                            $defaultValues = array($table => array('groups' => $requestParameters['parent']));
                         }
-                        breaK;
+                        break;
                 }
                 if (VersionNumberUtility::convertVersionNumberToInteger(
                         VersionNumberUtility::getNumericTypo3Version()
                     ) < VersionNumberUtility::convertVersionNumberToInteger('7.0.0')
                 ) {
                     $moduleUrl = 'alt_doc.php?edit[' . $table . '][' . (int)$storagePid . ']=new&' . http_build_query(
-                            ['defVals' => $defaultValues]
+                            array('defVals' => $defaultValues)
                         );
                 } else {
                     $moduleUrl = BackendUtility::getModuleUrl(
                         'record_edit',
-                        [
-                            'edit' => [$table => [$storagePid => 'new']],
+                        array(
+                            'edit' => array($table => array($storagePid => 'new')),
                             'defVals' => $defaultValues,
                             'returnUrl' => $requestParameters['returnUrl'],
-                        ]
+                        )
                     );
                 }
                 break;
@@ -120,10 +117,10 @@ class tx_caretaker_Utility
                 } else {
                     $moduleUrl = BackendUtility::getModuleUrl(
                         'record_edit',
-                        [
-                            'edit' => [$table => [$node => 'edit']],
+                        array(
+                            'edit' => array($table => array($node => 'edit')),
                             'returnUrl' => $requestParameters['returnUrl'],
-                        ]
+                        )
                     );
                 }
                 break;
@@ -139,12 +136,12 @@ class tx_caretaker_Utility
                 ) {
                     $moduleUrl = BackendUtility::getAjaxUrl(
                         'DataHandler::process',
-                        ['data' => [$table => [$node => ['hidden' => 1]]]]
+                        array('data' => array($table => array($node => array('hidden' => 1))))
                     );
                 } else {
                     $moduleUrl = BackendUtility::getAjaxUrl(
                         'record_process',
-                        ['data' => [$table => [$node => ['hidden' => 1]]]]
+                        array('data' => array($table => array($node => array('hidden' => 1))))
                     );
                 }
                 break;
@@ -161,12 +158,12 @@ class tx_caretaker_Utility
                 ) {
                     $moduleUrl = BackendUtility::getAjaxUrl(
                         'DataHandler::process',
-                        ['data' => [$table => [$node => ['hidden' => 0]]]]
+                        array('data' => array($table => array($node => array('hidden' => 0))))
                     );
                 } else {
                     $moduleUrl = BackendUtility::getAjaxUrl(
                         'record_process',
-                        ['data' => [$table => [$node => ['hidden' => 0]]]]
+                        array('data' => array($table => array($node => array('hidden' => 0))))
                     );
                     break;
                 }

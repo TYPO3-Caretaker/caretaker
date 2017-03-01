@@ -42,12 +42,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
 {
-
     /**
      * Constructor
      */
@@ -65,17 +62,17 @@ class tx_caretaker_Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
         $this->cli_help['examples'] = '../cli_dispatch.phpsh caretaker update --root';
         $this->cli_help['author'] = 'Martin Ficzel, (c) 2008-2010';
 
-        $this->cli_options[] = ['--root', 'update all beginning with Root Node'];
-        $this->cli_options[] = ['-R', 'Same as --root'];
+        $this->cli_options[] = array('--root', 'update all beginning with Root Node');
+        $this->cli_options[] = array('-R', 'Same as --root');
 
-        $this->cli_options[] = ['--node', 'update all beginning with this NodeID'];
-        $this->cli_options[] = ['-N', 'Same as --node'];
+        $this->cli_options[] = array('--node', 'update all beginning with this NodeID');
+        $this->cli_options[] = array('-N', 'Same as --node');
 
-        $this->cli_options[] = ['-f', 'force Refresh of testResults'];
-        $this->cli_options[] = ['-r', 'Return status code'];
+        $this->cli_options[] = array('-f', 'force Refresh of testResults');
+        $this->cli_options[] = array('-r', 'Return status code');
 
-        $this->cli_options[] = ['--options', 'Generic options for running tests, e.g. "timeout=10 reporting=off"'];
-        $this->cli_options[] = ['-o', 'Same as --options'];
+        $this->cli_options[] = array('--options', 'Generic options for running tests, e.g. "timeout=10 reporting=off"');
+        $this->cli_options[] = array('-o', 'Same as --options');
     }
 
     /**
@@ -92,17 +89,17 @@ class tx_caretaker_Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
         }
 
         if ($task == 'update' || $task == 'get' || $task == 'ack' || $task == 'due') {
-            $force = (boolean)$this->readArgument('--force', '-f');
-            $return_status = (boolean)$this->readArgument('-r');
-            $options = ['forceUpdate' => $force];
+            $force = (bool)$this->readArgument('--force', '-f');
+            $return_status = (bool)$this->readArgument('-r');
+            $options = array('forceUpdate' => $force);
             $options = array_merge($options, $this->parseOptions($this->readArgument('--options', '-o')));
             $node = false;
 
             $node_repository = tx_caretaker_NodeRepository::getInstance();
             $nodeId = $this->readArgument('--node', '-N');
-            if ((boolean)$this->readArgument('--root', '-R')) {
+            if ((bool)$this->readArgument('--root', '-R')) {
                 $node = $node_repository->getRootNode();
-            } else if ($nodeId) {
+            } elseif ($nodeId) {
                 $node = $node_repository->id2node($nodeId);
             }
 
@@ -123,9 +120,9 @@ class tx_caretaker_Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
                     if ($lockIsAquired) {
                         if ($task == 'update') {
                             $result = $node->updateTestResult($options);
-                        } else if ($task == 'ack' && is_a($node, 'tx_caretaker_TestNode')) {
+                        } elseif ($task == 'ack' && is_a($node, 'tx_caretaker_TestNode')) {
                             $result = $node->setModeAck();
-                        } else if ($task == 'due' && is_a($node, 'tx_caretaker_TestNode')) {
+                        } elseif ($task == 'due' && is_a($node, 'tx_caretaker_TestNode')) {
                             $result = $node->setModeDue();
                         }
                         $lockObj->release();
@@ -150,15 +147,12 @@ class tx_caretaker_Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
                 }
 
                 if ($return_status) {
-                    exit ((int)$result->getState());
-                } else {
-                    exit;
+                    exit((int)$result->getState());
                 }
-
-            } else {
-                $this->cli_echo('Node not found or inactive' . chr(10));
                 exit;
             }
+            $this->cli_echo('Node not found or inactive' . chr(10));
+            exit;
         } elseif ($task == 'update-typo3-latest-version-list') {
             $result = tx_caretaker_LatestVersionsHelper::updateLatestTypo3VersionRegistry();
             $this->cli_echo('TYPO3 latest version list update result: ' . $result . chr(10));
@@ -187,14 +181,12 @@ class tx_caretaker_Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
         if ($name && isset($this->cli_args[$name])) {
             if ($this->cli_args[$name][0]) {
                 return $this->cli_args[$name][0];
-            } else {
-                return true;
             }
-        } else if ($alt_name) {
+            return true;
+        } elseif ($alt_name) {
             return $this->readArgument($alt_name);
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -207,7 +199,7 @@ class tx_caretaker_Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
      */
     protected function parseOptions($optionsString)
     {
-        $options = [];
+        $options = array();
         $optionParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $optionsString);
         foreach ($optionParts as $optionPart) {
             list($optionKey, $optionValue) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $optionPart, 2);
@@ -216,7 +208,6 @@ class tx_caretaker_Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
 
         return $options;
     }
-
 }
 
 // Call the functionality

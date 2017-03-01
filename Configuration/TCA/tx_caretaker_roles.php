@@ -1,7 +1,7 @@
 <?php
 
-$GLOBALS['TCA']['tx_caretaker_roles'] = [
-    'ctrl' => [
+$GLOBALS['TCA']['tx_caretaker_roles'] = array(
+    'ctrl' => array(
         'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles',
         'label' => 'name',
         'tstamp' => 'tstamp',
@@ -10,52 +10,52 @@ $GLOBALS['TCA']['tx_caretaker_roles'] = [
         'default_sortby' => 'ORDER BY name',
         'delete' => 'deleted',
         'rootLevel' => -1,
-        'enablecolumns' => [
+        'enablecolumns' => array(
             'disabled' => 'hidden',
-        ],
+        ),
         'iconfile' => 'EXT:caretaker/res/icons/role.png',
         'searchFields' => 'name, description',
-    ],
-    'interface' => [
+    ),
+    'interface' => array(
         'showRecordFieldList' => 'hidden,id,name',
-    ],
-    'columns' => [
-        'hidden' => [
+    ),
+    'columns' => array(
+        'hidden' => array(
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
-            'config' => [
+            'config' => array(
                 'type' => 'check',
                 'default' => '0',
-            ],
-        ],
-        'id' => [
+            ),
+        ),
+        'id' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles.id',
-            'config' => [
+            'config' => array(
                 'type' => 'input',
                 'size' => '30',
                 'eval' => 'unique,trim',
-            ],
-        ],
-        'name' => [
+            ),
+        ),
+        'name' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles.name',
-            'config' => [
+            'config' => array(
                 'type' => 'input',
                 'size' => '30',
                 'eval' => 'unique,trim',
-            ],
-        ],
-        'description' => [
+            ),
+        ),
+        'description' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles.description',
-            'config' => [
+            'config' => array(
                 'type' => 'text',
                 'cols' => '50',
                 'rows' => '5',
-            ],
-        ],
-    ],
-    'types' => [
-        '0' => ['showitem' => 'id;;;;1-1-1, name, description'],
-    ],
-    'palettes' => [
-        '1' => ['showitem' => 'hidden'],
-    ],
-];
+            ),
+        ),
+    ),
+    'types' => array(
+        '0' => array('showitem' => 'id;;;;1-1-1, name, description'),
+    ),
+    'palettes' => array(
+        '1' => array('showitem' => 'hidden'),
+    ),
+);

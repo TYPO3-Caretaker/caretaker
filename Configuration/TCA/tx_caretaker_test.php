@@ -1,7 +1,7 @@
 <?php
 
-$GLOBALS['TCA']['tx_caretaker_test'] = [
-    'ctrl' => [
+$GLOBALS['TCA']['tx_caretaker_test'] = array(
+    'ctrl' => array(
         'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test',
         'label' => 'title',
         'tstamp' => 'tstamp',
@@ -12,232 +12,232 @@ $GLOBALS['TCA']['tx_caretaker_test'] = [
         'rootLevel' => -1,
         'requestUpdate' => 'test_service',
         'dividers2tabs' => 1,
-        'enablecolumns' => [
+        'enablecolumns' => array(
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime',
             'fe_group' => 'fe_group',
-        ],
+        ),
         'iconfile' => 'EXT:caretaker/res/icons/test.png',
         'searchFields' => 'title, description',
-    ],
-    'interface' => [
+    ),
+    'interface' => array(
         'showRecordFieldList' => 'hidden,starttime,endtime,fe_group,title,description,test_interval,test_interval_start_hour,test_interval_stop_hour,test_service,test_conf,test_retry,test_due,roles,groups,instances',
-    ],
-    'columns' => [
-        'hidden' => [
+    ),
+    'columns' => array(
+        'hidden' => array(
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
-            'config' => [
+            'config' => array(
                 'type' => 'check',
                 'default' => '0',
-            ],
-        ],
-        'starttime' => [
+            ),
+        ),
+        'starttime' => array(
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
-            'config' => [
+            'config' => array(
                 'type' => 'input',
                 'size' => '8',
                 'max' => '20',
                 'eval' => 'date',
                 'default' => '0',
                 'checkbox' => '0',
-            ],
-        ],
-        'endtime' => [
+            ),
+        ),
+        'endtime' => array(
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
-            'config' => [
+            'config' => array(
                 'type' => 'input',
                 'size' => '8',
                 'max' => '20',
                 'eval' => 'date',
                 'checkbox' => '0',
                 'default' => '0',
-                'range' => [
+                'range' => array(
                     'upper' => mktime(0, 0, 0, 12, 31, 2020),
                     'lower' => mktime(0, 0, 0, date('m') - 1, date('d'), date('Y')),
-                ],
-            ],
-        ],
-        'fe_group' => [
+                ),
+            ),
+        ),
+        'fe_group' => array(
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.fe_group',
-            'config' => [
+            'config' => array(
                 'type' => 'select',
-                'items' => [
-                    ['', 0],
-                    ['LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login', -1],
-                    ['LLL:EXT:lang/locallang_general.xml:LGL.any_login', -2],
-                    ['LLL:EXT:lang/locallang_general.xml:LGL.usergroups', '--div--'],
-                ],
+                'items' => array(
+                    array('', 0),
+                    array('LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login', -1),
+                    array('LLL:EXT:lang/locallang_general.xml:LGL.any_login', -2),
+                    array('LLL:EXT:lang/locallang_general.xml:LGL.usergroups', '--div--'),
+                ),
                 'foreign_table' => 'fe_groups',
-            ],
-        ],
-        'title' => [
+            ),
+        ),
+        'title' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.title',
-            'config' => [
+            'config' => array(
                 'type' => 'input',
                 'size' => '30',
                 'eval' => 'trim',
-            ],
-        ],
-        'description' => [
+            ),
+        ),
+        'description' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.description',
-            'config' => [
+            'config' => array(
                 'type' => 'text',
                 'cols' => '50',
                 'rows' => '5',
-            ],
+            ),
             'defaultExtras' => 'richtext',
-        ],
-        'test_interval' => [
+        ),
+        'test_interval' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_interval',
-            'config' => [
+            'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => [
-                    ['always', 0],
-                    ['1 Minute', 60],
-                    ['5 Minutes', 300],
-                    ['10 Minutes', 600],
-                    ['15 Minutes', 900],
-                    ['20 Minutes', 1200],
-                    ['30 Minutes', 1800],
-                    ['45 Minutes', 2700],
-                    ['1 Hour', 3600],
-                    ['2 Hours', 7200],
-                    ['4 Hours', 14400],
-                    ['8 Hours', 28800],
-                    ['10 Hours', 36000],
-                    ['12 Hours', 43200],
-                    ['1 Day', 86400],
-                    ['2 Days', 172800],
-                    ['3 Days', 259200],
-                    ['4 Days', 345600],
-                    ['5 Days', 432000],
-                    ['6 Days', 518400],
-                    ['1 Week', 604800],
-                    ['2 Weeks', 1209600],
-                    ['4 Weeks', 2419200],
-                ],
+                'items' => array(
+                    array('always', 0),
+                    array('1 Minute', 60),
+                    array('5 Minutes', 300),
+                    array('10 Minutes', 600),
+                    array('15 Minutes', 900),
+                    array('20 Minutes', 1200),
+                    array('30 Minutes', 1800),
+                    array('45 Minutes', 2700),
+                    array('1 Hour', 3600),
+                    array('2 Hours', 7200),
+                    array('4 Hours', 14400),
+                    array('8 Hours', 28800),
+                    array('10 Hours', 36000),
+                    array('12 Hours', 43200),
+                    array('1 Day', 86400),
+                    array('2 Days', 172800),
+                    array('3 Days', 259200),
+                    array('4 Days', 345600),
+                    array('5 Days', 432000),
+                    array('6 Days', 518400),
+                    array('1 Week', 604800),
+                    array('2 Weeks', 1209600),
+                    array('4 Weeks', 2419200),
+                ),
                 'default' => 0,
-            ],
-        ],
-        'test_interval_start_hour' => [
+            ),
+        ),
+        'test_interval_start_hour' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_interval_start_hour',
-            'config' => [
+            'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => [
-                    ['', 0],
-                    [1, 1],
-                    [2, 2],
-                    [3, 3],
-                    [4, 4],
-                    [5, 5],
-                    [6, 6],
-                    [7, 7],
-                    [8, 8],
-                    [9, 9],
-                    [10, 10],
-                    [11, 11],
-                    [12, 12],
-                    [13, 13],
-                    [14, 14],
-                    [15, 15],
-                    [16, 16],
-                    [17, 17],
-                    [18, 18],
-                    [19, 19],
-                    [20, 20],
-                    [21, 21],
-                    [22, 22],
-                    [23, 23],
-                    [24, 24],
-                ],
-            ],
-        ],
-        'test_interval_stop_hour' => [
+                'items' => array(
+                    array('', 0),
+                    array(1, 1),
+                    array(2, 2),
+                    array(3, 3),
+                    array(4, 4),
+                    array(5, 5),
+                    array(6, 6),
+                    array(7, 7),
+                    array(8, 8),
+                    array(9, 9),
+                    array(10, 10),
+                    array(11, 11),
+                    array(12, 12),
+                    array(13, 13),
+                    array(14, 14),
+                    array(15, 15),
+                    array(16, 16),
+                    array(17, 17),
+                    array(18, 18),
+                    array(19, 19),
+                    array(20, 20),
+                    array(21, 21),
+                    array(22, 22),
+                    array(23, 23),
+                    array(24, 24),
+                ),
+            ),
+        ),
+        'test_interval_stop_hour' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_interval_stop_hour',
-            'config' => [
+            'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => [
-                    ['', 0],
-                    [1, 1],
-                    [2, 2],
-                    [3, 3],
-                    [4, 4],
-                    [5, 5],
-                    [6, 6],
-                    [7, 7],
-                    [8, 8],
-                    [9, 9],
-                    [10, 10],
-                    [11, 11],
-                    [12, 12],
-                    [13, 13],
-                    [14, 14],
-                    [15, 15],
-                    [16, 16],
-                    [17, 17],
-                    [18, 18],
-                    [19, 19],
-                    [20, 20],
-                    [21, 21],
-                    [22, 22],
-                    [23, 23],
-                    [24, 24],
-                ],
-            ],
-        ],
-        'test_service' => [
+                'items' => array(
+                    array('', 0),
+                    array(1, 1),
+                    array(2, 2),
+                    array(3, 3),
+                    array(4, 4),
+                    array(5, 5),
+                    array(6, 6),
+                    array(7, 7),
+                    array(8, 8),
+                    array(9, 9),
+                    array(10, 10),
+                    array(11, 11),
+                    array(12, 12),
+                    array(13, 13),
+                    array(14, 14),
+                    array(15, 15),
+                    array(16, 16),
+                    array(17, 17),
+                    array(18, 18),
+                    array(19, 19),
+                    array(20, 20),
+                    array(21, 21),
+                    array(22, 22),
+                    array(23, 23),
+                    array(24, 24),
+                ),
+            ),
+        ),
+        'test_service' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service',
-            'config' => [
+            'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => array_merge(
-                    [0 => ['LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service.select_service', '']],
+                    array(0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service.select_service', '')),
                     \tx_caretaker_ServiceHelper::getTcaTestServiceItems()
                 ),
                 'size' => 1,
                 'maxitems' => 1,
-            ],
-        ],
-        'test_conf' => [
+            ),
+        ),
+        'test_conf' => array(
             'displayCond' => 'FIELD:test_service:REQ:true',
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_conf',
-            'config' => [
+            'config' => array(
                 'type' => 'flex',
                 'ds_pointerField' => 'test_service',
                 'ds' => \tx_caretaker_ServiceHelper::getTcaTestConfigDs(),
-            ],
-        ],
-        'test_retry' => [
+            ),
+        ),
+        'test_retry' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry',
-            'config' => [
+            'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => [
-                    0 => ['LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_0', 0],
-                    2 => ['LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_1', 1],
-                    3 => ['LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_2', 2],
-                    4 => ['LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_3', 3],
-                    5 => ['LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_4', 4],
-                    6 => ['LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_5', 5],
-                ],
+                'items' => array(
+                    0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_0', 0),
+                    2 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_1', 1),
+                    3 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_2', 2),
+                    4 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_3', 3),
+                    5 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_4', 4),
+                    6 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_retry_5', 5),
+                ),
                 'size' => 1,
                 'maxitems' => 1,
                 'default' => 0,
-            ],
-        ],
-        'test_due' => [
+            ),
+        ),
+        'test_due' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_due',
-            'config' => [
+            'config' => array(
                 'type' => 'check',
-            ],
-        ],
-        'roles' => [
+            ),
+        ),
+        'roles' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.roles',
-            'config' => [
+            'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_caretaker_roles',
@@ -246,11 +246,11 @@ $GLOBALS['TCA']['tx_caretaker_test'] = [
                 'minitems' => 0,
                 'maxitems' => 100,
                 'MM' => 'tx_caretaker_test_roles_mm',
-            ],
-        ],
-        'groups' => [
+            ),
+        ),
+        'groups' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.groups',
-            'config' => [
+            'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_caretaker_testgroup',
@@ -259,11 +259,11 @@ $GLOBALS['TCA']['tx_caretaker_test'] = [
                 'minitems' => 0,
                 'maxitems' => 50,
                 'MM' => 'tx_caretaker_testgroup_test_mm',
-            ],
-        ],
-        'instances' => [
+            ),
+        ),
+        'instances' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.instances',
-            'config' => [
+            'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_caretaker_instance',
@@ -272,20 +272,20 @@ $GLOBALS['TCA']['tx_caretaker_test'] = [
                 'minitems' => 0,
                 'maxitems' => 10000,
                 'MM' => 'tx_caretaker_instance_test_mm',
-            ],
-        ],
-    ],
-    'types' => [
-        '0' => [
+            ),
+        ),
+    ),
+    'types' => array(
+        '0' => array(
             'showitem' => 'test_service;;;;1-1-1, hidden;;1;;2-2-2, title,test_interval;;2,test_retry, test_due, test_conf;;;;4-4-4,
 					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.description, description,
 					--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.tab.notifications, roles,
 					--palette--;Groups and Instances; 3',
-        ],
-    ],
-    'palettes' => [
-        '1' => ['showitem' => 'starttime,endtime,fe_group'],
-        '2' => ['showitem' => 'test_interval_start_hour,test_interval_stop_hour'],
-        '3' => ['showitem' => 'groups,instances', 'isHiddenPalette' => true],
-    ],
-];
+        ),
+    ),
+    'palettes' => array(
+        '1' => array('showitem' => 'starttime,endtime,fe_group'),
+        '2' => array('showitem' => 'test_interval_start_hour,test_interval_stop_hour'),
+        '3' => array('showitem' => 'groups,instances', 'isHiddenPalette' => true),
+    ),
+);

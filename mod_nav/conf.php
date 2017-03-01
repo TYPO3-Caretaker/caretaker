@@ -33,7 +33,6 @@
  *
  * $Id$
  */
-
 $MCONF['name'] = 'txcaretakerNav';
 $MCONF['access'] = 'user,group';
 $MCONF['default']['tabs_images']['tab'] = 'moduleicon.png';

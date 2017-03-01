@@ -39,20 +39,20 @@
  */
 class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 {
-    var $pageinfo;
+    public $pageinfo;
 
-    var $node_repository;
+    public $node_repository;
 
-    var $instance_repository;
+    public $instance_repository;
 
     /**
      * @var \TYPO3\CMS\Core\Page\PageRenderer
      */
-    var $pageRenderer;
+    public $pageRenderer;
 
     public function __construct()
     {
-        $GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
+        $GLOBALS['LANG']->includeLLFile('EXT:caretaker/mod_nav/locallang.xml');
     }
 
     /**
@@ -60,7 +60,7 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @return    void
      */
-    function init()
+    public function init()
     {
         global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 
@@ -71,15 +71,15 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * Main function of the module. Write the content to $this->content
      * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
      */
-    function main()
+    public function main()
     {
         global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 
         $PATH_TYPO3 = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
 
-        if ($BE_USER->user["admin"]) {
+        if ($BE_USER->user['admin']) {
             // Draw the header.
-            $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Backend\\Template\\DocumentTemplate");
+            $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
             $this->doc->backPath = $BACK_PATH;
 
             $this->pageRenderer = $this->doc->getPageRenderer();
@@ -122,7 +122,7 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 			});
 			');
 
-            $this->content .= $this->doc->startPage($LANG->getLL("title"));
+            $this->content .= $this->doc->startPage($LANG->getLL('title'));
             $this->doc->form = '';
         } else {
             // If no access or if not admin
@@ -130,8 +130,8 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Template\MediumDocumentTemplate');
             $this->doc->backPath = $BACK_PATH;
 
-            $this->content .= $this->doc->startPage($LANG->getLL("title"));
-            $this->content .= $this->doc->header($LANG->getLL("title"));
+            $this->content .= $this->doc->startPage($LANG->getLL('title'));
+            $this->content .= $this->doc->header($LANG->getLL('title'));
             $this->content .= $this->doc->spacer(5);
             $this->content .= $this->doc->spacer(10);
         }
@@ -142,7 +142,7 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @return    void
      */
-    function printContent()
+    public function printContent()
     {
         $this->content .= $this->doc->endPage();
         echo $this->content;

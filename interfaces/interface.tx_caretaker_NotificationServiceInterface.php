@@ -42,12 +42,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 interface tx_caretaker_NotificationServiceInterface
 {
-
     /**
      * @param int $id
      */
@@ -56,7 +53,7 @@ interface tx_caretaker_NotificationServiceInterface
     /**
      * Check weather the notificationService is enabled
      *
-     * @return boolean
+     * @return bool
      */
     public function isEnabled();
 
@@ -74,5 +71,4 @@ interface tx_caretaker_NotificationServiceInterface
      * Send the aggregated Notifications
      */
     public function sendNotifications();
-
 }

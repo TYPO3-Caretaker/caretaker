@@ -39,17 +39,16 @@
  */
 class tx_caretaker_pi_overview extends tx_caretaker_pibase
 {
+    public $prefixId = 'tx_caretaker_pi_overview';        // Same as class name
 
-    var $prefixId = 'tx_caretaker_pi_overview';        // Same as class name
+    public $scriptRelPath = 'pi_overview/class.tx_caretaker_pi_overview.php';    // Path to this script relative to the extension dir.
 
-    var $scriptRelPath = 'pi_overview/class.tx_caretaker_pi_overview.php';    // Path to this script relative to the extension dir.
-
-    var $extKey = 'caretaker';    // The extension key.
+    public $extKey = 'caretaker';    // The extension key.
 
     /**
      * @return string
      */
-    function getContent()
+    public function getContent()
     {
         $nodes = $this->getNodes();
         if (count($nodes) > 0) {
@@ -59,15 +58,14 @@ class tx_caretaker_pi_overview extends tx_caretaker_pibase
             }
 
             return $content;
-        } else {
-            return 'no node ids found';
         }
+        return 'no node ids found';
     }
 
     /**
      * @return array
      */
-    function getNodes()
+    public function getNodes()
     {
         $this->pi_initPIflexForm();
         $node_ids = $this->pi_getFFValue($this->cObj->data['pi_flexform'], 'node_ids');
@@ -76,7 +74,7 @@ class tx_caretaker_pi_overview extends tx_caretaker_pibase
             $node_ids = $this->conf['node_ids'];
         }
 
-        $nodes = [];
+        $nodes = array();
         $ids = explode(chr(10), $node_ids);
 
         $node_repository = tx_caretaker_NodeRepository::getInstance();

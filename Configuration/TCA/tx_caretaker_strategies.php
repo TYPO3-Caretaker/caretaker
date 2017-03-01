@@ -4,8 +4,8 @@ $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretake
 $advancedNotificationsEnabled = $extConfig['notifications.']['advanced.']['enabled'] == '1';
 
 if ($advancedNotificationsEnabled) {
-    $GLOBALS['TCA']['tx_caretaker_strategies'] = [
-        'ctrl' => [
+    $GLOBALS['TCA']['tx_caretaker_strategies'] = array(
+        'ctrl' => array(
             'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies',
             'label' => 'name',
             'tstamp' => 'tstamp',
@@ -14,53 +14,53 @@ if ($advancedNotificationsEnabled) {
             'default_sortby' => 'ORDER BY name',
             'delete' => 'deleted',
             'rootLevel' => -1,
-            'enablecolumns' => [
+            'enablecolumns' => array(
                 'disabled' => 'hidden',
-            ],
+            ),
             'iconfile' => 'EXT:caretaker/res/icons/strategy.png',
             'searchFields' => 'name, description',
-        ],
-        'interface' => [
+        ),
+        'interface' => array(
             'showRecordFieldList' => 'hidden,id,name',
-        ],
-        'columns' => [
-            'hidden' => [
+        ),
+        'columns' => array(
+            'hidden' => array(
                 'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
-                'config' => [
+                'config' => array(
                     'type' => 'check',
                     'default' => '0',
-                ],
-            ],
-            'name' => [
+                ),
+            ),
+            'name' => array(
                 'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies.name',
-                'config' => [
+                'config' => array(
                     'type' => 'input',
                     'size' => '30',
                     'eval' => 'unique,trim',
-                ],
-            ],
-            'description' => [
+                ),
+            ),
+            'description' => array(
                 'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies.description',
-                'config' => [
+                'config' => array(
                     'type' => 'text',
                     'cols' => '50',
                     'rows' => '5',
-                ],
-            ],
-            'config' => [
+                ),
+            ),
+            'config' => array(
                 'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies.config',
-                'config' => [
+                'config' => array(
                     'type' => 'text',
                     'cols' => 50,
                     'rows' => 50,
-                ],
-            ],
-        ],
-        'types' => [
-            '0' => ['showitem' => 'hidden;;;;1-1-1, id;;;;1-1-1, name, description, config'],
-        ],
-        'palettes' => [
-            '1' => [],
-        ],
-    ];
+                ),
+            ),
+        ),
+        'types' => array(
+            '0' => array('showitem' => 'hidden;;;;1-1-1, id;;;;1-1-1, name, description, config'),
+        ),
+        'palettes' => array(
+            '1' => array(),
+        ),
+    );
 }

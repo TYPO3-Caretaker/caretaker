@@ -43,12 +43,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractService
 {
-
     /**
      * Run a test service for the given test node
      *
@@ -68,9 +65,8 @@ class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractSer
             $node->notify('cachedTestResult', $latestTestResult);
 
             return $latestTestResult;
-        } else {
-            return $this->executeTestServiceRun($testService, $node, $latestTestResult, $options);
         }
+        return $this->executeTestServiceRun($testService, $node, $latestTestResult, $options);
     }
 
     /**
@@ -78,7 +74,7 @@ class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractSer
      * @param tx_caretaker_TestNode $node
      * @param tx_caretaker_NodeResult $latestTestResult
      * @param array $options
-     * @return boolean
+     * @return bool
      */
     protected function shouldReturnLatestResult($node, $latestTestResult, $options)
     {
@@ -105,7 +101,7 @@ class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractSer
                         // if due mode is 1 than retry
                         if ($node->getTestDue() == 1) {
                             $returnLatestResult = false;
-                        } else if ($latestTestResult->getTimestamp() > (time() - $node->getTestInterval())) {
+                        } elseif ($latestTestResult->getTimestamp() > (time() - $node->getTestInterval())) {
                             $returnLatestResult = true;
                         }
                         break;
@@ -155,7 +151,7 @@ class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractSer
                     }
                     $round++;
                 }
-                $result->addSubMessage(new tx_caretaker_ResultMessage('LLL:EXT:caretaker/locallang_fe.xml:retry_info', ['number' => $round]));
+                $result->addSubMessage(new tx_caretaker_ResultMessage('LLL:EXT:caretaker/locallang_fe.xml:retry_info', array('number' => $round)));
             }
 
             // save to repository after reading the previous result
@@ -166,12 +162,11 @@ class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractSer
             $node->notify('updatedTestResult', $result, $latestTestResult);
 
             return $result;
-        } else {
-            $result = tx_caretaker_TestResult::undefined();
-            $result->addSubMessage(new tx_caretaker_ResultMessage('test service was not executable this time so the cached result is used'));
-            $node->notify('cachedTestResult', $result, $latestTestResult);
-
-            return $latestTestResult;
         }
+        $result = tx_caretaker_TestResult::undefined();
+        $result->addSubMessage(new tx_caretaker_ResultMessage('test service was not executable this time so the cached result is used'));
+        $node->notify('cachedTestResult', $result, $latestTestResult);
+
+        return $latestTestResult;
     }
 }

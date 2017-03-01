@@ -37,20 +37,18 @@ namespace Caretaker\Caretaker\Tests\Unit\Stubs;
  */
 class AggregatorNodeStub extends \tx_caretaker_AggregatorNode
 {
-
     public function getCaretakerNodeId()
     {
-        return "aggregator_node";
+        return 'aggregator_node';
     }
 
     protected function findChildren($show_hidden = false)
     {
-        return [];
+        return array();
     }
 
     public function getAggregatedResult($results)
     {
         return parent::getAggregatedResult($results);
     }
-
 }

@@ -39,12 +39,9 @@
  *
  * @author Felix Oertel <oertel@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_Typo3versionnumbersupdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {
-
     public function execute()
     {
         return tx_caretaker_LatestVersionsHelper::updateLatestTypo3VersionRegistry();

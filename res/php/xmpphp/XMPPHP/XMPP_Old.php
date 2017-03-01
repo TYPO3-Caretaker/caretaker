@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category   xmpphp
- * @package    XMPPHP
  * @author     Nathanael C. Fritz <JID: fritzy@netflint.net>
  * @author     Stephan Wentz <JID: stephan@jabber.wentz.it>
  * @author     Michael Garvin <JID: gar@netflint.net>
@@ -33,7 +32,7 @@
  * The old Jabber protocol wasn't standardized, so use at your own risk.
  *
  */
-require_once "XMPP.php";
+require_once 'XMPP.php';
 
 class XMPPHP_XMPPOld extends XMPPHP_XMPP
 {
@@ -97,7 +96,6 @@ class XMPPHP_XMPPOld extends XMPPHP_XMPP
             $out = "<iq type='set' id='$id'><query xmlns='jabber:iq:auth'><username>{$this->user}</username><password>{$this->password}</password><resource>{$this->resource}</resource></query></iq>";
         }
         $this->send($out);
-
     }
 
     /**
@@ -108,14 +106,11 @@ class XMPPHP_XMPPOld extends XMPPHP_XMPP
     public function oldAuthResultHandler($xml)
     {
         if ($xml->attrs['type'] != 'result') {
-            $this->log->log("Auth failed!", XMPPHP_Log::LEVEL_ERROR);
+            $this->log->log('Auth failed!', XMPPHP_Log::LEVEL_ERROR);
             $this->disconnect();
             throw new XMPPHP_Exception('Auth failed!');
-        } else {
-            $this->log->log("Session started");
-            $this->event('session_start');
         }
+        $this->log->log('Session started');
+        $this->event('session_start');
     }
 }
-
-?>

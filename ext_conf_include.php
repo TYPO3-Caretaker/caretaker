@@ -33,7 +33,6 @@
  *
  * $Id$
  */
-
 if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
@@ -57,39 +56,39 @@ tx_caretaker_ServiceHelper::registerNotificationExitPoint($_EXTKEY, 'Classes/ser
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
     'node-info',
     'caretaker-nodeinfo',
-    ['EXT:caretaker/res/css/tx.caretaker.overview.css'],
-    ['EXT:caretaker/res/js/tx.caretaker.NodeInfo.js'],
+    array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+    array('EXT:caretaker/res/js/tx.caretaker.NodeInfo.js'),
     $_EXTKEY
 );
 
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
     'node-charts',
     'caretaker-nodecharts',
-    ['EXT:caretaker/res/css/tx.caretaker.overview.css'],
-    ['EXT:caretaker/res/js/tx.caretaker.NodeCharts.js'],
+    array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+    array('EXT:caretaker/res/js/tx.caretaker.NodeCharts.js'),
     $_EXTKEY
 );
 
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
     'node-log',
     'caretaker-nodelog',
-    ['EXT:caretaker/res/css/tx.caretaker.overview.css'],
-    ['EXT:caretaker/res/js/tx.caretaker.NodeLog.js'],
+    array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+    array('EXT:caretaker/res/js/tx.caretaker.NodeLog.js'),
     $_EXTKEY
 );
 
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
     'node-contacts',
     'caretaker-nodecontacts',
-    ['EXT:caretaker/res/css/tx.caretaker.overview.css'],
-    ['EXT:caretaker/res/js/tx.caretaker.NodeContacts.js'],
+    array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+    array('EXT:caretaker/res/js/tx.caretaker.NodeContacts.js'),
     $_EXTKEY
 );
 
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
     'node-problems',
     'caretaker-nodeproblems',
-    ['EXT:caretaker/res/css/tx.caretaker.overview.css'],
-    ['EXT:caretaker/res/js/tx.caretaker.NodeProblems.js'],
+    array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+    array('EXT:caretaker/res/js/tx.caretaker.NodeProblems.js'),
     $_EXTKEY
 );

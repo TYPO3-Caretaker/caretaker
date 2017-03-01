@@ -42,25 +42,22 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_ChartRendererBase
 {
-
     /**
      * Array of tx_caretaker_TestResultRanges
      *
      * @var array
      */
-    var $testResultRanges = [];
+    public $testResultRanges = array();
 
     /**
      * Array of strings that represent the titles of each range
      *
      * @var array
      */
-    var $testResultRangeTitles = [];
+    public $testResultRangeTitles = array();
 
     /**
      * Add a new test result range
@@ -79,7 +76,6 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 
         if (!$this->getEndTimestamp() || $this->getEndTimestamp() < $testResultRange->getEndTimestamp()) {
             $this->setEndTimestamp($testResultRange->getEndTimestamp());
-
         }
 
         if (!$this->getMinValue() || $this->getMinValue() > $testResultRange->getMinValue()) {
@@ -111,7 +107,7 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
             $colorRGB = $this->getChartIndexColor($key);
             $colorBg = imagecolorallocatealpha($image, $colorRGB[0], $colorRGB[1], $colorRGB[2], 110);
 
-            $bgPoints = [];
+            $bgPoints = array();
             /** @var tx_caretaker_TestResult $testResult */
             foreach ($testResultRange as $testResult) {
                 $newX = intval($this->transformX($testResult->getTimestamp()));
@@ -157,7 +153,7 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
             $colorRGB = $this->getChartIndexColor($key);
             $color = imagecolorallocate($image, $colorRGB[0], $colorRGB[1], $colorRGB[2]);
 
-            $feLines = [];
+            $feLines = array();
             /** @var tx_caretaker_TestResult $testResult */
             foreach ($testResultRange as $testResult) {
                 $newX = intval($this->transformX($testResult->getTimestamp()));
@@ -165,8 +161,8 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
                 if ($lastX !== null) {
                     imageline($image, $lastX, $lastY, $newX, $lastY, $color);
                     imageline($image, $newX, $lastY, $newX, $newY, $color);
-                    $feLines[] = [$lastX, $lastY, $newX, $lastY];
-                    $feLines[] = [$newX, $lastY, $newX, $newY];
+                    $feLines[] = array($lastX, $lastY, $newX, $lastY);
+                    $feLines[] = array($newX, $lastY, $newX, $newY);
                 }
                 $lastX = $newX;
                 $lastY = $newY;
@@ -205,7 +201,6 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
          * @var tx_caretaker_TestResultRange $testResultRange
          */
         foreach ($this->testResultRanges as $key => $testResultRange) {
-
             $colorRGB = $this->getChartIndexColor($key);
             $color = imagecolorallocate($image, $colorRGB[0], $colorRGB[1], $colorRGB[2]);
 
@@ -222,33 +217,32 @@ class tx_caretaker_MultipleTestResultRangeChartRenderer extends tx_caretaker_Cha
 
             $offset += 18;
         }
-
     }
 
     /**
      * Get a color for the given index of charts
      *
-     * @param integer $index
+     * @param int $index
      * @return array Array with RGB values
      */
     protected function getChartIndexColor($index)
     {
-        $chartColors = [
-            [248, 139, 0],
-            [0, 0, 248],
-            [248, 0, 248],
-            [248, 0, 0],
-            [248, 248, 0],
-            [0, 248, 0],
-            [0, 248, 248],
-            [123, 248, 0],
-            [135, 0, 72],
-            [102, 135, 0],
-        ];
+        $chartColors = array(
+            array(248, 139, 0),
+            array(0, 0, 248),
+            array(248, 0, 248),
+            array(248, 0, 0),
+            array(248, 248, 0),
+            array(0, 248, 0),
+            array(0, 248, 248),
+            array(123, 248, 0),
+            array(135, 0, 72),
+            array(102, 135, 0),
+        );
 
         $colorCount = count($chartColors);
         $colorIndex = ($index + $colorCount) % $colorCount;
 
-        return ($chartColors[$colorIndex]);
+        return $chartColors[$colorIndex];
     }
 }

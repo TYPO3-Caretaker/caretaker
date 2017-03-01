@@ -37,14 +37,9 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  *
  * $Id$
  */
-
-/**
- *
- */
 class NodeResultTest extends UnitTestCase
 {
-
-    function test_TestResult_stores_data()
+    public function test_TestResult_stores_data()
     {
         $result = new \tx_caretaker_TestResult(123, 1, 1.75, 'This is a Message');
 
@@ -55,7 +50,7 @@ class NodeResultTest extends UnitTestCase
         $this->assertEquals($result->getMessage()->getText(), 'This is a Message');
     }
 
-    function test_AggregatorResult_stores_data()
+    public function test_AggregatorResult_stores_data()
     {
         $result = new \tx_caretaker_AggregatorResult(123, 2, 2, 1, 3, 5, 'This is a Message');
 
@@ -68,7 +63,5 @@ class NodeResultTest extends UnitTestCase
         $this->assertEquals($result->getNumOK(), 1);
         $this->assertEquals($result->getNumWARNING(), 3);
         $this->assertEquals($result->getNumERROR(), 5);
-
     }
-
 }

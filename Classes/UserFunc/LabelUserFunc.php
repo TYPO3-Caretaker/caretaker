@@ -1,5 +1,4 @@
 <?php
-
 namespace Caretaker\Caretaker\UserFunc;
 
 class LabelUserFunc
@@ -8,7 +7,7 @@ class LabelUserFunc
     {
         $table = $incomingParameters['table'];
         $row = $incomingParameters['row'];
-        $titleParts = [];
+        $titleParts = array();
 
         switch ($table) {
             case 'tx_caretaker_instance_override':
@@ -33,7 +32,7 @@ class LabelUserFunc
                     }
                     $testRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('title', 'tx_caretaker_test', 'uid=' . (int)$test);
                     $titleParts[] = $testRecord['title'];
-                } else if ($type == 'curl_option') {
+                } elseif ($type == 'curl_option') {
                     $curlOption = $row['curl_option'];
                     if (is_array($curlOption) && count($curlOption) > 0) {
                         $curlOption = array_shift($curlOption);

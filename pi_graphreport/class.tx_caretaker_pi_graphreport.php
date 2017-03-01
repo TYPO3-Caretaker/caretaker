@@ -39,14 +39,13 @@
  */
 class tx_caretaker_pi_graphreport extends tx_caretaker_pibase
 {
+    public $prefixId = 'tx_caretaker_pi_graphreport';        // Same as class name
 
-    var $prefixId = 'tx_caretaker_pi_graphreport';        // Same as class name
+    public $scriptRelPath = 'pi_graphreport/class.tx_caretaker_pi_graphreport.php';    // Path to this script relative to the extension dir.
 
-    var $scriptRelPath = 'pi_graphreport/class.tx_caretaker_pi_graphreport.php';    // Path to this script relative to the extension dir.
+    public $extKey = 'caretaker';    // The extension key.
 
-    var $extKey = 'caretaker';    // The extension key.
-
-    function main($content, $conf)
+    public function main($content, $conf)
     {
         $this->pi_initPIflexForm();
 
@@ -56,7 +55,7 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase
     /**
      * @return string
      */
-    function getContent()
+    public function getContent()
     {
         $template = $this->cObj->cObjGetSingle($this->conf['template'], $this->conf['template.']);
 
@@ -64,7 +63,7 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase
         $data = $this->getData();
         $lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
         $lcObj->start($data);
-        $node_markers = [];
+        $node_markers = array();
         if ($this->conf['markers.']) {
             foreach (array_keys($this->conf['markers.']) as $key) {
                 if (substr($key, -1) != '.') {
@@ -81,17 +80,17 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase
     /**
      * @return array
      */
-    function getData()
+    public function getData()
     {
         $data = $this->cObj->data;
 
         $range = $this->getTimeRange();
         $nodes = $this->getNodes();
 
-        $titles = [];
+        $titles = array();
 
         if (count($nodes) > 0) {
-            $result_ranges = [];
+            $result_ranges = array();
             $id = '';
             $lastTitle = '';
             foreach ($nodes as $node) {
@@ -119,7 +118,6 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase
             } else {
                 $data['chart'] = 'please select one or more test-nodes';
             }
-
         } else {
             $data['chart'] = 'no node ids found';
         }
@@ -130,7 +128,7 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase
     /**
      * @return int
      */
-    function getTimeRange()
+    public function getTimeRange()
     {
         $range = 24;
 
@@ -152,16 +150,15 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase
         return $range;
     }
 
-    function getNodes()
+    public function getNodes()
     {
-
         $node_ids = $this->pi_getFFValue($this->cObj->data['pi_flexform'], 'node_ids');
         // Node ids not specified? Try TypoScript instead
         if (!$node_ids && $this->conf['node_ids']) {
             $node_ids = $this->conf['node_ids'];
         }
 
-        $nodes = [];
+        $nodes = array();
         $ids = explode(chr(10), $node_ids);
         $node_repository = tx_caretaker_NodeRepository::getInstance();
 

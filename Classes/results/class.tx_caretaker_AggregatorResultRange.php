@@ -42,8 +42,6 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_AggregatorResultRange extends tx_caretaker_NodeResultRange
 {

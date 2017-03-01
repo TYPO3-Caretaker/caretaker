@@ -44,12 +44,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_TestNode extends tx_caretaker_AbstractNode
 {
-
     /**
      * Test Service Type
      *
@@ -81,28 +78,28 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode
     /**
      * Retry the test n times after failure or warning
      *
-     * @var integer
+     * @var int
      */
     protected $testRetry = 0;
 
     /**
      * Set the due mode
      *
-     * @var integer
+     * @var int
      */
     protected $testDue = 0;
 
     /**
      * The test shall be executed only after this hour
      *
-     * @var integer
+     * @var int
      */
     protected $startHour = false;
 
     /**
      * The test shall be executed only before this hour
      *
-     * @var integer
+     * @var int
      */
     protected $stopHour = false;
 
@@ -119,17 +116,18 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode
     /**
      * Constructor
      *
-     * @param integer $uid
+     * @param int $uid
      * @param string $title
      * @param tx_caretaker_AbstractNode $parentNode
      * @param string $serviceType
      * @param string $serviceConfiguration
-     * @param integer $interval
-     * @param integer $retry
-     * @param integer $due
+     * @param int $interval
+     * @param int $retry
+     * @param int $due
      * @param bool|int $startHour
      * @param bool|int $stopHour
-     * @param boolean $hidden
+     * @param bool $hidden
+     * @param null|mixed $rolesIds
      */
     public function __construct($uid, $title, $parentNode, $serviceType, $serviceConfiguration, $interval = 86400, $retry = 0, $due = 0, $startHour = false, $stopHour = false, $hidden = false, $rolesIds = null)
     {
@@ -151,12 +149,12 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode
         $this->testDue = $due;
         $this->startHour = $startHour;
         $this->stopHour = $stopHour;
-        $this->rolesIds = $rolesIds ? explode(',', $rolesIds) : [];
+        $this->rolesIds = $rolesIds ? explode(',', $rolesIds) : array();
     }
 
     /**
-     * @return tx_caretaker_TestServiceInterface
      * @throws Exception
+     * @return tx_caretaker_TestServiceInterface
      */
     public function getTestService()
     {
@@ -292,12 +290,12 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode
      */
     public function setModeAck()
     {
-        $info = [
+        $info = array(
             'username' => 'unknown',
             'realName' => 'unknown',
             'email' => 'unknown',
-        ];
-        if (TYPO3_MODE == "BE") {
+        );
+        if (TYPO3_MODE == 'BE') {
             $info['username'] = $GLOBALS['BE_USER']->user['username'];
             $info['realName'] = $GLOBALS['BE_USER']->user['realName'];
             $info['email'] = $GLOBALS['BE_USER']->user['email'];
@@ -322,12 +320,12 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode
      */
     public function setModeDue()
     {
-        $info = [
+        $info = array(
             'username' => 'unknown',
             'realName' => 'unknown',
             'email' => 'unknown',
-        ];
-        if (TYPO3_MODE == "BE") {
+        );
+        if (TYPO3_MODE == 'BE') {
             $info['username'] = $GLOBALS['BE_USER']->user['username'];
             $info['realName'] = $GLOBALS['BE_USER']->user['realName'];
             $info['email'] = $GLOBALS['BE_USER']->user['email'];
@@ -353,7 +351,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode
      * @param array $options Options for running this test
      * @return tx_caretaker_NodeResult
      */
-    public function updateTestResult($options = [])
+    public function updateTestResult($options = array())
     {
         if ($this->getHidden()) {
             $result = tx_caretaker_TestResult::undefined('Node is disabled');
@@ -399,7 +397,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode
      */
     public function getTestNodes()
     {
-        return [$this];
+        return array($this);
     }
 
     /**
@@ -412,9 +410,8 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode
         $test_service = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService('caretaker_test_service', $this->testServiceType);
         if ($test_service) {
             return $test_service->getValueDescription();
-        } else {
-            return 'unknown service ' . $this->testServiceType;
         }
+        return 'unknown service ' . $this->testServiceType;
     }
 
     /**
@@ -440,7 +437,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode
     /**
      * Get the number of available Test Results
      *
-     * @return integer
+     * @return int
      */
     public function getTestResultNumber()
     {
@@ -456,7 +453,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode
      * @see caretaker/trunk/Classes/nodes/tx_caretaker_AbstractNode#getTestResultRange()
      * @param int $start_timestamp
      * @param int $stop_timestamp
-     * @param boolean $graph True by default. Used in the result range repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
+     * @param bool $graph True by default. Used in the result range repository the specify the handling of the last result. For more information see tx_caretaker_testResultRepository.
      * @return tx_caretaker_TestResultRange
      */
     public function getTestResultRange($start_timestamp, $stop_timestamp, $graph = true)
@@ -514,5 +511,4 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode
     {
         return $this->rolesIds;
     }
-
 }

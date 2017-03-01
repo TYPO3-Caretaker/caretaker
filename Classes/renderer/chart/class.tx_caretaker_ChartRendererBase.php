@@ -42,37 +42,34 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 abstract class tx_caretaker_ChartRendererBase
 {
-
     /**
      * width of the whole chart
      *
-     * @var integer
+     * @var int
      */
     protected $width = 800;
 
     /**
      * height of the whole chart
      *
-     * @var integer
+     * @var int
      */
     protected $height = 400;
 
     /**
      * width of the chart area
      *
-     * @var integer
+     * @var int
      */
     protected $chartWidth;
 
     /**
      * height of the chart area
      *
-     * @var integer
+     * @var int
      */
     protected $chartHeight;
 
@@ -107,14 +104,14 @@ abstract class tx_caretaker_ChartRendererBase
     /**
      * start timestamp
      *
-     * @var integer
+     * @var int
      */
     protected $startTimestamp;
 
     /**
      * emd timestamp
      *
-     * @var integer
+     * @var int
      */
     protected $endTimestamp;
 
@@ -128,28 +125,28 @@ abstract class tx_caretaker_ChartRendererBase
     /**
      * margin between charting area and border
      *
-     * @var integer
+     * @var int
      */
     protected $marginLeft = 70;
 
     /**
      * margin between charting area and border
      *
-     * @var integer
+     * @var int
      */
     protected $marginRight = 150;
 
     /**
      * margin between charting area and border
      *
-     * @var integer
+     * @var int
      */
     protected $marginTop = 30;
 
     /**
      * margin between charting area and border
      *
-     * @var integer
+     * @var int
      */
     protected $marginBottom = 80;
 
@@ -176,8 +173,8 @@ abstract class tx_caretaker_ChartRendererBase
     /**
      * Constructor
      *
-     * @param integer $width
-     * @param integer $height
+     * @param int $width
+     * @param int $height
      */
     public function __construct($width = 800, $height = 400)
     {
@@ -188,7 +185,7 @@ abstract class tx_caretaker_ChartRendererBase
     /**
      * Set the start timestamp for the chart
      *
-     * @param integer $startTimestamp
+     * @param int $startTimestamp
      */
     protected function setStartTimestamp($startTimestamp)
     {
@@ -198,7 +195,7 @@ abstract class tx_caretaker_ChartRendererBase
     /**
      * Get the start timestamp of the chart
      *
-     * @return integer
+     * @return int
      */
     protected function getStartTimestamp()
     {
@@ -208,7 +205,7 @@ abstract class tx_caretaker_ChartRendererBase
     /**
      * Set the end timestamp of the chart
      *
-     * @param integer $endTimestamp
+     * @param int $endTimestamp
      */
     protected function setEndTimestamp($endTimestamp)
     {
@@ -218,7 +215,7 @@ abstract class tx_caretaker_ChartRendererBase
     /**
      * Get the end timestamp of the chart
      *
-     * @return integer
+     * @return int
      */
     protected function getEndTimestamp()
     {
@@ -321,7 +318,6 @@ abstract class tx_caretaker_ChartRendererBase
      */
     protected function init()
     {
-
         // calculate chart Area
         $this->chartWidth = $this->width - $this->marginLeft - $this->marginRight;
         $this->chartHeight = $this->height - $this->marginTop - $this->marginBottom;
@@ -410,7 +406,7 @@ abstract class tx_caretaker_ChartRendererBase
         imagepng($image, PATH_site . $filename);
         imagedestroy($image);
 
-        return ($filename);
+        return $filename;
     }
 
     /**
@@ -445,7 +441,6 @@ abstract class tx_caretaker_ChartRendererBase
 
         $color = imagecolorallocate($image, 1, 1, 1);
         imagettftext($image, $size, $angle, $this->marginLeft + floor($this->chartWidth / 2) - $textWidth / 2, 20, $color, $font, $title);
-
     }
 
     /**
@@ -457,13 +452,12 @@ abstract class tx_caretaker_ChartRendererBase
      */
     private function drawYAxis(&$image, &$chartLegendColor, &$chartLegendColor2)
     {
-
         // detect the y axis separation
         $rounded_value = $this->ceilDecimal($this->maxValue);
 
         if ($rounded_value > $this->maxValue * 5) {
             $value_step = $rounded_value / 40;
-        } else if ($rounded_value > $this->maxValue * 2) {
+        } elseif ($rounded_value > $this->maxValue * 2) {
             $value_step = $rounded_value / 20;
         } else {
             $value_step = $rounded_value / 10;
@@ -498,12 +492,11 @@ abstract class tx_caretaker_ChartRendererBase
      */
     private function drawXAxis(&$image, &$chartLegendColor, &$chartLegendColor2, &$chartLegendColor3)
     {
-
         $timerange = $this->endTimestamp - $this->startTimestamp;
 
-        $times_super = [];
-        $times_major = [];
-        $times_minor = [];
+        $times_super = array();
+        $times_major = array();
+        $times_minor = array();
 
         $format = '%x';
 
@@ -513,28 +506,28 @@ abstract class tx_caretaker_ChartRendererBase
             $times_major = $this->getMonthTimestamps($this->startTimestamp, $this->endTimestamp);
             //$times_minor = $this->getWeekTimestamps($this->startTimestamp,$this->endTimestamp);
         } // quarter
-        else if ($timerange >= 24 * 60 * 60 * 30 * 3) {
+        elseif ($timerange >= 24 * 60 * 60 * 30 * 3) {
             $times_super = $this->getYearTimestamps($this->startTimestamp, $this->endTimestamp);
             $times_major = $this->getMonthTimestamps($this->startTimestamp, $this->endTimestamp);
             $times_minor = $this->getWeekTimestamps($this->startTimestamp, $this->endTimestamp);
         } // 1 Month
-        else if ($timerange >= 24 * 60 * 60 * 30) {
+        elseif ($timerange >= 24 * 60 * 60 * 30) {
             $times_super = $this->getMonthTimestamps($this->startTimestamp, $this->endTimestamp);
             $times_major = $this->getWeekTimestamps($this->startTimestamp, $this->endTimestamp);
             $times_minor = $this->getDayTimestamps($this->startTimestamp, $this->endTimestamp);
         } // 7 days
-        else if ($timerange >= 24 * 60 * 60 * 7) {
+        elseif ($timerange >= 24 * 60 * 60 * 7) {
             $times_super = $this->getMonthTimestamps($this->startTimestamp, $this->endTimestamp);
             $times_major = $this->getWeekTimestamps($this->startTimestamp, $this->endTimestamp);
             $times_minor = $this->getDayTimestamps($this->startTimestamp, $this->endTimestamp);
         } // 2 days
-        else if ($timerange >= 24 * 60 * 60 * 2) {
+        elseif ($timerange >= 24 * 60 * 60 * 2) {
             $format = '%x (%H)';
             $times_super = $this->getDayTimestamps($this->startTimestamp, $this->endTimestamp);
             $times_major = $this->getHalfdayTimestamps($this->startTimestamp, $this->endTimestamp);
             $times_minor = $this->getHourTimestamps($this->startTimestamp, $this->endTimestamp);
         } // 1 day
-        else if ($timerange >= 24 * 60 * 60 * 1) {
+        elseif ($timerange >= 24 * 60 * 60 * 1) {
             $format = '%H:%M';
             $times_super = $this->getDayTimestamps($this->startTimestamp, $this->endTimestamp);
             $times_major = $this->getHalfdayTimestamps($this->startTimestamp, $this->endTimestamp);
@@ -559,7 +552,6 @@ abstract class tx_caretaker_ChartRendererBase
             if ($timestamp > $this->startTimestamp && $timestamp < $this->endTimestamp) {
                 $scaledTime = $this->transformX($timestamp);
                 imageline($image, $scaledTime, $this->marginTop, $scaledTime, $this->height - $this->marginBottom + 3, $chartLegendColor2);
-
             }
         }
 
@@ -567,14 +559,13 @@ abstract class tx_caretaker_ChartRendererBase
             if ($timestamp > $this->startTimestamp && $timestamp < $this->endTimestamp) {
                 $scaledTime = $this->transformX($timestamp);
                 imageline($image, $scaledTime, $this->marginTop, $scaledTime, $this->height - $this->marginBottom, $chartLegendColor3);
-
             }
         }
 
         // draw x - axis informations
         if (count($times_super) > 3) {
             $x_axis = $times_super;
-        } else if (count($times_major) > 3) {
+        } elseif (count($times_major) > 3) {
             $x_axis = $times_major;
         } else {
             $x_axis = $times_minor;
@@ -610,12 +601,12 @@ abstract class tx_caretaker_ChartRendererBase
         if ($number > 1 || $number < -1) {
             $abs_str = (string)round(abs($number));
             $significance = pow(10, (int)strlen($abs_str));
-        } else if ($value == 0) {
+        } elseif ($value == 0) {
             return 1;
         } else {
             $abs_str = (string)abs($number);
             $pos = 0;
-            while (substr($abs_str, $pos, 1) == "0" || substr($abs_str, $pos, 1) == ".") {
+            while (substr($abs_str, $pos, 1) == '0' || substr($abs_str, $pos, 1) == '.') {
                 $pos++;
             }
             $significance = pow(10, 1 + $pos * -1);
@@ -627,7 +618,7 @@ abstract class tx_caretaker_ChartRendererBase
             $result = -1 * ceil(abs($number) / $significance) * $significance;
         }
 
-        return ($result);
+        return $result;
     }
 
     /**
@@ -639,7 +630,7 @@ abstract class tx_caretaker_ChartRendererBase
      */
     private function getYearTimestamps($min_timestamp, $max_timestamp)
     {
-        $result = [];
+        $result = array();
         $startdate_info = getdate($min_timestamp);
         $year = $startdate_info['year'];
         while ($max_timestamp > $ts = mktime(0, 0, 0, 1, 1, $year)) {
@@ -661,7 +652,7 @@ abstract class tx_caretaker_ChartRendererBase
      */
     private function getMonthTimestamps($min_timestamp, $max_timestamp)
     {
-        $result = [];
+        $result = array();
         $startdate_info = getdate($min_timestamp);
         $year = $startdate_info['year'];
         $month = $startdate_info['mon'];
@@ -684,7 +675,7 @@ abstract class tx_caretaker_ChartRendererBase
      */
     private function getWeekTimestamps($min_timestamp, $max_timestamp)
     {
-        $result = [];
+        $result = array();
         $startdate_info = getdate($min_timestamp);
         $year = $startdate_info['year'];
         $month = $startdate_info['mon'];
@@ -709,7 +700,7 @@ abstract class tx_caretaker_ChartRendererBase
      */
     private function getHalfdayTimestamps($min_timestamp, $max_timestamp)
     {
-        $result = [];
+        $result = array();
         $startdate_info = getdate($min_timestamp);
         $year = $startdate_info['year'];
         $month = $startdate_info['mon'];
@@ -734,7 +725,7 @@ abstract class tx_caretaker_ChartRendererBase
      */
     private function getDayTimestamps($min_timestamp, $max_timestamp)
     {
-        $result = [];
+        $result = array();
         $startdate_info = getdate($min_timestamp);
         $year = $startdate_info['year'];
         $month = $startdate_info['mon'];
@@ -758,7 +749,7 @@ abstract class tx_caretaker_ChartRendererBase
      */
     private function getQuarterTimestamps($min_timestamp, $max_timestamp)
     {
-        $result = [];
+        $result = array();
         $startdate_info = getdate($min_timestamp);
         $year = $startdate_info['year'];
         $month = $startdate_info['mon'];
@@ -784,7 +775,7 @@ abstract class tx_caretaker_ChartRendererBase
      */
     private function getHourTimestamps($min_timestamp, $max_timestamp)
     {
-        $result = [];
+        $result = array();
         $startdate_info = getdate($min_timestamp);
         $year = $startdate_info['year'];
         $month = $startdate_info['mon'];
@@ -809,19 +800,19 @@ abstract class tx_caretaker_ChartRendererBase
     protected function getColorRgbByKey($key = '')
     {
         switch (strtoupper($key)) {
-            case "ERROR" :
-                return [255, 0, 0];
-            case "WARNING" :
-                return [255, 255, 0];
-            case "OK" :
-                return [0, 255, 0];
-            case "DUE":
-                return [238, 130, 238];
-            case "ACK" :
-                return [0, 0, 255];
-            case "UNDEFINED" :
+            case 'ERROR':
+                return array(255, 0, 0);
+            case 'WARNING':
+                return array(255, 255, 0);
+            case 'OK':
+                return array(0, 255, 0);
+            case 'DUE':
+                return array(238, 130, 238);
+            case 'ACK':
+                return array(0, 0, 255);
+            case 'UNDEFINED':
             default:
-                return [100, 100, 100];
+                return array(100, 100, 100);
         }
     }
 }

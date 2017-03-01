@@ -45,12 +45,9 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_NodeRepository
 {
-
     /**
      * Retrieve a specific Node
      *
@@ -58,7 +55,7 @@ class tx_caretaker_NodeRepository
      * @param bool|int $instanceId
      * @param bool|int $testgroupId
      * @param bool|int $testId
-     * @param boolean $show_hidden
+     * @param bool $show_hidden
      * @return tx_caretaker_AbstractNode
      */
     public function getNode($instancegroupId = false, $instanceId = false, $testgroupId = false, $testId = false, $show_hidden = false)
@@ -73,7 +70,7 @@ class tx_caretaker_NodeRepository
             if ($instancegroup) {
                 return $instancegroup;
             }
-        } else if ($instanceId > 0) {
+        } elseif ($instanceId > 0) {
             $instance = $this->getInstanceByUid($instanceId, false, $show_hidden);
             if ($instance) {
                 if ($testgroupId > 0) {
@@ -84,7 +81,7 @@ class tx_caretaker_NodeRepository
                             return $instance_testgroup;
                         }
                     }
-                } else if ($testId > 0) {
+                } elseif ($testId > 0) {
                     // find find directly assigned tests
                     $instance_tests = $this->getTestsByInstanceUid($instance->getUid(), $instance, $show_hidden);
                     foreach ($instance_tests as $instance_test) {
@@ -139,7 +136,6 @@ class tx_caretaker_NodeRepository
                 $instance = $node->getInstance();
                 $id = 'root';
                 break;
-
         }
 
         return $id;
@@ -149,18 +145,17 @@ class tx_caretaker_NodeRepository
      * Get the Node Object for a given Identifier String
      *
      * @param string $id_string
-     * @param boolean $show_hidden
+     * @param bool $show_hidden
      * @return tx_caretaker_AbstractNode
      */
     public function id2node($id_string, $show_hidden = false)
     {
-
         if ($id_string == 'root') {
             return $this->getRootNode();
         }
 
         $parts = explode('_', $id_string);
-        $info = [];
+        $info = array();
         for ($i = 0; $i < count($parts); $i += 2) {
             switch ($parts[$i]) {
                 case 'instancegroup':
@@ -203,7 +198,7 @@ class tx_caretaker_NodeRepository
     public static function getInstance()
     {
         if (!self::$instance) {
-            self::$instance = new tx_caretaker_NodeRepository();
+            self::$instance = new self();
         }
 
         return self::$instance;
@@ -227,7 +222,7 @@ class tx_caretaker_NodeRepository
      * Get all Instancegroups
      *
      * @param bool|tx_caretaker_AbstractNode $parent
-     * @param boolean $show_hidden
+     * @param bool $show_hidden
      * @return array
      */
     public function getAllInstancegroups($parent = false, $show_hidden = false)
@@ -237,7 +232,7 @@ class tx_caretaker_NodeRepository
             $hidden = ' AND hidden=0 ';
         }
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instancegroup', 'deleted=0' . $hidden);
-        $result = [];
+        $result = array();
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $item = $this->dbrow2instancegroup($row, $parent);
             if ($item) {
@@ -266,17 +261,16 @@ class tx_caretaker_NodeRepository
         $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
         if ($row) {
             return $this->dbrow2instancegroup($row, $parent);
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
      * Get all Instancegroups which are Children of Instancegroup with UID xxx
      *
-     * @param integer $parent_group_uid
+     * @param int $parent_group_uid
      * @param tx_caretaker_AbstractNode $parent
-     * @param boolean $show_hidden
+     * @param bool $show_hidden
      * @return array
      */
     public function getInstancegroupsByParentGroupUid($parent_group_uid, $parent, $show_hidden = false)
@@ -286,7 +280,7 @@ class tx_caretaker_NodeRepository
             $hidden = ' AND hidden=0 ';
         }
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instancegroup', 'deleted=0 ' . $hidden . ' AND parent_group=' . (int)$parent_group_uid, 'title');
-        $result = [];
+        $result = array();
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $item = $this->dbrow2instancegroup($row, $parent);
             if ($item) {
@@ -300,8 +294,8 @@ class tx_caretaker_NodeRepository
     /**
      * Get the Instancegroup wich is the prarent of Instancegroup X
      *
-     * @param integer $child_group_uid
-     * @param boolean $show_hidden
+     * @param int $child_group_uid
+     * @param bool $show_hidden
      * @return tx_caretaker_InstancegroupNode
      */
     public function getInstancegroupByChildGroupUid($child_group_uid, $show_hidden = false)
@@ -370,7 +364,7 @@ class tx_caretaker_NodeRepository
      * Get all Instances in Repository
      *
      * @param bool|tx_caretaker_AbstractNode $parent
-     * @param boolean $show_hidden
+     * @param bool $show_hidden
      * @return array
      */
     public function getAllInstances($parent = false, $show_hidden = false)
@@ -380,7 +374,7 @@ class tx_caretaker_NodeRepository
             $hidden = ' AND hidden=0 ';
         }
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instance', 'deleted=0 ' . $hidden);
-        $result = [];
+        $result = array();
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $item = $this->dbrow2instance($row, $parent);
             if ($item) {
@@ -394,7 +388,7 @@ class tx_caretaker_NodeRepository
     /**
      * Get Instance with UID X
      *
-     * @param integer $uid
+     * @param int $uid
      * @param $parent
      * @param $show_hidden
      * @return tx_caretaker_InstanceNode
@@ -409,23 +403,22 @@ class tx_caretaker_NodeRepository
         $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
         if ($row) {
             return $this->dbrow2instance($row, $parent);
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
      * Get all Instances wich are part of Group X
      *
-     * @param integer $uid
+     * @param int $uid
      * @param tx_caretaker_AbstractNode $parent
-     * @param boolean $show_hidden
+     * @param bool $show_hidden
      * @return array
      */
     public function getInstancesByInstancegroupUid($uid, $parent = null, $show_hidden = false)
     {
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tx_caretaker_instance', 'instancegroup = ' . (int)$uid, '', 'title');
-        $result = [];
+        $result = array();
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $item = $this->getInstanceByUid($row['uid'], $parent, $show_hidden);
             if ($item) {
@@ -445,7 +438,6 @@ class tx_caretaker_NodeRepository
      */
     private function dbrow2instance($row, $parent = null)
     {
-
         // check access
         if (TYPO3_MODE == 'FE') {
             if ($GLOBALS['TSFE']->sys_page) {
@@ -505,7 +497,7 @@ class tx_caretaker_NodeRepository
      * Get all Testgroups
      *
      * @param bool|tx_caretaker_AbstractNode $parent
-     * @param boolean $show_hidden
+     * @param bool $show_hidden
      * @return tx_caretaker_TestgroupNode
      */
     public function getAllTestgroups($parent = false, $show_hidden = false)
@@ -515,7 +507,7 @@ class tx_caretaker_NodeRepository
             $hidden = ' AND hidden=0 ';
         }
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_testgroup', 'deleted=0 ' . $hidden);
-        $result = [];
+        $result = array();
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $result[] = $this->dbrow2testgroup($row, $parent);
         }
@@ -526,20 +518,20 @@ class tx_caretaker_NodeRepository
     /**
      * Get all Testgroups of Instance X
      *
-     * @param integer $instanceId
+     * @param int $instanceId
      * @param bool|tx_caretaker_AbstractNode $parent
-     * @param boolean $show_hidden
+     * @param bool $show_hidden
      * @return array
      */
     public function getTestgroupsByInstanceUid($instanceId, $parent = false, $show_hidden = false)
     {
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_foreign', 'tx_caretaker_instance_testgroup_mm', 'uid_local=' . (int)$instanceId, '', 'sorting');
-        $instance_group_ids = [];
+        $instance_group_ids = array();
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $instance_group_ids[] = $row['uid_foreign'];
         }
 
-        $result = [];
+        $result = array();
         foreach ($instance_group_ids as $id) {
             $item = $this->getTestgroupByUid($id, $parent, $show_hidden);
             if ($item) {
@@ -575,9 +567,9 @@ class tx_caretaker_NodeRepository
     /**
      * Get Testgroup of UID X
      *
-     * @param integer $uid
+     * @param int $uid
      * @param bool|tx_caretaker_AbstractNode $parent
-     * @param boolean $show_hidden
+     * @param bool $show_hidden
      * @return tx_caretaker_TestgroupNode
      */
     public function getTestgroupByUid($uid, $parent = false, $show_hidden = false)
@@ -590,18 +582,16 @@ class tx_caretaker_NodeRepository
         $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
         if ($row) {
             return $this->dbrow2testgroup($row, $parent);
-        } else {
-            return false;
         }
-
+        return false;
     }
 
     /**
      * Get all Testgroups wich are child of Testgroup X
      *
-     * @param integer $parent_group_uid
+     * @param int $parent_group_uid
      * @param tx_caretaker_AbstractNode $parent
-     * @param boolean $show_hidden
+     * @param bool $show_hidden
      * @return array
      */
     public function getTestgroupsByParentGroupUid($parent_group_uid, $parent, $show_hidden)
@@ -611,7 +601,7 @@ class tx_caretaker_NodeRepository
             $hidden = ' AND hidden=0 ';
         }
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_testgroup', 'deleted=0 ' . $hidden . ' AND parent_group=' . (int)$parent_group_uid);
-        $result = [];
+        $result = array();
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $result[] = $this->dbrow2testgroup($row, $parent);
         }
@@ -666,19 +656,19 @@ class tx_caretaker_NodeRepository
     /**
      * Get Tests of Group X
      *
-     * @param integer $group_id
+     * @param int $group_id
      * @param bool|tx_caretaker_AbstractNode $parent
-     * @param boolean $show_hidden
+     * @param bool $show_hidden
      * @return array
      */
     public function getTestsByGroupUid($group_id, $parent = false, $show_hidden = false)
     {
-        $ids = [];
+        $ids = array();
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local', 'tx_caretaker_testgroup_test_mm', 'uid_foreign=' . (int)$group_id, '', 'sorting_foreign');
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $ids[] = $row['uid_local'];
         }
-        $tests = [];
+        $tests = array();
         foreach ($ids as $uid) {
             $item = $this->getTestByUid($uid, $parent, $show_hidden);
             if ($item) {
@@ -692,19 +682,19 @@ class tx_caretaker_NodeRepository
     /**
      * Get Tests of Instance X
      *
-     * @param integer $instance_id
+     * @param int $instance_id
      * @param bool|tx_caretaker_AbstractNode $parent
-     * @param boolean $show_hidden
+     * @param bool $show_hidden
      * @return array
      */
     public function getTestsByInstanceUid($instance_id, $parent = false, $show_hidden = false)
     {
-        $ids = [];
+        $ids = array();
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local', 'tx_caretaker_instance_test_mm', 'uid_foreign=' . (int)$instance_id, '', 'sorting_foreign');
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $ids[] = $row['uid_local'];
         }
-        $tests = [];
+        $tests = array();
         foreach ($ids as $uid) {
             $item = $this->getTestByUid($uid, $parent, $show_hidden);
             if ($item) {
@@ -718,9 +708,9 @@ class tx_caretaker_NodeRepository
     /**
      * Get Test of UID X
      *
-     * @param integer $uid
+     * @param int $uid
      * @param bool|tx_caretaker_AbstractNode $parent
-     * @param boolean $show_hidden
+     * @param bool $show_hidden
      * @return tx_caretaker_TestNode
      */
     public function getTestByUid($uid, $parent = false, $show_hidden = false)

@@ -43,16 +43,13 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_TestgroupNode extends tx_caretaker_AggregatorNode
 {
-
     /**
      * Constructor
      *
-     * @param integer $uid
+     * @param int $uid
      * @param string $title
      * @param tx_caretaker_AbstractNode $parent
      * @param bool|int $hidden

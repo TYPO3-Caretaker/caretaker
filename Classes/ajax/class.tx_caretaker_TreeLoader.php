@@ -43,12 +43,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_TreeLoader
 {
-
     /**
      * @param array $params
      * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj
@@ -79,7 +76,7 @@ class tx_caretaker_TreeLoader
     protected function nodeToArray($node, $depth = 1)
     {
         // show node and icon
-        $result = [];
+        $result = array();
         $uid = $node->getUid();
         $title = $node->getTitle();
         $hidden = $node->getHidden();
@@ -108,7 +105,7 @@ class tx_caretaker_TreeLoader
             $children = $node->getChildren(true);
             $result['leaf'] = (count($children) == 0) ? true : false;
             if ($depth > 0) {
-                $result['children'] = [];
+                $result['children'] = array();
                 foreach ($children as $child) {
                     $result['children'][] = $this->nodeToArray($child, $depth - 1);
                 }

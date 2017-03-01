@@ -33,13 +33,8 @@
  *
  * $Id: class.tx_caretaker_NotificationMailExitPoint.php 43024 2011-02-03 11:58:50Z matrikz $
  */
-
-/**
- *
- */
 class tx_caretaker_NotificationXmppExitPoint extends tx_caretaker_NotificationBaseExitPoint
 {
-
     /**
      * @var XMPPHP_XMPP
      */
@@ -95,4 +90,3 @@ class tx_caretaker_NotificationXmppExitPoint extends tx_caretaker_NotificationBa
         $this->connection->disconnect();
     }
 }
-

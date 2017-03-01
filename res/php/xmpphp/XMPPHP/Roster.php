@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category   xmpphp
- * @package    XMPPHP
  * @author     Nathanael C. Fritz <JID: fritzy@netflint.net>
  * @author     Stephan Wentz <JID: stephan@jabber.wentz.it>
  * @author     Michael Garvin <JID: gar@netflint.net>
@@ -30,7 +29,6 @@
  * XMPPHP Roster Object
  *
  * @category   xmpphp
- * @package    XMPPHP
  * @author     Nathanael C. Fritz <JID: fritzy@netflint.net>
  * @author     Stephan Wentz <JID: stephan@jabber.wentz.it>
  * @author     Michael Garvin <JID: gar@netflint.net>
@@ -45,18 +43,19 @@ class Roster
      *
      * @var array
      */
-    protected $roster_array = [];
+    protected $roster_array = array();
 
     /**
      * Constructor
      *
+     * @param mixed $roster_array
      */
-    public function __construct($roster_array = [])
+    public function __construct($roster_array = array())
     {
         if ($this->verifyRoster($roster_array)) {
             $this->roster_array = $roster_array; //Allow for prepopulation with existing roster
         } else {
-            $this->roster_array = [];
+            $this->roster_array = array();
         }
     }
 
@@ -68,7 +67,7 @@ class Roster
      */
     protected function verifyRoster($roster_array)
     {
-        #TODO once we know *what* a valid roster array looks like
+        //TODO once we know *what* a valid roster array looks like
         return true;
     }
 
@@ -81,13 +80,13 @@ class Roster
      * @param string $name
      * @param array $groups
      */
-    public function addContact($jid, $subscription, $name = '', $groups = [])
+    public function addContact($jid, $subscription, $name = '', $groups = array())
     {
-        $contact = ['jid' => $jid, 'subscription' => $subscription, 'name' => $name, 'groups' => $groups];
+        $contact = array('jid' => $jid, 'subscription' => $subscription, 'name' => $name, 'groups' => $groups);
         if ($this->isContact($jid)) {
             $this->roster_array[$jid]['contact'] = $contact;
         } else {
-            $this->roster_array[$jid] = ['contact' => $contact];
+            $this->roster_array[$jid] = array('contact' => $contact);
         }
     }
 
@@ -112,7 +111,7 @@ class Roster
      */
     public function isContact($jid)
     {
-        return (array_key_exists($jid, $this->roster_array));
+        return array_key_exists($jid, $this->roster_array);
     }
 
     /**
@@ -120,23 +119,23 @@ class Roster
      * Set presence
      *
      * @param string $presence
-     * @param integer $priority
+     * @param int $priority
      * @param string $show
      * @param string $status
      */
     public function setPresence($presence, $priority, $show, $status)
     {
-        list($jid, $resource) = split("/", $presence);
+        list($jid, $resource) = split('/', $presence);
         if ($show != 'unavailable') {
             if (!$this->isContact($jid)) {
                 $this->addContact($jid, 'not-in-roster');
             }
             $resource = $resource ? $resource : '';
-            $this->roster_array[$jid]['presence'][$resource] = [
+            $this->roster_array[$jid]['presence'][$resource] = array(
                 'priority' => $priority,
                 'show' => $show,
                 'status' => $status,
-            ];
+            );
         } else { //Nuke unavailable resources to save memory
             unset($this->roster_array[$jid]['resource'][$resource]);
         }
@@ -150,19 +149,19 @@ class Roster
      */
     public function getPresence($jid)
     {
-        $split = split("/", $jid);
+        $split = split('/', $jid);
         $jid = $split[0];
         if ($this->isContact($jid)) {
-            $current = [
+            $current = array(
                 'resource' => '',
                 'active' => '',
                 'priority' => -129,
                 'show' => '',
                 'status' => '',
-            ]; //Priorities can only be -128 = 127
+            ); //Priorities can only be -128 = 127
             foreach ($this->roster_array[$jid]['presence'] as $resource => $presence) {
                 //Highest available priority or just highest priority
-                if ($presence['priority'] > $current['priority'] and (($presence['show'] == "chat" or $presence['show'] == "available") or ($current['show'] != "chat" or $current['show'] != "available"))) {
+                if ($presence['priority'] > $current['priority'] and (($presence['show'] == 'chat' or $presence['show'] == 'available') or ($current['show'] != 'chat' or $current['show'] != 'available'))) {
                     $current = $presence;
                     $current['resource'] = $resource;
                 }
@@ -182,5 +181,3 @@ class Roster
         return $this->roster_array;
     }
 }
-
-?>

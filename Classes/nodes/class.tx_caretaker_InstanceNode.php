@@ -44,12 +44,9 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode
 {
-
     /**
      * URL to access this instance
      *
@@ -96,13 +93,15 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode
     /**
      * Constructor
      *
-     * @param integer $uid
+     * @param int $uid
      * @param string $title
      * @param tx_caretaker_AbstractNode $parent
      * @param string $url
      * @param string $host
      * @param string $ip
-     * @param boolean $hidden
+     * @param bool $hidden
+     * @param mixed $hostname
+     * @param mixed $publicKey
      */
     public function __construct($uid, $title, $parent, $url = '', $hostname = '', $publicKey = '', $hidden = 0)
     {
@@ -161,7 +160,7 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode
     /**
      * Find Child nodes
      *
-     * @param boolean $show_hidden
+     * @param bool $show_hidden
      * @return array
      * @see tx_caretaker_AggregatorNode#findChildren()
      */
@@ -197,14 +196,14 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode
      */
     public function getCurlOptions()
     {
-        $curl_options = [];
+        $curl_options = array();
         if ($this->newConfigurationOverrideEnabled) {
             if (is_array($this->curlOptions)) {
                 foreach ($this->curlOptions as $option) {
                     $value = null;
                     switch ($option['curl_option']) {
                         case 'CURLOPT_SSL_VERIFYPEER':
-                            $value = (boolean)($option['curl_value_bool'] != 'false');
+                            $value = (bool)($option['curl_value_bool'] != 'false');
                             break;
 
                         case 'CURLOPT_TIMEOUT_MS':
@@ -243,7 +242,7 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode
                             }
                             switch ($currentEl['option']['vDEF']) {
                                 case 'CURLOPT_SSL_VERIFYPEER':
-                                    $value = (boolean)($currentEl['value_bool']['vDEF'] != 'false');
+                                    $value = (bool)($currentEl['value_bool']['vDEF'] != 'false');
                                     break;
 
                                 case 'CURLOPT_TIMEOUT_MS':
@@ -275,7 +274,7 @@ class tx_caretaker_InstanceNode extends tx_caretaker_AggregatorNode
     /**
      * Get the test configuration overlay (configuration overwritten in instance)
      *
-     * @param integer $testUid UID of the test
+     * @param int $testUid UID of the test
      * @return array
      */
     public function getTestConfigurationOverlayForTestUid($testUid)

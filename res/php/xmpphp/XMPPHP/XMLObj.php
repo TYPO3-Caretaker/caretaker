@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category   xmpphp
- * @package    XMPPHP
  * @author     Nathanael C. Fritz <JID: fritzy@netflint.net>
  * @author     Stephan Wentz <JID: stephan@jabber.wentz.it>
  * @author     Michael Garvin <JID: gar@netflint.net>
@@ -30,7 +29,6 @@
  * XMPPHP XML Object
  *
  * @category   xmpphp
- * @package    XMPPHP
  * @author     Nathanael C. Fritz <JID: fritzy@netflint.net>
  * @author     Stephan Wentz <JID: stephan@jabber.wentz.it>
  * @author     Michael Garvin <JID: gar@netflint.net>
@@ -58,14 +56,14 @@ class XMPPHP_XMLObj
      *
      * @var array
      */
-    public $attrs = [];
+    public $attrs = array();
 
     /**
      * Subs?
      *
      * @var array
      */
-    public $subs = [];
+    public $subs = array();
 
     /**
      * Node data
@@ -82,7 +80,7 @@ class XMPPHP_XMLObj
      * @param array $attrs
      * @param string $data
      */
-    public function __construct($name, $ns = '', $attrs = [], $data = '')
+    public function __construct($name, $ns = '', $attrs = array(), $data = '')
     {
         $this->name = strtolower($name);
         $this->ns = $ns;
@@ -97,11 +95,11 @@ class XMPPHP_XMLObj
     /**
      * Dump this XML Object to output.
      *
-     * @param integer $depth
+     * @param int $depth
      */
     public function printObj($depth = 0)
     {
-        print str_repeat("\t", $depth) . $this->name . " " . $this->ns . ' ' . $this->data;
+        print str_repeat("\t", $depth) . $this->name . ' ' . $this->ns . ' ' . $this->data;
         print "\n";
         foreach ($this->subs as $sub) {
             $sub->printObj($depth + 1);
@@ -122,7 +120,7 @@ class XMPPHP_XMLObj
                 $str .= "$key='$value' ";
             }
         }
-        $str .= ">";
+        $str .= '>';
         foreach ($this->subs as $sub) {
             $str .= $sub->toString();
         }
@@ -136,12 +134,13 @@ class XMPPHP_XMLObj
      * Has this XML Object the given sub?
      *
      * @param string $name
-     * @return boolean
+     * @param null|mixed $ns
+     * @return bool
      */
     public function hasSub($name, $ns = null)
     {
         foreach ($this->subs as $sub) {
-            if (($name == "*" or $sub->name == $name) and ($ns == null or $sub->ns == $ns)) {
+            if (($name == '*' or $sub->name == $name) and ($ns == null or $sub->ns == $ns)) {
                 return true;
             }
         }
@@ -158,7 +157,7 @@ class XMPPHP_XMLObj
      */
     public function sub($name, $attrs = null, $ns = null)
     {
-        #TODO attrs is ignored
+        //TODO attrs is ignored
         foreach ($this->subs as $sub) {
             if ($sub->name == $name and ($ns == null or $sub->ns == $ns)) {
                 return $sub;

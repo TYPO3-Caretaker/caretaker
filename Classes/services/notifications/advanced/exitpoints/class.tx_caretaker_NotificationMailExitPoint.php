@@ -35,8 +35,7 @@
  */
 class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBaseExitPoint
 {
-
-    protected $notificationsByRecipient = [];
+    protected $notificationsByRecipient = array();
 
     /**
      * @param array $notification
@@ -57,7 +56,7 @@ class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBa
         foreach ($contacts as $contact) {
             $address = $contact->getAddress();
             if (!$config['aggregateByRecipient']) {
-                $this->sendMail($address['email'], $this->compileMail([$notification]));
+                $this->sendMail($address['email'], $this->compileMail(array($notification)));
             } else {
                 $this->notificationsByRecipient[$address['email']][] = $notification;
             }
@@ -82,10 +81,10 @@ class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBa
      */
     protected function compileMail($notifications)
     {
-        $mail = [
+        $mail = array(
             'subject' => '',
             'message' => '',
-        ];
+        );
 
         foreach ($notifications as $notification) {
             if (!$mail['subject']) {
@@ -122,14 +121,14 @@ class tx_caretaker_NotificationMailExitPoint extends tx_caretaker_NotificationBa
      */
     protected function humanReadableTime($time)
     {
-        $periods = ["sec", "min", "hour", "day", "week", "month", "year", "decade"];
-        $lengths = ["60", "60", "24", "7", "4.35", "12", "10"];
+        $periods = array('sec', 'min', 'hour', 'day', 'week', 'month', 'year', 'decade');
+        $lengths = array('60', '60', '24', '7', '4.35', '12', '10');
         for ($j = 0; $time >= $lengths[$j]; $j++) {
             $time /= $lengths[$j];
         }
         $time = round($time);
         if ($time != 1) {
-            $periods[$j] .= "s";
+            $periods[$j] .= 's';
         }
 
         return $time . ' ' . $periods[$j];

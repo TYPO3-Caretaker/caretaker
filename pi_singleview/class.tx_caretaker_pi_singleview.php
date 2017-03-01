@@ -39,16 +39,16 @@
  */
 class tx_caretaker_pi_singleview extends tx_caretaker_pibase
 {
-    var $prefixId = 'tx_caretaker_pi_singleview';        // Same as class name
+    public $prefixId = 'tx_caretaker_pi_singleview';        // Same as class name
 
-    var $scriptRelPath = 'pi_singleview/class.tx_caretaker_pi_singleview.php';    // Path to this script relative to the extension dir.
+    public $scriptRelPath = 'pi_singleview/class.tx_caretaker_pi_singleview.php';    // Path to this script relative to the extension dir.
 
-    var $extKey = 'caretaker';    // The extension key.
+    public $extKey = 'caretaker';    // The extension key.
 
     /**
      * @return string
      */
-    function getContent()
+    public function getContent()
     {
         $node = $this->getNode();
         if ($node) {
@@ -63,7 +63,7 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase
     /**
      * @return tx_caretaker_AbstractNode
      */
-    function getNode()
+    public function getNode()
     {
         $id = $this->piVars['id'];
         $node_repository = tx_caretaker_NodeRepository::getInstance();
@@ -92,16 +92,15 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase
             } while ($parent_node = $parent_node->getParent());
 
             return false;
-        } else {
-            return $node;
         }
+        return $node;
     }
 
     /**
      * @param tx_caretaker_AbstractNode $node
      * @return array
      */
-    function getNodeData($node)
+    public function getNodeData($node)
     {
         $data = parent::getNodeData($node);
         $range = 24;
@@ -117,7 +116,7 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase
      * @param tx_caretaker_AbstractNode $node
      * @return bool|string
      */
-    function getNodeChart($node)
+    public function getNodeChart($node)
     {
         $chart = false;
 
@@ -132,7 +131,6 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase
         $base = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 
         if (is_a($node, 'tx_caretaker_TestNode')) {
-
             $TestResultRangeChartRenderer = new tx_caretaker_TestResultRangeChartRenderer();
             $TestResultRangeChartRenderer->setTitle($node->getTitle());
             $TestResultRangeChartRenderer->setTestResultRange($result_range);
@@ -143,9 +141,7 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase
             } else {
                 $chart = 'Graph Error';
             }
-
-        } else if (is_a($node, 'tx_caretaker_AggregatorNode')) {
-
+        } elseif (is_a($node, 'tx_caretaker_AggregatorNode')) {
             $TestResultRangeChartRenderer = new tx_caretaker_AggregatorResultRangeChartRenderer();
             $TestResultRangeChartRenderer->setTitle($node->getTitle());
             $TestResultRangeChartRenderer->setAggregatorResultRange($result_range);

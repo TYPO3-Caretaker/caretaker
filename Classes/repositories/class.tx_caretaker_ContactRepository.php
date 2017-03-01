@@ -44,12 +44,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_ContactRepository
 {
-
     /**
      * Reference to the current Instance
      *
@@ -72,7 +69,7 @@ class tx_caretaker_ContactRepository
     public static function getInstance()
     {
         if (!self::$instance) {
-            self::$instance = new tx_caretaker_ContactRepository();
+            self::$instance = new self();
         }
 
         return self::$instance;
@@ -89,9 +86,8 @@ class tx_caretaker_ContactRepository
         $rolesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Roles, 'uid = ' . intval($uid) . ' AND hidden=0 AND deleted=0');
         if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rolesRes)) {
             return $this->dbrow2contact_role($row);
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -105,9 +101,8 @@ class tx_caretaker_ContactRepository
         $rolesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Roles, 'id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($id, tx_caretaker_Constants::table_Roles) . ' AND hidden=0 AND deleted=0');
         if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rolesRes)) {
             return $this->dbrow2contact_role($row);
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -131,7 +126,7 @@ class tx_caretaker_ContactRepository
      */
     public function getContactsByNode(tx_caretaker_AbstractNode $node)
     {
-        $contacts = [];
+        $contacts = array();
 
         // only Instancegroups and Instances store Contacts
         $nodeType = $node->getType();
@@ -159,8 +154,7 @@ class tx_caretaker_ContactRepository
      */
     public function getContactsByNodeAndRole(tx_caretaker_AbstractNode $node, tx_caretaker_ContactRole $role)
     {
-
-        $contacts = [];
+        $contacts = array();
 
         // only Instancegroups and Instances store Contacts
         $nodeType = $node->getType();
@@ -183,6 +177,7 @@ class tx_caretaker_ContactRepository
      * Convert node address relation record to contact object
      *
      * @parem array $row
+     * @param mixed $row
      */
     private function dbrow2contact($row)
     {
@@ -212,4 +207,3 @@ class tx_caretaker_ContactRepository
         return new tx_caretaker_Contact($address, $role);
     }
 }
-

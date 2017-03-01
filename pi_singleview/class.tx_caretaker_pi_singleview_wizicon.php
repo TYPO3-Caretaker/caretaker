@@ -39,23 +39,22 @@
  */
 class tx_caretaker_pi_singleview_wizicon
 {
-
     /**
      * @param $wizardItems
      * @return mixed
      */
-    function proc($wizardItems)
+    public function proc($wizardItems)
     {
         global $LANG;
 
         $LL = $this->includeLocalLang();
 
-        $wizardItems['plugins_caretaker_pi_singleview'] = [
+        $wizardItems['plugins_caretaker_pi_singleview'] = array(
             'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'pi_singleview/ce_wiz.gif',
             'title' => $LANG->getLLL('pi_singleview_title', $LL),
             'description' => $LANG->getLLL('pi_singleview_plus_wiz_description', $LL),
             'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=caretaker_pi_singleview',
-        ];
+        );
 
         return $wizardItems;
     }
@@ -63,7 +62,7 @@ class tx_caretaker_pi_singleview_wizicon
     /**
      * @return mixed
      */
-    function includeLocalLang()
+    public function includeLocalLang()
     {
         global $LANG;
 

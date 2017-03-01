@@ -43,18 +43,15 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 abstract class tx_caretaker_NodeResultRange implements Iterator, Countable
 {
-
     /**
      * Array of testResults
      *
      * @var array
      */
-    private $array = [];
+    private $array = array();
 
     /**
      * Minimal Timestamp of this Result Range
@@ -80,8 +77,8 @@ abstract class tx_caretaker_NodeResultRange implements Iterator, Countable
     /**
      * Constructur
      *
-     * @param integer $start_timestamp
-     * @param integer $end_timestamp
+     * @param int $start_timestamp
+     * @param int $end_timestamp
      */
     public function __construct($start_timestamp, $end_timestamp)
     {
@@ -137,7 +134,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator, Countable
     /**
      * Get the number of Results
      *
-     * @return integer
+     * @return int
      */
     public function getLength()
     {
@@ -189,16 +186,16 @@ abstract class tx_caretaker_NodeResultRange implements Iterator, Countable
             if ($lastTS) {
                 $range = $ts - $lastTS;
                 switch ($lastSTATE) {
-                    case tx_caretaker_Constants::state_due :
+                    case tx_caretaker_Constants::state_due:
                         $SecondsDUE += $range;
                         break;
-                    case tx_caretaker_Constants::state_ack :
+                    case tx_caretaker_Constants::state_ack:
                         $SecondsACK += $range;
                         break;
-                    case tx_caretaker_Constants::state_undefined :
+                    case tx_caretaker_Constants::state_undefined:
                         $SecondsUNDEFINED += $range;
                         break;
-                    case tx_caretaker_Constants::state_ok :
+                    case tx_caretaker_Constants::state_ok:
                         $SecondsOK += $range;
                         break;
                     case tx_caretaker_Constants::state_warning:
@@ -213,7 +210,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator, Countable
             $lastSTATE = $result->getState();
         }
 
-        return [
+        return array(
             'SecondsTotal' => $SecondsTotal,
             'SecondsUNDEFINED' => $SecondsUNDEFINED,
             'SecondsOK' => $SecondsOK,
@@ -229,7 +226,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator, Countable
             'PercentERROR' => $SecondsERROR / $SecondsTotal,
             'PercentACK' => $SecondsACK / $SecondsTotal,
             'PercentDUE' => $SecondsDUE / $SecondsTotal,
-        ];
+        );
     }
 
     /**
@@ -253,7 +250,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator, Countable
     /**
      * Return then current result number
      *
-     * @return integer
+     * @return int
      */
     public function key()
     {
@@ -271,7 +268,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator, Countable
     /**
      * Check if the current value really exists
      *
-     * @return boolean
+     * @return bool
      */
     public function valid()
     {
@@ -287,7 +284,7 @@ abstract class tx_caretaker_NodeResultRange implements Iterator, Countable
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function count()
     {

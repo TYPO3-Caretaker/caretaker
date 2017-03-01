@@ -4,7 +4,7 @@
 
 $extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker');
 $extensionClassesPath = $extensionPath . 'Classes/';
-return [
+return array(
     'tx_caretaker_abstractnode' => $extensionClassesPath . 'nodes/class.tx_caretaker_AbstractNode.php',
     'tx_caretaker_abstractnode_stub' => $extensionPath . 'tests/tx_caretaker_AbstractNode_testcase.php',
     'tx_caretaker_abstractnode_testcase' => $extensionPath . 'tests/tx_caretaker_AbstractNode_testcase.php',
@@ -91,5 +91,4 @@ return [
     'tx_caretaker_touchtestservice' => $extensionClassesPath . 'services/tests/class.tx_caretaker_TouchTestService.php',
     'tx_caretaker_treeloader' => $extensionClassesPath . 'ajax/class.tx_caretaker_TreeLoader.php',
     'tx_caretaker_typo3versionnumbersupdatetask' => $extensionPath . 'scheduler/class.tx_caretaker_typo3versionnumbersupdatetask.php',
-];
-?>
+);

@@ -42,19 +42,16 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_hooks_tceforms_getSingleFieldClass
 {
-
     /**
      * @param string $table
      * @param string $field
      * @param array $row
      * @param array $PA
      */
-    function getSingleField_beforeRender($table, $field, &$row, &$PA)
+    public function getSingleField_beforeRender($table, $field, &$row, &$PA)
     {
         global $TCA;
 

@@ -39,10 +39,8 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  */
 class TestResultTest extends UnitTestCase
 {
-
-    function test_comparisonOfTestResults()
+    public function test_comparisonOfTestResults()
     {
-
         $result = \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_undefined);
 
         $compareResult = \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_undefined);
@@ -68,7 +66,5 @@ class TestResultTest extends UnitTestCase
         $result = \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_error);
         $compareResult = \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_error);
         $this->assertTrue($result->equals($compareResult), 'two empty ERROR results should be equal');
-
     }
-
 }

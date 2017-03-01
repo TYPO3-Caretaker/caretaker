@@ -44,12 +44,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_AggregatorResultRepository
 {
-
     /**
      * Reference to the current Instance
      *
@@ -72,7 +69,7 @@ class tx_caretaker_AggregatorResultRepository
     public static function getInstance()
     {
         if (!self::$instance) {
-            self::$instance = new tx_caretaker_AggregatorResultRepository();
+            self::$instance = new self();
         }
 
         return self::$instance;
@@ -86,7 +83,6 @@ class tx_caretaker_AggregatorResultRepository
      */
     public function getLatestByNode($node)
     {
-
         $instance = $node->getInstance();
         if ($instance) {
             $instanceUid = $instance->getUid();
@@ -104,9 +100,8 @@ class tx_caretaker_AggregatorResultRepository
             $result = $this->dbrow2instance($row);
 
             return $result;
-        } else {
-            return new tx_caretaker_AggregatorResult();
         }
+        return new tx_caretaker_AggregatorResult();
     }
 
     /**
@@ -165,7 +160,7 @@ class tx_caretaker_AggregatorResultRepository
     /**
      *
      * @param tx_caretaker_AggregatorNode $node
-     * @return integer
+     * @return int
      */
     public function getResultNumberByNode($node)
     {
@@ -186,10 +181,8 @@ class tx_caretaker_AggregatorResultRepository
 
         if ($row) {
             return $row['number'];
-        } else {
-            return 0;
         }
-
+        return 0;
     }
 
     /**
@@ -228,7 +221,7 @@ class tx_caretaker_AggregatorResultRepository
      *
      * @param tx_caretaker_AggregatorNode $node
      * @param tx_caretaker_AggregatorResult $aggregator_result
-     * @return integer UID of the new DB result Record
+     * @return int UID of the new DB result Record
      */
     public function addNodeResult(tx_caretaker_AggregatorNode $node, tx_caretaker_AggregatorResult $aggregator_result)
     {
@@ -240,7 +233,7 @@ class tx_caretaker_AggregatorResultRepository
             $instanceUid = 0;
         }
 
-        $values = [
+        $values = array(
             'aggregator_uid' => $node->getUid(),
             'aggregator_type' => $node->getType(),
             'instance_uid' => $instanceUid,
@@ -254,7 +247,7 @@ class tx_caretaker_AggregatorResultRepository
             'result_msg' => $aggregator_result->getMessage()->getText(),
             'result_values' => serialize($aggregator_result->getMessage()->getValues()),
             'result_submessages' => serialize($aggregator_result->getSubMessages()),
-        ];
+        );
 
         $GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_aggregatorresult', $values);
 
@@ -270,7 +263,7 @@ class tx_caretaker_AggregatorResultRepository
     private function dbrow2instance($row)
     {
         $message = new tx_caretaker_ResultMessage($row['result_msg'], unserialize($row['result_values']));
-        $submessages = ($row['result_submessages']) ? unserialize($row['result_submessages']) : [];
+        $submessages = ($row['result_submessages']) ? unserialize($row['result_submessages']) : array();
         $instance = new tx_caretaker_AggregatorResult(
             $row['tstamp'],
             $row['result_status'],

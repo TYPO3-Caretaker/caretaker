@@ -39,22 +39,22 @@
  */
 class tx_caretaker_mod_overview extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 {
-    var $pageinfo;
+    public $pageinfo;
 
-    var $node_repository;
+    public $node_repository;
 
-    var $instance_repository;
+    public $instance_repository;
 
-    var $node_id;
+    public $node_id;
 
     /**
      * @var \TYPO3\CMS\Core\Page\PageRenderer
      */
-    var $pageRenderer;
+    public $pageRenderer;
 
     public function __construct()
     {
-        $GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
+        $GLOBALS['LANG']->includeLLFile('EXT:caretaker/mod_nav/locallang.xml');
     }
 
     /**
@@ -62,7 +62,7 @@ class tx_caretaker_mod_overview extends \TYPO3\CMS\Backend\Module\BaseScriptClas
      *
      * @return    void
      */
-    function init()
+    public function init()
     {
         global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
         parent::init();
@@ -75,14 +75,13 @@ class tx_caretaker_mod_overview extends \TYPO3\CMS\Backend\Module\BaseScriptClas
      *
      * @return void
      */
-    function main()
+    public function main()
     {
         global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 
         $PATH_TYPO3 = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
 
-        if ($BE_USER->user["admin"]) {
-
+        if ($BE_USER->user['admin']) {
             // find node
             $node_repository = tx_caretaker_NodeRepository::getInstance();
             $node = $node_repository->id2node($this->node_id, true);
@@ -99,9 +98,8 @@ class tx_caretaker_mod_overview extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             $this->pageRenderer->loadExtJS();
             $this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.js');
 
-            $panels = [];
+            $panels = array();
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'] as $extJsBackendPanel) {
-
                 // register JS
                 foreach ($extJsBackendPanel['jsIncludes'] as $jsInclude) {
                     $filename = $BACK_PATH . '../' . str_replace(PATH_site, '', \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($jsInclude));
@@ -130,7 +128,7 @@ class tx_caretaker_mod_overview extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             //Add caretaker css
             $this->pageRenderer->addCssFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/css/tx.caretaker.overview.css');
 
-            $pluginItems = [];
+            $pluginItems = array();
             foreach ($panels as $id => $xtype) {
                 $pluginItems[] = '{ id: "' . $id . '", xtype: "' . $xtype . '" , back_path: back_path , node_id: node_id }';
             }
@@ -192,7 +190,7 @@ class tx_caretaker_mod_overview extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				});
 			');
 
-            $this->content .= $this->doc->startPage($LANG->getLL("title"));
+            $this->content .= $this->doc->startPage($LANG->getLL('title'));
             $this->doc->form = '';
         } else {
             // If no access or if not admin
@@ -200,8 +198,8 @@ class tx_caretaker_mod_overview extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Template\MediumDocumentTemplate');
             $this->doc->backPath = $BACK_PATH;
 
-            $this->content .= $this->doc->startPage($LANG->getLL("title"));
-            $this->content .= $this->doc->header($LANG->getLL("title"));
+            $this->content .= $this->doc->startPage($LANG->getLL('title'));
+            $this->content .= $this->doc->header($LANG->getLL('title'));
             $this->content .= $this->doc->spacer(5);
             $this->content .= $this->doc->spacer(10);
         }
@@ -212,7 +210,7 @@ class tx_caretaker_mod_overview extends \TYPO3\CMS\Backend\Module\BaseScriptClas
      *
      * @return    void
      */
-    function printContent()
+    public function printContent()
     {
         $this->content .= $this->doc->endPage();
         echo $this->content;

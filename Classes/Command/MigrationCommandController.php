@@ -1,5 +1,4 @@
 <?php
-
 namespace Caretaker\Caretaker\Command;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -15,13 +14,13 @@ class MigrationCommandController extends CommandController
                 if (is_array($xml)) {
                     foreach ($xml['data']['sDEF']['lDEF']['testconfigurations']['el'] as $section) {
                         if (array_key_exists('test', $section)) {
-                            $configurationOverrideRecord = [
+                            $configurationOverrideRecord = array(
                                 'type' => 'test_configuration',
                                 'tstamp' => time(),
                                 'crdate' => time(),
                                 'cruser_id' => (int)$GLOBALS['BE_USER']->user['uid'],
                                 'instance' => (int)$instance['uid'],
-                            ];
+                            );
                             foreach ($section['test']['el'] as $fieldName => $fieldData) {
                                 switch ($fieldName) {
                                     case 'test_service':
@@ -35,21 +34,21 @@ class MigrationCommandController extends CommandController
                                         break;
                                 }
                             }
-                            $GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_instance_override', $configurationOverrideRecord, [
+                            $GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_instance_override', $configurationOverrideRecord, array(
                                 'tstamp',
                                 'crdate',
                                 'cruser_id',
                                 'instance',
                                 'test',
-                            ]);
+                            ));
                         } elseif (array_key_exists('curl_option', $section)) {
-                            $configurationOverrideRecord = [
+                            $configurationOverrideRecord = array(
                                 'type' => 'curl_option',
                                 'tstamp' => time(),
                                 'crdate' => time(),
                                 'cruser_id' => (int)$GLOBALS['BE_USER']->user['uid'],
                                 'instance' => (int)$instance['uid'],
-                            ];
+                            );
                             foreach ($section['curl_option']['el'] as $fieldName => $fieldData) {
                                 switch ($fieldName) {
                                     case 'option':
@@ -70,12 +69,12 @@ class MigrationCommandController extends CommandController
                                         break;
                                 }
                             }
-                            $GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_instance_override', $configurationOverrideRecord, [
+                            $GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_instance_override', $configurationOverrideRecord, array(
                                 'tstamp',
                                 'crdate',
                                 'cruser_id',
                                 'instance',
-                            ]);
+                            ));
                         }
                     }
                 }

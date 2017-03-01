@@ -42,12 +42,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_Contact
 {
-
     /**
      *
      * @var tx_caretaker_ContactRole
@@ -106,9 +103,7 @@ class tx_caretaker_Contact
         }
         if ($this->address[$propertyName]) {
             return $this->address[$propertyName];
-        } else {
-            return '';
         }
+        return '';
     }
 }
-

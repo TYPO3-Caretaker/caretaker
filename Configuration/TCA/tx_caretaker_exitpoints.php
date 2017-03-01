@@ -4,8 +4,8 @@ $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretake
 $advancedNotificationsEnabled = $extConfig['notifications.']['advanced.']['enabled'] == '1';
 
 if ($advancedNotificationsEnabled) {
-    $GLOBALS['TCA']['tx_caretaker_exitpoints'] = [
-        'ctrl' => [
+    $GLOBALS['TCA']['tx_caretaker_exitpoints'] = array(
+        'ctrl' => array(
             'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints',
             'label' => 'name',
             'tstamp' => 'tstamp',
@@ -14,80 +14,80 @@ if ($advancedNotificationsEnabled) {
             'default_sortby' => 'ORDER BY name',
             'delete' => 'deleted',
             'rootLevel' => -1,
-            'enablecolumns' => [
+            'enablecolumns' => array(
                 'disabled' => 'hidden',
-            ],
+            ),
             'iconfile' => 'EXT:caretaker/res/icons/exitpoint.png',
             'requestUpdate' => 'service',
             'searchFields' => 'name, description',
-        ],
-        'interface' => [
+        ),
+        'interface' => array(
             'showRecordFieldList' => 'hidden,id,name,description,service,config',
-        ],
-        'columns' => [
-            'hidden' => [
+        ),
+        'columns' => array(
+            'hidden' => array(
                 'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
-                'config' => [
+                'config' => array(
                     'type' => 'check',
                     'default' => '0',
-                ],
-            ],
-            'id' => [
+                ),
+            ),
+            'id' => array(
                 'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.id',
-                'config' => [
+                'config' => array(
                     'type' => 'input',
                     'size' => 30,
                     'eval' => 'required,nospace,unique',
-                ],
-            ],
-            'name' => [
+                ),
+            ),
+            'name' => array(
                 'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.name',
-                'config' => [
+                'config' => array(
                     'type' => 'input',
                     'size' => '255',
-                ],
-            ],
-            'description' => [
+                ),
+            ),
+            'description' => array(
                 'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.description',
-                'config' => [
+                'config' => array(
                     'type' => 'text',
                     'cols' => '50',
                     'rows' => '5',
-                ],
-            ],
-            'service' => [
+                ),
+            ),
+            'service' => array(
                 'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service',
-                'config' => [
+                'config' => array(
                     'type' => 'select',
                     'renderType' => 'selectSingle',
                     'items' => array_merge(
-                        [
-                            0 => [
+                        array(
+                            0 => array(
                                 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service.select_exitpoint',
                                 '',
-                            ],
-                        ],
+                            ),
+                        ),
                         \tx_caretaker_ServiceHelper::getTcaExitPointServiceItems()
                     ),
                     'size' => 1,
                     'maxitems' => 1,
-                ],
-            ],
-            'config' => [
+                ),
+            ),
+            'config' => array(
                 'displayCond' => 'FIELD:service:REQ:true',
                 'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.config',
-                'config' => [
+                'config' => array(
                     'type' => 'flex',
                     'ds_pointerField' => 'service',
                     'ds' => \tx_caretaker_ServiceHelper::getTcaExitPointConfigDs(),
-                ],
-            ],
-        ],
-        'types' => [
-            '0' => ['showitem' => 'id;;;;1-1-1, name, description, service, config'],
-        ],
-        'palettes' => [
-            '1' => ['showitem' => 'hidden'],
-        ],
-    ];
+                ),
+            ),
+        ),
+        'types' => array(
+            '0' => array('showitem' => 'id;;;;1-1-1, name, description, service, config'),
+        ),
+        'palettes' => array(
+            '1' => array('showitem' => 'hidden'),
+        ),
+    );
 }

@@ -43,19 +43,16 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_LocalizationHelper
 {
-
     /**
      * Translate a given string in the current language
      *
      * @param string $locallangString
      * @return string
      */
-    static function localizeString($locallangString)
+    public static function localizeString($locallangString)
     {
         // handler whole LLL String
         if (strpos($locallangString, 'LLL:') !== 0) {
@@ -73,7 +70,7 @@ class tx_caretaker_LocalizationHelper
                     // FE
                     if ($GLOBALS['TSFE']) {
                         $lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
-                        $result = $lcObj->TEXT(['data' => $locallangString]);
+                        $result = $lcObj->TEXT(array('data' => $locallangString));
                     } // eID
                     else {
                         /** @var \TYPO3\CMS\Lang\LanguageService $LANG */
@@ -133,6 +130,6 @@ class tx_caretaker_LocalizationHelper
      */
     public static function localizeSubstring($context)
     {
-        return tx_caretaker_LocalizationHelper::localizeString($context[1]);
+        return self::localizeString($context[1]);
     }
 }

@@ -39,25 +39,22 @@
  */
 class tx_caretaker_pi_abstract extends tx_caretaker_pibase
 {
+    public $prefixId = 'tx_caretaker_pi_abstract';        // Same as class name
 
-    var $prefixId = 'tx_caretaker_pi_abstract';        // Same as class name
+    public $scriptRelPath = 'pi_abstract/class.tx_caretaker_pi_abstract.php';    // Path to this script relative to the extension dir.
 
-    var $scriptRelPath = 'pi_abstract/class.tx_caretaker_pi_abstract.php';    // Path to this script relative to the extension dir.
-
-    var $extKey = 'caretaker';    // The extension key.
+    public $extKey = 'caretaker';    // The extension key.
 
     /**
      * GetPlugin Content
      *
      * @return string
      */
-    function getContent()
+    public function getContent()
     {
-
         $node = $this->getNode();
 
         if ($node) {
-
             // getData
             $data = $this->getNodeStatusData($node);
 
@@ -67,7 +64,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase
             $renderData = $data['nodeInfo'];
 
             // substitute subparts
-            foreach (['error', 'warning', 'ack'] as $key) {
+            foreach (array('error', 'warning', 'ack') as $key) {
                 $subpartMark = '###CARETAKER-CHILDREN-' . strtoupper($key) . '###';
                 if (count($data['testResults'][$key]) == 0) {
                     $template = $this->cObj->substituteSubpart($template, $subpartMark, '');
@@ -85,7 +82,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase
 
             // substitute markers
             if ($this->conf['markers.']) {
-                $markers = [];
+                $markers = array();
                 foreach (array_keys($this->conf['markers.']) as $key) {
                     if (substr($key, -1) != '.') {
                         $mark = $lcObj->cObjGetSingle($this->conf['markers.'][$key], $this->conf['markers.'][$key . '.']);
@@ -96,7 +93,6 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase
             }
 
             $content = $template;
-
         } else {
             $content = 'no node found';
         }
@@ -111,14 +107,14 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase
      * @param string $template
      * @return string
      */
-    function renderNodeList($nodeDataList, $template)
+    public function renderNodeList($nodeDataList, $template)
     {
         $renderedNodelist = '';
         if ($nodeDataList && is_array($nodeDataList)) {
             foreach ($nodeDataList as $nodeData) {
                 $lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
                 $lcObj->start($nodeData);
-                $node_markers = [];
+                $node_markers = array();
                 if ($this->conf['childMarkers.']) {
                     foreach (array_keys($this->conf['childMarkers.']) as $key) {
                         if (substr($key, -1) != '.') {
@@ -139,7 +135,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase
      *
      * @return tx_caretaker_AbstractNode
      */
-    function getNode()
+    public function getNode()
     {
         $this->pi_initPIflexForm();
         $node_id = $this->pi_getFFValue($this->cObj->data['pi_flexform'], 'node_id');
@@ -161,9 +157,8 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase
             } while ($parent_node = $parent_node->getParent());
 
             return false;
-        } else {
-            return $node;
         }
+        return $node;
     }
 
     /**
@@ -172,22 +167,22 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase
      * @param tx_caretaker_AbstractNode $node
      * @return array Associative Array with the keys 'nodeInfo' and 'testResults'
      */
-    function getNodeStatusData($node)
+    public function getNodeStatusData($node)
     {
         if (is_a($node, 'tx_caretaker_AggregatorNode')) {
             $testChildNodes = $node->getTestNodes();
-        } else if (is_a($node, 'tx_caretaker_TestNode')) {
-            $testChildNodes = [$node];
+        } elseif (is_a($node, 'tx_caretaker_TestNode')) {
+            $testChildNodes = array($node);
         } else {
-            $testChildNodes = [];
+            $testChildNodes = array();
         }
 
-        $nodesErrors = [];
-        $nodesWarnings = [];
-        $nodesAck = [];
-        $nodesDue = [];
-        $nodesOk = [];
-        $nodesUndefined = [];
+        $nodesErrors = array();
+        $nodesWarnings = array();
+        $nodesAck = array();
+        $nodesDue = array();
+        $nodesOk = array();
+        $nodesUndefined = array();
 
         $worst_state = tx_caretaker_Constants::state_ok;
         $worst_state_info = '';
@@ -201,7 +196,6 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase
 
         /** @var tx_caretaker_TestNode $testNode */
         foreach ($testChildNodes as $testNode) {
-
             $testResult = $testNode->getTestResult();
             $testNodeState = $testResult->getState();
 
@@ -213,7 +207,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase
 
             // aggreate infos about nodes and errors
             $instance = $testNode->getInstance();
-            $nodeInfo = [
+            $nodeInfo = array(
                 'title' => $instance->getTitle() . ' ' . $testNode->getTitle(),
                 'node_title' => $testNode->getTitle(),
                 'instance_title' => $instance->getTitle(),
@@ -226,7 +220,7 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase
                 'message' => $testResult->getMessage(),
                 'message_ll' => $testResult->getLocallizedInfotext(),
                 'state' => $testResult->getState(),
-            ];
+            );
 
             // save info
             switch ($testNodeState) {
@@ -257,8 +251,8 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase
             }
         }
 
-        $data = [
-            'nodeInfo' => [
+        $data = array(
+            'nodeInfo' => array(
                 'numError' => $num_error,
                 'numWarning' => $num_warning,
                 'numUndefined' => $num_undefined,
@@ -268,14 +262,14 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase
                 'nodeTitle' => $node->getTitle(),
                 'state' => $worst_state,
                 'stateInfo' => $worst_state_info,
-            ],
-            'testResults' => [
+            ),
+            'testResults' => array(
                 'error' => $nodesErrors,
                 'warning' => $nodesWarnings,
                 'ack' => $nodesAck,
                 'due' => $nodesDue,
-            ],
-        ];
+            ),
+        );
 
         return $data;
     }
@@ -284,4 +278,3 @@ class tx_caretaker_pi_abstract extends tx_caretaker_pibase
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_abstract/class.tx_caretaker_pi_abstract.php']) {
     include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_abstract/class.tx_caretaker_pi_abstract.php']);
 }
-

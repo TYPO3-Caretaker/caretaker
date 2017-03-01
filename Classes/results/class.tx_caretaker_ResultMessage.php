@@ -43,12 +43,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_ResultMessage
 {
-
     /**
      * The Result Message string. Can be a LLL: String or can contain {LLL:parts}
      *
@@ -69,7 +66,7 @@ class tx_caretaker_ResultMessage
      * @param string $text
      * @param array $values
      */
-    public function __construct($text = '', $values = [])
+    public function __construct($text = '', $values = array())
     {
         $this->text = $text;
         $this->values = $values;

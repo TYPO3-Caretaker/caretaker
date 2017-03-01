@@ -43,12 +43,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_RootNode extends tx_caretaker_AggregatorNode
 {
-
     /**
      * @param bool $hidden
      */
@@ -70,7 +67,7 @@ class tx_caretaker_RootNode extends tx_caretaker_AggregatorNode
     /**
      * Find Child nodes
      *
-     * @param boolean $show_hidden
+     * @param bool $show_hidden
      * @return array
      * @see caretaker/trunk/Classes/nodes/tx_caretaker_AggregatorNode#findChildren()
      */

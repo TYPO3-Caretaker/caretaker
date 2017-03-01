@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category   xmpphp
- * @package    XMPPHP
  * @author     Nathanael C. Fritz <JID: fritzy@netflint.net>
  * @author     Stephan Wentz <JID: stephan@jabber.wentz.it>
  * @author     Michael Garvin <JID: gar@netflint.net>
@@ -29,7 +28,6 @@
 /**
  * XMPPHP Log
  *
- * @package    XMPPHP
  * @author     Nathanael C. Fritz <JID: fritzy@netflint.net>
  * @author     Stephan Wentz <JID: stephan@jabber.wentz.it>
  * @author     Michael Garvin <JID: gar@netflint.net>
@@ -38,7 +36,6 @@
  */
 class XMPPHP_Log
 {
-
     const LEVEL_ERROR = 0;
     const LEVEL_WARNING = 1;
     const LEVEL_INFO = 2;
@@ -48,32 +45,32 @@ class XMPPHP_Log
     /**
      * @var array
      */
-    protected $data = [];
+    protected $data = array();
 
     /**
      * @var array
      */
-    protected $names = ['ERROR', 'WARNING', 'INFO', 'DEBUG', 'VERBOSE'];
+    protected $names = array('ERROR', 'WARNING', 'INFO', 'DEBUG', 'VERBOSE');
 
     /**
-     * @var integer
+     * @var int
      */
     protected $runlevel;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $printout;
 
     /**
      * Constructor
      *
-     * @param boolean $printout
+     * @param bool $printout
      * @param string $runlevel
      */
     public function __construct($printout = false, $runlevel = self::LEVEL_INFO)
     {
-        $this->printout = (boolean)$printout;
+        $this->printout = (bool)$printout;
         $this->runlevel = (int)$runlevel;
     }
 
@@ -82,12 +79,12 @@ class XMPPHP_Log
      * If printout in this instance is set to true, directly output the message
      *
      * @param string $msg
-     * @param integer $runlevel
+     * @param int $runlevel
      */
     public function log($msg, $runlevel = self::LEVEL_INFO)
     {
         $time = time();
-        #$this->data[] = array($this->runlevel, $msg, $time);
+        //$this->data[] = array($this->runlevel, $msg, $time);
         if ($this->printout and $runlevel <= $this->runlevel) {
             $this->writeLine($msg, $runlevel, $time);
         }
@@ -97,8 +94,8 @@ class XMPPHP_Log
      * Output the complete log.
      * Log will be cleared if $clear = true
      *
-     * @param boolean $clear
-     * @param integer $runlevel
+     * @param bool $clear
+     * @param int $runlevel
      */
     public function printout($clear = true, $runlevel = null)
     {
@@ -111,14 +108,14 @@ class XMPPHP_Log
             }
         }
         if ($clear) {
-            $this->data = [];
+            $this->data = array();
         }
     }
 
     protected function writeLine($msg, $runlevel, $time)
     {
         //echo date('Y-m-d H:i:s', $time)." [".$this->names[$runlevel]."]: ".$msg."\n";
-        echo $time . " [" . $this->names[$runlevel] . "]: " . $msg . "\n";
+        echo $time . ' [' . $this->names[$runlevel] . ']: ' . $msg . "\n";
         flush();
     }
 }

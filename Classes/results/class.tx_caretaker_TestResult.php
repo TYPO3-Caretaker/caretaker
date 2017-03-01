@@ -42,12 +42,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_TestResult extends tx_caretaker_NodeResult
 {
-
     /**
      * Value of the testresult
      *
@@ -58,13 +55,13 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult
     /**
      * Constructor
      *
-     * @param integer $timestamp
+     * @param int $timestamp
      * @param int $state
      * @param float|int $value
      * @param string $message
      * @param array $submessages
      */
-    public function __construct($timestamp = 0, $state = tx_caretaker_Constants::state_undefined, $value = 0, $message = '', $submessages = [])
+    public function __construct($timestamp = 0, $state = tx_caretaker_Constants::state_undefined, $value = 0, $message = '', $submessages = array())
     {
         parent::__construct($timestamp, $state, $message, $submessages);
         $this->value = $value;
@@ -73,13 +70,14 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult
     /**
      * Create a new testresult with state UNKNOWN
      *
+     * @param mixed $message
      * @return tx_caretaker_TestResult
      */
-    static public function undefined($message = 'Result is undefined')
+    public static function undefined($message = 'Result is undefined')
     {
         $timestamp = time();
 
-        return new tx_caretaker_TestResult($timestamp, tx_caretaker_Constants::state_undefined, 0, $message);
+        return new self($timestamp, tx_caretaker_Constants::state_undefined, 0, $message);
     }
 
     /**
@@ -91,11 +89,11 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult
      * @param array $submessages
      * @return tx_caretaker_TestResult
      */
-    static public function create($status = tx_caretaker_Constants::state_undefined, $value = 0, $message = '', $submessages = null)
+    public static function create($status = tx_caretaker_Constants::state_undefined, $value = 0, $message = '', $submessages = null)
     {
         $ts = time();
 
-        return new tx_caretaker_TestResult($ts, $status, $value, $message, $submessages);
+        return new self($ts, $status, $value, $message, $submessages);
     }
 
     /**
@@ -130,12 +128,12 @@ class tx_caretaker_TestResult extends tx_caretaker_NodeResult
      */
     public function getResultHash()
     {
-        $state = [
+        $state = array(
             'state' => (int)$this->getState(),
             'value' => (float)$this->getValue(),
             'message' => $this->getMessage(),
             'submessages' => $this->getSubMessages(),
-        ];
+        );
 
         return md5(serialize($state));
     }

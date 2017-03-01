@@ -1,7 +1,7 @@
 <?php
 
-$GLOBALS['TCA']['tx_caretaker_contactaddress'] = [
-    'ctrl' => [
+$GLOBALS['TCA']['tx_caretaker_contactaddress'] = array(
+    'ctrl' => array(
         'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_contactaddress',
         'label' => 'name',
         'tstamp' => 'tstamp',
@@ -10,52 +10,52 @@ $GLOBALS['TCA']['tx_caretaker_contactaddress'] = [
         'default_sortby' => 'ORDER BY name',
         'delete' => 'deleted',
         'rootLevel' => -1,
-        'enablecolumns' => [
+        'enablecolumns' => array(
             'disabled' => 'hidden',
-        ],
+        ),
         'dividers2tabs' => 1,
         'iconfile' => 'EXT:caretaker/res/icons/contactaddress.png',
-    ],
-    'interface' => [
+    ),
+    'interface' => array(
         'showRecordFieldList' => 'hidden,name,email,xmpp',
-    ],
-    'columns' => [
-        'hidden' => [
+    ),
+    'columns' => array(
+        'hidden' => array(
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
-            'config' => [
+            'config' => array(
                 'type' => 'check',
                 'default' => '0',
-            ],
-        ],
-        'name' => [
+            ),
+        ),
+        'name' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_contactaddress.name',
-            'config' => [
+            'config' => array(
                 'type' => 'input',
                 'size' => '30',
                 'eval' => 'trim',
-            ],
-        ],
-        'email' => [
+            ),
+        ),
+        'email' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_contactaddress.email',
-            'config' => [
+            'config' => array(
                 'type' => 'input',
                 'size' => '30',
                 'eval' => 'trim',
-            ],
-        ],
-        'xmpp' => [
+            ),
+        ),
+        'xmpp' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_contactaddress.xmpp',
-            'config' => [
+            'config' => array(
                 'type' => 'input',
                 'size' => '30',
                 'eval' => 'trim',
-            ],
-        ],
-    ],
-    'types' => [
-        '0' => ['showitem' => 'id;;;;1-1-1, name, email, xmpp'],
-    ],
-    'palettes' => [
-        '1' => ['showitem' => 'hidden'],
-    ],
-];
+            ),
+        ),
+    ),
+    'types' => array(
+        '0' => array('showitem' => 'id;;;;1-1-1, name, email, xmpp'),
+    ),
+    'palettes' => array(
+        '1' => array('showitem' => 'hidden'),
+    ),
+);

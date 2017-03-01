@@ -39,11 +39,9 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  */
 class BasicTest extends UnitTestCase
 {
-
-    function test_services_are_present()
+    public function test_services_are_present()
     {
         global $T3_SERVICES;
         $this->assertNotNull(count($T3_SERVICES['caretaker_test_service']), 'No testservices are present');
     }
-
 }

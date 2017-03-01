@@ -44,12 +44,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_TouchTestService extends tx_caretaker_TestServiceBase
 {
-
     /**
      * Value Description
      *
@@ -74,15 +71,14 @@ class tx_caretaker_TouchTestService extends tx_caretaker_TestServiceBase
     /**
      * @return tx_caretaker_TestResult
      */
-    function runTest()
+    public function runTest()
     {
         $filename = $this->getTimestampFilename();
         $time = time();
         if (file_put_contents($filename, $time) !== false) {
             return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_ok);
-        } else {
-            return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, 'Could not touch file ' . $filename);
         }
+        return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, 'Could not touch file ' . $filename);
     }
 
     /**

@@ -43,12 +43,9 @@
  * @author Tobias Liebig <liebig@networkteam.com>
  * @author Tomas Norre Mikkelsen <tomasnorre@gmail.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_LatestVersionsHelper
 {
-
     /**
      * @var string JSON release feed
      */
@@ -68,8 +65,8 @@ class tx_caretaker_LatestVersionsHelper
             );
         }
 
-        $max = [];
-        $stable = [];
+        $max = array();
+        $stable = array();
         foreach ($releases as $major => $details) {
             if (is_array($details) && !empty($details['latest'])) {
                 $max[$major] = $details['latest'];
@@ -78,7 +75,6 @@ class tx_caretaker_LatestVersionsHelper
             if (is_array($details) && !empty($details['stable'])) {
                 $stable[$major] = $details['stable'];
             }
-
         }
         \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versions', $max);
         \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versionsStable', $stable);
@@ -106,10 +102,10 @@ class tx_caretaker_LatestVersionsHelper
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, true);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 
-        $headers = [
-            "Cache-Control: no-cache",
-            "Pragma: no-cache",
-        ];
+        $headers = array(
+            'Cache-Control: no-cache',
+            'Pragma: no-cache',
+        );
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
         $response = curl_exec($curl);

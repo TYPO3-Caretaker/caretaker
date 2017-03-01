@@ -35,7 +35,6 @@
  */
 interface tx_caretaker_TestServiceInterface
 {
-
     /**
      * Initialize the Service
      */
@@ -46,14 +45,14 @@ interface tx_caretaker_TestServiceInterface
      *
      * @param tx_caretaker_InstanceNode $instance
      */
-    function setInstance($instance);
+    public function setInstance($instance);
 
     /**
      * Set the configuration for this test
      *
      * @param array $configuration
      */
-    function setConfiguration($configuration);
+    public function setConfiguration($configuration);
 
     /**
      * Run the Test defined in TestConf and return a Testresult Object
@@ -65,14 +64,14 @@ interface tx_caretaker_TestServiceInterface
     /**
      * Get a short description for the meaning of the value in the current test
      *
-     * @return String Description what is stored in the Value field.
+     * @return string Description what is stored in the Value field.
      */
     public function getValueDescription();
 
     /**
      * Get information if the test service is able to execute tests
      *
-     * @return boolean
+     * @return bool
      */
     public function isExecutable();
 
@@ -85,5 +84,4 @@ interface tx_caretaker_TestServiceInterface
      * @return string
      */
     public function getConfigurationInfo();
-
 }

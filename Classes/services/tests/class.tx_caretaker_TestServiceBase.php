@@ -42,12 +42,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractService implements tx_caretaker_TestServiceInterface
 {
-
     /**
      * The instance the test is run for
      *
@@ -105,11 +102,9 @@ class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractServi
     {
         if (is_array($configuration) && !is_array($configuration['data'])) {
             $this->array_configuration = $configuration;
-
-        } else if (is_array($configuration) && is_array($configuration['data'])) {
+        } elseif (is_array($configuration) && is_array($configuration['data'])) {
             $this->flexform_configuration = $configuration;
-
-        } else if (!is_array($configuration)) {
+        } elseif (!is_array($configuration)) {
             $this->flexform_configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($configuration);
         }
     }
@@ -132,19 +127,18 @@ class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractServi
             if (isset($this->flexform_configuration['data'][$sheet]['lDEF'][$key]['vDEF'])) {
                 $result = $this->flexform_configuration['data'][$sheet]['lDEF'][$key]['vDEF'];
             }
-        } else if ($this->array_configuration) {
+        } elseif ($this->array_configuration) {
             if ($sheet == false && isset($this->array_configuration[$key])) {
                 $result = $this->array_configuration[$key];
-            } else if (isset($this->array_configuration[$sheet][$key])) {
+            } elseif (isset($this->array_configuration[$sheet][$key])) {
                 $result = $this->array_configuration[$sheet][$key];
             }
         }
 
         if ($result !== false) {
             return $result;
-        } else {
-            return $default;
         }
+        return $default;
     }
 
     /**
@@ -164,7 +158,7 @@ class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractServi
      */
     public function getConfigurationInfo()
     {
-        $markers = [];
+        $markers = array();
         if ($this->flexform_configuration && is_array($this->flexform_configuration['data'])) {
             foreach ($this->flexform_configuration['data'] as $sheetName => $sheet) {
                 foreach ($this->flexform_configuration['data'][$sheetName]['lDEF'] as $key => $value) {
@@ -211,10 +205,10 @@ class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractServi
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
         curl_setopt($curl, CURLOPT_TIMEOUT, 30);
 
-        $headers = [
-            "Cache-Control: no-cache",
-            "Pragma: no-cache",
-        ];
+        $headers = array(
+            'Cache-Control: no-cache',
+            'Pragma: no-cache',
+        );
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
         if (is_array($postValues)) {
@@ -232,16 +226,16 @@ class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractServi
         $info = curl_getinfo($curl);
         curl_close($curl);
 
-        return [
+        return array(
             'response' => $response,
             'info' => $info,
-        ];
+        );
     }
 
     /**
      * Get the value description for the test
      *
-     * @return String Description what is stored in the Value field.
+     * @return string Description what is stored in the Value field.
      */
     public function getValueDescription()
     {
@@ -275,7 +269,7 @@ class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractServi
             case 'FE':
                 $lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 
-                return ($lcObj->TEXT(['data' => $locallang_string]));
+                return $lcObj->TEXT(array('data' => $locallang_string));
 
             case 'BE':
                 $locallang_key = array_pop($locallang_parts);
@@ -286,7 +280,7 @@ class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractServi
 
                 return $LANG->getLLL($locallang_key, \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($locallang_file), $LANG->lang, $LANG->charSet));
 
-            default :
+            default:
                 return $locallang_string;
         }
     }

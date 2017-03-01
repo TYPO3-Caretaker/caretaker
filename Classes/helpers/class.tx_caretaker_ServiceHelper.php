@@ -43,33 +43,30 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_ServiceHelper
 {
+    /**
+     * @var array
+     */
+    protected static $tcaTestServiceItems = array();
 
     /**
      * @var array
      */
-    protected static $tcaTestServiceItems = [];
+    protected static $tcaTestConfigDs = array('default' => 'FILE:EXT:caretaker/Classes/services/tests/ds.tx_caretaker_default.xml');
 
     /**
      * @var array
      */
-    protected static $tcaTestConfigDs = ['default' => 'FILE:EXT:caretaker/Classes/services/tests/ds.tx_caretaker_default.xml'];
+    protected static $tcaExitPointServiceItems = array();
 
     /**
      * @var array
      */
-    protected static $tcaExitPointServiceItems = [];
-
-    /**
-     * @var array
-     */
-    protected static $tcaExitPointConfigDs = [
+    protected static $tcaExitPointConfigDs = array(
         'default' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?><T3DataStructure><meta></meta></T3DataStructure>',
-    ];
+    );
 
     /**
      * Array of all active Notification Services
@@ -99,7 +96,7 @@ class tx_caretaker_ServiceHelper
      */
     public static function registerCaretakerService($extKey, $path, $key, $title, $description = '')
     {
-        tx_caretaker_ServiceHelper::registerCaretakerTestService($extKey, $path, $key, $title, $description);
+        self::registerCaretakerTestService($extKey, $path, $key, $title, $description);
     }
 
     /**
@@ -119,7 +116,7 @@ class tx_caretaker_ServiceHelper
             && count(tx_caretakerinstance_ServiceHelper::$deferredTestServicesToRegister) > 0
         ) {
             $servicesToRegister = tx_caretakerinstance_ServiceHelper::$deferredTestServicesToRegister;
-            tx_caretakerinstance_ServiceHelper::$deferredTestServicesToRegister = [];
+            tx_caretakerinstance_ServiceHelper::$deferredTestServicesToRegister = array();
             foreach ($servicesToRegister as $service) {
                 self::registerCaretakerTestService($service[0], $service[1], $service[2], $service[3], $service[4]);
             }
@@ -131,7 +128,7 @@ class tx_caretaker_ServiceHelper
                 'caretaker',
                 'caretaker_test_service',
                 $key,
-                [
+                array(
                     'title' => $title,
                     'description' => $description,
                     'subtype' => $key,
@@ -142,11 +139,11 @@ class tx_caretaker_ServiceHelper
                     'exec' => '',
                     'classFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey) . $path . '/class.' . $key . 'TestService.php',
                     'className' => $key . 'TestService',
-                ]
+                )
             );
 
             // Add testtype to TCA
-            self::$tcaTestServiceItems[] = [$title, $key];
+            self::$tcaTestServiceItems[] = array($title, $key);
 
             // Add flexform to service-item
             self::$tcaTestConfigDs[$key] = 'FILE:EXT:' . $extKey . '/' . $path . '/' . 'ds.' . $key . 'TestService.xml';
@@ -171,9 +168,9 @@ class tx_caretaker_ServiceHelper
 
     public static function getTcaTestConfigDsWithIds()
     {
-        $dsArray = [
+        $dsArray = array(
             'default' => self::$tcaTestConfigDs['default'],
-        ];
+        );
         $tests = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_caretaker_test', 'deleted=0');
         if (!empty($tests)) {
             foreach ($tests as $testRecord) {
@@ -254,9 +251,8 @@ class tx_caretaker_ServiceHelper
         }
         if (self::$notificationServiceInstances[$serviceKey]) {
             return self::$notificationServiceInstances[$serviceKey];
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -264,7 +260,7 @@ class tx_caretaker_ServiceHelper
      */
     protected static function loadAllCaretakerNotificationServices()
     {
-        self::$notificationServiceInstances = [];
+        self::$notificationServiceInstances = array();
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'] as $serviceKey => $notificationService) {
             $instance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['notificationServices'][$serviceKey]);
             if ($instance instanceof tx_caretaker_NotificationServiceInterface && $instance->isEnabled()) {
@@ -288,7 +284,7 @@ class tx_caretaker_ServiceHelper
                 'caretaker',
                 'caretaker_exitpoint',
                 $key,
-                [
+                array(
                     'title' => $title,
                     'description' => $description,
                     'subtype' => $key,
@@ -299,9 +295,9 @@ class tx_caretaker_ServiceHelper
                     'exec' => '',
                     'classFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey) . $path . '/class.' . $key . 'ExitPoint.php',
                     'className' => $key . 'ExitPoint',
-                ]
+                )
             );
-            self::$tcaExitPointServiceItems[] = [$title, $key];
+            self::$tcaExitPointServiceItems[] = array($title, $key);
             self::$tcaExitPointConfigDs[$key] = 'FILE:EXT:' . $extKey . '/' . $path . '/' . 'ds.' . $key . 'ExitPoint.xml';
         }
     }
@@ -318,16 +314,15 @@ class tx_caretaker_ServiceHelper
     public static function registerExtJsBackendPanel($id, $xtype, $cssIncludes, $jsIncludes, $extKey)
     {
         if (!$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels']) {
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'] = [];
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'] = array();
         }
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'][$id] = [
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'][$id] = array(
             'extKey' => $extKey,
             'id' => $id,
             'xtype' => $xtype,
             'cssIncludes' => $cssIncludes,
             'jsIncludes' => $jsIncludes,
-        ];
+        );
     }
-
 }

@@ -43,12 +43,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_NodeInfo
 {
-
     const PATH_CHARTS = 'typo3temp/caretaker/charts';
 
     /**
@@ -63,7 +60,7 @@ class tx_caretaker_NodeInfo
 
         if ($node_id && $node) {
             $pathnode = $node;
-            $pathparts = [];
+            $pathparts = array();
             while ($pathnode) {
                 $pathparts[] = $pathnode->getTitle();
                 $pathnode = $pathnode->getParent();
@@ -72,15 +69,15 @@ class tx_caretaker_NodeInfo
 
             switch (get_class($node)) {
                 // test Node
-                case "tx_caretaker_TestNode":
+                case 'tx_caretaker_TestNode':
                     /** @var tx_caretaker_TestNode $node */
                     $interval_info = '';
                     $interval = $node->getInterval();
                     if ($interval < 60) {
                         $interval_info .= $interval . ' Seconds';
-                    } else if ($interval < 60 * 60) {
+                    } elseif ($interval < 60 * 60) {
                         $interval_info .= ($interval / 60) . ' Minutes';
-                    } else if ($interval < 60 * 60 * 24) {
+                    } elseif ($interval < 60 * 60 * 24) {
                         $interval_info .= ($interval / (60 * 60)) . ' Hours';
                     } else {
                         $interval_info .= ($interval / 86400) . ' Days';
@@ -129,9 +126,8 @@ class tx_caretaker_NodeInfo
                     break;
             }
             echo $info;
-
         } else {
-            echo "please select a node";
+            echo 'please select a node';
         }
     }
 
@@ -142,22 +138,22 @@ class tx_caretaker_NodeInfo
     public function ajaxRefreshNode($params, &$ajaxObj)
     {
         $node_id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
-        $force = (boolean)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('force');
+        $force = (bool)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('force');
         $node_repository = tx_caretaker_NodeRepository::getInstance();
         $node = $node_repository->id2node($node_id, true);
 
         if ($node_id && $node) {
-            $result = $node->updateTestResult(['forceUpdate' => $force]);
-            $content = [
+            $result = $node->updateTestResult(array('forceUpdate' => $force));
+            $content = array(
                 'state' => $result->getState(),
                 'state_info' => $result->getStateInfo(),
                 'timestamp' => $result->getTimestamp(),
                 'message' => $result->getLocallizedInfotext(),
-            ];
+            );
             $ajaxObj->setContent($content);
             $ajaxObj->setContentFormat('jsonbody');
         } else {
-            echo "please give a valid node id";
+            echo 'please give a valid node id';
         }
 
         $notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
@@ -181,20 +177,20 @@ class tx_caretaker_NodeInfo
             if ($node instanceof tx_caretaker_TestNode) {
                 /** @var tx_caretaker_TestNode $node */
                 $result = $node->setModeAck();
-                $content = [
+                $content = array(
                     'state' => $result->getState(),
                     'state_info' => $result->getStateInfo(),
                     'timestamp' => $result->getTimestamp(),
                     'message' => $result->getLocallizedInfotext(),
-                ];
+                );
 
                 $ajaxObj->setContent($content);
                 $ajaxObj->setContentFormat('jsonbody');
             } else {
-                echo "please give a testnode id" . $node_id;
+                echo 'please give a testnode id' . $node_id;
             }
         } else {
-            echo "please give a valid node id";
+            echo 'please give a valid node id';
         }
 
         $notificationServices = tx_caretaker_ServiceHelper::getAllCaretakerNotificationServices();
@@ -218,20 +214,20 @@ class tx_caretaker_NodeInfo
             if ($node instanceof tx_caretaker_TestNode) {
                 /** @var tx_caretaker_TestNode $node */
                 $result = $node->setModeDue();
-                $content = [
+                $content = array(
                     'state' => $result->getState(),
                     'state_info' => $result->getStateInfo(),
                     'timestamp' => $result->getTimestamp(),
                     'message' => $result->getLocallizedInfotext(),
-                ];
+                );
 
                 $ajaxObj->setContent($content);
                 $ajaxObj->setContentFormat('jsonbody');
             } else {
-                echo "please give a testnode id" . $node_id;
+                echo 'please give a testnode id' . $node_id;
             }
         } else {
-            echo "please give a valid node id" . $node_id;
+            echo 'please give a valid node id' . $node_id;
         }
 
         // send aggregated notifications
@@ -275,8 +271,7 @@ class tx_caretaker_NodeInfo
                     if ($result) {
                         echo $result;
                     }
-
-                } else if ($node instanceof tx_caretaker_AggregatorNode) {
+                } elseif ($node instanceof tx_caretaker_AggregatorNode) {
                     $AggregatorResultRangeChartRenderer = new tx_caretaker_AggregatorResultRangeChartRenderer();
                     $AggregatorResultRangeChartRenderer->setTitle($node->getTitle());
                     $AggregatorResultRangeChartRenderer->setAggregatorResultRange($result_range);
@@ -290,7 +285,7 @@ class tx_caretaker_NodeInfo
                 echo 'not enough results';
             }
         } else {
-            echo "please give a valid node id";
+            echo 'please give a valid node id';
         }
     }
 
@@ -311,16 +306,16 @@ class tx_caretaker_NodeInfo
             $count = $node->getTestResultNumber();
             $results = $node->getTestResultRangeByOffset($start, $limit);
 
-            $content = [
+            $content = array(
                 'totalCount' => $count,
-                'logItems' => [],
-            ];
+                'logItems' => array(),
+            );
 
-            $logItems = [];
+            $logItems = array();
             $i = 0;
             foreach ($results as $result) {
                 $i++;
-                $logItems[] = [
+                $logItems[] = array(
                     'num' => $i,
                     'title' => 'title_' . rand(),
                     'timestamp' => $result->getTimestamp(),
@@ -329,7 +324,7 @@ class tx_caretaker_NodeInfo
                     'message' => $result->getMessage()->getText(),
                     'message_ll' => $result->getLocallizedInfotext(),
                     'state' => $result->getState(),
-                ];
+                );
             }
             $content['logItems'] = array_reverse($logItems);
 
@@ -351,17 +346,17 @@ class tx_caretaker_NodeInfo
         if ($node_id && $node) {
             if ($node instanceof tx_caretaker_AggregatorNode) {
                 $testChildNodes = $node->getTestNodes();
-            } else if ($node instanceof tx_caretaker_TestNode) {
-                $testChildNodes = [$node];
+            } elseif ($node instanceof tx_caretaker_TestNode) {
+                $testChildNodes = array($node);
             } else {
-                $testChildNodes = [];
+                $testChildNodes = array();
             }
 
-            $nodeErrors = [];
-            $nodeWarnings = [];
-            $nodeUndefined = [];
-            $nodeAck = [];
-            $nodeDue = [];
+            $nodeErrors = array();
+            $nodeWarnings = array();
+            $nodeUndefined = array();
+            $nodeAck = array();
+            $nodeDue = array();
 
             $i = 0;
             /** @var tx_caretaker_AbstractNode $testNode */
@@ -370,7 +365,7 @@ class tx_caretaker_NodeInfo
                 $instance = $testNode->getInstance();
                 if ($testResult->getState() != 0) {
                     $i++;
-                    $nodeInfo = [
+                    $nodeInfo = array(
                         'num' => $i,
                         'title' => 'title_' . rand(),
 
@@ -386,7 +381,7 @@ class tx_caretaker_NodeInfo
                         'message' => $testResult->getLocallizedInfotext(),
                         'message_ll' => $testResult->getLocallizedInfotext(),
                         'state' => $testResult->getState(),
-                    ];
+                    );
 
                     switch ($testResult->getState()) {
                         case tx_caretaker_Constants::state_warning:
@@ -408,7 +403,7 @@ class tx_caretaker_NodeInfo
                 }
             }
 
-            $content = [];
+            $content = array();
             $content['nodeProblems'] = array_merge($nodeErrors, $nodeWarnings, $nodeAck, $nodeDue, $nodeUndefined);
             $content['totalCount'] = count($content['nodeProblems']);
 
@@ -431,26 +426,26 @@ class tx_caretaker_NodeInfo
 
         if ($node_id && $node) {
             $count = 0;
-            $contacts = [];
+            $contacts = array();
             $nodeContacts = $node->getContacts();
 
             /** @var tx_caretaker_Contact $nodeContact */
             foreach ($nodeContacts as $nodeContact) {
                 $role = $nodeContact->getRole();
                 if ($role) {
-                    $role_assoc = [
+                    $role_assoc = array(
                         'uid' => $role->getUid(),
                         'id' => $role->getId(),
                         'name' => $role->getTitle(),
                         'description' => $role->getDescription(),
-                    ];
+                    );
                 } else {
-                    $role_assoc = [
+                    $role_assoc = array(
                         'uid' => '',
                         'id' => '',
                         'name' => '',
                         'description' => '',
-                    ];
+                    );
                 }
 
                 $address = $nodeContact->getAddress();
@@ -458,7 +453,7 @@ class tx_caretaker_NodeInfo
                     $address['email_md5'] = md5($address['email']);
                 }
 
-                $contact = [
+                $contact = array(
                     'num' => $count++,
                     'id' => $node->getCaretakerNodeId() . '_role_' . $role_assoc['uid'] . '_address_' . $address['uid'],
 
@@ -469,7 +464,7 @@ class tx_caretaker_NodeInfo
 
                     'role' => $role_assoc,
                     'address' => $address,
-                ];
+                );
 
                 foreach ($address as $key => $value) {
                     $contact['address_' . $key] = $value;
@@ -482,7 +477,7 @@ class tx_caretaker_NodeInfo
                 $contacts[] = $contact;
             }
 
-            $content = [];
+            $content = array();
             $content['contacts'] = $contacts;
             $content['totalCount'] = $count;
 

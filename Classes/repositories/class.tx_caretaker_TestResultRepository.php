@@ -44,12 +44,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_TestResultRepository
 {
-
     /**
      * Reference to the current Instance
      *
@@ -60,7 +57,7 @@ class tx_caretaker_TestResultRepository
     /**
      * The time in seconds to search for the last node result
      *
-     * @var integer
+     * @var int
      */
     private $lastTestResultScanRange = 0;
 
@@ -81,7 +78,7 @@ class tx_caretaker_TestResultRepository
     public static function getInstance()
     {
         if (!self::$instance) {
-            self::$instance = new tx_caretaker_TestResultRepository();
+            self::$instance = new self();
         }
 
         return self::$instance;
@@ -105,9 +102,8 @@ class tx_caretaker_TestResultRepository
             $result = $this->dbrow2instance($row);
 
             return $result;
-        } else {
-            return new tx_caretaker_TestResult();
         }
+        return new tx_caretaker_TestResult();
     }
 
     /**
@@ -120,7 +116,7 @@ class tx_caretaker_TestResultRepository
     public function getPreviousDifferingResult($testNode, $currentResult)
     {
         $row = null;
-        if ($testNode instanceOf tx_caretaker_TestNode) {
+        if ($testNode instanceof tx_caretaker_TestNode) {
             $testUID = $testNode->getUid();
             $instanceUID = $testNode->getInstance()->getUid();
 
@@ -142,16 +138,15 @@ class tx_caretaker_TestResultRepository
             $result = $this->dbrow2instance($row);
 
             return $result;
-        } else {
-            return new tx_caretaker_TestResult();
         }
+        return new tx_caretaker_TestResult();
     }
 
     /**
      * Return the Number of available TestResults
      *
      * @param  tx_caretaker_TestNode $testNode
-     * @return integer
+     * @return int
      */
     public function getResultNumberByNode(tx_caretaker_TestNode $testNode)
     {
@@ -162,18 +157,17 @@ class tx_caretaker_TestResultRepository
         $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 
         if ($row) {
-            return ((int)$row['number']);
-        } else {
-            return 0;
+            return (int)$row['number'];
         }
+        return 0;
     }
 
     /**
      * Get a List of Testresults defined by Offset and Limit
      *
      * @param tx_caretaker_TestNode $testNode
-     * @param integer $offset
-     * @param integer $limit
+     * @param int $offset
+     * @param int $limit
      * @return tx_caretaker_TestResultRange
      */
     public function getResultRangeByNodeAndOffset(tx_caretaker_TestNode $testNode, $offset = 0, $limit = 10)
@@ -193,16 +187,15 @@ class tx_caretaker_TestResultRepository
         }
 
         return $result_range;
-
     }
 
     /**
      * Get the ResultRange for the given Instance Test and the timerange
      *
      * @param tx_caretaker_TestNode $testNode
-     * @param integer $start_timestamp
-     * @param integer $stop_timestamp
-     * @param boolean $graph By default the result range is created for the graph, so the last result is added again at the end
+     * @param int $start_timestamp
+     * @param int $stop_timestamp
+     * @param bool $graph By default the result range is created for the graph, so the last result is added again at the end
      * @return tx_caretaker_TestResultRange
      */
     public function getRangeByNode(tx_caretaker_TestNode $testNode, $start_timestamp, $stop_timestamp, $graph = true)
@@ -254,7 +247,7 @@ class tx_caretaker_TestResultRepository
     private function dbrow2instance($row)
     {
         $message = new tx_caretaker_ResultMessage($row['result_msg'], unserialize($row['result_values']));
-        $submessages = ($row['result_submessages']) ? unserialize($row['result_submessages']) : [];
+        $submessages = ($row['result_submessages']) ? unserialize($row['result_submessages']) : array();
         $instance = new tx_caretaker_TestResult(
             $row['tstamp'],
             $row['result_status'],
@@ -272,9 +265,9 @@ class tx_caretaker_TestResultRepository
      * @param tx_caretaker_TestNode $test
      * @param tx_caretaker_TestResult $testResult
      */
-    function saveTestResultForNode(tx_caretaker_TestNode $test, $testResult)
+    public function saveTestResultForNode(tx_caretaker_TestNode $test, $testResult)
     {
-        $values = [
+        $values = array(
             'test_uid' => $test->getUid(),
             'instance_uid' => $test->getInstance()->getUid(),
             'tstamp' => $testResult->getTimestamp(),
@@ -283,7 +276,7 @@ class tx_caretaker_TestResultRepository
             'result_msg' => $testResult->getMessage()->getText(),
             'result_values' => serialize($testResult->getMessage()->getValues()),
             'result_submessages' => serialize($testResult->getSubMessages()),
-        ];
+        );
 
         // store log of results
         $GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_testresult', $values);

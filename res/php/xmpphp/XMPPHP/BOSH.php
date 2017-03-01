@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category   xmpphp
- * @package    XMPPHP
  * @author     Nathanael C. Fritz <JID: fritzy@netflint.net>
  * @author     Stephan Wentz <JID: stephan@jabber.wentz.it>
  * @author     Michael Garvin <JID: gar@netflint.net>
@@ -27,13 +26,12 @@
  */
 
 /** XMPPHP_XMLStream */
-require_once dirname(__FILE__) . "/XMPP.php";
+require_once dirname(__FILE__) . '/XMPP.php';
 
 /**
  * XMPPHP Main Class
  *
  * @category   xmpphp
- * @package    XMPPHP
  * @author     Nathanael C. Fritz <JID: fritzy@netflint.net>
  * @author     Stephan Wentz <JID: stephan@jabber.wentz.it>
  * @author     Michael Garvin <JID: gar@netflint.net>
@@ -42,14 +40,13 @@ require_once dirname(__FILE__) . "/XMPP.php";
  */
 class XMPPHP_BOSH extends XMPPHP_XMPP
 {
-
     protected $rid;
 
     protected $sid;
 
     protected $http_server;
 
-    protected $http_buffer = [];
+    protected $http_buffer = array();
 
     protected $session = false;
 
@@ -79,7 +76,6 @@ class XMPPHP_BOSH extends XMPPHP_XMPP
             $response = $this->__sendBody($body);
             $rxml = new SimpleXMLElement($response);
             $this->sid = $rxml['sid'];
-
         } else {
             $buff = "<stream:stream xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'>";
             xml_parse($this->parser, $buff, false);
@@ -96,7 +92,7 @@ class XMPPHP_BOSH extends XMPPHP_XMPP
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $body->asXML());
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        $header = ['Accept-Encoding: gzip, deflate', 'Content-Type: text/xml; charset=utf-8'];
+        $header = array('Accept-Encoding: gzip, deflate', 'Content-Type: text/xml; charset=utf-8');
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_VERBOSE, 0);
         $output = '';
@@ -119,7 +115,7 @@ class XMPPHP_BOSH extends XMPPHP_XMPP
         if ($this->sid) {
             $xml->addAttribute('sid', $this->sid);
         }
-        #if($this->sid) $xml->addAttribute('xmlns', 'http://jabber.org/protocol/httpbind');
+        //if($this->sid) $xml->addAttribute('xmlns', 'http://jabber.org/protocol/httpbind');
         $xml->addAttribute('xml:lang', 'en');
         if ($sub) { // ok, so simplexml is lame
             $p = dom_import_simplexml($xml);
@@ -164,18 +160,18 @@ class XMPPHP_BOSH extends XMPPHP_XMPP
     {
         $this->log->log("SEND: $msg", XMPPHP_Log::LEVEL_VERBOSE);
         $msg = new SimpleXMLElement($msg);
-        #$msg->addAttribute('xmlns', 'jabber:client');
+        //$msg->addAttribute('xmlns', 'jabber:client');
         $this->__sendBody($this->__buildBody($msg), true);
-        #$this->__parseBuffer();
+        //$this->__parseBuffer();
     }
 
     public function reset()
     {
         $this->xml_depth = 0;
         unset($this->xmlobj);
-        $this->xmlobj = [];
+        $this->xmlobj = array();
         $this->setupParser();
-        #$this->send($this->stream_start);
+        //$this->send($this->stream_start);
         $body = $this->__buildBody();
         $body->addAttribute('to', $this->host);
         $body->addAttribute('xmpp:restart', 'true', 'urn:xmpp:xbosh');
@@ -208,7 +204,7 @@ class XMPPHP_BOSH extends XMPPHP_XMPP
     {
         $_SESSION['XMPPHP_BOSH_RID'] = (string)$this->rid;
         $_SESSION['XMPPHP_BOSH_SID'] = (string)$this->sid;
-        $_SESSION['XMPPHP_BOSH_authed'] = (boolean)$this->authed;
+        $_SESSION['XMPPHP_BOSH_authed'] = (bool)$this->authed;
         $_SESSION['XMPPHP_BOSH_jid'] = (string)$this->jid;
         $_SESSION['XMPPHP_BOSH_fulljid'] = (string)$this->fulljid;
     }

@@ -42,12 +42,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_ContactRole
 {
-
     /**
      * UID
      *
@@ -79,7 +76,7 @@ class tx_caretaker_ContactRole
     /**
      * Constructor
      *
-     * @param integer $uid
+     * @param int $uid
      * @param string $id
      * @param string $title
      * @param string $description
@@ -95,7 +92,7 @@ class tx_caretaker_ContactRole
     /**
      * Get the uid
      *
-     * @return integer
+     * @return int
      */
     public function getUid()
     {
@@ -131,5 +128,4 @@ class tx_caretaker_ContactRole
     {
         return $this->description;
     }
-
 }

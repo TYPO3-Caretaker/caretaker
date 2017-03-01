@@ -43,23 +43,20 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 abstract class tx_caretaker_NodeResult
 {
-
     /**
      * Status Code of the Test Result
      *
-     * @var integer
+     * @var int
      */
     protected $state = 0;
 
     /**
      * Timestamp of the testresult
      *
-     * @var integer
+     * @var int
      */
     protected $timestamp = null;
 
@@ -75,13 +72,13 @@ abstract class tx_caretaker_NodeResult
      *
      * @var array array of tx_caretaker_ResultMessage objects
      */
-    protected $submessages = [];
+    protected $submessages = array();
 
     /**
      * Constructor
      *
-     * @param integer $timestamp Timestamp of the result
-     * @param integer $state Status of the result
+     * @param int $timestamp Timestamp of the result
+     * @param int $state Status of the result
      * @param mixed $message Result message (string or tx_caretaker_ResultMessage Object )
      * @param array $submessages
      */
@@ -99,13 +96,12 @@ abstract class tx_caretaker_NodeResult
         if ($submessages) {
             $this->submessages = $submessages;
         }
-
     }
 
     /**
      * Return Status Code of the Test
      *
-     * @return integer
+     * @return int
      */
     public function getState()
     {
@@ -138,7 +134,7 @@ abstract class tx_caretaker_NodeResult
     /**
      * Get Timestamp of this Testresult
      *
-     * @return integer
+     * @return int
      */
     public function getTimestamp()
     {
@@ -165,7 +161,7 @@ abstract class tx_caretaker_NodeResult
         if (is_a($message, 'tx_caretaker_ResultMessage')) {
             $this->submessages[] = $message;
         } else {
-            $this->submessages[] = new tx_caretaker_ResultMessage ((string)$message);
+            $this->submessages[] = new tx_caretaker_ResultMessage((string)$message);
         }
     }
 
@@ -217,9 +213,8 @@ abstract class tx_caretaker_NodeResult
     {
         if ($this->getResultHash() == $result->getResultHash()) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -232,9 +227,8 @@ abstract class tx_caretaker_NodeResult
     {
         if ($this->getResultHash() != $result->getResultHash()) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -244,5 +238,4 @@ abstract class tx_caretaker_NodeResult
      * @return string ResultHash
      */
     abstract public function getResultHash();
-
 }

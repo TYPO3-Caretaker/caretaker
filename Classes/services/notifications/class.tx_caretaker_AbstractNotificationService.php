@@ -35,7 +35,6 @@
  */
 class tx_caretaker_AbstractNotificationService implements tx_caretaker_NotificationServiceInterface
 {
-
     /**
      *
      * @var string
@@ -45,13 +44,13 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
     /**
      * @var array
      */
-    protected $notificationQueue = [];
+    protected $notificationQueue = array();
 
     /**
      *
      * @var array
      */
-    protected $extConfig = [];
+    protected $extConfig = array();
 
     public function __construct($serviceKey = '')
     {
@@ -93,9 +92,8 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
     {
         if ($key != null && isset($this->notificationQueue[$key])) {
             return $this->notificationQueue[$key];
-        } else {
-            return array_pop($this->notificationQueue);
         }
+        return array_pop($this->notificationQueue);
     }
 
     /**
@@ -118,9 +116,8 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
     {
         if (isset($this->extConfig['notifications.'][$this->getId() . '.'][$key])) {
             return $this->extConfig['notifications.'][$this->getId() . '.'][$key];
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**
@@ -128,14 +125,14 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
      * the extension config for the key notifications.[id].enabled.
      * This can be overwritten by the specific implementation of the notification service.
      *
-     * @return boolean
+     * @return bool
      */
     public function isEnabled()
     {
         $enabled = (bool)$this->getConfigValue('enabled');
-        $beUsername = $GLOBALS["BE_USER"]->user['username'];
+        $beUsername = $GLOBALS['BE_USER']->user['username'];
 
-        return ($enabled === true && TYPO3_MODE == 'BE' && (defined('TYPO3_cliMode') && ($beUsername == '_cli_caretaker' || $beUsername == '_cli_scheduler') || !empty($GLOBALS['SOBE']) && $GLOBALS['SOBE']->MCONF['name'] == 'system_txschedulerM1'));
+        return $enabled === true && TYPO3_MODE == 'BE' && (defined('TYPO3_cliMode') && ($beUsername == '_cli_caretaker' || $beUsername == '_cli_scheduler') || !empty($GLOBALS['SOBE']) && $GLOBALS['SOBE']->MCONF['name'] == 'system_txschedulerM1');
     }
 
     /**
@@ -151,5 +148,4 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
     public function sendNotifications()
     {
     }
-
 }

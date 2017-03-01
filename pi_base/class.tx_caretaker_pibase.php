@@ -33,10 +33,6 @@
  *
  * $Id$
  */
-
-/**
- *
- */
 abstract class tx_caretaker_pibase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 {
     protected $root_id = 'root';
@@ -48,7 +44,7 @@ abstract class tx_caretaker_pibase extends \TYPO3\CMS\Frontend\Plugin\AbstractPl
      * @param  array $conf The PlugIn configuration
      * @return string The content that is displayed on the website
      */
-    function main($content, $conf)
+    public function main($content, $conf)
     {
         $this->conf = $conf;
         $this->pi_setPiVarDefaults();
@@ -67,17 +63,16 @@ abstract class tx_caretaker_pibase extends \TYPO3\CMS\Frontend\Plugin\AbstractPl
     /**
      * @return mixed
      */
-    abstract function getContent();
+    abstract public function getContent();
 
     /**
      * @param tx_caretaker_AbstractNode $node
      * @return string
      */
-    function showNodeInfo($node)
+    public function showNodeInfo($node)
     {
         // render first level Children
         if ($node instanceof tx_caretaker_AggregatorNode) {
-
             $template = $this->cObj->cObjGetSingle($this->conf['template'], $this->conf['template.']);
 
             $children = $node->getChildren();
@@ -87,7 +82,7 @@ abstract class tx_caretaker_pibase extends \TYPO3\CMS\Frontend\Plugin\AbstractPl
                 $data = $this->getNodeData($child);
                 $lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
                 $lcObj->start($data);
-                $node_markers = [];
+                $node_markers = array();
                 if ($this->conf['childMarkers.']) {
                     foreach (array_keys($this->conf['childMarkers.']) as $key) {
                         if (substr($key, -1) != '.') {
@@ -100,20 +95,19 @@ abstract class tx_caretaker_pibase extends \TYPO3\CMS\Frontend\Plugin\AbstractPl
             }
 
             $template = $this->cObj->substituteSubpart($template, 'CARETAKER-CHILDREN', $child_infos);
-
         } else {
             $template = $this->cObj->cObjGetSingle($this->conf['templateChild'], $this->conf['templateChild.']);
         }
 
         // render Rootline
         $rootline_subpart = $this->cObj->getSubpart($template, '###ROOTLINE_ITEM###');
-        $rootline_items = [];
+        $rootline_items = array();
         $rootline_node = $node;
         do {
             $data = $this->getNodeData($rootline_node);
             $lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
             $lcObj->start($data);
-            $node_markers = [];
+            $node_markers = array();
             if ($this->conf['rootlineMarkers.']) {
                 foreach (array_keys($this->conf['rootlineMarkers.']) as $key) {
                     if (substr($key, -1) != '.') {
@@ -138,7 +132,7 @@ abstract class tx_caretaker_pibase extends \TYPO3\CMS\Frontend\Plugin\AbstractPl
         $data['chart'] = $this->getNodeChart($node);
         $lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
         $lcObj->start($data);
-        $node_markers = [];
+        $node_markers = array();
         if ($this->conf['nodeMarkers.']) {
             foreach (array_keys($this->conf['nodeMarkers.']) as $key) {
                 if (substr($key, -1) != '.') {
@@ -158,9 +152,9 @@ abstract class tx_caretaker_pibase extends \TYPO3\CMS\Frontend\Plugin\AbstractPl
      * @param tx_caretaker_AbstractNode $node
      * @return array
      */
-    function getNodeData($node)
+    public function getNodeData($node)
     {
-        $data = [];
+        $data = array();
 
         // node data
         $data['uid'] = $node->getUid();
@@ -198,9 +192,8 @@ abstract class tx_caretaker_pibase extends \TYPO3\CMS\Frontend\Plugin\AbstractPl
      *
      * @return string
      */
-    function getNodeChart()
+    public function getNodeChart()
     {
         return false;
     }
-
 }

@@ -33,17 +33,12 @@
  *
  * $Id$
  */
-
-/**
- *
- */
 class tx_caretaker_NotificationBaseExitPoint implements tx_caretaker_NotificationExitPointInterface
 {
-
     /**
      * @var array
      */
-    protected $config = [];
+    protected $config = array();
 
     /**
      * @var string
@@ -103,7 +98,7 @@ Info:
      */
     protected function flattenFlexformConfig($flexformConfig)
     {
-        $config = [];
+        $config = array();
         foreach ($flexformConfig['data']['sDEF']['lDEF'] as $key => $value) {
             $config[$key] = $value['vDEF'];
         }
@@ -146,7 +141,7 @@ Info:
             $result->getTimestamp() - $ancestorResult->getTimestamp() :
             0);
 
-        return [
+        return array(
             '###DATETIME###' => date('Y-m-d H:i:s', $result->getTimestamp()),
             '###INSTANCE_TITLE###' => ($node instanceof tx_caretaker_AbstractNode && $node->getInstance() ?
                 '"' . $node->getInstance()->getTitle() . '"' :
@@ -160,7 +155,7 @@ Info:
             '###STATE_BEFORE###' => ($ancestorResult ? $ancestorResult->getLocallizedStateInfo() : ''),
             '###STATE_BEFORE_TIME###' => ($durationStateBefore > 0 ? $this->humanReadableTime($durationStateBefore) : ''),
             '###TEST_INFO###' => ($result ? $result->getLocallizedInfotext() : ''),
-        ];
+        );
     }
 
     /**
@@ -181,8 +176,8 @@ Info:
      */
     protected function humanReadableTime($time)
     {
-        $periods = ["sec", "min", "hour", "day", "week", "month", "year", "decade"];
-        $lengths = ["60", "60", "24", "7", "4.35", "12", "10"];
+        $periods = array('sec', 'min', 'hour', 'day', 'week', 'month', 'year', 'decade');
+        $lengths = array('60', '60', '24', '7', '4.35', '12', '10');
         for ($j = 0; $time >= $lengths[$j]; $j++) {
             if ($lengths[$j] == 0) {
                 break;
@@ -191,7 +186,7 @@ Info:
         }
         $time = round($time);
         if ($time != 1) {
-            $periods[$j] .= "s";
+            $periods[$j] .= 's';
         }
 
         return $time . ' ' . $periods[$j];

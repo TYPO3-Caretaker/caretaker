@@ -42,39 +42,36 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRendererBase
 {
-
     /**
      * the test result range to render
      *
      * @var tx_caretaker_TestResultRange
      */
-    var $testResultRange;
+    public $testResultRange;
 
     /**
      * information about the test result range
      *
      * @var array
      */
-    var $testResultRangeInfos;
+    public $testResultRangeInfos;
 
     /**
      * median result value
      *
      * @var float
      */
-    var $testResultRangeMedian;
+    public $testResultRangeMedian;
 
     /**
      * average result value
      *
      * @var float
      */
-    var $testResultRangeAverage;
+    public $testResultRangeAverage;
 
     /**
      * Set the test result range
@@ -122,22 +119,22 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
             if ($lastX !== null) {
                 switch ($lastState) {
                     case tx_caretaker_Constants::state_ok:
-                        $colorRGB = $this->getColorRgbByKey("OK");
+                        $colorRGB = $this->getColorRgbByKey('OK');
                         break;
                     case tx_caretaker_Constants::state_warning:
-                        $colorRGB = $this->getColorRgbByKey("WARNING");
+                        $colorRGB = $this->getColorRgbByKey('WARNING');
                         break;
                     case tx_caretaker_Constants::state_error:
-                        $colorRGB = $this->getColorRgbByKey("ERROR");
+                        $colorRGB = $this->getColorRgbByKey('ERROR');
                         break;
                     case tx_caretaker_Constants::state_due:
-                        $colorRGB = $this->getColorRgbByKey("DUE");
+                        $colorRGB = $this->getColorRgbByKey('DUE');
                         break;
                     case tx_caretaker_Constants::state_ack:
-                        $colorRGB = $this->getColorRgbByKey("ACK");
+                        $colorRGB = $this->getColorRgbByKey('ACK');
                         break;
                     default:
-                        $colorRGB = $this->getColorRgbByKey("UNDEFINED");
+                        $colorRGB = $this->getColorRgbByKey('UNDEFINED');
                         break;
                 }
                 $backgroundColor = imagecolorallocatealpha($image, $colorRGB[0], $colorRGB[1], $colorRGB[2], 100);
@@ -167,8 +164,8 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
         $color = imagecolorallocate($image, 0, 0, 255);
         $lastX = null;
         $lastY = null;
-        $bgPoints = [];
-        $feLines = [];
+        $bgPoints = array();
+        $feLines = array();
 
         /** @var tx_caretaker_TestResult $testResult */
         foreach ($this->testResultRange as $testResult) {
@@ -184,9 +181,8 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
                 $bgPoints[] = $newY;
 
                 // fe
-                $feLines[] = [$lastX, $lastY, $newX, $lastY];
-                $feLines[] = [$newX, $lastY, $newX, $newY];
-
+                $feLines[] = array($lastX, $lastY, $newX, $lastY);
+                $feLines[] = array($newX, $lastY, $newX, $newY);
             }
             $lastX = $newX;
             $lastY = $newY;
@@ -216,7 +212,7 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
      */
     protected function getChartTitle()
     {
-        $title = $this->title . ' ' . round(($this->testResultRangeInfos['PercentAVAILABLE'] * 100), 2) . "% available";
+        $title = $this->title . ' ' . round(($this->testResultRangeInfos['PercentAVAILABLE'] * 100), 2) . '% available';
         if ($this->testResultRangeMedian != 0 || $this->testResultRangeAverage != 0) {
             $title .= ' [Median: ' . number_format($this->testResultRangeMedian, 2) . ', Average: ' . number_format($this->testResultRangeAverage, 2) . ']';
         }
@@ -232,14 +228,14 @@ class tx_caretaker_TestResultRangeChartRenderer extends tx_caretaker_ChartRender
     protected function drawChartImageLegend(&$image)
     {
         $chartLegendColor = imagecolorallocate($image, 1, 1, 1);
-        $legendItems = [
+        $legendItems = array(
             'OK' => $this->testResultRangeInfos['PercentOK'],
             'Warning' => $this->testResultRangeInfos['PercentWARNING'],
             'Error' => $this->testResultRangeInfos['PercentERROR'],
             'Undefined' => $this->testResultRangeInfos['PercentUNDEFINED'],
             'ACK' => $this->testResultRangeInfos['PercentACK'],
             'DUE' => $this->testResultRangeInfos['PercentDUE'],
-        ];
+        );
 
         $offset = $this->marginTop + 10;
 

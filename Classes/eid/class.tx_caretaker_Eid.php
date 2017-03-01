@@ -42,15 +42,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_Eid
 {
-
-    /**
-     *
-     */
     public function __construct()
     {
         \TYPO3\CMS\Frontend\Utility\EidUtility::initFeUser();
@@ -59,6 +53,7 @@ class tx_caretaker_Eid
     }
 
     /**
+     * @param mixed $nodeId
      * @return tx_caretaker_AggregatorNode
      */
     private function getRequestedNode($nodeId)
@@ -118,9 +113,9 @@ class tx_caretaker_Eid
             case 'boolean':
                 if ($data) {
                     return 'true';
-                } else {
-                    return 'false';
                 }
+                    return 'false';
+
                 break;
 
             case 'string':
@@ -130,9 +125,9 @@ class tx_caretaker_Eid
             default:
                 if ($data) {
                     return $data;
-                } else {
-                    return '';
                 }
+                    return '';
+
                 break;
         }
     }
@@ -192,42 +187,41 @@ class tx_caretaker_Eid
      */
     public function getEidData()
     {
-
         if (!$this->validApiKey()) {
-            return ['success' => false];
+            return array('success' => false);
         }
 
         $nodeId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
         $node = $this->getRequestedNode($nodeId);
 
         if (!$node) {
-            return ['success' => false, 'id' => $nodeId];
+            return array('success' => false, 'id' => $nodeId);
         }
 
-        $result = [
+        $result = array(
             'success' => true,
             'id' => $nodeId,
-        ];
+        );
 
         // add node infos
         if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addNode') == 1) {
-            $result['node'] = [
+            $result['node'] = array(
                 'id' => $node->getCaretakerNodeId(),
                 'title' => $node->getTitle(),
                 'type' => $node->getType(),
                 'description' => $node->getDescription(),
-            ];
+            );
         }
 
         // add result infos
         if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addResult') == 1) {
             $nodeResult = $node->getTestResult();
-            $result['result'] = [
+            $result['result'] = array(
                 'state' => $nodeResult->getState(),
                 'info' => $nodeResult->getLocallizedStateInfo(),
                 'message' => $nodeResult->getLocallizedInfotext(),
                 'timestamp' => $nodeResult->getTimestamp(),
-            ];
+            );
         }
 
         // add child infos
@@ -244,22 +238,22 @@ class tx_caretaker_Eid
 
         // add statistic infos
         if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addTestStatistics') == 1) {
-            $result['statistics']['count'] = [
+            $result['statistics']['count'] = array(
                 'error' => 0,
                 'warning' => 0,
                 'ok' => 0,
                 'undefined' => 0,
                 'ack' => 0,
                 'due' => 0,
-            ];
-            $result['statistics']['ids'] = [
-                'error' => [],
-                'warning' => [],
-                'ok' => [],
-                'undefined' => [],
-                'ack' => [],
-                'due' => [],
-            ];
+            );
+            $result['statistics']['ids'] = array(
+                'error' => array(),
+                'warning' => array(),
+                'ok' => array(),
+                'undefined' => array(),
+                'ack' => array(),
+                'due' => array(),
+            );
 
             $tests = $node->getTestNodes();
             if ($tests && count($tests)) {
@@ -299,9 +293,6 @@ class tx_caretaker_Eid
         return $result;
     }
 
-    /**
-     *
-     */
     public function processEidRequest()
     {
         $data = $this->getEidData();

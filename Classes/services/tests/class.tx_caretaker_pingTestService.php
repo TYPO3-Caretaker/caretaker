@@ -42,12 +42,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase
 {
-
     /**
      * Value Description
      *
@@ -79,7 +76,7 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase
         $command = $this->buildPingCommand();
 
         if ($command) {
-            list ($returnCode, $message, $time) = $this->executeSystemCommand($command);
+            list($returnCode, $message, $time) = $this->executeSystemCommand($command);
 
             if ($returnCode === 0) {
                 if ($time_error && $time > $time_error) {
@@ -90,17 +87,15 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase
                 }
 
                 return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_ok, $time, 'LLL:EXT:caretaker/locallang_fe.xml:ping_info');
-            } else {
-                $message = new tx_caretaker_ResultMessage('LLL:EXT:caretaker/locallang_fe.xml:ping_error', [
+            }
+            $message = new tx_caretaker_ResultMessage('LLL:EXT:caretaker/locallang_fe.xml:ping_error', array(
                     'command' => $command,
                     'message' => $message,
-                ]);
+                ));
 
-                return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time, $message);
-            }
-        } else {
-            return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, 'LLL:EXT:caretaker/locallang_fe.xml:ping_no_command_template');
+            return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time, $message);
         }
+        return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, 'LLL:EXT:caretaker/locallang_fe.xml:ping_no_command_template');
     }
 
     /**
@@ -149,7 +144,7 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase
         $starttime = microtime(true);
 
         $returnCode = false;
-        $messages = [];
+        $messages = array();
 
         exec($command, $messages, $returnCode);
         $message = implode(chr(10), $messages);
@@ -157,6 +152,6 @@ class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase
         $endtime = microtime(true);
         $time = ($endtime - $starttime) * 1000;
 
-        return [$returnCode, $message, $time];
+        return array($returnCode, $message, $time);
     }
 }

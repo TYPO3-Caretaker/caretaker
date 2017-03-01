@@ -42,12 +42,9 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_CliNotificationService extends tx_caretaker_AbstractNotificationService
 {
-
     public function __construct()
     {
         parent::__construct('cli');
@@ -78,7 +75,7 @@ class tx_caretaker_CliNotificationService extends tx_caretaker_AbstractNotificat
             }
         }
 
-        echo($msg . chr(10));
+        echo $msg . chr(10);
         flush();
     }
 

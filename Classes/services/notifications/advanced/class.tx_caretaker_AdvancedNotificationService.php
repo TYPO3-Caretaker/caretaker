@@ -40,25 +40,22 @@
  * @author Thomas Hempel <thomas@work.de>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNotificationService
 {
-
     /**
      * Array with list of called exitpoint objects
      *
      * @var array
      */
-    protected $exitpoints = [];
+    protected $exitpoints = array();
 
     /**
      * @var array
      */
-    protected $defaultConditions = [
+    protected $defaultConditions = array(
         'event' => 'updatedTestResult',
-    ];
+    );
 
     /**
      * @var array
@@ -91,12 +88,12 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
             $this->processStrategy(
                 $strategy,
                 $config,
-                [
+                array(
                     'event' => $event,
                     'node' => $node,
                     'result' => $result,
                     'lastResult' => $lastResult,
-                ]);
+                ));
 
             if ($config['stop']) {
                 break;
@@ -125,7 +122,7 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
     protected function processStrategy($strategy, $config, $notification)
     {
         $conditions = $this->defaultConditions;
-        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($conditions, is_array($config['conditions.']) ? $config['conditions.'] : []);
+        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($conditions, is_array($config['conditions.']) ? $config['conditions.'] : array());
         if (count($config['rules.']) === 0 || !$this->doConditionsApply($conditions, $notification)) {
             return;
         }
@@ -195,7 +192,7 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
             $exitpoint = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($info['className']);
             $config = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($exitpointRecord['config']);
             if (!is_array($config)) {
-                $config = [];
+                $config = array();
             }
             $exitpoint->init($config);
         }
@@ -326,13 +323,13 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 
                 case 'userFunc':
                     $conditionApply = true;
-                    $parameters = [
+                    $parameters = array(
                         'conditionApply' => &$conditionApply,
                         'event' => $notification['event'],
                         'node' => $node,
                         'result' => $result,
                         'lastResult' => $lastResult,
-                    ];
+                    );
                     \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($configValue, $parameters, $this);
             }
             if (!$conditionApply) {
@@ -345,6 +342,7 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
 
     /**
      * @param array $schedule
+     * @param mixed $scheduleSub
      * @return bool
      */
     protected function matchConditionSchedule($schedule, $scheduleSub)
@@ -353,7 +351,7 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
             return true;
         }
 
-        $weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        $weekdays = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday');
         $currentHour = intval(date('H'));
         $currentDayOfWeek = date('w');
 

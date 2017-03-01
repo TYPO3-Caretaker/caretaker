@@ -42,16 +42,13 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
 abstract class tx_caretaker_AbstractNode
 {
-
     /**
      * UID
      *
-     * @var integer
+     * @var int
      */
     protected $uid = false;
 
@@ -79,7 +76,7 @@ abstract class tx_caretaker_AbstractNode
     /**
      * Hidden
      *
-     * @var boolean
+     * @var bool
      */
     protected $hidden = false;
 
@@ -93,7 +90,7 @@ abstract class tx_caretaker_AbstractNode
     /**
      * @var array
      */
-    protected $notification_address_ids = [];
+    protected $notification_address_ids = array();
 
     /**
      * Associative array of DB-Row
@@ -112,17 +109,17 @@ abstract class tx_caretaker_AbstractNode
     /**
      * @var array Array of contacts group by role
      */
-    protected $contacts = [];
+    protected $contacts = array();
 
     /**
      * Constructor
      *
-     * @param integer $uid
+     * @param int $uid
      * @param string $title
      * @param tx_caretaker_AbstractNode $parent
      * @param string $storageTable
      * @param string $type
-     * @param string|boolean $hidden
+     * @param string|bool $hidden
      */
     public function __construct($uid, $title, $parent, $storageTable, $type = '', $hidden = false)
     {
@@ -134,7 +131,7 @@ abstract class tx_caretaker_AbstractNode
         if ($parent && $parent->getHidden()) {
             $this->hidden = true;
         } else {
-            $this->hidden = (boolean)$hidden;
+            $this->hidden = (bool)$hidden;
         }
     }
 
@@ -159,7 +156,7 @@ abstract class tx_caretaker_AbstractNode
     /**
      * Get the uid
      *
-     * @return integer
+     * @return int
      */
     public function getUid()
     {
@@ -189,17 +186,18 @@ abstract class tx_caretaker_AbstractNode
     /**
      * Set hidden state
      *
-     * @param boolean
+     * @param bool
+     * @param mixed $hidden
      */
     public function setHidden($hidden = true)
     {
-        $this->hidden = (boolean)$hidden;
+        $this->hidden = (bool)$hidden;
     }
 
     /**
      * Get hidden state
      *
-     * @return boolean
+     * @return bool
      */
     public function getHidden()
     {
@@ -268,9 +266,8 @@ abstract class tx_caretaker_AbstractNode
 
         if (isset($this->dbRow[$fieldname])) {
             return $this->dbRow[$fieldname];
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -300,7 +297,7 @@ abstract class tx_caretaker_AbstractNode
      */
     public function getHiddenInfo()
     {
-        return ($this->getHidden() ? 'yes' : 'no');
+        return $this->getHidden() ? 'yes' : 'no';
     }
 
     /**
@@ -320,11 +317,10 @@ abstract class tx_caretaker_AbstractNode
     {
         if ($this instanceof tx_caretaker_InstanceNode) {
             return $this;
-        } else if ($this->parent) {
+        } elseif ($this->parent) {
             return $this->parent->getInstance();
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -333,7 +329,7 @@ abstract class tx_caretaker_AbstractNode
      * @param array $options
      * @return tx_caretaker_NodeResult
      */
-    abstract public function updateTestResult($options = []);
+    abstract public function updateTestResult($options = array());
 
     /**
      * Read current Node Result
@@ -345,8 +341,8 @@ abstract class tx_caretaker_AbstractNode
     /**
      * Get ResultRange for specified time
      *
-     * @param integer $startdate
-     * @param integer $stopdate
+     * @param int $startdate
+     * @param int $stopdate
      * @return tx_caretaker_NodeResultRange
      */
     abstract public function getTestResultRange($startdate, $stopdate);
@@ -354,15 +350,15 @@ abstract class tx_caretaker_AbstractNode
     /**
      * Get the Number of available test results
      *
-     * @return integer
+     * @return int
      */
     abstract public function getTestResultNumber();
 
     /**
      * Get Test Result Objects
      *
-     * @param integer $offset
-     * @param integer $limit
+     * @param int $offset
+     * @param int $limit
      * @return tx_caretaker_NodeResultRange
      */
     abstract public function getTestResultRangeByOffset($offset = 0, $limit = 10);
@@ -406,11 +402,10 @@ abstract class tx_caretaker_AbstractNode
         $contactRepository = tx_caretaker_ContactRepository::getInstance();
 
         if ($roles instanceof tx_caretaker_ContactRole) {
-            $roles = [$roles];
-
-        } else if (is_string($roles)) {
+            $roles = array($roles);
+        } elseif (is_string($roles)) {
             $roleIds = $roles;
-            $roles = [];
+            $roles = array();
             foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $roleIds) as $roleId) {
                 if ($roleId === '*') {
                     $roles = null;
@@ -426,7 +421,7 @@ abstract class tx_caretaker_AbstractNode
             }
         }
 
-        $contacts = [];
+        $contacts = array();
         if ($roles === null) {
             if ($this->contacts['__all__'] === null) {
                 $this->contacts['__all__'] = $contactRepository->getContactsByNode($this);

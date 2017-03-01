@@ -39,25 +39,24 @@
  */
 class tx_caretaker_pi_abstract_wizicon
 {
-
     /**
      * Processing the wizard items array
      *
      * @param array $wizardItems The wizard items
      * @return array Modified array with wizard items
      */
-    function proc($wizardItems)
+    public function proc($wizardItems)
     {
         global $LANG;
 
         $LL = $this->includeLocalLang();
 
-        $wizardItems['plugins_caretaker_pi_abstract'] = [
+        $wizardItems['plugins_caretaker_pi_abstract'] = array(
             'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'pi_abstract/ce_wiz.gif',
             'title' => $LANG->getLLL('pi_abstract_title', $LL),
             'description' => $LANG->getLLL('pi_abstract_plus_wiz_description', $LL),
             'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=caretaker_pi_abstract',
-        ];
+        );
 
         return $wizardItems;
     }
@@ -67,7 +66,7 @@ class tx_caretaker_pi_abstract_wizicon
      *
      * @return array The array with language labels
      */
-    function includeLocalLang()
+    public function includeLocalLang()
     {
         global $LANG;
 
