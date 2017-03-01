@@ -3,6 +3,7 @@ namespace Caretaker\Caretaker\Tests\Unit;
 
 use Caretaker\Caretaker\Tests\Unit\Stubs\AbstractNodeStub;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+
 /***************************************************************
  * Copyright notice
  *
@@ -47,7 +48,7 @@ class AbstractNodeTest extends UnitTestCase
 
         $this->assertEquals(false, $aggregator->getProperty('foo'), "wrong result");
 
-        $aggregator->setDbRow(array('foo' => 'bar'));
+        $aggregator->setDbRow(['foo' => 'bar']);
 
         $this->assertEquals('bar', $aggregator->getProperty('foo'), "wrong result");
 

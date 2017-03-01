@@ -42,12 +42,13 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-interface tx_caretaker_NotificationExitPointInterface {
+interface tx_caretaker_NotificationExitPointInterface
+{
 
-	public function init(array $config);
+    public function init(array $config);
 
-	public function addNotification($notification, $config);
+    public function addNotification($notification, $config);
 
-	public function execute();
+    public function execute();
 
 }

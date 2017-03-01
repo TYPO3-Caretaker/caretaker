@@ -37,119 +37,131 @@
 /**
  * Plugin 'Overview' for the 'user_overview' extension.
  */
-class tx_caretaker_pi_singleview extends tx_caretaker_pibase {
-	var $prefixId = 'tx_caretaker_pi_singleview';        // Same as class name
-	var $scriptRelPath = 'pi_singleview/class.tx_caretaker_pi_singleview.php';    // Path to this script relative to the extension dir.
-	var $extKey = 'caretaker';    // The extension key.
+class tx_caretaker_pi_singleview extends tx_caretaker_pibase
+{
+    var $prefixId = 'tx_caretaker_pi_singleview';        // Same as class name
 
-	/**
-	 * @return string
-	 */
-	function getContent() {
-		$node = $this->getNode();
-		if ($node) {
-			$content = $this->showNodeInfo($node);
-		} else {
-			$content = 'no node found';
-		}
-		return $content;
-	}
+    var $scriptRelPath = 'pi_singleview/class.tx_caretaker_pi_singleview.php';    // Path to this script relative to the extension dir.
 
-	/**
-	 * @return tx_caretaker_AbstractNode
-	 */
-	function getNode() {
-		$id = $this->piVars['id'];
-		$node_repository = tx_caretaker_NodeRepository::getInstance();
+    var $extKey = 'caretaker';    // The extension key.
 
-		if ($id) {
-			$node = $node_repository->id2node($id);
-		} else {
-			$this->pi_initPIflexForm();
-			$node_id = $this->pi_getFFValue($this->cObj->data['pi_flexform'], 'node_id');
-			// Node id not specified? Try TypoScript instead
-			if (!$node_id && $this->conf['node_id']) {
-				$node_id = $this->conf['node_id'];
-			}
+    /**
+     * @return string
+     */
+    function getContent()
+    {
+        $node = $this->getNode();
+        if ($node) {
+            $content = $this->showNodeInfo($node);
+        } else {
+            $content = 'no node found';
+        }
 
-			$node = $node_repository->id2node($node_id);
-		}
+        return $content;
+    }
 
-		if ($this->root_id !== 'root') {
-			// Check if node is in the specified subtree
-			$parent_node = $node;
-			do {
-				// One parent of node should be the subtree root
-				if ($parent_node->getCaretakerNodeId() == $this->root_id) {
-					return $node;
-				}
-			} while ($parent_node = $parent_node->getParent());
+    /**
+     * @return tx_caretaker_AbstractNode
+     */
+    function getNode()
+    {
+        $id = $this->piVars['id'];
+        $node_repository = tx_caretaker_NodeRepository::getInstance();
 
-			return false;
-		} else {
-			return $node;
-		}
-	}
+        if ($id) {
+            $node = $node_repository->id2node($id);
+        } else {
+            $this->pi_initPIflexForm();
+            $node_id = $this->pi_getFFValue($this->cObj->data['pi_flexform'], 'node_id');
+            // Node id not specified? Try TypoScript instead
+            if (!$node_id && $this->conf['node_id']) {
+                $node_id = $this->conf['node_id'];
+            }
 
-	/**
-	 * @param tx_caretaker_AbstractNode $node
-	 * @return array
-	 */
-	function getNodeData($node) {
-		$data = parent::getNodeData($node);
-		$range = 24;
-		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
-		$data['range'] = $range / 24;
+            $node = $node_repository->id2node($node_id);
+        }
 
-		return $data;
-	}
+        if ($this->root_id !== 'root') {
+            // Check if node is in the specified subtree
+            $parent_node = $node;
+            do {
+                // One parent of node should be the subtree root
+                if ($parent_node->getCaretakerNodeId() == $this->root_id) {
+                    return $node;
+                }
+            } while ($parent_node = $parent_node->getParent());
 
-	/**
-	 * @param tx_caretaker_AbstractNode $node
-	 * @return bool|string
-	 */
-	function getNodeChart($node) {
-		$chart = false;
+            return false;
+        } else {
+            return $node;
+        }
+    }
 
-		$range = 24;
-		if ($this->piVars['range']) $range = (int)$this->piVars['range'];
+    /**
+     * @param tx_caretaker_AbstractNode $node
+     * @return array
+     */
+    function getNodeData($node)
+    {
+        $data = parent::getNodeData($node);
+        $range = 24;
+        if ($this->piVars['range']) {
+            $range = (int)$this->piVars['range'];
+        }
+        $data['range'] = $range / 24;
 
-		$id = $node->getCaretakerNodeID();
-		$result_range = $node->getTestResultRange(time() - 3600 * $range, time());
-		$filename = 'typo3temp/caretaker/charts/' . $id . '_' . $range . '.png';
-		$base = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        return $data;
+    }
 
-		if (is_a($node, 'tx_caretaker_TestNode')) {
+    /**
+     * @param tx_caretaker_AbstractNode $node
+     * @return bool|string
+     */
+    function getNodeChart($node)
+    {
+        $chart = false;
 
-			$TestResultRangeChartRenderer = new tx_caretaker_TestResultRangeChartRenderer();
-			$TestResultRangeChartRenderer->setTitle($node->getTitle());
-			$TestResultRangeChartRenderer->setTestResultRange($result_range);
-			$result = $TestResultRangeChartRenderer->getChartImageTag($filename, $base);
+        $range = 24;
+        if ($this->piVars['range']) {
+            $range = (int)$this->piVars['range'];
+        }
 
-			if ($result) {
-				$chart = $result;
-			} else {
-				$chart = 'Graph Error';
-			}
+        $id = $node->getCaretakerNodeID();
+        $result_range = $node->getTestResultRange(time() - 3600 * $range, time());
+        $filename = 'typo3temp/caretaker/charts/' . $id . '_' . $range . '.png';
+        $base = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 
-		} else if (is_a($node, 'tx_caretaker_AggregatorNode')) {
+        if (is_a($node, 'tx_caretaker_TestNode')) {
 
-			$TestResultRangeChartRenderer = new tx_caretaker_AggregatorResultRangeChartRenderer();
-			$TestResultRangeChartRenderer->setTitle($node->getTitle());
-			$TestResultRangeChartRenderer->setAggregatorResultRange($result_range);
-			$result = $TestResultRangeChartRenderer->getChartImageTag($filename, $base);
+            $TestResultRangeChartRenderer = new tx_caretaker_TestResultRangeChartRenderer();
+            $TestResultRangeChartRenderer->setTitle($node->getTitle());
+            $TestResultRangeChartRenderer->setTestResultRange($result_range);
+            $result = $TestResultRangeChartRenderer->getChartImageTag($filename, $base);
 
-			if ($result) {
-				$chart = $result;
-			} else {
-				$chart = 'Graph Error';
-			}
-		}
-		return $chart;
-	}
+            if ($result) {
+                $chart = $result;
+            } else {
+                $chart = 'Graph Error';
+            }
+
+        } else if (is_a($node, 'tx_caretaker_AggregatorNode')) {
+
+            $TestResultRangeChartRenderer = new tx_caretaker_AggregatorResultRangeChartRenderer();
+            $TestResultRangeChartRenderer->setTitle($node->getTitle());
+            $TestResultRangeChartRenderer->setAggregatorResultRange($result_range);
+            $result = $TestResultRangeChartRenderer->getChartImageTag($filename, $base);
+
+            if ($result) {
+                $chart = $result;
+            } else {
+                $chart = 'Graph Error';
+            }
+        }
+
+        return $chart;
+    }
 }
 
-
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_singleview/class.tx_caretaker_pi_singleview.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_singleview/class.tx_caretaker_pi_singleview.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_singleview/class.tx_caretaker_pi_singleview.php']);
 }

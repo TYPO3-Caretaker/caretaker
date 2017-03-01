@@ -45,64 +45,70 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_Contact {
+class tx_caretaker_Contact
+{
 
-	/**
-	 *
-	 * @var tx_caretaker_ContactRole
-	 */
-	private $role;
+    /**
+     *
+     * @var tx_caretaker_ContactRole
+     */
+    private $role;
 
-	/**
-	 * tt_address/tx_caretaker_contactaddress row
-	 * @var array
-	 */
-	private $address;
+    /**
+     * tt_address/tx_caretaker_contactaddress row
+     *
+     * @var array
+     */
+    private $address;
 
-	/**
-	 * Constructor
-	 *
-	 * @param array $address
-	 * @param tx_caretaker_ContactRole $role
-	 */
-	public function __construct($address, $role) {
-		$this->role = $role;
-		$this->address = $address;
-	}
+    /**
+     * Constructor
+     *
+     * @param array $address
+     * @param tx_caretaker_ContactRole $role
+     */
+    public function __construct($address, $role)
+    {
+        $this->role = $role;
+        $this->address = $address;
+    }
 
-	/**
-	 * Get the Role
-	 *
-	 * @return tx_caretaker_ContactRole
-	 */
-	public function getRole() {
-		return $this->role;
-	}
+    /**
+     * Get the Role
+     *
+     * @return tx_caretaker_ContactRole
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
 
-	/**
-	 * Get the address
-	 *
-	 * @return array
-	 */
-	public function getAddress() {
-		return $this->address;
-	}
+    /**
+     * Get the address
+     *
+     * @return array
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
 
-	/**
-	 * Get single address property
-	 *
-	 * @param string $propertyName
-	 * @return mixed
-	 */
-	public function getAddressProperty($propertyName) {
-		if ($propertyName == 'xmpp' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address')) {
-			$propertyName = 'tx_caretaker_xmpp';
-		}
-		if ($this->address[$propertyName]) {
-			return $this->address[$propertyName];
-		} else {
-			return '';
-		}
-	}
+    /**
+     * Get single address property
+     *
+     * @param string $propertyName
+     * @return mixed
+     */
+    public function getAddressProperty($propertyName)
+    {
+        if ($propertyName == 'xmpp' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address')) {
+            $propertyName = 'tx_caretaker_xmpp';
+        }
+        if ($this->address[$propertyName]) {
+            return $this->address[$propertyName];
+        } else {
+            return '';
+        }
+    }
 }
 

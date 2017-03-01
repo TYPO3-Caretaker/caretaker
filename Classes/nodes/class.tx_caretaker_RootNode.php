@@ -46,49 +46,59 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_RootNode extends tx_caretaker_AggregatorNode {
+class tx_caretaker_RootNode extends tx_caretaker_AggregatorNode
+{
 
-	/**
-	 * @param bool $hidden
-	 */
-	public function __construct($hidden = FALSE) {
-		parent::__construct(0, 'Caretaker Root', NULL, NULL, tx_caretaker_Constants::nodeType_Root, $hidden);
-	}
+    /**
+     * @param bool $hidden
+     */
+    public function __construct($hidden = false)
+    {
+        parent::__construct(0, 'Caretaker Root', null, null, tx_caretaker_Constants::nodeType_Root, $hidden);
+    }
 
-	/**
-	 * Get the caretaker node id of this node
-	 * @return string
-	 */
-	public function getCaretakerNodeId() {
-		return 'root';
-	}
+    /**
+     * Get the caretaker node id of this node
+     *
+     * @return string
+     */
+    public function getCaretakerNodeId()
+    {
+        return 'root';
+    }
 
-	/**
-	 * Find Child nodes
-	 * @param boolean $show_hidden
-	 * @return array
-	 * @see caretaker/trunk/Classes/nodes/tx_caretaker_AggregatorNode#findChildren()
-	 */
-	protected function findChildren($show_hidden = FALSE) {
-		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		$root_instancegroups = $node_repository->getInstancegroupsByParentGroupUid(0, $this, $show_hidden);
-		$root_instances = $node_repository->getInstancesByInstancegroupUid(0, $this, $show_hidden);
-		return array_merge($root_instancegroups, $root_instances);
-	}
+    /**
+     * Find Child nodes
+     *
+     * @param boolean $show_hidden
+     * @return array
+     * @see caretaker/trunk/Classes/nodes/tx_caretaker_AggregatorNode#findChildren()
+     */
+    protected function findChildren($show_hidden = false)
+    {
+        $node_repository = tx_caretaker_NodeRepository::getInstance();
+        $root_instancegroups = $node_repository->getInstancegroupsByParentGroupUid(0, $this, $show_hidden);
+        $root_instances = $node_repository->getInstancesByInstancegroupUid(0, $this, $show_hidden);
 
-	/**
-	 * Find Parent Node
-	 * @return tx_caretaker_AbstractNode
-	 */
-	protected function findParent() {
-		return FALSE;
-	}
+        return array_merge($root_instancegroups, $root_instances);
+    }
 
-	/**
-	 * @param int $testUid
-	 * @return bool
-	 */
-	public function getTestConfigurationOverlayForTestUid($testUid) {
-		return FALSE;
-	}
+    /**
+     * Find Parent Node
+     *
+     * @return tx_caretaker_AbstractNode
+     */
+    protected function findParent()
+    {
+        return false;
+    }
+
+    /**
+     * @param int $testUid
+     * @return bool
+     */
+    public function getTestConfigurationOverlayForTestUid($testUid)
+    {
+        return false;
+    }
 }

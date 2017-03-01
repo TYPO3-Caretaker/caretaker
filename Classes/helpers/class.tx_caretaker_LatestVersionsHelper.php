@@ -46,71 +46,75 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_LatestVersionsHelper {
+class tx_caretaker_LatestVersionsHelper
+{
 
-	/**
-	 * @var string JSON release feed
-	 */
-	protected static $releaseJsonFeed = 'https://get.typo3.org/json';
+    /**
+     * @var string JSON release feed
+     */
+    protected static $releaseJsonFeed = 'https://get.typo3.org/json';
 
-	/**
-	 * @return bool
-	 */
-	public static function updateLatestTypo3VersionRegistry() {
-		$releases = json_decode(self::curlRequest(self::$releaseJsonFeed), TRUE);
+    /**
+     * @return bool
+     */
+    public static function updateLatestTypo3VersionRegistry()
+    {
+        $releases = json_decode(self::curlRequest(self::$releaseJsonFeed), true);
 
-		if (!is_array($releases)) {
-			throw new Exception(
-				'It seems like ' . self::$releaseJsonFeed .
-				' did not return the json string for the TYPO3 releases. Maybe it has been moved!?'
-			);
-		}
+        if (!is_array($releases)) {
+            throw new Exception(
+                'It seems like ' . self::$releaseJsonFeed .
+                ' did not return the json string for the TYPO3 releases. Maybe it has been moved!?'
+            );
+        }
 
-		$max = array();
-		$stable = array();
-		foreach ($releases as $major => $details) {
-			if (is_array($details) && !empty($details['latest'])) {
-				$max[$major] = $details['latest'];
-			}
+        $max = [];
+        $stable = [];
+        foreach ($releases as $major => $details) {
+            if (is_array($details) && !empty($details['latest'])) {
+                $max[$major] = $details['latest'];
+            }
 
-			if (is_array($details) && !empty($details['stable'])) {
-				$stable[$major] = $details['stable'];
-			}
+            if (is_array($details) && !empty($details['stable'])) {
+                $stable[$major] = $details['stable'];
+            }
 
-		}
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versions', $max);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versionsStable', $stable);
-		return TRUE;
-	}
+        }
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versions', $max);
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versionsStable', $stable);
 
-	/**
-	 * @param bool $requestUrl
-	 * @return bool|mixed
-	 */
-	protected static function curlRequest($requestUrl = FALSE) {
-		$curl = curl_init();
-		if ($curl === FALSE || $requestUrl === FALSE) {
-			return FALSE;
-		}
+        return true;
+    }
 
-		curl_setopt($curl, CURLOPT_URL, $requestUrl);
-		curl_setopt($curl, CURLOPT_HEADER, 0);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
-		curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, TRUE);
-		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+    /**
+     * @param bool $requestUrl
+     * @return bool|mixed
+     */
+    protected static function curlRequest($requestUrl = false)
+    {
+        $curl = curl_init();
+        if ($curl === false || $requestUrl === false) {
+            return false;
+        }
 
-		$headers = array(
-				"Cache-Control: no-cache",
-				"Pragma: no-cache"
-		);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_URL, $requestUrl);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, true);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 
-		$response = curl_exec($curl);
-		curl_close($curl);
+        $headers = [
+            "Cache-Control: no-cache",
+            "Pragma: no-cache",
+        ];
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
-		return $response;
-	}
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        return $response;
+    }
 }

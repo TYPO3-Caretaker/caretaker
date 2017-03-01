@@ -53,15 +53,15 @@ class NodeResultRange_testcase extends UnitTestCase
 
         $this->assertEquals($range->getLength(), 0);
 
-        $res_1 = new NodeResultStub(123, 0, '', array());
+        $res_1 = new NodeResultStub(123, 0, '', []);
         $range->addResult($res_1);
         $this->assertEquals($range->getLength(), 1);
 
-        $res_2 = new NodeResultStub(456, 1, '', array());
+        $res_2 = new NodeResultStub(456, 1, '', []);
         $range->addResult($res_2);
         $this->assertEquals($range->getLength(), 2);
 
-        $res_3 = new NodeResultStub(789, 2, '', array());
+        $res_3 = new NodeResultStub(789, 2, '', []);
         $range->addResult($res_3);
         $this->assertEquals($range->getLength(), 3);
 
@@ -72,10 +72,10 @@ class NodeResultRange_testcase extends UnitTestCase
 
         $range = new NodeResultRangeStub(123, 789);
 
-        $res_1 = new NodeResultStub(456, 1, '', array());
-        $res_2 = new NodeResultStub(123, 0, '', array());
-        $res_3 = new NodeResultStub(789, 2, '', array());
-        $res_4 = new NodeResultStub(678, 2, '', array());
+        $res_1 = new NodeResultStub(456, 1, '', []);
+        $res_2 = new NodeResultStub(123, 0, '', []);
+        $res_3 = new NodeResultStub(789, 2, '', []);
+        $res_4 = new NodeResultStub(678, 2, '', []);
 
         $range->addResult($res_1);
         $range->addResult($res_2);
@@ -95,14 +95,14 @@ class NodeResultRange_testcase extends UnitTestCase
         $this->assertEquals($range->getStartTimestamp(), 100);
         $this->assertEquals($range->getEndTimestamp(), 600);
 
-        $res_1 = new NodeResultStub(456, 1, '', array());
+        $res_1 = new NodeResultStub(456, 1, '', []);
         $range->addResult($res_1);
 
         $this->assertEquals($range->getStartTimestamp(), 100);
         $this->assertEquals($range->getEndTimestamp(), 600);
 
-        $res_2 = new NodeResultStub(789, 2, '', array());
-        $res_3 = new NodeResultStub(50, 2, '', array());
+        $res_2 = new NodeResultStub(789, 2, '', []);
+        $res_3 = new NodeResultStub(50, 2, '', []);
 
         $range->addResult($res_2);
         $range->addResult($res_3);

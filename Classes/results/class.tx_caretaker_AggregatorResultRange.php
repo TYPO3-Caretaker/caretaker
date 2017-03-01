@@ -45,5 +45,6 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_AggregatorResultRange extends tx_caretaker_NodeResultRange {
+class tx_caretaker_AggregatorResultRange extends tx_caretaker_NodeResultRange
+{
 }

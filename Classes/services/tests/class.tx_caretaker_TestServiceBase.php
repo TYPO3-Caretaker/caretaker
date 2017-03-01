@@ -45,226 +45,249 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractService implements tx_caretaker_TestServiceInterface {
+class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractService implements tx_caretaker_TestServiceInterface
+{
 
-	/**
-	 * The instance the test is run for
-	 * @var tx_caretaker_InstanceNode
-	 */
-	protected $instance;
+    /**
+     * The instance the test is run for
+     *
+     * @var tx_caretaker_InstanceNode
+     */
+    protected $instance;
 
-	/**
-	 * Test Array Configuration
-	 * @var array
-	 */
-	protected $array_configuration = FALSE;
+    /**
+     * Test Array Configuration
+     *
+     * @var array
+     */
+    protected $array_configuration = false;
 
-	/**
-	 * Test Flexform Configuration
-	 * @var array
-	 */
-	protected $flexform_configuration = FALSE;
+    /**
+     * Test Flexform Configuration
+     *
+     * @var array
+     */
+    protected $flexform_configuration = false;
 
-	/**
-	 * Value Description. Can be a LLL Label.
-	 * @var string
-	 */
-	protected $valueDescription = '';
+    /**
+     * Value Description. Can be a LLL Label.
+     *
+     * @var string
+     */
+    protected $valueDescription = '';
 
+    /**
+     * Testtype in human readable form. Can be a LLL Label.
+     *
+     * @var string
+     */
+    protected $typeDescription = '';
 
-	/**
-	 * Testtype in human readable form. Can be a LLL Label.
-	 * @var string
-	 */
-	protected $typeDescription = '';
+    /**
+     * Template to display the test Configuration in human readable form. Can be a LLL Label.
+     *
+     * @var string
+     */
+    protected $configurationInfoTemplate = '';
 
-	/**
-	 * Template to display the test Configuration in human readable form. Can be a LLL Label.
-	 * @var string
-	 */
-	protected $configurationInfoTemplate = '';
+    /**
+     * @param tx_caretaker_InstanceNode $instance
+     */
+    public function setInstance($instance)
+    {
+        $this->instance = $instance;
+    }
 
-	/**
-	 * @param tx_caretaker_InstanceNode $instance
-	 */
-	public function setInstance($instance) {
-		$this->instance = $instance;
-	}
+    /**
+     * @param array $configuration
+     */
+    public function setConfiguration($configuration)
+    {
+        if (is_array($configuration) && !is_array($configuration['data'])) {
+            $this->array_configuration = $configuration;
 
-	/**
-	 * @param array $configuration
-	 */
-	public function setConfiguration($configuration) {
-		if (is_array($configuration) && !is_array($configuration['data'])) {
-			$this->array_configuration = $configuration;
+        } else if (is_array($configuration) && is_array($configuration['data'])) {
+            $this->flexform_configuration = $configuration;
 
-		} else if (is_array($configuration) && is_array($configuration['data'])) {
-			$this->flexform_configuration = $configuration;
+        } else if (!is_array($configuration)) {
+            $this->flexform_configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($configuration);
+        }
+    }
 
-		} else if (!is_array($configuration)) {
-			$this->flexform_configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($configuration);
-		}
-	}
+    /**
+     * Get a single Value from the test configuration
+     *
+     * @param string $key
+     * @param bool|string $default
+     * @param bool|string $sheet
+     * @return string
+     */
+    public function getConfigValue($key, $default = false, $sheet = false)
+    {
+        $result = false;
+        if ($this->flexform_configuration && is_array($this->flexform_configuration)) {
+            if (!$sheet) {
+                $sheet = 'sDEF';
+            }
+            if (isset($this->flexform_configuration['data'][$sheet]['lDEF'][$key]['vDEF'])) {
+                $result = $this->flexform_configuration['data'][$sheet]['lDEF'][$key]['vDEF'];
+            }
+        } else if ($this->array_configuration) {
+            if ($sheet == false && isset($this->array_configuration[$key])) {
+                $result = $this->array_configuration[$key];
+            } else if (isset($this->array_configuration[$sheet][$key])) {
+                $result = $this->array_configuration[$sheet][$key];
+            }
+        }
 
-	/**
-	 * Get a single Value from the test configuration
-	 *
-	 * @param string $key
-	 * @param bool|string $default
-	 * @param bool|string $sheet
-	 * @return string
-	 */
-	public function getConfigValue($key, $default = FALSE, $sheet = FALSE) {
-		$result = FALSE;
-		if ($this->flexform_configuration && is_array($this->flexform_configuration)) {
-			if (!$sheet) $sheet = 'sDEF';
-			if (isset($this->flexform_configuration['data'][$sheet]['lDEF'][$key]['vDEF'])) {
-				$result = $this->flexform_configuration['data'][$sheet]['lDEF'][$key]['vDEF'];
-			}
-		} else if ($this->array_configuration) {
-			if ($sheet == FALSE && isset($this->array_configuration[$key])) {
-				$result = $this->array_configuration[$key];
-			} else if (isset($this->array_configuration[$sheet][$key])) {
-				$result = $this->array_configuration[$sheet][$key];
-			}
-		}
+        if ($result !== false) {
+            return $result;
+        } else {
+            return $default;
+        }
+    }
 
-		if ($result !== FALSE) {
-			return $result;
-		} else {
-			return $default;
-		}
-	}
+    /**
+     * Return the type Description of this test Service
+     *
+     * @return string
+     */
+    public function getTypeDescription()
+    {
+        return tx_caretaker_LocalizationHelper::localizeString($this->typeDescription);
+    }
 
-	/**
-	 * Return the type Description of this test Service
-	 * @return string
-	 */
-	public function getTypeDescription() {
-		return tx_caretaker_LocalizationHelper::localizeString($this->typeDescription);
-	}
+    /**
+     * Return the type ConfigurationInfoTemplate of this test Service
+     *
+     * @return string
+     */
+    public function getConfigurationInfo()
+    {
+        $markers = [];
+        if ($this->flexform_configuration && is_array($this->flexform_configuration['data'])) {
+            foreach ($this->flexform_configuration['data'] as $sheetName => $sheet) {
+                foreach ($this->flexform_configuration['data'][$sheetName]['lDEF'] as $key => $value) {
+                    $markers['###' . strtoupper($key) . '###'] = $value['vDEF'];
+                }
+            }
+        }
 
-	/**
-	 * Return the type ConfigurationInfoTemplate of this test Service
-	 * @return string
-	 */
-	public function getConfigurationInfo() {
-		$markers = array();
-		if ($this->flexform_configuration && is_array($this->flexform_configuration['data'])) {
-			foreach ($this->flexform_configuration['data'] as $sheetName => $sheet) {
-				foreach ($this->flexform_configuration['data'][$sheetName]['lDEF'] as $key => $value) {
-					$markers['###' . strtoupper($key) . '###'] = $value['vDEF'];
-				}
-			}
-		}
+        $result = $this->locallizeString($this->configurationInfoTemplate);
+        foreach ($markers as $marker => $content) {
+            $result = str_replace($marker, $content, $result);
+        }
 
-		$result = $this->locallizeString($this->configurationInfoTemplate);
-		foreach ($markers as $marker => $content) {
-			$result = str_replace($marker, $content, $result);
-		}
-		return $result;
-	}
+        return $result;
+    }
 
-	/**
-	 * Run the Test defined in TestConf and return a Testresult Object
-	 *
-	 * @return tx_caretaker_TestResult
-	 */
-	public function runTest() {
-		return new tx_caretaker_TestResult();
-	}
+    /**
+     * Run the Test defined in TestConf and return a Testresult Object
+     *
+     * @return tx_caretaker_TestResult
+     */
+    public function runTest()
+    {
+        return new tx_caretaker_TestResult();
+    }
 
-	/**
-	 * Execute a HTTP request for the POST values via CURL
-	 *
-	 * @param $requestUrl string The URL for the HTTP request
-	 * @param $postValues array POST values with key / value
-	 * @return array info/response
-	 */
-	protected function executeHttpRequest($requestUrl, $postValues = null) {
-		$curl = curl_init();
-		if (!$curl) {
-			return FALSE;
-		}
+    /**
+     * Execute a HTTP request for the POST values via CURL
+     *
+     * @param $requestUrl string The URL for the HTTP request
+     * @param $postValues array POST values with key / value
+     * @return array info/response
+     */
+    protected function executeHttpRequest($requestUrl, $postValues = null)
+    {
+        $curl = curl_init();
+        if (!$curl) {
+            return false;
+        }
 
-		curl_setopt($curl, CURLOPT_URL, $requestUrl);
-		curl_setopt($curl, CURLOPT_HEADER, 0);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
-		curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+        curl_setopt($curl, CURLOPT_URL, $requestUrl);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
 
-		$headers = array(
-				"Cache-Control: no-cache",
-				"Pragma: no-cache"
-		);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        $headers = [
+            "Cache-Control: no-cache",
+            "Pragma: no-cache",
+        ];
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
-		if (is_array($postValues)) {
-			$postQuery = '';
-			foreach ($postValues as $key => $value) {
-				$postQuery .= urlencode($key) . '=' . urlencode($value) . '&';
-			}
-			rtrim($postQuery, '&');
+        if (is_array($postValues)) {
+            $postQuery = '';
+            foreach ($postValues as $key => $value) {
+                $postQuery .= urlencode($key) . '=' . urlencode($value) . '&';
+            }
+            rtrim($postQuery, '&');
 
-			curl_setopt($curl, CURLOPT_POST, count($postValues));
-			curl_setopt($curl, CURLOPT_POSTFIELDS, $postQuery);
-		}
+            curl_setopt($curl, CURLOPT_POST, count($postValues));
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $postQuery);
+        }
 
-		$response = curl_exec($curl);
-		$info = curl_getinfo($curl);
-		curl_close($curl);
+        $response = curl_exec($curl);
+        $info = curl_getinfo($curl);
+        curl_close($curl);
 
-		return array(
-				'response' => $response,
-				'info' => $info
-		);
-	}
+        return [
+            'response' => $response,
+            'info' => $info,
+        ];
+    }
 
-	/**
-	 * Get the value description for the test
-	 *
-	 * @return String Description what is stored in the Value field.
-	 */
-	public function getValueDescription() {
-		return $this->valueDescription;
-	}
+    /**
+     * Get the value description for the test
+     *
+     * @return String Description what is stored in the Value field.
+     */
+    public function getValueDescription()
+    {
+        return $this->valueDescription;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function isExecutable() {
-		return TRUE;
-	}
+    /**
+     * @return bool
+     */
+    public function isExecutable()
+    {
+        return true;
+    }
 
-	/**
-	 * Translate a given string in the current language
-	 *
-	 * @param $locallang_string
-	 * @return string
-	 * @internal param string $string
-	 */
-	protected function locallizeString($locallang_string) {
-		$locallang_parts = explode(':', $locallang_string);
+    /**
+     * Translate a given string in the current language
+     *
+     * @param $locallang_string
+     * @return string
+     * @internal param string $string
+     */
+    protected function locallizeString($locallang_string)
+    {
+        $locallang_parts = explode(':', $locallang_string);
 
-		if (array_shift($locallang_parts) != 'LLL') {
-			return $locallang_string;
-		}
+        if (array_shift($locallang_parts) != 'LLL') {
+            return $locallang_string;
+        }
 
-		switch (TYPO3_MODE) {
-			case 'FE':
-				$lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
-				return ($lcObj->TEXT(array('data' => $locallang_string)));
+        switch (TYPO3_MODE) {
+            case 'FE':
+                $lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 
-			case 'BE':
-				$locallang_key = array_pop($locallang_parts);
-				$locallang_file = implode(':', $locallang_parts);
-				$language_key = $GLOBALS['BE_USER']->uc['lang'];
-				$LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Lang\LanguageService');
-				$LANG->init($language_key);
-				return $LANG->getLLL($locallang_key, \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($locallang_file), $LANG->lang, $LANG->charSet));
+                return ($lcObj->TEXT(['data' => $locallang_string]));
 
-			default :
-				return $locallang_string;
-		}
-	}
+            case 'BE':
+                $locallang_key = array_pop($locallang_parts);
+                $locallang_file = implode(':', $locallang_parts);
+                $language_key = $GLOBALS['BE_USER']->uc['lang'];
+                $LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Lang\LanguageService');
+                $LANG->init($language_key);
+
+                return $LANG->getLLL($locallang_key, \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($locallang_file), $LANG->lang, $LANG->charSet));
+
+            default :
+                return $locallang_string;
+        }
+    }
 }

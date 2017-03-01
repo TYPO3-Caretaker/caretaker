@@ -1,5 +1,6 @@
 <?php
 namespace Caretaker\Caretaker\Tests\Unit\Stubs;
+
 /***************************************************************
  * Copyright notice
  *
@@ -34,18 +35,22 @@ namespace Caretaker\Caretaker\Tests\Unit\Stubs;
  *
  * $Id$
  */
-class AggregatorNodeStub extends \tx_caretaker_AggregatorNode {
+class AggregatorNodeStub extends \tx_caretaker_AggregatorNode
+{
 
-	public function getCaretakerNodeId() {
-		return "aggregator_node";
-	}
+    public function getCaretakerNodeId()
+    {
+        return "aggregator_node";
+    }
 
-	protected function findChildren($show_hidden = false) {
-		return array();
-	}
+    protected function findChildren($show_hidden = false)
+    {
+        return [];
+    }
 
-	public function getAggregatedResult($results) {
-		return parent::getAggregatedResult($results);
-	}
+    public function getAggregatedResult($results)
+    {
+        return parent::getAggregatedResult($results);
+    }
 
 }

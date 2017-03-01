@@ -4,6 +4,7 @@ namespace Caretaker\Caretaker\Tests\Unit;
 
 use Caretaker\Caretaker\Tests\Unit\Stubs\AggregatorNodeStub;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+
 /***************************************************************
  * Copyright notice
  *
@@ -48,32 +49,32 @@ class AggregatorNodeTest extends UnitTestCase
         $instance = new \tx_caretaker_InstanceNode (0, 'bar', null);
         $node = new \tx_caretaker_TestNode (0, 'baz', $instance, 'tx_caretaker_ping', '');
 
-        $results = array();
-        $results[] = array(
-                'node' => $node,
-                'result' => \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_ok)
-        );
-        $results[] = array(
-                'node' => $node,
-                'result' => \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_ok)
-        );
-        $results[] = array(
-                'node' => $node,
-                'result' => \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_warning)
-        );
-        $results[] = array(
-                'node' => $node,
-                'result' => \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_error)
-        );
-        $results[] = array(
-                'node' => $node,
-                'result' => \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_error)
-        );
-        $results[] = array(
-                'node' => $node,
-                'result' => \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_ok)
-        );
-        $results[] = array('node' => $node, 'result' => \tx_caretaker_TestResult::create());
+        $results = [];
+        $results[] = [
+            'node' => $node,
+            'result' => \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_ok),
+        ];
+        $results[] = [
+            'node' => $node,
+            'result' => \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_ok),
+        ];
+        $results[] = [
+            'node' => $node,
+            'result' => \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_warning),
+        ];
+        $results[] = [
+            'node' => $node,
+            'result' => \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_error),
+        ];
+        $results[] = [
+            'node' => $node,
+            'result' => \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_error),
+        ];
+        $results[] = [
+            'node' => $node,
+            'result' => \tx_caretaker_TestResult::create(\tx_caretaker_Constants::state_ok),
+        ];
+        $results[] = ['node' => $node, 'result' => \tx_caretaker_TestResult::create()];
 
         $aggregated_result = $aggregator->getAggregatedResult($results);
         $this->assertEquals(2, $aggregated_result->getNumERROR(), "wrong error count");

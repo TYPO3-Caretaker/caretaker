@@ -45,84 +45,98 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_TestResult extends tx_caretaker_NodeResult {
+class tx_caretaker_TestResult extends tx_caretaker_NodeResult
+{
 
-	/**
-	 * Value of the testresult
-	 * @var float
-	 */
-	protected $value = 0;
+    /**
+     * Value of the testresult
+     *
+     * @var float
+     */
+    protected $value = 0;
 
-	/**
-	 * Constructor
-	 *
-	 * @param integer $timestamp
-	 * @param int $state
-	 * @param float|int $value
-	 * @param string $message
-	 * @param array $submessages
-	 */
-	public function __construct($timestamp = 0, $state = tx_caretaker_Constants::state_undefined, $value = 0, $message = '', $submessages = array()) {
-		parent::__construct($timestamp, $state, $message, $submessages);
-		$this->value = $value;
-	}
+    /**
+     * Constructor
+     *
+     * @param integer $timestamp
+     * @param int $state
+     * @param float|int $value
+     * @param string $message
+     * @param array $submessages
+     */
+    public function __construct($timestamp = 0, $state = tx_caretaker_Constants::state_undefined, $value = 0, $message = '', $submessages = [])
+    {
+        parent::__construct($timestamp, $state, $message, $submessages);
+        $this->value = $value;
+    }
 
-	/**
-	 * Create a new testresult with state UNKNOWN
-	 *
-	 * @return tx_caretaker_TestResult
-	 */
-	static public function undefined($message = 'Result is undefined') {
-		$timestamp = time();
-		return new tx_caretaker_TestResult($timestamp, tx_caretaker_Constants::state_undefined, 0, $message);
-	}
+    /**
+     * Create a new testresult with state UNKNOWN
+     *
+     * @return tx_caretaker_TestResult
+     */
+    static public function undefined($message = 'Result is undefined')
+    {
+        $timestamp = time();
 
-	/**
-	 * Create a new testresult with current timestamp
-	 *
-	 * @param int $status
-	 * @param float|int $value
-	 * @param string $message
-	 * @param array $submessages
-	 * @return tx_caretaker_TestResult
-	 */
-	static public function create($status = tx_caretaker_Constants::state_undefined, $value = 0, $message = '', $submessages = NULL) {
-		$ts = time();
-		return new tx_caretaker_TestResult($ts, $status, $value, $message, $submessages);
-	}
+        return new tx_caretaker_TestResult($timestamp, tx_caretaker_Constants::state_undefined, 0, $message);
+    }
 
-	/**
-	 * Return the value of the result
-	 * @return float
-	 */
-	public function getValue() {
-		return $this->value;
-	}
+    /**
+     * Create a new testresult with current timestamp
+     *
+     * @param int $status
+     * @param float|int $value
+     * @param string $message
+     * @param array $submessages
+     * @return tx_caretaker_TestResult
+     */
+    static public function create($status = tx_caretaker_Constants::state_undefined, $value = 0, $message = '', $submessages = null)
+    {
+        $ts = time();
 
-	/**
-	 * Get a combined and locallized Info of message and all submessages
-	 * @return string
-	 */
-	public function getLocallizedInfotext() {
-		$result = parent::getLocallizedInfotext();
-		$result = str_replace('###STATE###', $this->getLocallizedStateInfo(), $result);
-		$result = str_replace('###VALUE###', $this->getValue(), $result);
-		return $result;
-	}
+        return new tx_caretaker_TestResult($ts, $status, $value, $message, $submessages);
+    }
 
-	/**
-	 * Get a Hash for the given Status. If two results give the same hash they
-	 * are considered to be equal.
-	 *
-	 * @return string ResultHash
-	 */
-	public function getResultHash() {
-		$state = array(
-				'state' => (int)$this->getState(),
-				'value' => (float)$this->getValue(),
-				'message' => $this->getMessage(),
-				'submessages' => $this->getSubMessages()
-		);
-		return md5(serialize($state));
-	}
+    /**
+     * Return the value of the result
+     *
+     * @return float
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Get a combined and locallized Info of message and all submessages
+     *
+     * @return string
+     */
+    public function getLocallizedInfotext()
+    {
+        $result = parent::getLocallizedInfotext();
+        $result = str_replace('###STATE###', $this->getLocallizedStateInfo(), $result);
+        $result = str_replace('###VALUE###', $this->getValue(), $result);
+
+        return $result;
+    }
+
+    /**
+     * Get a Hash for the given Status. If two results give the same hash they
+     * are considered to be equal.
+     *
+     * @return string ResultHash
+     */
+    public function getResultHash()
+    {
+        $state = [
+            'state' => (int)$this->getState(),
+            'value' => (float)$this->getValue(),
+            'message' => $this->getMessage(),
+            'submessages' => $this->getSubMessages(),
+        ];
+
+        return md5(serialize($state));
+    }
 }

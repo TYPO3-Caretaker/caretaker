@@ -37,24 +37,25 @@
 -->
 
 <T3DataStructure>
-	<meta>
-		<langDisable>1</langDisable>
-	</meta>
-	<ROOT>
-		<TCEforms> 
-			<sheetTitle>OS</sheetTitle> 
-		</TCEforms> 
-		<type>array</type>
-		<el>
-			<timestamp_filename>
-				<TCEforms>
-					<label>Filename for timestamp</label>
-					<config>
-						<type>input</type>
-						<size>128</size>
-					</config>
-				</TCEforms>
-			</timestamp_filename>>
-		</el>
-	</ROOT>
+    <meta>
+        <langDisable>1</langDisable>
+    </meta>
+    <ROOT>
+        <TCEforms>
+            <sheetTitle>OS</sheetTitle>
+        </TCEforms>
+        <type>array</type>
+        <el>
+            <timestamp_filename>
+                <TCEforms>
+                    <label>Filename for timestamp</label>
+                    <config>
+                        <type>input</type>
+                        <size>128</size>
+                    </config>
+                </TCEforms>
+            </timestamp_filename>
+            >
+        </el>
+    </ROOT>
 </T3DataStructure>

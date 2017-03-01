@@ -33,111 +33,123 @@
  *
  * $Id$
  */
-class tx_caretaker_AbstractNotificationService implements tx_caretaker_NotificationServiceInterface {
+class tx_caretaker_AbstractNotificationService implements tx_caretaker_NotificationServiceInterface
+{
 
-	/**
-	 *
-	 * @var string
-	 */
-	protected $id;
+    /**
+     *
+     * @var string
+     */
+    protected $id;
 
-	/**
-	 * @var array
-	 */
-	protected $notificationQueue = array();
+    /**
+     * @var array
+     */
+    protected $notificationQueue = [];
 
-	/**
-	 *
-	 * @var array
-	 */
-	protected $extConfig = array();
+    /**
+     *
+     * @var array
+     */
+    protected $extConfig = [];
 
-	public function __construct($serviceKey = '') {
-		$this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
-		$this->setId($serviceKey);
-	}
+    public function __construct($serviceKey = '')
+    {
+        $this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+        $this->setId($serviceKey);
+    }
 
-	/**
-	 * @param string $id
-	 */
-	public function setId($id) {
-		$this->id = str_replace(' ', '', strtolower(trim($id)));
-	}
+    /**
+     * @param string $id
+     */
+    public function setId($id)
+    {
+        $this->id = str_replace(' ', '', strtolower(trim($id)));
+    }
 
-	/**
-	 *
-	 * @return string
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    /**
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @param mixed $notification
-	 * @param string $key
-	 */
-	public function addNotificationToQueue($notification, $key = null) {
-		$this->notificationQueue[$key] = $notification;
-	}
+    /**
+     * @param mixed $notification
+     * @param string $key
+     */
+    public function addNotificationToQueue($notification, $key = null)
+    {
+        $this->notificationQueue[$key] = $notification;
+    }
 
-	/**
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function getNotificationFromQueue($key = null) {
-		if ($key != null && isset($this->notificationQueue[$key])) {
-			return $this->notificationQueue[$key];
-		} else {
-			return array_pop($this->notificationQueue);
-		}
-	}
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public function getNotificationFromQueue($key = null)
+    {
+        if ($key != null && isset($this->notificationQueue[$key])) {
+            return $this->notificationQueue[$key];
+        } else {
+            return array_pop($this->notificationQueue);
+        }
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getNotificationQueue() {
-		return $this->notificationQueue;
-	}
+    /**
+     * @return array
+     */
+    public function getNotificationQueue()
+    {
+        return $this->notificationQueue;
+    }
 
-	/**
-	 * Returns a value from the extension config array inside the path of the
-	 * notification id. e.g. notifications.id.enabled for key "enabled".
-	 * Returns NULL if no data was found.
-	 *
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function getConfigValue($key) {
-		if (isset($this->extConfig['notifications.'][$this->getId() . '.'][$key])) {
-			return $this->extConfig['notifications.'][$this->getId() . '.'][$key];
-		} else {
-			return NULL;
-		}
-	}
+    /**
+     * Returns a value from the extension config array inside the path of the
+     * notification id. e.g. notifications.id.enabled for key "enabled".
+     * Returns NULL if no data was found.
+     *
+     * @param string $key
+     * @return mixed
+     */
+    public function getConfigValue($key)
+    {
+        if (isset($this->extConfig['notifications.'][$this->getId() . '.'][$key])) {
+            return $this->extConfig['notifications.'][$this->getId() . '.'][$key];
+        } else {
+            return null;
+        }
+    }
 
-	/**
-	 * This returns whether the service is enabled or not. By default this returns the value of
-	 * the extension config for the key notifications.[id].enabled.
-	 * This can be overwritten by the specific implementation of the notification service.
-	 *
-	 * @return boolean
-	 */
-	public function isEnabled() {
-		$enabled = (bool)$this->getConfigValue('enabled');
-		$beUsername = $GLOBALS["BE_USER"]->user['username'];
-		return ($enabled === TRUE && TYPO3_MODE == 'BE' && (defined('TYPO3_cliMode') && ($beUsername == '_cli_caretaker' || $beUsername == '_cli_scheduler') || !empty($GLOBALS['SOBE']) && $GLOBALS['SOBE']->MCONF['name'] == 'system_txschedulerM1'));
-	}
+    /**
+     * This returns whether the service is enabled or not. By default this returns the value of
+     * the extension config for the key notifications.[id].enabled.
+     * This can be overwritten by the specific implementation of the notification service.
+     *
+     * @return boolean
+     */
+    public function isEnabled()
+    {
+        $enabled = (bool)$this->getConfigValue('enabled');
+        $beUsername = $GLOBALS["BE_USER"]->user['username'];
 
-	/**
-	 * @param string $event
-	 * @param tx_caretaker_AbstractNode $node
-	 * @param tx_caretaker_TestResult $result
-	 * @param tx_caretaker_TestResult $lastResult
-	 */
-	public function addNotification($event, $node, $result = NULL, $lastResult = NULL) {
-	}
+        return ($enabled === true && TYPO3_MODE == 'BE' && (defined('TYPO3_cliMode') && ($beUsername == '_cli_caretaker' || $beUsername == '_cli_scheduler') || !empty($GLOBALS['SOBE']) && $GLOBALS['SOBE']->MCONF['name'] == 'system_txschedulerM1'));
+    }
 
-	public function sendNotifications() {
-	}
+    /**
+     * @param string $event
+     * @param tx_caretaker_AbstractNode $node
+     * @param tx_caretaker_TestResult $result
+     * @param tx_caretaker_TestResult $lastResult
+     */
+    public function addNotification($event, $node, $result = null, $lastResult = null)
+    {
+    }
+
+    public function sendNotifications()
+    {
+    }
 
 }

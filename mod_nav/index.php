@@ -22,7 +22,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * This is a file of the caretaker project.
@@ -38,62 +37,68 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Module 'Caretaker' for the 'caretaker' extension.
  */
-class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
-	var $pageinfo;
-	var $node_repository;
-	var $instance_repository;
+class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass
+{
+    var $pageinfo;
 
-	/**
-	 * @var \TYPO3\CMS\Core\Page\PageRenderer
-	 */
-	var $pageRenderer;
+    var $node_repository;
 
-	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
-	}
+    var $instance_repository;
 
-	/**
-	 * Initializes the Module
-	 * @return    void
-	 */
-	function init() {
-		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
+    /**
+     * @var \TYPO3\CMS\Core\Page\PageRenderer
+     */
+    var $pageRenderer;
 
-		parent::init();
-	}
+    public function __construct()
+    {
+        $GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
+    }
 
+    /**
+     * Initializes the Module
+     *
+     * @return    void
+     */
+    function init()
+    {
+        global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 
-	/**
-	 * Main function of the module. Write the content to $this->content
-	 * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
-	 */
-	function main() {
-		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
+        parent::init();
+    }
 
-		$PATH_TYPO3 = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
+    /**
+     * Main function of the module. Write the content to $this->content
+     * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
+     */
+    function main()
+    {
+        global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 
-		if ($BE_USER->user["admin"]) {
-			// Draw the header.
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Backend\\Template\\DocumentTemplate");
-			$this->doc->backPath = $BACK_PATH;
+        $PATH_TYPO3 = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
 
-			$this->pageRenderer = $this->doc->getPageRenderer();
+        if ($BE_USER->user["admin"]) {
+            // Draw the header.
+            $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Backend\\Template\\DocumentTemplate");
+            $this->doc->backPath = $BACK_PATH;
 
-			// Include Ext JS
-			$this->pageRenderer->loadExtJS(true, true);
-			$this->pageRenderer->enableExtJsDebug();
-			$this->pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.js', 'text/javascript', FALSE, FALSE);
-			$this->pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeTree.js', 'text/javascript', FALSE, FALSE);
+            $this->pageRenderer = $this->doc->getPageRenderer();
 
-			//Add caretaker css
-			$this->pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/css/tx.caretaker.nodetree.css', 'stylesheet', 'all', '', FALSE);
+            // Include Ext JS
+            $this->pageRenderer->loadExtJS(true, true);
+            $this->pageRenderer->enableExtJsDebug();
+            $this->pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.js', 'text/javascript', false, false);
+            $this->pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeTree.js', 'text/javascript', false, false);
 
-			// storage Pid
-			$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
-			$storagePid = (int)$confArray['storagePid'];
+            //Add caretaker css
+            $this->pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/css/tx.caretaker.nodetree.css', 'stylesheet', 'all', '', false);
 
-			$this->pageRenderer->addJsInlineCode('Caretaker_Nodetree',
-					'
+            // storage Pid
+            $confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+            $storagePid = (int)$confArray['storagePid'];
+
+            $this->pageRenderer->addJsInlineCode('Caretaker_Nodetree',
+                '
 			Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 			Ext.ns("tx.caretaker");
 			Ext.onReady(function() {
@@ -117,34 +122,35 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			});
 			');
 
-			$this->content .= $this->doc->startPage($LANG->getLL("title"));
-			$this->doc->form = '';
-		} else {
-			// If no access or if not admin
+            $this->content .= $this->doc->startPage($LANG->getLL("title"));
+            $this->doc->form = '';
+        } else {
+            // If no access or if not admin
 
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Template\MediumDocumentTemplate');
-			$this->doc->backPath = $BACK_PATH;
+            $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Template\MediumDocumentTemplate');
+            $this->doc->backPath = $BACK_PATH;
 
-			$this->content .= $this->doc->startPage($LANG->getLL("title"));
-			$this->content .= $this->doc->header($LANG->getLL("title"));
-			$this->content .= $this->doc->spacer(5);
-			$this->content .= $this->doc->spacer(10);
-		}
-	}
+            $this->content .= $this->doc->startPage($LANG->getLL("title"));
+            $this->content .= $this->doc->header($LANG->getLL("title"));
+            $this->content .= $this->doc->spacer(5);
+            $this->content .= $this->doc->spacer(10);
+        }
+    }
 
-	/**
-	 * Prints out the module HTML
-	 *
-	 * @return    void
-	 */
-	function printContent() {
-		$this->content .= $this->doc->endPage();
-		echo $this->content;
-	}
+    /**
+     * Prints out the module HTML
+     *
+     * @return    void
+     */
+    function printContent()
+    {
+        $this->content .= $this->doc->endPage();
+        echo $this->content;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/mod_nav/index.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/mod_nav/index.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/mod_nav/index.php']);
 }
 
 // Make instance:
@@ -153,7 +159,9 @@ $SOBE->init();
 
 // Include files?
 if ($SOBE->include_once) {
-	foreach ($SOBE->include_once as $INC_FILE) include_once($INC_FILE);
+    foreach ($SOBE->include_once as $INC_FILE) {
+        include_once($INC_FILE);
+    }
 }
 
 $SOBE->main();

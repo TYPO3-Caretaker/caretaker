@@ -45,99 +45,118 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase {
+class tx_caretaker_pingTestService extends tx_caretaker_TestServiceBase
+{
 
-	/**
-	 * Value Description
-	 * @var string
-	 */
-	protected $valueDescription = 'Milliseconds';
+    /**
+     * Value Description
+     *
+     * @var string
+     */
+    protected $valueDescription = 'Milliseconds';
 
-	/**
-	 * Service type description in human readble form.
-	 * @var string
-	 */
-	protected $typeDescription = 'LLL:EXT:caretaker/locallang_fe.xml:ping_service_description';
+    /**
+     * Service type description in human readble form.
+     *
+     * @var string
+     */
+    protected $typeDescription = 'LLL:EXT:caretaker/locallang_fe.xml:ping_service_description';
 
-	/**
-	 * Template to display the test Configuration in human readable form.
-	 * @var string
-	 */
-	protected $configurationInfoTemplate = 'LLL:EXT:caretaker/locallang_fe.xml:ping_service_configuration';
+    /**
+     * Template to display the test Configuration in human readable form.
+     *
+     * @var string
+     */
+    protected $configurationInfoTemplate = 'LLL:EXT:caretaker/locallang_fe.xml:ping_service_configuration';
 
-	/**
-	 * @return tx_caretaker_TestResult
-	 */
-	public function runTest() {
-		$time_warning = $this->getTimeWarning();
-		$time_error = $this->getTimeError();
-		$command = $this->buildPingCommand();
+    /**
+     * @return tx_caretaker_TestResult
+     */
+    public function runTest()
+    {
+        $time_warning = $this->getTimeWarning();
+        $time_error = $this->getTimeError();
+        $command = $this->buildPingCommand();
 
-		if ($command) {
-			list ($returnCode, $message, $time) = $this->executeSystemCommand($command);
+        if ($command) {
+            list ($returnCode, $message, $time) = $this->executeSystemCommand($command);
 
-			if ($returnCode === 0) {
-				if ($time_error && $time > $time_error) {
-					return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time, 'LLL:EXT:caretaker/locallang_fe.xml:ping_info');
-				}
-				if ($time_warning && $time > $time_warning) {
-					return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_warning, $time, 'LLL:EXT:caretaker/locallang_fe.xml:ping_info');
-				}
-				return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_ok, $time, 'LLL:EXT:caretaker/locallang_fe.xml:ping_info');
-			} else {
-				$message = new tx_caretaker_ResultMessage('LLL:EXT:caretaker/locallang_fe.xml:ping_error', array('command' => $command, 'message' => $message));
-				return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time, $message);
-			}
-		} else {
-			return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, 'LLL:EXT:caretaker/locallang_fe.xml:ping_no_command_template');
-		}
-	}
+            if ($returnCode === 0) {
+                if ($time_error && $time > $time_error) {
+                    return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time, 'LLL:EXT:caretaker/locallang_fe.xml:ping_info');
+                }
+                if ($time_warning && $time > $time_warning) {
+                    return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_warning, $time, 'LLL:EXT:caretaker/locallang_fe.xml:ping_info');
+                }
 
-	/**
-	 * Get the maximal time befor WARNING
-	 * @return int
-	 */
-	protected function getTimeWarning() {
-		return $this->getConfigValue('max_time_warning');
-	}
+                return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_ok, $time, 'LLL:EXT:caretaker/locallang_fe.xml:ping_info');
+            } else {
+                $message = new tx_caretaker_ResultMessage('LLL:EXT:caretaker/locallang_fe.xml:ping_error', [
+                    'command' => $command,
+                    'message' => $message,
+                ]);
 
-	/**
-	 * Get the maximal time before ERROR
-	 * @return int
-	 */
-	protected function getTimeError() {
-		return $this->getConfigValue('max_time_error');
-	}
+                return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, $time, $message);
+            }
+        } else {
+            return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, 'LLL:EXT:caretaker/locallang_fe.xml:ping_no_command_template');
+        }
+    }
 
-	/**
-	 * Build Ping Command for this System
-	 * @return string
-	 */
-	protected function buildPingCommand() {
-		$hostname = $this->instance->getHostname();
-		$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
-		$commandTemplate = $confArray['ping.']['cli_command'];
-		$command = str_replace('###', $hostname, $commandTemplate);
-		return $command;
-	}
+    /**
+     * Get the maximal time befor WARNING
+     *
+     * @return int
+     */
+    protected function getTimeWarning()
+    {
+        return $this->getConfigValue('max_time_warning');
+    }
 
-	/**
-	 * Execute a system command
-	 * @param string $command
-	 * @return array Array of ($returnCode, $message, $time)
-	 */
-	protected function executeSystemCommand($command) {
-		$starttime = microtime(TRUE);
+    /**
+     * Get the maximal time before ERROR
+     *
+     * @return int
+     */
+    protected function getTimeError()
+    {
+        return $this->getConfigValue('max_time_error');
+    }
 
-		$returnCode = FALSE;
-		$messages = array();
+    /**
+     * Build Ping Command for this System
+     *
+     * @return string
+     */
+    protected function buildPingCommand()
+    {
+        $hostname = $this->instance->getHostname();
+        $confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+        $commandTemplate = $confArray['ping.']['cli_command'];
+        $command = str_replace('###', $hostname, $commandTemplate);
 
-		exec($command, $messages, $returnCode);
-		$message = implode(chr(10), $messages);
+        return $command;
+    }
 
-		$endtime = microtime(TRUE);
-		$time = ($endtime - $starttime) * 1000;
+    /**
+     * Execute a system command
+     *
+     * @param string $command
+     * @return array Array of ($returnCode, $message, $time)
+     */
+    protected function executeSystemCommand($command)
+    {
+        $starttime = microtime(true);
 
-		return array($returnCode, $message, $time);
-	}
+        $returnCode = false;
+        $messages = [];
+
+        exec($command, $messages, $returnCode);
+        $message = implode(chr(10), $messages);
+
+        $endtime = microtime(true);
+        $time = ($endtime - $starttime) * 1000;
+
+        return [$returnCode, $message, $time];
+    }
 }

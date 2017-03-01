@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-	<meta type="array">
-		<type>module</type>
-		<description>Language labels for plugin &quot;user_overview_pi1&quot;</description>
-	</meta>
-	<data type="array">
-		<languageKey index="default" type="array">
-			<label index="plugin_mode_instancegroup">Instancegroup</label>
-			<label index="plugin_mode_instance">Instance</label>
-			<label index="plugin_mode_instance_testgroup">Instance + Testgroup</label>
-			<label index="plugin_mode">Mode</label>
-			<label index="submit_button_label">Click here to submit value</label>
-			<label index="node_ids">Caretaker Node IDs</label>
-		</languageKey>
-	</data>
+    <meta type="array">
+        <type>module</type>
+        <description>Language labels for plugin &quot;user_overview_pi1&quot;</description>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="plugin_mode_instancegroup">Instancegroup</label>
+            <label index="plugin_mode_instance">Instance</label>
+            <label index="plugin_mode_instance_testgroup">Instance + Testgroup</label>
+            <label index="plugin_mode">Mode</label>
+            <label index="submit_button_label">Click here to submit value</label>
+            <label index="node_ids">Caretaker Node IDs</label>
+        </languageKey>
+    </data>
 </T3locallang>

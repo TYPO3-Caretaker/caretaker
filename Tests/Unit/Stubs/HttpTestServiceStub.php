@@ -1,5 +1,6 @@
 <?php
 namespace Caretaker\Caretaker\Tests\Unit\Stubs;
+
 /***************************************************************
  * Copyright notice
  *
@@ -34,10 +35,12 @@ namespace Caretaker\Caretaker\Tests\Unit\Stubs;
  *
  * $Id$
  */
-class HttpTestServiceStub extends \tx_caretaker_httpTestService {
+class HttpTestServiceStub extends \tx_caretaker_httpTestService
+{
 
-	public function checkSingleHeader($expectedHeaders, $responseHeaders) {
-		return parent::checkSingleHeader($expectedHeaders, $responseHeaders);
-	}
+    public function checkSingleHeader($expectedHeaders, $responseHeaders)
+    {
+        return parent::checkSingleHeader($expectedHeaders, $responseHeaders);
+    }
 
 }

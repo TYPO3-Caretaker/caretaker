@@ -1,115 +1,133 @@
+Ext.namespace('tx', 'tx.caretaker');
 
-
-Ext.namespace('tx','tx.caretaker');
-
-tx.caretaker.NodeLog = Ext.extend( Ext.grid.GridPanel , {
+tx.caretaker.NodeLog = Ext.extend(Ext.grid.GridPanel, {
 
     constructor: function(config) {
-		
-		this.json_data_store = new Ext.data.JsonStore({
-			root: 'logItems',
-			totalProperty: 'totalCount',
-			idProperty: 'timestamp',
-			remoteSort: false,
-			fields: [
-				'num',
-				'title',
-				{name: 'timestamp', mapping: 'timestamp', type: 'date', dateFormat: 'timestamp'},
-				'stateinfo',
-				'stateinfo_ll',
-				'message',
-				'message_ll',
-				'state'
-			],
-			proxy: new Ext.data.HttpProxy({
-				url: TYPO3.settings.ajaxUrls['tx_caretaker::nodelog'] + '&node=' + config.node_id
-			})
-		});
 
-		this.renderMessage = function(  value, metaData, record, rowIndex, colIndex, store ){
-			// var values = value.replace( /"/g , '&quot;' ).replace( /</g , '&lt;').replace( />/g , '&gt;').replace( /&/g , '&amp;' );
+        this.json_data_store = new Ext.data.JsonStore({
+            root: 'logItems',
+            totalProperty: 'totalCount',
+            idProperty: 'timestamp',
+            remoteSort: false,
+            fields: [
+                'num',
+                'title',
+                {
+                    name: 'timestamp',
+                    mapping: 'timestamp',
+                    type: 'date',
+                    dateFormat: 'timestamp'
+                },
+                'stateinfo',
+                'stateinfo_ll',
+                'message',
+                'message_ll',
+                'state'
+            ],
+            proxy: new Ext.data.HttpProxy({
+                url: TYPO3.settings.ajaxUrls['tx_caretaker::nodelog'] + '&node=' + config.node_id
+            })
+        });
 
-			var lines = value.split( "\n" );
-			var title = lines[0];
-			var message  = lines.splice( 1 ).join( '<br/>' );
+        this.renderMessage = function(value, metaData, record, rowIndex, colIndex, store) {
+            // var values = value.replace( /"/g , '&quot;' ).replace( /</g , '&lt;').replace( />/g , '&gt;').replace( /&/g , '&amp;' );
 
-			return '<div class="x-grid3-cell-inner" ext:qtitle="' + title  + '" ext:qtip="' +  message  + '" >' + title  + '</div>';
-			
-		}
+            var lines = value.split("\n");
+            var title = lines[0];
+            var message = lines.splice(1).join('<br/>');
 
-		config = Ext.apply({
-			iconCls: 'tx-caretaker-panel-nodelogs',
-			collapsed        : true,
-			collapsible      : true,
-			stateful         : true,
-			stateEvents      : ['expand','collapse'],
-			stateId          : 'tx.caretaker.NodeLog',
-			title            : 'Log',
-			titleCollapse    : true,
-			store            : this.json_data_store,
-			trackMouseOver   : false,
-			disableSelection : true,
-			loadMask         : true,
-			autoHeight       : true,
+            return '<div class="x-grid3-cell-inner" ext:qtitle="' + title + '" ext:qtip="' + message + '" >' + title + '</div>';
 
-			// grid columns
-			columns:[{
-				header: "Time",
-				dataIndex: 'timestamp',
-				format: 'd.m.y H:i:s',
-				fixed: true,
-				width: 275
-			},{
-				header: "State",
-				dataIndex: 'stateinfo_ll',
-				fixed: true,
-				width: 75
-			},{
-				header:'Message',
-				dataIndex: 'message_ll',
-				renderer:{ fn: this.renderMessage, scope: this }
-			}],
+        }
 
-			// customize view config
-			viewConfig: {
-				forceFit:true,
-				enableRowBody:true,
-				showPreview:true,
-				getRowClass: function(record, index) {
-					var state = record.get('stateinfo');
-					return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_' + state.toLowerCase();
-				}
-			},
+        config = Ext.apply({
+            iconCls: 'tx-caretaker-panel-nodelogs',
+            collapsed: true,
+            collapsible: true,
+            stateful: true,
+            stateEvents: ['expand', 'collapse'],
+            stateId: 'tx.caretaker.NodeLog',
+            title: 'Log',
+            titleCollapse: true,
+            store: this.json_data_store,
+            trackMouseOver: false,
+            disableSelection: true,
+            loadMask: true,
+            autoHeight: true,
 
-			// paging bar on the bottom
-			bbar: new Ext.PagingToolbar({
-				pageSize: 10,
-				store: this.json_data_store,
-				displayInfo: true,
-				displayMsg: 'Displaying topics {0} - {1} of {2}',
-				emptyMsg: "No topics to display"
-			})
-		}, config);
+            // grid columns
+            columns: [
+                {
+                    header: "Time",
+                    dataIndex: 'timestamp',
+                    format: 'd.m.y H:i:s',
+                    fixed: true,
+                    width: 275
+                }, {
+                    header: "State",
+                    dataIndex: 'stateinfo_ll',
+                    fixed: true,
+                    width: 75
+                }, {
+                    header: 'Message',
+                    dataIndex: 'message_ll',
+                    renderer: {
+                        fn: this.renderMessage,
+                        scope: this
+                    }
+                }
+            ],
 
-		tx.caretaker.NodeLog.superclass.constructor.call(this, config);
+            // customize view config
+            viewConfig: {
+                forceFit: true,
+                enableRowBody: true,
+                showPreview: true,
+                getRowClass: function(record, index) {
+                    var state = record.get('stateinfo');
+                    return 'tx_caretaker_node_logrow tx_caretaker_node_logrow_' + state.toLowerCase();
+                }
+            },
 
-		if (this.collapsed == false){
-			this.json_data_store.load({params:{start:0, limit:10}});
-		}
+            // paging bar on the bottom
+            bbar: new Ext.PagingToolbar({
+                pageSize: 10,
+                store: this.json_data_store,
+                displayInfo: true,
+                displayMsg: 'Displaying topics {0} - {1} of {2}',
+                emptyMsg: "No topics to display"
+            })
+        }, config);
 
-		this.on('expand', function(){
-			this.json_data_store.load({params:{start:0, limit:10}});
-		}, this);
+        tx.caretaker.NodeLog.superclass.constructor.call(this, config);
 
-	},
+        if (this.collapsed == false) {
+            this.json_data_store.load({
+                params: {
+                    start: 0,
+                    limit: 10
+                }
+            });
+        }
 
-	getState: function() {
-		var state = {
-			collapsed: this.collapsed
-		};
-		return state;
-	}
+        this.on('expand', function() {
+            this.json_data_store.load({
+                params: {
+                    start: 0,
+                    limit: 10
+                }
+            });
+        }, this);
+
+    },
+
+    getState: function() {
+        var state = {
+            collapsed: this.collapsed
+        };
+        return state;
+    }
 
 });
 
-Ext.reg( 'caretaker-nodelog', tx.caretaker.NodeLog );
+Ext.reg('caretaker-nodelog', tx.caretaker.NodeLog);

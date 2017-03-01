@@ -45,61 +45,65 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_hooks_tceforms_getSingleFieldClass {
+class tx_caretaker_hooks_tceforms_getSingleFieldClass
+{
 
-	/**
-	 * @param string $table
-	 * @param string $field
-	 * @param array $row
-	 * @param array $PA
-	 */
-	function getSingleField_beforeRender($table, $field, &$row, &$PA) {
-		global $TCA;
+    /**
+     * @param string $table
+     * @param string $field
+     * @param array $row
+     * @param array $PA
+     */
+    function getSingleField_beforeRender($table, $field, &$row, &$PA)
+    {
+        global $TCA;
 
-		if ($table == 'tx_caretaker_instance' && $field === 'testconfigurations') {
-			switch ($PA['fieldConf']['config']['tag']) {
-				case 'testconfigurations.test_service':
-					break;
+        if ($table == 'tx_caretaker_instance' && $field === 'testconfigurations') {
+            switch ($PA['fieldConf']['config']['tag']) {
+                case 'testconfigurations.test_service':
+                    break;
 
-				case 'testconfigurations.test_conf':
-					$test = $this->getFFValue($table, $row, $field, str_replace('test_conf', 'test_service', $PA['itemFormElName']));
+                case 'testconfigurations.test_conf':
+                    $test = $this->getFFValue($table, $row, $field, str_replace('test_conf', 'test_service', $PA['itemFormElName']));
 
-					// get related test configuration
-					$testrow = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-							'uid,test_service,test_conf',
-							'tx_caretaker_test',
-							'uid=' . intval($test) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_caretaker_test')
-					);
+                    // get related test configuration
+                    $testrow = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+                        'uid,test_service,test_conf',
+                        'tx_caretaker_test',
+                        'uid=' . intval($test) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_caretaker_test')
+                    );
 
-					$row['test_service'] = $testrow[0]['test_service'];
-					if ($PA['itemFormElValue'] == NULL) {
-						$PA['itemFormElValue'] = $testrow[0]['test_conf'];
-					}
-					if (is_array($PA['itemFormElValue'])) {
-						$PA['itemFormElValue'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml($PA['itemFormElValue']);
-					}
+                    $row['test_service'] = $testrow[0]['test_service'];
+                    if ($PA['itemFormElValue'] == null) {
+                        $PA['itemFormElValue'] = $testrow[0]['test_conf'];
+                    }
+                    if (is_array($PA['itemFormElValue'])) {
+                        $PA['itemFormElValue'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml($PA['itemFormElValue']);
+                    }
 
-					if (!is_array($PA['fieldConf']['config']['ds'])) {
-						$PA['fieldConf']['config']['ds'] = $TCA['tx_caretaker_test']['columns']['test_conf']['config']['ds'];
-					}
-					break;
-			}
-		}
-	}
+                    if (!is_array($PA['fieldConf']['config']['ds'])) {
+                        $PA['fieldConf']['config']['ds'] = $TCA['tx_caretaker_test']['columns']['test_conf']['config']['ds'];
+                    }
+                    break;
+            }
+        }
+    }
 
-	/**
-	 * @param string $table
-	 * @param array $row
-	 * @param string $field
-	 * @param string $itemFormElName
-	 * @return mixed
-	 */
-	protected function getFFValue($table, $row, $field, $itemFormElName) {
-		$path = str_replace('data[' . $table . '][' . $row['uid'] . '][' . $field . '][', '', $itemFormElName);
-		$path = rtrim($path, ']');
-		$path = explode('][', $path);
-		$fftools = new \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools();
-		$val = $fftools->getArrayValueByPath($path, \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($row[$field]));
-		return $val;
-	}
+    /**
+     * @param string $table
+     * @param array $row
+     * @param string $field
+     * @param string $itemFormElName
+     * @return mixed
+     */
+    protected function getFFValue($table, $row, $field, $itemFormElName)
+    {
+        $path = str_replace('data[' . $table . '][' . $row['uid'] . '][' . $field . '][', '', $itemFormElName);
+        $path = rtrim($path, ']');
+        $path = explode('][', $path);
+        $fftools = new \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools();
+        $val = $fftools->getArrayValueByPath($path, \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($row[$field]));
+
+        return $val;
+    }
 }

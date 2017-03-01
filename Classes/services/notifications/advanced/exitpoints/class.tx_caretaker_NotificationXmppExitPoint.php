@@ -37,57 +37,62 @@
 /**
  *
  */
-class tx_caretaker_NotificationXmppExitPoint extends tx_caretaker_NotificationBaseExitPoint {
+class tx_caretaker_NotificationXmppExitPoint extends tx_caretaker_NotificationBaseExitPoint
+{
 
-	/**
-	 * @var XMPPHP_XMPP
-	 */
-	protected $connection;
+    /**
+     * @var XMPPHP_XMPP
+     */
+    protected $connection;
 
-	/**
-	 * @param array $config
-	 * @return void
-	 */
-	public function init(array $config) {
-		parent::init($config);
-		$this->connectXmpp();
-	}
+    /**
+     * @param array $config
+     * @return void
+     */
+    public function init(array $config)
+    {
+        parent::init($config);
+        $this->connectXmpp();
+    }
 
-	/**
-	 * @return void
-	 */
-	protected function connectXmpp() {
-		$this->connection = new XMPPHP_XMPP($this->config['host'], $this->config['port'], $this->config['user'], $this->config['password'], $this->config['resource'], $this->config['server']);
-		// TODO configurable: $this->connection->useEncryption(FALSE);
-		$this->connection->connect();
-		$this->connection->processUntil('session_start');
-	}
+    /**
+     * @return void
+     */
+    protected function connectXmpp()
+    {
+        $this->connection = new XMPPHP_XMPP($this->config['host'], $this->config['port'], $this->config['user'], $this->config['password'], $this->config['resource'], $this->config['server']);
+        // TODO configurable: $this->connection->useEncryption(FALSE);
+        $this->connection->connect();
+        $this->connection->processUntil('session_start');
+    }
 
-	/**
-	 * @param array $notification
-	 * @param array $overrideConfig
-	 * @return void
-	 */
-	public function addNotification($notification, $overrideConfig) {
-		$config = $this->getConfig($overrideConfig);
-		$message = $this->getMessageForNotification($notification);
-		/** @var tx_caretaker_AbstractNode $node */
-		$node = $notification['node'];
-		$contacts = $node->getContacts($config['roles']);
-		/** @var tx_caretaker_Contact $contact */
-		foreach ($contacts as $contact) {
-			$xmppAddress = $contact->getAddressProperty('xmpp');
-			if (!empty($xmppAddress)) {
-				$this->connection->message($xmppAddress, $message);
-			}
-		}
-	}
+    /**
+     * @param array $notification
+     * @param array $overrideConfig
+     * @return void
+     */
+    public function addNotification($notification, $overrideConfig)
+    {
+        $config = $this->getConfig($overrideConfig);
+        $message = $this->getMessageForNotification($notification);
+        /** @var tx_caretaker_AbstractNode $node */
+        $node = $notification['node'];
+        $contacts = $node->getContacts($config['roles']);
+        /** @var tx_caretaker_Contact $contact */
+        foreach ($contacts as $contact) {
+            $xmppAddress = $contact->getAddressProperty('xmpp');
+            if (!empty($xmppAddress)) {
+                $this->connection->message($xmppAddress, $message);
+            }
+        }
+    }
 
-	/**
-	 * @return void
-	 */
-	public function execute() {
-		$this->connection->disconnect();
-	}
+    /**
+     * @return void
+     */
+    public function execute()
+    {
+        $this->connection->disconnect();
+    }
 }
 

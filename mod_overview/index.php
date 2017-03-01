@@ -37,96 +37,105 @@
 /**
  * Module 'Caretaker' for the 'caretaker' extension.
  */
+class tx_caretaker_mod_overview extends \TYPO3\CMS\Backend\Module\BaseScriptClass
+{
+    var $pageinfo;
 
-class tx_caretaker_mod_overview extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
-	var $pageinfo;
-	var $node_repository;
-	var $instance_repository;
-	var $node_id;
+    var $node_repository;
 
-	/**
-	 * @var \TYPO3\CMS\Core\Page\PageRenderer
-	 */
-	var $pageRenderer;
+    var $instance_repository;
 
-	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
-	}
+    var $node_id;
 
-	/**
-	 * Initializes the Module
-	 * @return    void
-	 */
-	function init() {
-		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
-		parent::init();
-		$this->node_id = $_GET['id'];
-	}
+    /**
+     * @var \TYPO3\CMS\Core\Page\PageRenderer
+     */
+    var $pageRenderer;
 
-	/**
-	 * Main function of the module. Write the content to $this->content
-	 * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
-	 *
-	 * @return void
-	 */
-	function main() {
-		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
+    public function __construct()
+    {
+        $GLOBALS['LANG']->includeLLFile("EXT:caretaker/mod_nav/locallang.xml");
+    }
 
-		$PATH_TYPO3 = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
+    /**
+     * Initializes the Module
+     *
+     * @return    void
+     */
+    function init()
+    {
+        global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
+        parent::init();
+        $this->node_id = $_GET['id'];
+    }
 
-		if ($BE_USER->user["admin"]) {
+    /**
+     * Main function of the module. Write the content to $this->content
+     * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
+     *
+     * @return void
+     */
+    function main()
+    {
+        global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 
-			// find node
-			$node_repository = tx_caretaker_NodeRepository::getInstance();
-			$node = $node_repository->id2node($this->node_id, true);
-			if (!$node) $node = $node_repository->getRootNode();
+        $PATH_TYPO3 = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
 
-			// Draw the header.
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Template\DocumentTemplate');
-			$this->doc->backPath = $BACK_PATH;
-			$this->pageRenderer = $this->doc->getPageRenderer();
+        if ($BE_USER->user["admin"]) {
 
-			// Include Ext JS
-			$this->pageRenderer->loadExtJS();
-			$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.js');
+            // find node
+            $node_repository = tx_caretaker_NodeRepository::getInstance();
+            $node = $node_repository->id2node($this->node_id, true);
+            if (!$node) {
+                $node = $node_repository->getRootNode();
+            }
 
-			$panels = array();
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'] as $extJsBackendPanel) {
+            // Draw the header.
+            $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Template\DocumentTemplate');
+            $this->doc->backPath = $BACK_PATH;
+            $this->pageRenderer = $this->doc->getPageRenderer();
 
-				// register JS
-				foreach ($extJsBackendPanel['jsIncludes'] as $jsInclude) {
-					$filename = $BACK_PATH . '../' . str_replace(PATH_site, '', \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($jsInclude));
-					$this->pageRenderer->addJsFile($filename);
-				}
+            // Include Ext JS
+            $this->pageRenderer->loadExtJS();
+            $this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.js');
 
-				// register CSS
-				foreach ($extJsBackendPanel['cssIncludes'] as $cssInclude) {
-					$filename = $BACK_PATH . '../' . str_replace(PATH_site, '', \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($cssInclude));
-					$this->pageRenderer->addCssFile($filename);
-				}
+            $panels = [];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'] as $extJsBackendPanel) {
 
-				// add ExtJs Panel
-				$panels[$extJsBackendPanel['id']] = $extJsBackendPanel['xtype'];
-			}
+                // register JS
+                foreach ($extJsBackendPanel['jsIncludes'] as $jsInclude) {
+                    $filename = $BACK_PATH . '../' . str_replace(PATH_site, '', \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($jsInclude));
+                    $this->pageRenderer->addJsFile($filename);
+                }
 
-			$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeToolbar.js');
+                // register CSS
+                foreach ($extJsBackendPanel['cssIncludes'] as $cssInclude) {
+                    $filename = $BACK_PATH . '../' . str_replace(PATH_site, '', \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($cssInclude));
+                    $this->pageRenderer->addCssFile($filename);
+                }
 
-			// Enable debug mode for Ext JS
-			$this->pageRenderer->enableExtJsDebug();
+                // add ExtJs Panel
+                $panels[$extJsBackendPanel['id']] = $extJsBackendPanel['xtype'];
+            }
 
-			// storage Pid
-			$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
-			$storagePid = (int)$confArray['storagePid'];
+            $this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeToolbar.js');
 
-			//Add caretaker css
-			$this->pageRenderer->addCssFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/css/tx.caretaker.overview.css');
+            // Enable debug mode for Ext JS
+            $this->pageRenderer->enableExtJsDebug();
 
-			$pluginItems = array();
-			foreach ($panels as $id => $xtype) {
-				$pluginItems[] = '{ id: "' . $id . '", xtype: "' . $xtype . '" , back_path: back_path , node_id: node_id }';
-			}
+            // storage Pid
+            $confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
+            $storagePid = (int)$confArray['storagePid'];
 
-			$this->pageRenderer->addJsInlineCode('Caretaker_Overview', '
+            //Add caretaker css
+            $this->pageRenderer->addCssFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/css/tx.caretaker.overview.css');
+
+            $pluginItems = [];
+            foreach ($panels as $id => $xtype) {
+                $pluginItems[] = '{ id: "' . $id . '", xtype: "' . $xtype . '" , back_path: back_path , node_id: node_id }';
+            }
+
+            $this->pageRenderer->addJsInlineCode('Caretaker_Overview', '
 				Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 				Ext.namespace("tx","tx.caretaker");
 
@@ -183,34 +192,35 @@ class tx_caretaker_mod_overview extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				});
 			');
 
-			$this->content .= $this->doc->startPage($LANG->getLL("title"));
-			$this->doc->form = '';
-		} else {
-			// If no access or if not admin
+            $this->content .= $this->doc->startPage($LANG->getLL("title"));
+            $this->doc->form = '';
+        } else {
+            // If no access or if not admin
 
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Template\MediumDocumentTemplate');
-			$this->doc->backPath = $BACK_PATH;
+            $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Template\MediumDocumentTemplate');
+            $this->doc->backPath = $BACK_PATH;
 
-			$this->content .= $this->doc->startPage($LANG->getLL("title"));
-			$this->content .= $this->doc->header($LANG->getLL("title"));
-			$this->content .= $this->doc->spacer(5);
-			$this->content .= $this->doc->spacer(10);
-		}
-	}
+            $this->content .= $this->doc->startPage($LANG->getLL("title"));
+            $this->content .= $this->doc->header($LANG->getLL("title"));
+            $this->content .= $this->doc->spacer(5);
+            $this->content .= $this->doc->spacer(10);
+        }
+    }
 
-	/**
-	 * Prints out the module HTML
-	 *
-	 * @return    void
-	 */
-	function printContent() {
-		$this->content .= $this->doc->endPage();
-		echo $this->content;
-	}
+    /**
+     * Prints out the module HTML
+     *
+     * @return    void
+     */
+    function printContent()
+    {
+        $this->content .= $this->doc->endPage();
+        echo $this->content;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/mod_nav/index.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/mod_nav/index.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/mod_nav/index.php']);
 }
 
 // Make instance:
@@ -219,9 +229,9 @@ $SOBE->init();
 
 // Include files?
 if ($SOBE->include_once) {
-	foreach ($SOBE->include_once as $INC_FILE) {
-		include_once($INC_FILE);
-	}
+    foreach ($SOBE->include_once as $INC_FILE) {
+        include_once($INC_FILE);
+    }
 }
 
 $SOBE->main();

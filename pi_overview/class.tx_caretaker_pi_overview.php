@@ -37,69 +37,74 @@
 /**
  * Plugin 'Overview' for the 'user_overview' extension.
  */
-class tx_caretaker_pi_overview extends tx_caretaker_pibase {
+class tx_caretaker_pi_overview extends tx_caretaker_pibase
+{
 
-	var $prefixId = 'tx_caretaker_pi_overview';        // Same as class name
-	var $scriptRelPath = 'pi_overview/class.tx_caretaker_pi_overview.php';    // Path to this script relative to the extension dir.
-	var $extKey = 'caretaker';    // The extension key.
+    var $prefixId = 'tx_caretaker_pi_overview';        // Same as class name
 
-	/**
-	 * @return string
-	 */
-	function getContent() {
-		$nodes = $this->getNodes();
-		if (count($nodes) > 0) {
-			$content = '';
-			foreach ($nodes as $node) {
-				$content .= $this->showNodeInfo($node);
-			}
-			return $content;
-		} else {
-			return 'no node ids found';
-		}
-	}
+    var $scriptRelPath = 'pi_overview/class.tx_caretaker_pi_overview.php';    // Path to this script relative to the extension dir.
 
-	/**
-	 * @return array
-	 */
-	function getNodes() {
-		$this->pi_initPIflexForm();
-		$node_ids = $this->pi_getFFValue($this->cObj->data['pi_flexform'], 'node_ids');
-		// Node ids not specified? Try TypoScript instead
-		if (!$node_ids && $this->conf['node_ids']) {
-			$node_ids = $this->conf['node_ids'];
-		}
+    var $extKey = 'caretaker';    // The extension key.
 
-		$nodes = array();
-		$ids = explode(chr(10), $node_ids);
+    /**
+     * @return string
+     */
+    function getContent()
+    {
+        $nodes = $this->getNodes();
+        if (count($nodes) > 0) {
+            $content = '';
+            foreach ($nodes as $node) {
+                $content .= $this->showNodeInfo($node);
+            }
 
-		$node_repository = tx_caretaker_NodeRepository::getInstance();
+            return $content;
+        } else {
+            return 'no node ids found';
+        }
+    }
 
-		foreach ($ids as $id) {
-			$node = $node_repository->id2node($id);
-			if (!$node) {
-				continue;
-			}
+    /**
+     * @return array
+     */
+    function getNodes()
+    {
+        $this->pi_initPIflexForm();
+        $node_ids = $this->pi_getFFValue($this->cObj->data['pi_flexform'], 'node_ids');
+        // Node ids not specified? Try TypoScript instead
+        if (!$node_ids && $this->conf['node_ids']) {
+            $node_ids = $this->conf['node_ids'];
+        }
 
-			if ($this->root_id !== 'root') {
-				// Check if node is in the specified subtree
-				$parent_node = $node;
-				do {
-					// One parent of node should be the subtree root
-					if ($parent_node->getCaretakerNodeId() == $this->root_id) {
-						$nodes[] = $node;
-					}
-				} while ($parent_node = $parent_node->getParent());
-			} else {
-				$nodes[] = $node;
-			}
-		}
+        $nodes = [];
+        $ids = explode(chr(10), $node_ids);
 
-		return $nodes;
-	}
+        $node_repository = tx_caretaker_NodeRepository::getInstance();
+
+        foreach ($ids as $id) {
+            $node = $node_repository->id2node($id);
+            if (!$node) {
+                continue;
+            }
+
+            if ($this->root_id !== 'root') {
+                // Check if node is in the specified subtree
+                $parent_node = $node;
+                do {
+                    // One parent of node should be the subtree root
+                    if ($parent_node->getCaretakerNodeId() == $this->root_id) {
+                        $nodes[] = $node;
+                    }
+                } while ($parent_node = $parent_node->getParent());
+            } else {
+                $nodes[] = $node;
+            }
+        }
+
+        return $nodes;
+    }
 }
 
-
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_overview/class.tx_caretaker_pi_overview.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_overview/class.tx_caretaker_pi_overview.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_overview/class.tx_caretaker_pi_overview.php']);
 }

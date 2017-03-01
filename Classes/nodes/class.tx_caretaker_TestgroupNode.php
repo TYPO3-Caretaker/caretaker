@@ -46,38 +46,45 @@
  * @package TYPO3
  * @subpackage caretaker
  */
-class tx_caretaker_TestgroupNode extends tx_caretaker_AggregatorNode {
+class tx_caretaker_TestgroupNode extends tx_caretaker_AggregatorNode
+{
 
-	/**
-	 * Constructor
-	 *
-	 * @param integer $uid
-	 * @param string $title
-	 * @param tx_caretaker_AbstractNode $parent
-	 * @param bool|int $hidden
-	 */
-	public function __construct($uid, $title, $parent, $hidden = 0) {
-		parent::__construct($uid, $title, $parent, tx_caretaker_Constants::table_Testgroups, tx_caretaker_Constants::nodeType_Testgroup, $hidden);
-	}
+    /**
+     * Constructor
+     *
+     * @param integer $uid
+     * @param string $title
+     * @param tx_caretaker_AbstractNode $parent
+     * @param bool|int $hidden
+     */
+    public function __construct($uid, $title, $parent, $hidden = 0)
+    {
+        parent::__construct($uid, $title, $parent, tx_caretaker_Constants::table_Testgroups, tx_caretaker_Constants::nodeType_Testgroup, $hidden);
+    }
 
-	/**
-	 * Get the caretaker node id of this node
-	 * @return string
-	 */
-	public function getCaretakerNodeId() {
-		$instance = $this->getInstance();
-		return 'instance_' . $instance->getUid() . '_testgroup_' . $this->getUid();
-	}
+    /**
+     * Get the caretaker node id of this node
+     *
+     * @return string
+     */
+    public function getCaretakerNodeId()
+    {
+        $instance = $this->getInstance();
 
-	/**
-	 * @see caretaker/trunk/Classes/nodes/tx_caretaker_AggregatorNode#findChildren()
-	 * @param bool $show_hidden
-	 * @return array
-	 */
-	protected function findChildren($show_hidden = FALSE) {
-		$node_repository = tx_caretaker_NodeRepository::getInstance();
-		$subgroups = $node_repository->getTestgroupsByParentGroupUid($this->uid, $this, $show_hidden);
-		$tests = $node_repository->getTestsByGroupUid($this->uid, $this, $show_hidden);
-		return array_merge($subgroups, $tests);
-	}
+        return 'instance_' . $instance->getUid() . '_testgroup_' . $this->getUid();
+    }
+
+    /**
+     * @see caretaker/trunk/Classes/nodes/tx_caretaker_AggregatorNode#findChildren()
+     * @param bool $show_hidden
+     * @return array
+     */
+    protected function findChildren($show_hidden = false)
+    {
+        $node_repository = tx_caretaker_NodeRepository::getInstance();
+        $subgroups = $node_repository->getTestgroupsByParentGroupUid($this->uid, $this, $show_hidden);
+        $tests = $node_repository->getTestsByGroupUid($this->uid, $this, $show_hidden);
+
+        return array_merge($subgroups, $tests);
+    }
 }
