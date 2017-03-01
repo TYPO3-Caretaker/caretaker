@@ -14,6 +14,7 @@
         "caretaker/caretaker_instance": "*"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.0",
         "namelesscoder/typo3-repository-client": "^1.1",
         "mikey179/vfsStream": "1.4.*@dev",
         "phpunit/phpunit": "~4.7.0"
