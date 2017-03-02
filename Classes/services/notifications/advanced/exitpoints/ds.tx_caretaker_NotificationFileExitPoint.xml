@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 
-<!-- 
+<!--
 /**
  * This is a file of the caretaker project.
  * Copyright 2008-2011 by n@work Internet Informationssystem GmbH (www.work.de)
- * 
+ *
  * @Author	Thomas Hempel 		<thomas@work.de>
  * @Author	Martin Ficzel		<martin@work.de>
  * @Author	Patrick Kollodzik	<patrick@work.de>
- * 
+ *
  * $$Id$$
  */
 -->
 
 <T3DataStructure>
-	<meta>
-		<langDisable>1</langDisable>
-	</meta>
-	<ROOT>
-		<TCEforms>
-				<sheetTitle>Request</sheetTitle>
-			</TCEforms>
-		<type>array</type>
-		<el>
-			<filePath>
-				<TCEforms>
-					<label>Absolute filepath</label>
-					<config>
-						<type>input</type>
-					</config>
-				</TCEforms>
-			</filePath>
-		</el>
-	</ROOT>
+    <meta>
+        <langDisable>1</langDisable>
+    </meta>
+    <ROOT>
+        <TCEforms>
+            <sheetTitle>Request</sheetTitle>
+        </TCEforms>
+        <type>array</type>
+        <el>
+            <filePath>
+                <TCEforms>
+                    <label>Absolute filepath</label>
+                    <config>
+                        <type>input</type>
+                    </config>
+                </TCEforms>
+            </filePath>
+        </el>
+    </ROOT>
 </T3DataStructure>

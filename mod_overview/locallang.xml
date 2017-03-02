@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-	<meta type="array">
-		<type>module</type>
-		<description>Language labels for module &quot;udummyM1&quot;</description>
-	</meta>
-	<data type="array">
-		<languageKey index="default" type="array">
-			<label index="title">Caretaker Overview</label>
-			<label index="day">12 H</label>
-			<label index="today">24 H</label>
-			<label index="days">3 Days</label>
-			<label index="weeks">14 Days</label>
-			<label index="months">90 Days</label>
-			
-			<label index="no_result_available">No result available</label>
-			<label index="no_graph_available">No graph available</label>
-			<label index="no_children_found">No childnodes found</label>
-			
-			<label index="label_testnode_state">Status</label>
-			<label index="label_testnode_value">Value</label>
-			<label index="label_testnode_lastrun">Last run</label>
-			<label index="label_testnode_comment">Comment</label>
-			
-		</languageKey>
-	</data>
+    <meta type="array">
+        <type>module</type>
+        <description>Language labels for module &quot;udummyM1&quot;</description>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="title">Caretaker Overview</label>
+            <label index="day">12 H</label>
+            <label index="today">24 H</label>
+            <label index="days">3 Days</label>
+            <label index="weeks">14 Days</label>
+            <label index="months">90 Days</label>
+
+            <label index="no_result_available">No result available</label>
+            <label index="no_graph_available">No graph available</label>
+            <label index="no_children_found">No childnodes found</label>
+
+            <label index="label_testnode_state">Status</label>
+            <label index="label_testnode_value">Value</label>
+            <label index="label_testnode_lastrun">Last run</label>
+            <label index="label_testnode_comment">Comment</label>
+
+        </languageKey>
+    </data>
 </T3locallang>

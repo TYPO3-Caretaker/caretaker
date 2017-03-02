@@ -1,5 +1,6 @@
 <?php
 namespace Caretaker\Caretaker\Tests\Unit\Stubs;
+
 /***************************************************************
  * Copyright notice
  *
@@ -34,32 +35,40 @@ namespace Caretaker\Caretaker\Tests\Unit\Stubs;
  *
  * $Id$
  */
-class AbstractNodeStub extends \tx_caretaker_AbstractNode {
+class AbstractNodeStub extends \tx_caretaker_AbstractNode
+{
+    public function getCaretakerNodeId()
+    {
+        return 'abstract_node';
+    }
 
-	public function getCaretakerNodeId() {
-		return "abstract_node";
-	}
+    public function getTestNodes()
+    {
+        return array();
+    }
 
-	public function getTestNodes() {
-		return array();
-	}
+    public function getValueDescription()
+    {
+        return '';
+    }
 
-	public function getValueDescription() {
-		return '';
-	}
+    public function updateTestResult($force_update = false)
+    {
+    }
 
-	public function updateTestResult($force_update = false) {
-	}
+    public function getTestResult()
+    {
+    }
 
-	public function getTestResult() {
-	}
+    public function getTestResultRange($startdate, $stopdate)
+    {
+    }
 
-	public function getTestResultRange($startdate, $stopdate) {
-	}
+    public function getTestResultNumber()
+    {
+    }
 
-	public function getTestResultNumber() {
-	}
-
-	public function getTestResultRangeByOffset($offset = 0, $limit = 10) {
-	}
+    public function getTestResultRangeByOffset($offset = 0, $limit = 10)
+    {
+    }
 }

@@ -37,39 +37,41 @@
 /**
  * Class that adds the wizard icon.
  */
-class tx_caretaker_pi_graphreport_wizicon {
+class tx_caretaker_pi_graphreport_wizicon
+{
+    /**
+     * @param $wizardItems
+     * @return mixed
+     */
+    public function proc($wizardItems)
+    {
+        global $LANG;
 
-	/**
-	 * @param $wizardItems
-	 * @return mixed
-	 */
-	function proc($wizardItems) {
-		global $LANG;
+        $LL = $this->includeLocalLang();
 
-		$LL = $this->includeLocalLang();
+        $wizardItems['plugins_caretaker_pi_graphreport'] = array(
+            'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'pi_graphreport/ce_wiz.gif',
+            'title' => $LANG->getLLL('pi_graphreport_title', $LL),
+            'description' => $LANG->getLLL('pi_graphreport_plus_wiz_description', $LL),
+            'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=caretaker_pi_graphreport',
+        );
 
-		$wizardItems['plugins_caretaker_pi_graphreport'] = array(
-				'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'pi_graphreport/ce_wiz.gif',
-				'title' => $LANG->getLLL('pi_graphreport_title', $LL),
-				'description' => $LANG->getLLL('pi_graphreport_plus_wiz_description', $LL),
-				'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=caretaker_pi_graphreport'
-		);
+        return $wizardItems;
+    }
 
-		return $wizardItems;
-	}
+    /**
+     * @return mixed
+     */
+    public function includeLocalLang()
+    {
+        global $LANG;
 
-	/**
-	 * @return mixed
-	 */
-	function includeLocalLang() {
-		global $LANG;
+        $LOCAL_LANG = $LANG->includeLLFile('EXT:caretaker/locallang_db.xml', false);
 
-		$LOCAL_LANG = $LANG->includeLLFile('EXT:caretaker/locallang_db.xml', FALSE);
-		return $LOCAL_LANG;
-	}
+        return $LOCAL_LANG;
+    }
 }
 
-
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_graphreport/class.user_graphreport_pi1_wizicon.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_graphreport/class.user_graphreport_pi1_wizicon.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/caretaker/pi_graphreport/class.user_graphreport_pi1_wizicon.php']);
 }

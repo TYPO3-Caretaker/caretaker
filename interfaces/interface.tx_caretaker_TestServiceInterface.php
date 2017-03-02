@@ -33,54 +33,55 @@
  *
  * $Id$
  */
-interface tx_caretaker_TestServiceInterface {
+interface tx_caretaker_TestServiceInterface
+{
+    /**
+     * Initialize the Service
+     */
+    public function init();
 
-	/**
-	 * Initialize the Service
-	 */
-	public function init();
+    /**
+     * Set the instance for the test execution
+     *
+     * @param tx_caretaker_InstanceNode $instance
+     */
+    public function setInstance($instance);
 
-	/**
-	 * Set the instance for the test execution
-	 * @param tx_caretaker_InstanceNode $instance
-	 */
-	function setInstance($instance);
+    /**
+     * Set the configuration for this test
+     *
+     * @param array $configuration
+     */
+    public function setConfiguration($configuration);
 
-	/**
-	 * Set the configuration for this test
-	 * @param array $configuration
-	 */
-	function setConfiguration($configuration);
+    /**
+     * Run the Test defined in TestConf and return a Testresult Object
+     *
+     * @return tx_caretaker_TestResult
+     */
+    public function runTest();
 
-	/**
-	 * Run the Test defined in TestConf and return a Testresult Object
-	 *
-	 * @return tx_caretaker_TestResult
-	 */
-	public function runTest();
+    /**
+     * Get a short description for the meaning of the value in the current test
+     *
+     * @return string Description what is stored in the Value field.
+     */
+    public function getValueDescription();
 
-	/**
-	 * Get a short description for the meaning of the value in the current test
-	 *
-	 * @return String Description what is stored in the Value field.
-	 */
-	public function getValueDescription();
+    /**
+     * Get information if the test service is able to execute tests
+     *
+     * @return bool
+     */
+    public function isExecutable();
 
-	/**
-	 * Get information if the test service is able to execute tests
-	 *
-	 * @return boolean
-	 */
-	public function isExecutable();
+    /**
+     * @return string
+     */
+    public function getTypeDescription();
 
-	/**
-	 * @return string
-	 */
-	public function getTypeDescription();
-
-	/**
-	 * @return string
-	 */
-	public function getConfigurationInfo();
-
+    /**
+     * @return string
+     */
+    public function getConfigurationInfo();
 }

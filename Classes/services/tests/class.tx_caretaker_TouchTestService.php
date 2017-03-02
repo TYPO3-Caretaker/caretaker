@@ -44,47 +44,50 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
-class tx_caretaker_TouchTestService extends tx_caretaker_TestServiceBase {
+class tx_caretaker_TouchTestService extends tx_caretaker_TestServiceBase
+{
+    /**
+     * Value Description
+     *
+     * @var string
+     */
+    protected $valueDescription = '';
 
-	/**
-	 * Value Description
-	 * @var string
-	 */
-	protected $valueDescription = '';
+    /**
+     * Service type description in human readable form.
+     *
+     * @var string
+     */
+    protected $typeDescription = 'LLL:EXT:caretaker/locallang_fe.xml:touch_service_description';
 
-	/**
-	 * Service type description in human readable form.
-	 * @var string
-	 */
-	protected $typeDescription = 'LLL:EXT:caretaker/locallang_fe.xml:touch_service_description';
+    /**
+     * Template to display the test Configuration in human readable form.
+     *
+     * @var string
+     */
+    protected $configurationInfoTemplate = 'LLL:EXT:caretaker/locallang_fe.xml:touch_service_configuration';
 
-	/**
-	 * Template to display the test Configuration in human readable form.
-	 * @var string
-	 */
-	protected $configurationInfoTemplate = 'LLL:EXT:caretaker/locallang_fe.xml:touch_service_configuration';
+    /**
+     * @return tx_caretaker_TestResult
+     */
+    public function runTest()
+    {
+        $filename = $this->getTimestampFilename();
+        $time = time();
+        if (file_put_contents($filename, $time) !== false) {
+            return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_ok);
+        }
+        return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, 'Could not touch file ' . $filename);
+    }
 
-	/**
-	 * @return tx_caretaker_TestResult
-	 */
-	function runTest() {
-		$filename = $this->getTimestampFilename();
-		$time = time();
-		if (file_put_contents($filename, $time) !== FALSE) {
-			return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_ok);
-		} else {
-			return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, 'Could not touch file ' . $filename);
-		}
-	}
-
-	/**
-	 * The configured filename for the timestamp
-	 * @return string
-	 */
-	protected function getTimestampFilename() {
-		return $this->getConfigValue('timestamp_filename');
-	}
+    /**
+     * The configured filename for the timestamp
+     *
+     * @return string
+     */
+    protected function getTimestampFilename()
+    {
+        return $this->getConfigValue('timestamp_filename');
+    }
 }

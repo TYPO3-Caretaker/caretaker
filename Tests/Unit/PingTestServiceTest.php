@@ -37,126 +37,119 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  *
  * $Id$
  */
+class PingTestServiceTest extends UnitTestCase
+{
+    /**
+     * Set the Return Value of a Method
+     *
+     * @param \PHPUnit_Framework_MockObject_MockObject $stub
+     * @param $method_name
+     * @param $return_value
+     */
+    private function setMethodReturnValue(&$stub, $method_name, $return_value)
+    {
+        $stub->expects($this->any())
+            ->method($method_name)
+            ->with()
+            ->will($this->returnValue($return_value));
+    }
 
-class PingTestServiceTest extends UnitTestCase {
+    public function testIfNoCommandIsSetAnErrorOccurs()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_pingTestService $stub */
+        $stub = $this->getMock(
+            '\tx_caretaker_pingTestService',
+            array('getTimeError', 'getTimeWarning', 'buildPingCommand')
+        );
 
-	/**
-	 * Set the Return Value of a Method
-	 *
-	 * @param \PHPUnit_Framework_MockObject_MockObject $stub
-	 * @param $method_name
-	 * @param $return_value
-	 */
-	private function setMethodReturnValue(&$stub, $method_name, $return_value) {
-		$stub->expects($this->any())
-				->method($method_name)
-				->with()
-				->will($this->returnValue($return_value));
-	}
+        $this->setMethodReturnValue($stub, 'getTimeError', 200);
+        $this->setMethodReturnValue($stub, 'getTimeWarning', 10);
+        $this->setMethodReturnValue($stub, 'buildPingCommand', false);
 
-	public function testIfNoCommandIsSetAnErrorOccurs() {
+        $result = $stub->runTest();
 
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_pingTestService $stub */
-		$stub = $this->getMock(
-				'\tx_caretaker_pingTestService',
-				array('getTimeError', 'getTimeWarning', 'buildPingCommand')
-		);
+        $this->assertInstanceOf('tx_caretaker_TestResult', $result);
+        $this->assertEquals(2, $result->getState());
+        $this->assertEquals(0, $result->getValue());
+    }
 
+    public function testReturnOkIfAllWentWell()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_pingTestService $stub */
+        $stub = $this->getMock(
+            '\tx_caretaker_pingTestService',
+            array('getTimeError', 'getTimeWarning', 'buildPingCommand', 'executeSystemCommand')
+        );
 
-		$this->setMethodReturnValue($stub, 'getTimeError', 200);
-		$this->setMethodReturnValue($stub, 'getTimeWarning', 10);
-		$this->setMethodReturnValue($stub, 'buildPingCommand', false);
+        $this->setMethodReturnValue($stub, 'getTimeError', 200);
+        $this->setMethodReturnValue($stub, 'getTimeWarning', 10);
+        $this->setMethodReturnValue($stub, 'buildPingCommand', true);
+        $this->setMethodReturnValue($stub, 'executeSystemCommand', array(0, '', 5));
 
-		$result = $stub->runTest();
+        $result = $stub->runTest();
 
-		$this->assertInstanceOf('tx_caretaker_TestResult', $result);
-		$this->assertEquals(2, $result->getState());
-		$this->assertEquals(0, $result->getValue());
+        $this->assertInstanceOf('tx_caretaker_TestResult', $result);
+        $this->assertEquals(0, $result->getState());
+        $this->assertEquals(5, $result->getValue());
+    }
 
-	}
+    public function testReturnsWarningIfTimeoutIsReached()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_pingTestService $stub */
+        $stub = $this->getMock(
+            '\tx_caretaker_pingTestService',
+            array('getTimeError', 'getTimeWarning', 'buildPingCommand', 'executeSystemCommand')
+        );
 
-	public function testReturnOkIfAllWentWell() {
+        $this->setMethodReturnValue($stub, 'getTimeError', 200);
+        $this->setMethodReturnValue($stub, 'getTimeWarning', 10);
+        $this->setMethodReturnValue($stub, 'buildPingCommand', true);
+        $this->setMethodReturnValue($stub, 'executeSystemCommand', array(0, '', 20));
 
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_pingTestService $stub */
-		$stub = $this->getMock(
-				'\tx_caretaker_pingTestService',
-				array('getTimeError', 'getTimeWarning', 'buildPingCommand', 'executeSystemCommand')
-		);
+        $result = $stub->runTest();
 
-		$this->setMethodReturnValue($stub, 'getTimeError', 200);
-		$this->setMethodReturnValue($stub, 'getTimeWarning', 10);
-		$this->setMethodReturnValue($stub, 'buildPingCommand', true);
-		$this->setMethodReturnValue($stub, 'executeSystemCommand', array(0, '', 5));
+        $this->assertInstanceOf('tx_caretaker_TestResult', $result);
+        $this->assertEquals(1, $result->getState());
+        $this->assertEquals(20, $result->getValue());
+    }
 
-		$result = $stub->runTest();
+    public function testReturnsErrorIfTimeoutIsReached()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_pingTestService $stub */
+        $stub = $this->getMock(
+            '\tx_caretaker_pingTestService',
+            array('getTimeError', 'getTimeWarning', 'buildPingCommand', 'executeSystemCommand')
+        );
 
-		$this->assertInstanceOf('tx_caretaker_TestResult', $result);
-		$this->assertEquals(0, $result->getState());
-		$this->assertEquals(5, $result->getValue());
+        $this->setMethodReturnValue($stub, 'getTimeError', 200);
+        $this->setMethodReturnValue($stub, 'getTimeWarning', 10);
+        $this->setMethodReturnValue($stub, 'buildPingCommand', true);
+        $this->setMethodReturnValue($stub, 'executeSystemCommand', array(0, '', 201));
 
-	}
+        $result = $stub->runTest();
 
-	public function testReturnsWarningIfTimeoutIsReached() {
+        $this->assertInstanceOf('tx_caretaker_TestResult', $result);
+        $this->assertEquals(2, $result->getState());
+        $this->assertEquals(201, $result->getValue());
+    }
 
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_pingTestService $stub */
-		$stub = $this->getMock(
-				'\tx_caretaker_pingTestService',
-				array('getTimeError', 'getTimeWarning', 'buildPingCommand', 'executeSystemCommand')
-		);
+    public function testReturnsErrorIfCommandFailes()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_pingTestService $stub */
+        $stub = $this->getMock(
+            '\tx_caretaker_pingTestService',
+            array('getTimeError', 'getTimeWarning', 'buildPingCommand', 'executeSystemCommand')
+        );
 
-		$this->setMethodReturnValue($stub, 'getTimeError', 200);
-		$this->setMethodReturnValue($stub, 'getTimeWarning', 10);
-		$this->setMethodReturnValue($stub, 'buildPingCommand', true);
-		$this->setMethodReturnValue($stub, 'executeSystemCommand', array(0, '', 20));
+        $this->setMethodReturnValue($stub, 'getTimeError', 200);
+        $this->setMethodReturnValue($stub, 'getTimeWarning', 10);
+        $this->setMethodReturnValue($stub, 'buildPingCommand', true);
+        $this->setMethodReturnValue($stub, 'executeSystemCommand', array(3, '', 5));
 
-		$result = $stub->runTest();
+        $result = $stub->runTest();
 
-		$this->assertInstanceOf('tx_caretaker_TestResult', $result);
-		$this->assertEquals(1, $result->getState());
-		$this->assertEquals(20, $result->getValue());
-
-	}
-
-	public function testReturnsErrorIfTimeoutIsReached() {
-
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_pingTestService $stub */
-		$stub = $this->getMock(
-				'\tx_caretaker_pingTestService',
-				array('getTimeError', 'getTimeWarning', 'buildPingCommand', 'executeSystemCommand')
-		);
-
-		$this->setMethodReturnValue($stub, 'getTimeError', 200);
-		$this->setMethodReturnValue($stub, 'getTimeWarning', 10);
-		$this->setMethodReturnValue($stub, 'buildPingCommand', true);
-		$this->setMethodReturnValue($stub, 'executeSystemCommand', array(0, '', 201));
-
-		$result = $stub->runTest();
-
-		$this->assertInstanceOf('tx_caretaker_TestResult', $result);
-		$this->assertEquals(2, $result->getState());
-		$this->assertEquals(201, $result->getValue());
-
-	}
-
-	public function testReturnsErrorIfCommandFailes() {
-
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_pingTestService $stub */
-		$stub = $this->getMock(
-				'\tx_caretaker_pingTestService',
-				array('getTimeError', 'getTimeWarning', 'buildPingCommand', 'executeSystemCommand')
-		);
-
-		$this->setMethodReturnValue($stub, 'getTimeError', 200);
-		$this->setMethodReturnValue($stub, 'getTimeWarning', 10);
-		$this->setMethodReturnValue($stub, 'buildPingCommand', true);
-		$this->setMethodReturnValue($stub, 'executeSystemCommand', array(3, '', 5));
-
-		$result = $stub->runTest();
-
-		$this->assertInstanceOf('tx_caretaker_TestResult', $result);
-		$this->assertEquals(2, $result->getState());
-		$this->assertEquals(5, $result->getValue());
-
-	}
-
+        $this->assertInstanceOf('tx_caretaker_TestResult', $result);
+        $this->assertEquals(2, $result->getState());
+        $this->assertEquals(5, $result->getValue());
+    }
 }

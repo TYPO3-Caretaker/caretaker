@@ -43,66 +43,73 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
-class tx_caretaker_ResultMessage {
+class tx_caretaker_ResultMessage
+{
+    /**
+     * The Result Message string. Can be a LLL: String or can contain {LLL:parts}
+     *
+     * @var string;
+     */
+    protected $text;
 
-	/**
-	 * The Result Message string. Can be a LLL: String or can contain {LLL:parts}
-	 * @var string;
-	 */
-	protected $text;
+    /**
+     * Associative Array of values which should be inserted in the locallized message
+     *
+     * @var array;
+     */
+    protected $values;
 
-	/**
-	 * Associative Array of values which should be inserted in the locallized message
-	 * @var array;
-	 */
-	protected $values;
+    /**
+     * Constructor
+     *
+     * @param string $text
+     * @param array $values
+     */
+    public function __construct($text = '', $values = array())
+    {
+        $this->text = $text;
+        $this->values = $values;
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param string $text
-	 * @param array $values
-	 */
-	public function __construct($text = '', $values = array()) {
-		$this->text = $text;
-		$this->values = $values;
-	}
+    /**
+     * Get the plain unlocallized text
+     *
+     * @return string
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
 
-	/**
-	 * Get the plain unlocallized text
-	 * @return string
-	 */
-	public function getText() {
-		return $this->text;
-	}
+    /**
+     * Get the value array which will be merged with the text
+     *
+     * @return array
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
 
-	/**
-	 * Get the value array which will be merged with the text
-	 * @return array
-	 */
-	public function getValues() {
-		return $this->values;
-	}
+    /**
+     * Get the locallized and valuemerged message to show
+     *
+     * @return string
+     */
+    public function getLocallizedInfotext()
+    {
+        $result = $this->text;
 
-	/**
-	 * Get the locallized and valuemerged message to show
-	 * @return string
-	 */
-	public function getLocallizedInfotext() {
-		$result = $this->text;
+        // check for LLL strings
+        $result = tx_caretaker_LocalizationHelper::localizeString($result);
 
-		// check for LLL strings
-		$result = tx_caretaker_LocalizationHelper::localizeString($result);
+        // insert Values
+        foreach ($this->values as $key => $value) {
+            $marker = '###VALUE_' . strtoupper($key) . '###';
+            $result = str_replace($marker, $value, $result);
+        }
 
-		// insert Values
-		foreach ($this->values as $key => $value) {
-			$marker = '###VALUE_' . strtoupper($key) . '###';
-			$result = str_replace($marker, $value, $result);
-		}
-
-		return $result;
-	}
+        return $result;
+    }
 }

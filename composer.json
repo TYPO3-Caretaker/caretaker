@@ -1,63 +1,64 @@
 {
-  "name": "caretaker/caretaker",
-  "description": "TYPO3 caretaker server",
-  "type": "typo3-cms-extension",
-  "homepage": "https://github.com/TYPO3-Caretaker/",
-  "repositories": [
+    "name": "caretaker/caretaker",
+    "description": "TYPO3 caretaker server",
+    "type": "typo3-cms-extension",
+    "homepage": "https://github.com/TYPO3-Caretaker/",
+    "repositories": [
         {
             "type": "vcs",
             "url": "https://github.com/TYPO3-Caretaker/caretaker_instance"
         }
     ],
-  "require": {
-    "typo3/cms-core": "^6.2.14|^7.6.0",
-    "caretaker/caretaker_instance": "*"
-  },
-  "require-dev": {
-    "namelesscoder/typo3-repository-client": "^1.1",
-    "mikey179/vfsStream": "1.4.*@dev",
-    "phpunit/phpunit": "~4.7.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "Caretaker\\Caretaker\\": "Classes/"
+    "require": {
+        "typo3/cms-core": "^6.2.14|^7.6.0",
+        "caretaker/caretaker_instance": "*"
     },
-    "classmap": [
-      "Classes",
-      "interfaces",
-      "scheduler",
-      "pi_abstract",
-      "pi_base",
-      "pi_graphreport",
-      "pi_overview",
-      "pi_singleview"
-    ]
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Caretaker\\Caretaker\\Tests\\": "Tests",
-      "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
-      "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.0",
+        "namelesscoder/typo3-repository-client": "^1.1",
+        "mikey179/vfsStream": "1.4.*@dev",
+        "phpunit/phpunit": "~4.7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Caretaker\\Caretaker\\": "Classes/"
+        },
+        "classmap": [
+            "Classes",
+            "interfaces",
+            "scheduler",
+            "pi_abstract",
+            "pi_base",
+            "pi_graphreport",
+            "pi_overview",
+            "pi_singleview"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Caretaker\\Caretaker\\Tests\\": "Tests",
+            "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
+            "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
+        }
+    },
+    "replace": {
+        "caretaker": "self.version",
+        "typo3-ter/caretaker": "self.version"
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "mkdir -p .Build/Web/typo3conf/ext/",
+            "[ -L .Build/Web/typo3conf/ext/caretaker ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/caretaker"
+        ]
+    },
+    "extra": {
+        "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "web-dir": ".Build/Web"
+        }
     }
-  },
-  "replace": {
-    "caretaker": "self.version",
-    "typo3-ter/caretaker": "self.version"
-  },
-  "config": {
-    "vendor-dir": ".Build/vendor",
-    "bin-dir": ".Build/bin"
-  },
-  "scripts": {
-    "post-autoload-dump": [
-      "mkdir -p .Build/Web/typo3conf/ext/",
-      "[ -L .Build/Web/typo3conf/ext/caretaker ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/caretaker"
-    ]
-  },
-  "extra": {
-    "typo3/cms": {
-      "cms-package-dir": "{$vendor-dir}/typo3/cms",
-      "web-dir": ".Build/Web"
-    }
-  }
 }

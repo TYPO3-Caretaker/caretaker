@@ -2,6 +2,7 @@
 namespace Caretaker\Caretaker\Tests\Unit;
 
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+
 /***************************************************************
  * Copyright notice
  *
@@ -38,7 +39,6 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  */
 class HttpTestServiceTest extends UnitTestCase
 {
-
     /**
      * Set the Return Value of a Method
      *
@@ -49,18 +49,17 @@ class HttpTestServiceTest extends UnitTestCase
     private function setMethodReturnValue(&$stub, $method_name, $return_value)
     {
         $stub->expects($this->any())
-                ->method($method_name)
-                ->with()
-                ->will($this->returnValue($return_value));
+            ->method($method_name)
+            ->with()
+            ->will($this->returnValue($return_value));
     }
 
     public function testErrorIfNoQuery()
     {
-
         /** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_httpTestService $stub */
         $stub = $this->getMock(
-                '\tx_caretaker_httpTestService',
-                array('getTimeError', 'getTimeWarning', 'getExpectedReturnCode', 'getRequestQuery', 'getInstanceUrl')
+            '\tx_caretaker_httpTestService',
+            array('getTimeError', 'getTimeWarning', 'getExpectedReturnCode', 'getRequestQuery', 'getInstanceUrl')
         );
 
         $this->setMethodReturnValue($stub, 'getTimeError', 200);
@@ -74,23 +73,21 @@ class HttpTestServiceTest extends UnitTestCase
         $this->assertInstanceOf('tx_caretaker_TestResult', $result);
         $this->assertEquals(-1, $result->getState());
         $this->assertEquals(0, $result->getValue());
-
     }
 
     public function testEverythingWentFine()
     {
-
         /** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_httpTestService $stub */
         $stub = $this->getMock(
-                'tx_caretaker_httpTestService',
-                array(
-                        'getTimeError',
-                        'getTimeWarning',
-                        'getExpectedReturnCode',
-                        'getRequestQuery',
-                        'getInstanceUrl',
-                        'executeCurlRequest'
-                )
+            'tx_caretaker_httpTestService',
+            array(
+                'getTimeError',
+                'getTimeWarning',
+                'getExpectedReturnCode',
+                'getRequestQuery',
+                'getInstanceUrl',
+                'executeCurlRequest',
+            )
         );
 
         $this->setMethodReturnValue($stub, 'getTimeError', 20);
@@ -105,23 +102,21 @@ class HttpTestServiceTest extends UnitTestCase
         $this->assertInstanceOf('tx_caretaker_TestResult', $result);
         $this->assertEquals(0, $result->getState());
         $this->assertEquals(5, $result->getValue());
-
     }
 
     public function testWarningIfTimeoutIsReached()
     {
-
         /** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_httpTestService $stub */
         $stub = $this->getMock(
-                'tx_caretaker_httpTestService',
-                array(
-                        'getTimeError',
-                        'getTimeWarning',
-                        'getExpectedReturnCode',
-                        'getRequestQuery',
-                        'getInstanceUrl',
-                        'executeCurlRequest'
-                )
+            'tx_caretaker_httpTestService',
+            array(
+                'getTimeError',
+                'getTimeWarning',
+                'getExpectedReturnCode',
+                'getRequestQuery',
+                'getInstanceUrl',
+                'executeCurlRequest',
+            )
         );
 
         $this->setMethodReturnValue($stub, 'getTimeError', 20);
@@ -136,23 +131,21 @@ class HttpTestServiceTest extends UnitTestCase
         $this->assertInstanceOf('tx_caretaker_TestResult', $result);
         $this->assertEquals(1, $result->getState());
         $this->assertEquals(12, $result->getValue());
-
     }
 
     public function testErrorIfTimeoutIsReached()
     {
-
         /** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_httpTestService $stub */
         $stub = $this->getMock(
-                'tx_caretaker_httpTestService',
-                array(
-                        'getTimeError',
-                        'getTimeWarning',
-                        'getExpectedReturnCode',
-                        'getRequestQuery',
-                        'getInstanceUrl',
-                        'executeCurlRequest'
-                )
+            'tx_caretaker_httpTestService',
+            array(
+                'getTimeError',
+                'getTimeWarning',
+                'getExpectedReturnCode',
+                'getRequestQuery',
+                'getInstanceUrl',
+                'executeCurlRequest',
+            )
         );
 
         $this->setMethodReturnValue($stub, 'getTimeError', 20);
@@ -167,23 +160,21 @@ class HttpTestServiceTest extends UnitTestCase
         $this->assertInstanceOf('tx_caretaker_TestResult', $result);
         $this->assertEquals(2, $result->getState());
         $this->assertEquals(22, $result->getValue());
-
     }
 
     public function testErrorIfHttpStatusIsWrong()
     {
-
         /** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_httpTestService $stub */
         $stub = $this->getMock(
-                'tx_caretaker_httpTestService',
-                array(
-                        'getTimeError',
-                        'getTimeWarning',
-                        'getExpectedReturnCode',
-                        'getRequestQuery',
-                        'getInstanceUrl',
-                        'executeCurlRequest'
-                )
+            'tx_caretaker_httpTestService',
+            array(
+                'getTimeError',
+                'getTimeWarning',
+                'getExpectedReturnCode',
+                'getRequestQuery',
+                'getInstanceUrl',
+                'executeCurlRequest',
+            )
         );
 
         $this->setMethodReturnValue($stub, 'getTimeError', 20);
@@ -198,16 +189,14 @@ class HttpTestServiceTest extends UnitTestCase
         $this->assertInstanceOf('tx_caretaker_TestResult', $result);
         $this->assertEquals(2, $result->getState());
         $this->assertEquals(5, $result->getValue());
-
     }
 
     public function testHttpHeaderComparison()
     {
-
         /** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_httpTestService|\Caretaker\Caretaker\Tests\Unit\Stubs\HttpTestServiceStub $stub */
         $stub = $this->getMock(
-                '\Caretaker\Caretaker\Tests\Unit\Stubs\HttpTestServiceStub',
-                array('getRequestQuery', 'getInstanceUrl')
+            '\Caretaker\Caretaker\Tests\Unit\Stubs\HttpTestServiceStub',
+            array('getRequestQuery', 'getInstanceUrl')
         );
 
         $this->setMethodReturnValue($stub, 'getRequestQuery', 'blah');
@@ -228,7 +217,7 @@ class HttpTestServiceTest extends UnitTestCase
         // Mon, 30 Nov 2009 08:42:46 GMT
         $date_timestamp = time() - 250;
         $date_string = strftime('%a, %e %b %Y %H:%M:%S %Z', $date_timestamp);
-//		$testedHeaders = array('value', $date_string);
+        //		$testedHeaders = array('value', $date_string);
 
         $this->assertTrue($stub->checkSingleHeader($date_string, 'Age:<300'));
         $this->assertFalse($stub->checkSingleHeader($date_string, 'Age:<100'));
@@ -244,6 +233,5 @@ class HttpTestServiceTest extends UnitTestCase
         $this->assertFalse($stub->checkSingleHeader('http://foo.baz.de/blubber/blah', $compare));
         $this->assertFalse($stub->checkSingleHeader('http://foo.bar.de/blub/blah', $compare));
         $this->assertFalse($stub->checkSingleHeader('http://foo.bar.de/blubber/bl�h', $compare));
-
     }
 }

@@ -42,80 +42,90 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
-class tx_caretaker_ContactRole {
+class tx_caretaker_ContactRole
+{
+    /**
+     * UID
+     *
+     * @var int
+     */
+    private $uid;
 
-	/**
-	 * UID
-	 * @var int
-	 */
-	private $uid;
+    /**
+     * Role ID
+     *
+     * @var string
+     */
+    private $id;
 
-	/**
-	 * Role ID
-	 * @var string
-	 */
-	private $id;
+    /**
+     * Role Title
+     *
+     * @var string
+     */
+    private $title;
 
-	/**
-	 * Role Title
-	 * @var string
-	 */
-	private $title;
+    /**
+     * Role Description
+     *
+     * @var string
+     */
+    private $description;
 
-	/**
-	 * Role Description
-	 * @var string
-	 */
-	private $description;
+    /**
+     * Constructor
+     *
+     * @param int $uid
+     * @param string $id
+     * @param string $title
+     * @param string $description
+     */
+    public function __construct($uid, $id, $title = '', $description = '')
+    {
+        $this->uid = $uid;
+        $this->id = $id;
+        $this->title = $title;
+        $this->description = $description;
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param integer $uid
-	 * @param string $id
-	 * @param string $title
-	 * @param string $description
-	 */
-	public function __construct($uid, $id, $title = '', $description = '') {
-		$this->uid = $uid;
-		$this->id = $id;
-		$this->title = $title;
-		$this->description = $description;
-	}
+    /**
+     * Get the uid
+     *
+     * @return int
+     */
+    public function getUid()
+    {
+        return $this->uid;
+    }
 
-	/**
-	 * Get the uid
-	 * @return integer
-	 */
-	public function getUid() {
-		return $this->uid;
-	}
+    /**
+     * Get the roleID
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * Get the roleID
-	 * @return string
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    /**
+     * Get the title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	/**
-	 * Get the title
-	 * @return string
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
-
-	/**
-	 * Get the description
-	 * @return string
-	 */
-	public function getDescription() {
-		return $this->description;
-	}
-
+    /**
+     * Get the description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 }

@@ -42,123 +42,142 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
-class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange {
+class tx_caretaker_TestResultRange extends tx_caretaker_NodeResultRange
+{
+    /**
+     * Minimal value of this result range
+     *
+     * @var float
+     */
+    public $min_value = 0;
 
-	/**
-	 * Minimal value of this result range
-	 * @var float
-	 */
-	var $min_value = 0;
+    /**
+     * Maximal value of this result range
+     *
+     * @var float
+     */
+    public $max_value = 0;
 
-	/**
-	 * Maximal value of this result range
-	 * @var float
-	 */
-	var $max_value = 0;
+    /**
+     * Add a TestResult to the ResultRange
+     *
+     * @param tx_caretaker_NodeResult $result
+     */
+    public function addResult($result)
+    {
+        parent::addResult($result);
 
-	/**
-	 * Add a TestResult to the ResultRange
-	 * @param tx_caretaker_NodeResult $result
-	 */
-	public function addResult($result) {
-		parent::addResult($result);
+        $value = $result->getValue();
+        if ($value < $this->min_value) {
+            $this->min_value = $value;
+        } elseif ($value > $this->max_value) {
+            $this->max_value = $value;
+        }
+    }
 
-		$value = $result->getValue();
-		if ($value < $this->min_value) {
-			$this->min_value = $value;
-		} else if ($value > $this->max_value) {
-			$this->max_value = $value;
-		}
-	}
+    /**
+     * Return the minimal result value
+     *
+     * @return float
+     */
+    public function getMinValue()
+    {
+        return $this->min_value;
+    }
 
-	/**
-	 * Return the minimal result value
-	 * @return float
-	 */
-	public function getMinValue() {
-		return $this->min_value;
-	}
+    /**
+     * Return the maximal result value
+     *
+     * @return float
+     */
+    public function getMaxValue()
+    {
+        return $this->max_value;
+    }
 
-	/**
-	 * Return the maximal result value
-	 * @return float
-	 */
-	public function getMaxValue() {
-		return $this->max_value;
-	}
+    /**
+     * Get the median value of the given result-set
+     * undefined values are ignored
+     *
+     * @return float
+     */
+    public function getMedianValue()
+    {
+        $values = array();
+        /** @var tx_caretaker_TestResult $result */
+        foreach ($this as $result) {
+            $state = $result->getState();
+            $value = $result->getValue();
+            if (in_array($state, array(
+                    tx_caretaker_Constants::state_ok,
+                    tx_caretaker_Constants::state_warning,
+                    tx_caretaker_Constants::state_error,
+                )) && $value > 0
+            ) {
+                $values[] = $result->getValue();
+            }
+        }
+        sort($values);
+        $num = count($values);
+        if ($num > 0) {
+            if ($num % 2 == 1) {
+                $index = (int)(($num - 1) / 2);
 
-	/**
-	 * Get the median value of the given result-set
-	 * undefined values are ignored
-	 * @return float
-	 */
-	public function getMedianValue() {
-		$values = array();
-		/** @var tx_caretaker_TestResult $result */
-		foreach ($this as $result) {
-			$state = $result->getState();
-			$value = $result->getValue();
-			if (in_array($state, array(tx_caretaker_Constants::state_ok, tx_caretaker_Constants::state_warning, tx_caretaker_Constants::state_error)) && $value > 0) {
-				$values[] = $result->getValue();
-			}
-		}
-		sort($values);
-		$num = count($values);
-		if ($num > 0) {
-			if ($num % 2 == 1) {
-				$index = (int)(($num - 1) / 2);
-				return ($values[$index]);
-			} else {
-				$index = (int)($num / 2);
-				$index2 = (int)($num / 2 - 1);
-				return (($values[$index] + $values[$index2]) / 2.0);
-			}
-		} else {
-			return 0;
-		}
-	}
+                return $values[$index];
+            }
+            $index = (int)($num / 2);
+            $index2 = (int)($num / 2 - 1);
 
-	/**
-	 * Get the average value over the time
-	 * undefined values are ignored
-	 * @return float
-	 */
-	public function getAverageValue() {
-		$value_area = 0;
-		$value_range = 0;
-		$currentResult = NULL;
-		$nextResult = NULL;
+            return ($values[$index] + $values[$index2]) / 2.0;
+        }
+        return 0;
+    }
 
-		$this->rewind();
-		$currentResult = $this->current();
-		$nextResult = $this->next();
-		$index = 0;
-		while ($currentResult) {
-			// start
-			if ($currentResult && $nextResult) {
-				$timeStart = $currentResult->getTimestamp();
-				$timeStop = $nextResult->getTimestamp();
-				$value = $currentResult->getValue();
-				$state = $currentResult->getState();
-				$timeRange = $timeStop - $timeStart;
-				if (in_array($state, array(tx_caretaker_Constants::state_ok, tx_caretaker_Constants::state_warning, tx_caretaker_Constants::state_error)) && $value > 0) {
-					$value_area += $timeRange * $value;
-					$value_range += $timeRange;
-				}
-			}
+    /**
+     * Get the average value over the time
+     * undefined values are ignored
+     *
+     * @return float
+     */
+    public function getAverageValue()
+    {
+        $value_area = 0;
+        $value_range = 0;
+        $currentResult = null;
+        $nextResult = null;
 
-			$index++;
-			$currentResult = $nextResult;
-			$nextResult = $this->next();
-		}
+        $this->rewind();
+        $currentResult = $this->current();
+        $nextResult = $this->next();
+        $index = 0;
+        while ($currentResult) {
+            // start
+            if ($currentResult && $nextResult) {
+                $timeStart = $currentResult->getTimestamp();
+                $timeStop = $nextResult->getTimestamp();
+                $value = $currentResult->getValue();
+                $state = $currentResult->getState();
+                $timeRange = $timeStop - $timeStart;
+                if (in_array($state, array(
+                        tx_caretaker_Constants::state_ok,
+                        tx_caretaker_Constants::state_warning,
+                        tx_caretaker_Constants::state_error,
+                    )) && $value > 0
+                ) {
+                    $value_area += $timeRange * $value;
+                    $value_range += $timeRange;
+                }
+            }
 
-		if ($value_range > 0) {
-			return ($value_area / $value_range);
-		} else {
-			return 0;
-		}
-	}
+            $index++;
+            $currentResult = $nextResult;
+            $nextResult = $this->next();
+        }
+
+        if ($value_range > 0) {
+            return $value_area / $value_range;
+        }
+        return 0;
+    }
 }

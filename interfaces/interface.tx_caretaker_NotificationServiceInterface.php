@@ -42,34 +42,33 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
-interface tx_caretaker_NotificationServiceInterface {
+interface tx_caretaker_NotificationServiceInterface
+{
+    /**
+     * @param int $id
+     */
+    public function setId($id);
 
-	/**
-	 * @param int $id
-	 */
-	public function setId($id);
+    /**
+     * Check weather the notificationService is enabled
+     *
+     * @return bool
+     */
+    public function isEnabled();
 
-	/**
-	 * Check weather the notificationService is enabled
-	 * @return boolean
-	 */
-	public function isEnabled();
+    /**
+     * Notify the service about a test status
+     *
+     * @param string $event
+     * @param tx_caretaker_AbstractNode $node
+     * @param tx_caretaker_TestResult $result
+     * @param tx_caretaker_TestResult $lastResult
+     */
+    public function addNotification($event, $node, $result = null, $lastResult = null);
 
-	/**
-	 * Notify the service about a test status
-	 * @param string $event
-	 * @param tx_caretaker_AbstractNode $node
-	 * @param tx_caretaker_TestResult $result
-	 * @param tx_caretaker_TestResult $lastResult
-	 */
-	public function addNotification($event, $node, $result = NULL, $lastResult = NULL);
-
-	/**
-	 * Send the aggregated Notifications
-	 */
-	public function sendNotifications();
-
+    /**
+     * Send the aggregated Notifications
+     */
+    public function sendNotifications();
 }

@@ -1,402 +1,388 @@
-plugin.tx_caretaker_pi_overview{
-	
-	template = FILE
-	template.file = EXT:caretaker/res/html/pi_overview.html
+plugin.tx_caretaker_pi_overview {
+    template = FILE
+    template.file = EXT:caretaker/res/html/pi_overview.html
 
-	node_ids =
-	root_id = root
+    node_ids =
+    root_id = root
 
-	nodeMarkers {
-		STATE = TEXT
-		STATE.field = state_info
-		STATE.case = lower
-		
-		TITLE = TEXT
-		TITLE.field =  title
-		#TITLE.append = TEXT 
-		#TITLE.append.field = instance
-		#TITLE.append.noTrimWrap = | [|]|
-		#TITLE.append.required = 1
-		TITLE.insertData = 1
-		TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
-		TITLE.typolink.additionalParams.field = link_parameters
-		TITLE.typolink.additionalParams.wrap = |&tx_caretaker_pi_singleview[range]=24
-		TITLE.typolink.target = _blank
-		
-		DESCRIPTION = TEXT
-		DESCRIPTION.stdWrap.override = {field:type} {field:state_msg}
-		DESCRIPTION.stdWrap.override.insertData = 1
-		DESCRIPTION.htmlSpecialChars = 1
-		
-		TYPE = TEXT
-		TYPE.field = type
-		TYPE.case = lower
-		
-		NODE = TEXT
-		NODE.field = node_id
-	} 
-	
-	childMarkers {
-		STATE = TEXT
-		STATE.field = state_info
-		STATE.case = lower
-		
-		TITLE = TEXT
-		TITLE.value = {field:title}
-		TITLE.insertData = 1
-		TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
-		TITLE.typolink.additionalParams.field = link_parameters
-		TITLE.typolink.additionalParams.wrap = |&tx_caretaker_pi_singleview[range]=24
-		TITLE.typolink.target = _blank
-		TITLE.append = CASE
-		TITLE.append {
-			key.field = node_type
-			key.case = lower
-			instance = TEXT
-			instance.data = LLL:EXT:caretaker/locallang_fe.xml:instance
-			instance.noTrimWrap = | [|]|
-			testgroup = TEXT
-			testgroup.data = LLL:EXT:caretaker/locallang_fe.xml:testgroup
-			testgroup.noTrimWrap = | [|]|
-			instancegroup = TEXT
-			instancegroup.data = LLL:EXT:caretaker/locallang_fe.xml:instancegroup
-			instancegroup.noTrimWrap = | [|]|
-		}
-		
-		DESCRIPTION = TEXT
-		DESCRIPTION.stdWrap.override = {field:state_msg}
-		DESCRIPTION.stdWrap.override.insertData = 1
-		DESCRIPTION.htmlSpecialChars = 1
-		
-		NODE = TEXT
-		NODE.field = node_id
-	} 	
-	
-	stdWrap.wrap = <div style="clear:both;"><!-- --></div>
+    nodeMarkers {
+        STATE = TEXT
+        STATE.field = state_info
+        STATE.case = lower
+
+        TITLE = TEXT
+        TITLE.field = title
+        #TITLE.append = TEXT
+        #TITLE.append.field = instance
+        #TITLE.append.noTrimWrap = | [|]|
+        #TITLE.append.required = 1
+        TITLE.insertData = 1
+        TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
+        TITLE.typolink.additionalParams.field = link_parameters
+        TITLE.typolink.additionalParams.wrap = |&tx_caretaker_pi_singleview[range]=24
+        TITLE.typolink.target = _blank
+
+        DESCRIPTION = TEXT
+        DESCRIPTION.stdWrap.override = {field:type} {field:state_msg}
+        DESCRIPTION.stdWrap.override.insertData = 1
+        DESCRIPTION.htmlSpecialChars = 1
+
+        TYPE = TEXT
+        TYPE.field = type
+        TYPE.case = lower
+
+        NODE = TEXT
+        NODE.field = node_id
+    }
+
+    childMarkers {
+        STATE = TEXT
+        STATE.field = state_info
+        STATE.case = lower
+
+        TITLE = TEXT
+        TITLE.value = {field:title}
+        TITLE.insertData = 1
+        TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
+        TITLE.typolink.additionalParams.field = link_parameters
+        TITLE.typolink.additionalParams.wrap = |&tx_caretaker_pi_singleview[range]=24
+        TITLE.typolink.target = _blank
+        TITLE.append = CASE
+        TITLE.append {
+            key.field = node_type
+            key.case = lower
+            instance = TEXT
+            instance.data = LLL:EXT:caretaker/locallang_fe.xml:instance
+            instance.noTrimWrap = | [|]|
+            testgroup = TEXT
+            testgroup.data = LLL:EXT:caretaker/locallang_fe.xml:testgroup
+            testgroup.noTrimWrap = | [|]|
+            instancegroup = TEXT
+            instancegroup.data = LLL:EXT:caretaker/locallang_fe.xml:instancegroup
+            instancegroup.noTrimWrap = | [|]|
+        }
+
+        DESCRIPTION = TEXT
+        DESCRIPTION.stdWrap.override = {field:state_msg}
+        DESCRIPTION.stdWrap.override.insertData = 1
+        DESCRIPTION.htmlSpecialChars = 1
+
+        NODE = TEXT
+        NODE.field = node_id
+    }
+
+    stdWrap.wrap = <div style="clear:both;"><!-- --></div>
 }
 
 plugin.tx_caretaker_pi_singleview {
-	
-	template = FILE
-	template.file = EXT:caretaker/res/html/pi_singleview_aggregator.html
-	
-	templateChild = FILE
-	templateChild.file = EXT:caretaker/res/html/pi_singleview.html
+    template = FILE
+    template.file = EXT:caretaker/res/html/pi_singleview_aggregator.html
 
-	node_id =
-	root_id = root
+    templateChild = FILE
+    templateChild.file = EXT:caretaker/res/html/pi_singleview.html
 
-	nodeMarkers {
-	
-		STATE = TEXT
-		STATE.field = state_info
-		STATE.case = lower
-		
-		STATE_INFO = TEXT
-		STATE_INFO.field = state_show
-		
-		LAST_RUN = TEXT
-		LAST_RUN.field = state_tstamp
-		LAST_RUN.strftime =  %x %X
-				
-		VALUE = TEXT
-		VALUE.field = state_value
+    node_id =
+    root_id = root
 
-		TYPE = TEXT
-		TYPE.field = type
+    nodeMarkers {
+        STATE = TEXT
+        STATE.field = state_info
+        STATE.case = lower
 
-		CONFIGURATION = TEXT
-		CONFIGURATION.field = configuration
+        STATE_INFO = TEXT
+        STATE_INFO.field = state_show
 
-		MESSAGE = TEXT
-		MESSAGE.field = state_msg
-		MESSAGE.br = 1
-		
-		CHART_TITLE = TEXT
-		CHART_TITLE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:chart
-		#CHART_TITLE.value = Chart
-		#CHART_TITLE.append = TEXT
-		#CHART_TITLE.append.field = range
-		#CHART_TITLE.append.stdWrap.wrap = / 24
-		#CHART_TITLE.append.prioriCalc = 1
-		#CHART_TITLE.append.noTrimWrap = | [|]|
-		
-		CHART_LINKS = COA
-		CHART_LINKS.wrap = <ul class="chart_links" >|</ul>
-		CHART_LINKS.10 = TEXT
-		CHART_LINKS.10.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:1hour
-		CHART_LINKS.10.typolink.parameter = {page:uid},0
-		CHART_LINKS.10.typolink.parameter.insertData = 1 
-		CHART_LINKS.10.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=1
-		CHART_LINKS.10.typolink.additionalParams.insertData = 1
-		CHART_LINKS.10.typolink.useCacheHash = 1
-		CHART_LINKS.10.wrap = <li>|</li>
+        LAST_RUN = TEXT
+        LAST_RUN.field = state_tstamp
+        LAST_RUN.strftime = %x %X
 
-		CHART_LINKS.20 < .CHART_LINKS.10
-		CHART_LINKS.20.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:3hours
-		CHART_LINKS.20.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=3
+        VALUE = TEXT
+        VALUE.field = state_value
 
+        TYPE = TEXT
+        TYPE.field = type
 
-		CHART_LINKS.40 < .CHART_LINKS.10
-		CHART_LINKS.40.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:24hours
-		CHART_LINKS.40.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=24
+        CONFIGURATION = TEXT
+        CONFIGURATION.field = configuration
 
-		CHART_LINKS.50 < .CHART_LINKS.10
-		CHART_LINKS.50.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:3days
-		CHART_LINKS.50.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=72
+        MESSAGE = TEXT
+        MESSAGE.field = state_msg
+        MESSAGE.br = 1
 
-		CHART_LINKS.60 < .CHART_LINKS.10
-		CHART_LINKS.60.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:7days
-		CHART_LINKS.60.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=168
-		
-		CHART_LINKS.70 < .CHART_LINKS.10
-		CHART_LINKS.70.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:30days
-		CHART_LINKS.70.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=720
+        CHART_TITLE = TEXT
+        CHART_TITLE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:chart
+        #CHART_TITLE.value = Chart
+        #CHART_TITLE.append = TEXT
+        #CHART_TITLE.append.field = range
+        #CHART_TITLE.append.stdWrap.wrap = / 24
+        #CHART_TITLE.append.prioriCalc = 1
+        #CHART_TITLE.append.noTrimWrap = | [|]|
 
-		CHART_LINKS.80 < .CHART_LINKS.10
-		CHART_LINKS.80.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:3month
-		CHART_LINKS.80.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=2250
+        CHART_LINKS = COA
+        CHART_LINKS.wrap = <ul class="chart_links" >|</ul>
+        CHART_LINKS.10 = TEXT
+        CHART_LINKS.10.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:1hour
+        CHART_LINKS.10.typolink.parameter = {page:uid},0
+        CHART_LINKS.10.typolink.parameter.insertData = 1
+        CHART_LINKS.10.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=1
+        CHART_LINKS.10.typolink.additionalParams.insertData = 1
+        CHART_LINKS.10.typolink.useCacheHash = 1
+        CHART_LINKS.10.wrap = <li>|</li>
 
-		CHART_LINKS.90 < .CHART_LINKS.10
-		CHART_LINKS.90.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:12month
-		CHART_LINKS.90.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=8760
+        CHART_LINKS.20 < .CHART_LINKS.10
+        CHART_LINKS.20.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:3hours
+        CHART_LINKS.20.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=3
 
-		
-		CHART = TEXT
-		CHART.value.field = chart
-		
-		TITLE = TEXT
-		TITLE.field =  title
-		TITLE.insertData = 1
-		TITLE.append = TEXT
-		TITLE.append {
-			field = node_type
-			noTrimWrap = | [|]|
-		}
-		
-		DESCRIPTION = TEXT
-		DESCRIPTION.field = description
-		
-		LABEL_DESCRIPTION = TEXT
-		LABEL_DESCRIPTION.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:description
-		
-		LABEL_STATE = TEXT
-		LABEL_STATE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:state
-		
-		LABEL_MESSAGE = TEXT
-		LABEL_MESSAGE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:message
-		
-		LAST_RUN_HEADER = TEXT
-		LAST_RUN_HEADER.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:lastRunHeader
-		
-		LABEL_LAST_RUN = TEXT
-		LABEL_LAST_RUN.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:lastRun
-		
-		LABEL_VALUE = TEXT
-		LABEL_VALUE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:value
+        CHART_LINKS.40 < .CHART_LINKS.10
+        CHART_LINKS.40.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:24hours
+        CHART_LINKS.40.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=24
 
-		LABEL_ROOTLINE = TEXT
-		LABEL_ROOTLINE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:rootline
-		
-		LABEL_CHILDREN = TEXT
-		LABEL_CHILDREN.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:children
+        CHART_LINKS.50 < .CHART_LINKS.10
+        CHART_LINKS.50.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:3days
+        CHART_LINKS.50.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=72
 
-		LABEL_TYPE = TEXT
-		LABEL_TYPE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:type
+        CHART_LINKS.60 < .CHART_LINKS.10
+        CHART_LINKS.60.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:7days
+        CHART_LINKS.60.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=168
 
-		LABEL_CONFIGURATION = TEXT
-		LABEL_CONFIGURATION.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:configuration
-	} 
-	
-	childMarkers {
-		STATE = TEXT
-		STATE.field = state_info
-		STATE.case = lower
-		
-		TITLE = TEXT
-		TITLE.value = {field:title}
-		TITLE.insertData = 1
-		TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
-		TITLE.typolink.additionalParams.field = link_parameters
-		TITLE.typolink.target = _self
-		TITLE.append = TEXT
-		TITLE.append {
-			field = node_type
-			noTrimWrap = | [|]|
-		}
+        CHART_LINKS.70 < .CHART_LINKS.10
+        CHART_LINKS.70.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:30days
+        CHART_LINKS.70.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=720
 
-		DESCRIPTION = TEXT
-		DESCRIPTION.value = {field:type}: {field:state_msg}
-		DESCRIPTION.insertData = 1
-	}
+        CHART_LINKS.80 < .CHART_LINKS.10
+        CHART_LINKS.80.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:3month
+        CHART_LINKS.80.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=2250
 
-	rootlineMarkers {
-		STATE = TEXT
-		STATE.field = state_info
-		STATE.case = lower
+        CHART_LINKS.90 < .CHART_LINKS.10
+        CHART_LINKS.90.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:12month
+        CHART_LINKS.90.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=8760
 
-		TITLE = TEXT
-		TITLE.value = {field:title}
-		TITLE.insertData = 1
-		TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
-		TITLE.typolink.additionalParams.field = link_parameters
-		TITLE.typolink.target = _self
+        CHART = TEXT
+        CHART.value.field = chart
 
-		DESCRIPTION = TEXT
-		DESCRIPTION.value = {field:type}: {field:state_msg}
-		DESCRIPTION.insertData = 1
-	}
+        TITLE = TEXT
+        TITLE.field = title
+        TITLE.insertData = 1
+        TITLE.append = TEXT
+        TITLE.append {
+            field = node_type
+            noTrimWrap = | [|]|
+        }
+
+        DESCRIPTION = TEXT
+        DESCRIPTION.field = description
+
+        LABEL_DESCRIPTION = TEXT
+        LABEL_DESCRIPTION.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:description
+
+        LABEL_STATE = TEXT
+        LABEL_STATE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:state
+
+        LABEL_MESSAGE = TEXT
+        LABEL_MESSAGE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:message
+
+        LAST_RUN_HEADER = TEXT
+        LAST_RUN_HEADER.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:lastRunHeader
+
+        LABEL_LAST_RUN = TEXT
+        LABEL_LAST_RUN.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:lastRun
+
+        LABEL_VALUE = TEXT
+        LABEL_VALUE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:value
+
+        LABEL_ROOTLINE = TEXT
+        LABEL_ROOTLINE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:rootline
+
+        LABEL_CHILDREN = TEXT
+        LABEL_CHILDREN.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:children
+
+        LABEL_TYPE = TEXT
+        LABEL_TYPE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:type
+
+        LABEL_CONFIGURATION = TEXT
+        LABEL_CONFIGURATION.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:configuration
+    }
+
+    childMarkers {
+        STATE = TEXT
+        STATE.field = state_info
+        STATE.case = lower
+
+        TITLE = TEXT
+        TITLE.value = {field:title}
+        TITLE.insertData = 1
+        TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
+        TITLE.typolink.additionalParams.field = link_parameters
+        TITLE.typolink.target = _self
+        TITLE.append = TEXT
+        TITLE.append {
+            field = node_type
+            noTrimWrap = | [|]|
+        }
+
+        DESCRIPTION = TEXT
+        DESCRIPTION.value = {field:type}: {field:state_msg}
+        DESCRIPTION.insertData = 1
+    }
+
+    rootlineMarkers {
+        STATE = TEXT
+        STATE.field = state_info
+        STATE.case = lower
+
+        TITLE = TEXT
+        TITLE.value = {field:title}
+        TITLE.insertData = 1
+        TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
+        TITLE.typolink.additionalParams.field = link_parameters
+        TITLE.typolink.target = _self
+
+        DESCRIPTION = TEXT
+        DESCRIPTION.value = {field:type}: {field:state_msg}
+        DESCRIPTION.insertData = 1
+    }
 }
 
-plugin.tx_caretaker_pi_graphreport{
-	template = FILE
-	template.file = EXT:caretaker/res/html/pi_graphreport.html
+plugin.tx_caretaker_pi_graphreport {
+    template = FILE
+    template.file = EXT:caretaker/res/html/pi_graphreport.html
 
-	node_ids =
-	root_id = root
-	
-	markers {
-	
-		CHART_TITLE = TEXT
-		CHART_TITLE.value = Chart
-		CHART_TITLE.append = TEXT
-		CHART_TITLE.append.field = range
-		CHART_TITLE.append.stdWrap.wrap = / 24
-		CHART_TITLE.append.prioriCalc = 1
-		CHART_TITLE.append.noTrimWrap = | [|]|
-		
-		CHART_LINKS = COA
-		CHART_LINKS.wrap = <ul class="chart_links" >|</ul>
-		CHART_LINKS.10 = TEXT
-		CHART_LINKS.10.data = LLL:EXT:caretaker/pi_graphreport/locallang.xml:24hours
-		CHART_LINKS.10.typolink.parameter = {page:uid},0
-		CHART_LINKS.10.typolink.parameter.insertData = 1 
-		CHART_LINKS.10.typolink.additionalParams = &tx_caretaker_pi_graphreport[range]=24
-		CHART_LINKS.10.typolink.additionalParams.insertData = 1
-		CHART_LINKS.10.typolink.useCacheHash = 1
-		CHART_LINKS.10.wrap = <li>|</li>
-		
-		CHART_LINKS.20 < .CHART_LINKS.10
-		CHART_LINKS.20.data = LLL:EXT:caretaker/pi_graphreport/locallang.xml:7days
-		CHART_LINKS.20.typolink.additionalParams = &tx_caretaker_pi_graphreport[range]=168
-		
-		CHART_LINKS.30 < .CHART_LINKS.10
-		CHART_LINKS.30.data = LLL:EXT:caretaker/pi_graphreport/locallang.xml:30days
-		CHART_LINKS.30.typolink.additionalParams = &tx_caretaker_pi_graphreport[range]=720
-		
-		CHART = TEXT
-		CHART.value.field = chart
-	}
+    node_ids =
+    root_id = root
+
+    markers {
+        CHART_TITLE = TEXT
+        CHART_TITLE.value = Chart
+        CHART_TITLE.append = TEXT
+        CHART_TITLE.append.field = range
+        CHART_TITLE.append.stdWrap.wrap = / 24
+        CHART_TITLE.append.prioriCalc = 1
+        CHART_TITLE.append.noTrimWrap = | [|]|
+
+        CHART_LINKS = COA
+        CHART_LINKS.wrap = <ul class="chart_links" >|</ul>
+        CHART_LINKS.10 = TEXT
+        CHART_LINKS.10.data = LLL:EXT:caretaker/pi_graphreport/locallang.xml:24hours
+        CHART_LINKS.10.typolink.parameter = {page:uid},0
+        CHART_LINKS.10.typolink.parameter.insertData = 1
+        CHART_LINKS.10.typolink.additionalParams = &tx_caretaker_pi_graphreport[range]=24
+        CHART_LINKS.10.typolink.additionalParams.insertData = 1
+        CHART_LINKS.10.typolink.useCacheHash = 1
+        CHART_LINKS.10.wrap = <li>|</li>
+
+        CHART_LINKS.20 < .CHART_LINKS.10
+        CHART_LINKS.20.data = LLL:EXT:caretaker/pi_graphreport/locallang.xml:7days
+        CHART_LINKS.20.typolink.additionalParams = &tx_caretaker_pi_graphreport[range]=168
+
+        CHART_LINKS.30 < .CHART_LINKS.10
+        CHART_LINKS.30.data = LLL:EXT:caretaker/pi_graphreport/locallang.xml:30days
+        CHART_LINKS.30.typolink.additionalParams = &tx_caretaker_pi_graphreport[range]=720
+
+        CHART = TEXT
+        CHART.value.field = chart
+    }
 }
 
 plugin.tx_caretaker_pi_abstract {
+    template = FILE
+    template.file = EXT:caretaker/res/html/pi_abstract.html
 
-	template = FILE
-	template.file = EXT:caretaker/res/html/pi_abstract.html
+    node_id =
+    root_id = root
 
-	node_id =
-	root_id = root
+    markers {
+        TITLE = TEXT
+        TITLE.data = LLL:EXT:caretaker/pi_abstract/locallang.xml:abstract
 
-	markers {
+        STATE = TEXT
+        STATE.field = stateInfo
+        STATE.case = lower
 
-		TITLE = TEXT
-		TITLE.data = LLL:EXT:caretaker/pi_abstract/locallang.xml:abstract
+        NODE_TITLE = TEXT
+        NODE_TITLE.field = nodeTitle
 
-		STATE = TEXT
-		STATE.field = stateInfo
-		STATE.case = lower
+        NUM_ERROR = TEXT
+        NUM_ERROR.field = numError
 
-		NODE_TITLE = TEXT
-		NODE_TITLE.field = nodeTitle
+        NUM_WARNING = TEXT
+        NUM_WARNING.field = numWarning
 
-		NUM_ERROR = TEXT
-		NUM_ERROR.field = numError
+        NUM_OK = TEXT
+        NUM_OK.field = numOk
 
-		NUM_WARNING = TEXT
-		NUM_WARNING.field = numWarning
+        NUM_UNDEFINED = TEXT
+        NUM_UNDEFINED.field = numUndefined
 
-		NUM_OK = TEXT
-		NUM_OK.field = numOk
+        NUM_ACK = TEXT
+        NUM_ACK.field = numAck
 
-		NUM_UNDEFINED = TEXT
-		NUM_UNDEFINED.field = numUndefined
-		
-		NUM_ACK = TEXT
-		NUM_ACK.field = numAck
-		
-		NUM_DUE = TEXT
-		NUM_DUE.field = numDue
-		
-	}
+        NUM_DUE = TEXT
+        NUM_DUE.field = numDue
+    }
 
-	subparts {
-		CARETAKER-CHILDREN = COA
-		CARETAKER-CHILDREN {
-			10 = TEXT
-			10.field = renderedErrorNodes
+    subparts {
+        CARETAKER-CHILDREN = COA
+        CARETAKER-CHILDREN {
+            10 = TEXT
+            10.field = renderedErrorNodes
 
-			30 = TEXT
-			30.field = renderedWarningNodes
-			
-			40 = TEXT
-			40.field = renderedAckNodes
-			
-			50 = TEXT
-			50.field = renderedDueNodes
-			
-		}
-	}
+            30 = TEXT
+            30.field = renderedWarningNodes
 
-	childMarkers {
+            40 = TEXT
+            40.field = renderedAckNodes
 
-		STATE = TEXT
-		STATE.field = stateinfo
-		STATE.case = lower
+            50 = TEXT
+            50.field = renderedDueNodes
+        }
+    }
 
-		TITLE = TEXT
-		TITLE.value = {field:title}
-		TITLE.insertData = 1
-		TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
-		TITLE.typolink.additionalParams.field = link_parameters
-		TITLE.typolink.target = _self
+    childMarkers {
+        STATE = TEXT
+        STATE.field = stateinfo
+        STATE.case = lower
 
-		INFO = TEXT
-		INFO.field = message_ll
-		INFO.br = 1
+        TITLE = TEXT
+        TITLE.value = {field:title}
+        TITLE.insertData = 1
+        TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
+        TITLE.typolink.additionalParams.field = link_parameters
+        TITLE.typolink.target = _self
 
-	}
-
+        INFO = TEXT
+        INFO.field = message_ll
+        INFO.br = 1
+    }
 }
 
 [globalVar = GP:tx_caretaker_pi_graphreport|range = 720]
-plugin.tx_caretaker_pi_graphreport.markers.CHART_LINKS.30.wrap = <li class="active">|</li>
+    plugin.tx_caretaker_pi_graphreport.markers.CHART_LINKS.30.wrap = <li class="active">|</li>
 [globalVar = GP:tx_caretaker_pi_graphreport|range = 168]
-plugin.tx_caretaker_pi_graphreport.markers.CHART_LINKS.20.wrap = <li class="active">|</li>
+    plugin.tx_caretaker_pi_graphreport.markers.CHART_LINKS.20.wrap = <li class="active">|</li>
 [globalVar = GP:tx_caretaker_pi_graphreport|range < 168]
-plugin.tx_caretaker_pi_graphreport.markers.CHART_LINKS.10.wrap = <li class="active">|</li>
+    plugin.tx_caretaker_pi_graphreport.markers.CHART_LINKS.10.wrap = <li class="active">|</li>
 [global]
 
 #### change the active tab depending on the submitted range ####
 
 [globalVar = GP:tx_caretaker_pi_singleview|range < 1]
-plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.40.wrap = <li class="active">|</li>
+    plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.40.wrap = <li class="active">|</li>
 [globalVar = GP:tx_caretaker_pi_singleview|range = 1]
-plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.10.wrap = <li class="active">|</li>
+    plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.10.wrap = <li class="active">|</li>
 [globalVar = GP:tx_caretaker_pi_singleview|range = 3]
-plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.20.wrap = <li class="active">|</li>
+    plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.20.wrap = <li class="active">|</li>
 [globalVar = GP:tx_caretaker_pi_singleview|range = 24]
-plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.40.wrap = <li class="active">|</li>
+    plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.40.wrap = <li class="active">|</li>
 [globalVar = GP:tx_caretaker_pi_singleview|range = 72]
-plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.50.wrap = <li class="active">|</li>
+    plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.50.wrap = <li class="active">|</li>
 [globalVar = GP:tx_caretaker_pi_singleview|range = 168]
-plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.60.wrap = <li class="active">|</li>
+    plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.60.wrap = <li class="active">|</li>
 [globalVar = GP:tx_caretaker_pi_singleview|range = 720]
-plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.70.wrap = <li class="active">|</li>
+    plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.70.wrap = <li class="active">|</li>
 [globalVar = GP:tx_caretaker_pi_singleview|range = 2250]
-plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.80.wrap = <li class="active">|</li>
+    plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.80.wrap = <li class="active">|</li>
 [globalVar = GP:tx_caretaker_pi_singleview|range = 8760]
-plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.90.wrap = <li class="active">|</li>
+    plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.90.wrap = <li class="active">|</li>
 [global]
-		
 
 page.includeCSS.caretaker = EXT:caretaker/res/css/caretaker.css
