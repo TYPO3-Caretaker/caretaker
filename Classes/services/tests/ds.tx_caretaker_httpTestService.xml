@@ -161,6 +161,28 @@
                         </TCEforms>
                     </request_data>
 
+                    <request_useragent>
+                        <TCEforms>
+                            <label>
+                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_useragent
+                            </label>
+                            <config>
+                                <type>input</type>
+                            </config>
+                        </TCEforms>
+                    </request_useragent>
+
+                    <request_referer>
+                        <TCEforms>
+                            <label>
+                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_referer
+                            </label>
+                            <config>
+                                <type>input</type>
+                            </config>
+                        </TCEforms>
+                    </request_referer>
+
                 </el>
             </ROOT>
         </sRequest>
