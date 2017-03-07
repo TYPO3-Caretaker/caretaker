@@ -21,18 +21,14 @@
         <sDEF>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>
-                        LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:sheet_default
-                    </sheetTitle>
+                    <sheetTitle>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:sheet_default</sheetTitle>
                     <cshFile>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml</cshFile>
                 </TCEforms>
                 <type>array</type>
                 <el>
                     <request_query>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_query
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_query</label>
                             <config>
                                 <type>input</type>
                                 <size>50</size>
@@ -42,9 +38,7 @@
 
                     <max_time_warning>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:max_time_warning
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:max_time_warning</label>
                             <config>
                                 <type>input</type>
                                 <size>10</size>
@@ -56,9 +50,7 @@
 
                     <max_time_error>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:max_time_error
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:max_time_error</label>
                             <config>
                                 <type>input</type>
                                 <size>10</size>
@@ -76,9 +68,7 @@
         <sRequest>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>
-                        LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:sheet_request
-                    </sheetTitle>
+                    <sheetTitle>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:sheet_request</sheetTitle>
                     <cshFile>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml</cshFile>
                 </TCEforms>
                 <type>array</type>
@@ -86,9 +76,7 @@
 
                     <request_username>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_username
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_username</label>
                             <config>
                                 <type>input</type>
                             </config>
@@ -97,9 +85,7 @@
 
                     <request_password>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_password
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_password</label>
                             <config>
                                 <type>input</type>
                             </config>
@@ -108,9 +94,7 @@
 
                     <request_method>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_method
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_method</label>
                             <config>
                                 <type>select</type>
                                 <items>
@@ -138,9 +122,7 @@
 
                     <request_port>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_port
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_port</label>
                             <config>
                                 <type>input</type>
                             </config>
@@ -149,9 +131,7 @@
 
                     <request_data>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_data
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_data</label>
                             <displayCond>FIELD:request_method:IN:PUT,POST</displayCond>
                             <config>
                                 <type>text</type>
@@ -190,9 +170,7 @@
         <sProxy>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>
-                        LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:sheet_proxy
-                    </sheetTitle>
+                    <sheetTitle>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:sheet_proxy</sheetTitle>
                     <cshFile>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml</cshFile>
                 </TCEforms>
                 <type>array</type>
@@ -200,9 +178,7 @@
 
                     <request_proxy>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_proxy
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_proxy</label>
                             <config>
                                 <type>input</type>
                             </config>
@@ -211,9 +187,7 @@
 
                     <request_proxyport>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_proxyport
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:request_proxyport</label>
                             <config>
                                 <type>input</type>
                             </config>
@@ -227,9 +201,7 @@
         <sResponse>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>
-                        LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:sheet_response
-                    </sheetTitle>
+                    <sheetTitle>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:sheet_response</sheetTitle>
                     <cshFile>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml</cshFile>
                 </TCEforms>
                 <type>array</type>
@@ -237,9 +209,7 @@
 
                     <error_type_on_failure>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:error_type_on_failure
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:error_type_on_failure</label>
                             <config>
                                 <type>select</type>
                                 <items>
@@ -263,9 +233,7 @@
 
                     <expected_status>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_status
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_status</label>
                             <config>
                                 <type>input</type>
                                 <size>10</size>
@@ -276,9 +244,7 @@
 
                     <expected_date_age>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_date_age
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_date_age</label>
                             <config>
                                 <type>input</type>
                                 <size>6</size>
@@ -289,9 +255,7 @@
 
                     <expected_modified_age>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_modified_age
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_modified_age</label>
                             <config>
                                 <type>input</type>
                                 <size>6</size>
@@ -302,9 +266,7 @@
 
                     <expected_headers>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_headers
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_headers</label>
                             <config>
                                 <type>text</type>
                             </config>
@@ -313,9 +275,7 @@
 
                     <expected_regex>
                         <TCEforms>
-                            <label>
-                                LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_regex
-                            </label>
+                            <label>LLL:EXT:caretaker/Classes/services/tests/lll.tx_caretaker_httpTestService.xml:expected_regex</label>
                             <config>
                                 <type>text</type>
                             </config>

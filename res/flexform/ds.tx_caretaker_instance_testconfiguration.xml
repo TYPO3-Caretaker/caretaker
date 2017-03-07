@@ -21,9 +21,7 @@
                                         <type>select</type>
                                         <items>
                                             <numIndex index="0">
-                                                <numIndex index="0">
-                                                    LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service.select_service
-                                                </numIndex>
+                                                <numIndex index="0">LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service.select_service</numIndex>
                                                 <numIndex index="1"></numIndex>
                                             </numIndex>
                                         </items>
