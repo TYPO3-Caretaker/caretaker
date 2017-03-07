@@ -13,9 +13,7 @@
             <label index="terupdateTask.description">This task updates the ter extension list.</label>
 
             <label index="typo3versionnumbersupdateTask.name">TYPO3 Versionnumbers Update</label>
-            <label index="typo3versionnumbersupdateTask.description">This task updates the available TYPO3
-                versionnumbers.
-            </label>
+            <label index="typo3versionnumbersupdateTask.description">This task updates the available TYPO3 versionnumbers.</label>
 
 
             <label index="scheduler_update_node">Update NodeId</label>
