@@ -83,6 +83,8 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
         $requestUsername = $this->getRequestUsername();
         $requestPassword = $this->getRequestPassword();
         $requestPort = $this->getRequestPort();
+        $requestUseragent = $this->getRequestUseragent();
+        $requestReferer = $this->getRequestReferer();
         $requestProxy = $this->getRequestProxy();
         $requestProxyport = $this->getRequestProxyport();
 
@@ -125,7 +127,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
         }
 
         // execute query
-        list($time, $content, $info, $headers) = $this->executeCurlRequest($request_url, $timeError * 3, $requestPort, $requestMethod, $requestUsername, $requestPassword, $requestData, $requestProxy, $requestProxyport);
+        list($time, $content, $info, $headers) = $this->executeCurlRequest($request_url, $timeError * 3, $requestPort, $requestMethod, $requestUsername, $requestPassword, $requestData, $requestProxy, $requestProxyport, $requestUseragent, $requestReferer);
 
         $submessages = array();
 
@@ -558,6 +560,22 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
     }
 
     /**
+     * @return string
+     */
+    protected function getRequestUseragent()
+    {
+        return $this->getConfigValue('request_useragent', '', 'sRequest');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRequestReferer()
+    {
+        return $this->getConfigValue('request_referer', '', 'sRequest');
+    }
+
+    /**
      * Get the Proxy for the HTTP-request
      *
      * @return string
@@ -606,9 +624,11 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
      * @param string $request_data
      * @param bool|string $request_proxy
      * @param bool|string $request_proxyport
+     * @param string $request_useragent
+     * @param string $request_referer
      * @return array time in seconds and status information im associatie arrays
      */
-    protected function executeCurlRequest($request_url, $timeout = 0, $request_port = false, $request_method = 'GET', $request_username = '', $request_password = '', $request_data = '', $request_proxy = false, $request_proxyport = false)
+    protected function executeCurlRequest($request_url, $timeout = 0, $request_port = false, $request_method = 'GET', $request_username = '', $request_password = '', $request_data = '', $request_proxy = false, $request_proxyport = false, $request_useragent = '', $request_referer = '')
     {
         $curl = curl_init();
 
@@ -622,6 +642,16 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
         if ($request_username && $request_password) {
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
             curl_setopt($curl, CURLOPT_USERPWD, $request_username . ':' . $request_password);
+        }
+
+        // user agent
+        if (!empty($request_useragent)) {
+            curl_setopt($curl, CURLOPT_USERAGENT, $request_useragent);
+        }
+
+        // referer
+        if (!empty($request_referer)) {
+            curl_setopt($curl, CURLOPT_REFERER, $request_referer);
         }
 
         // port

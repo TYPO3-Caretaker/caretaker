@@ -43,6 +43,8 @@
             <label index="request_method">Request HTTP-Method</label>
             <label index="request_port">Request HTTP-Port</label>
             <label index="request_data">Request HTTP-Data</label>
+            <label index="request_useragent">Request User-Agent header</label>
+            <label index="request_referer">Request Referer header</label>
 
             <!-- sheet proxy -->
             <label index="sheet_proxy">Proxy Setting</label>
