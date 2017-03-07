@@ -103,7 +103,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
             $parsed_url = parse_url($url);
         }
 
-        if ($parsed_url['path'] == '') {
+        if ($parsed_url['path'] == '' && strpos($requestQuery, '/') !== 0) {
             $parsed_url['path'] = '/';
         }
 
