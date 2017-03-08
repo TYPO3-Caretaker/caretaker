@@ -67,6 +67,8 @@ class tx_caretaker_LatestVersionsHelper
 
         $max = array();
         $stable = array();
+		$security = array();
+		$latestLts = $releases['latest_lts'];
         foreach ($releases as $major => $details) {
             if (is_array($details) && !empty($details['latest'])) {
                 $max[$major] = $details['latest'];
@@ -75,10 +77,40 @@ class tx_caretaker_LatestVersionsHelper
             if (is_array($details) && !empty($details['stable'])) {
                 $stable[$major] = $details['stable'];
             }
+            if (is_array($details) && is_array($details['releases'])) {
+			    $found = false;
+			    $latestCheckedVersion = '';
+			    foreach ($details['releases'] as $version => $versionDetails) {
+			        $latestCheckedVersion = $version;
+                    // if major version > latest_lts check if bugfix part of version number == '0';
+                    // in that case this is the security update and stop searching
+                    if (version_compare($major, $latestLts, '>')) {
+                        if ($versionDetails['type'] === 'security') {
+                            $security[$major] = $version;
+                            $found = true;
+                            break;
+                        }
+                        // if versionDetails->type === 'security' then this is the security update; stop searching
+                        if (self::extractBugfixNumberFromVersion($version) === 0) {
+                            $security[$major] = $version;
+                            $found = true;
+                            break;
+                        }
+                        // if versionDetails->type === 'security' then this is the security update; stop searching
+                    } elseif ($versionDetails['type'] === 'security') {
+                        $security[$major] = $version;
+                        $found = true;
+                        break;
+                    }
+                }
+                if (!$found) {
+			        $security[$major] = $latestCheckedVersion;
+                }
+            }
         }
         \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versions', $max);
         \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versionsStable', $stable);
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versionsSecurity', $security);
         return true;
     }
 
@@ -113,4 +145,19 @@ class tx_caretaker_LatestVersionsHelper
 
         return $response;
     }
+
+    /**
+     * extracts the bugfix part of a version number
+     *
+     * @param string $version
+     * @return integer
+     */
+    protected static function extractBugfixNumberFromVersion($version)
+    {
+        $version = str_replace(array('_', ',', '-', '+'), '.', $version);
+        $version = preg_replace('/(\d)([^\d\.])/', '$1.$2', $version);
+        $version = preg_replace('/([^\d\.])(\d)/', '$1.$2', $version);
+        $versionParts = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode('.', $version, true, 3);
+        return $versionParts[2];
+	}
 }
