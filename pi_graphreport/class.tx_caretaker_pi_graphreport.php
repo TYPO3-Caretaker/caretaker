@@ -189,7 +189,6 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase
         return $nodes;
     }
 
-
     private function initDirectories()
     {
         if (!is_dir(PATH_site . self::PATH_CHARTS)) {

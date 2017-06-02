@@ -46,8 +46,7 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase
     public $extKey = 'caretaker';    // The extension key.
 
     const PATH_CHARTS = 'typo3temp/caretaker/charts';
-
-
+    
     /**
      * @return string
      */
