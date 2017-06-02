@@ -45,6 +45,8 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase
 
     public $extKey = 'caretaker';    // The extension key.
 
+    const PATH_CHARTS = 'typo3temp/caretaker/charts';
+
     /**
      * @return string
      */
@@ -93,6 +95,7 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase
 
             return false;
         }
+
         return $node;
     }
 
@@ -127,6 +130,12 @@ class tx_caretaker_pi_singleview extends tx_caretaker_pibase
 
         $id = $node->getCaretakerNodeID();
         $result_range = $node->getTestResultRange(time() - 3600 * $range, time());
+        if (!is_dir(PATH_site . self::PATH_CHARTS)) {
+            if (!mkdir(PATH_site . self::PATH_CHARTS, 0770, true)) {
+                throw new \TYPO3\CMS\Core\Cache\Exception('can\'t create path "' . PATH_site . self::PATH_CHARTS . '"',
+                    1465993775);
+            }
+        }
         $filename = 'typo3temp/caretaker/charts/' . $id . '_' . $range . '.png';
         $base = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 

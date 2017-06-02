@@ -45,9 +45,13 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase
 
     public $extKey = 'caretaker';    // The extension key.
 
+    const PATH_CHARTS = 'typo3temp/caretaker/charts/report';
+
     public function main($content, $conf)
     {
         $this->pi_initPIflexForm();
+
+        $this->initDirectories();
 
         return parent::main($content, $conf);
     }
@@ -183,6 +187,15 @@ class tx_caretaker_pi_graphreport extends tx_caretaker_pibase
         }
 
         return $nodes;
+    }
+
+    private function initDirectories()
+    {
+        if (!is_dir(PATH_site . self::PATH_CHARTS)) {
+            if (!mkdir(PATH_site . self::PATH_CHARTS, 0770, true)) {
+                throw new \TYPO3\CMS\Core\Cache\Exception('can\'t create path "' . PATH_site . self::PATH_CHARTS . '"', 1465993775);
+            }
+        }
     }
 }
 
