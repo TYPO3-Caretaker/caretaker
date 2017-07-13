@@ -23,6 +23,9 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 /**
  * This is a file of the caretaker project.
  * http://forge.typo3.org/projects/show/extension-caretaker
@@ -402,8 +405,12 @@ abstract class tx_caretaker_ChartRendererBase
      */
     public function getChartImagePng($filename)
     {
+        $absoluteFilename = PATH_site . PathUtility::stripPathSitePrefix($filename);
+        if (!file_exists(dirname($absoluteFilename))) {
+            GeneralUtility::mkdir_deep(dirname($absoluteFilename));
+        }
         $image = $this->getChartImage();
-        imagepng($image, PATH_site . $filename);
+        imagepng($image, $absoluteFilename);
         imagedestroy($image);
 
         return $filename;
