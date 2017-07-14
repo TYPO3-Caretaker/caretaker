@@ -33,9 +33,8 @@
  *
  * $Id$
  */
-
 if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
+    die('Access denied.');
 }
 
 // register Test-Services
@@ -55,41 +54,41 @@ tx_caretaker_ServiceHelper::registerNotificationExitPoint($_EXTKEY, 'Classes/ser
 
 // register ExtJS Panels
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
-		'node-info',
-		'caretaker-nodeinfo',
-		Array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
-		Array('EXT:caretaker/res/js/tx.caretaker.NodeInfo.js'),
-		$_EXTKEY
+    'node-info',
+    'caretaker-nodeinfo',
+    array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+    array('EXT:caretaker/res/js/tx.caretaker.NodeInfo.js'),
+    $_EXTKEY
 );
 
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
-		'node-charts',
-		'caretaker-nodecharts',
-		Array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
-		Array('EXT:caretaker/res/js/tx.caretaker.NodeCharts.js'),
-		$_EXTKEY
+    'node-charts',
+    'caretaker-nodecharts',
+    array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+    array('EXT:caretaker/res/js/tx.caretaker.NodeCharts.js'),
+    $_EXTKEY
 );
 
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
-		'node-log',
-		'caretaker-nodelog',
-		Array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
-		Array('EXT:caretaker/res/js/tx.caretaker.NodeLog.js'),
-		$_EXTKEY
+    'node-log',
+    'caretaker-nodelog',
+    array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+    array('EXT:caretaker/res/js/tx.caretaker.NodeLog.js'),
+    $_EXTKEY
 );
 
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
-		'node-contacts',
-		'caretaker-nodecontacts',
-		Array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
-		Array('EXT:caretaker/res/js/tx.caretaker.NodeContacts.js'),
-		$_EXTKEY
+    'node-contacts',
+    'caretaker-nodecontacts',
+    array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+    array('EXT:caretaker/res/js/tx.caretaker.NodeContacts.js'),
+    $_EXTKEY
 );
 
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
-		'node-problems',
-		'caretaker-nodeproblems',
-		Array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
-		Array('EXT:caretaker/res/js/tx.caretaker.NodeProblems.js'),
-		$_EXTKEY
+    'node-problems',
+    'caretaker-nodeproblems',
+    array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+    array('EXT:caretaker/res/js/tx.caretaker.NodeProblems.js'),
+    $_EXTKEY
 );

@@ -43,179 +43,199 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
-abstract class tx_caretaker_NodeResult {
+abstract class tx_caretaker_NodeResult
+{
+    /**
+     * Status Code of the Test Result
+     *
+     * @var int
+     */
+    protected $state = 0;
 
-	/**
-	 * Status Code of the Test Result
-	 * @var integer
-	 */
-	protected $state = 0;
+    /**
+     * Timestamp of the testresult
+     *
+     * @var int
+     */
+    protected $timestamp = null;
 
-	/**
-	 * Timestamp of the testresult
-	 * @var integer
-	 */
-	protected $timestamp = NULL;
+    /**
+     * The Result message
+     *
+     * @var tx_caretaker_ResultMessage
+     */
+    protected $message = null;
 
-	/**
-	 * The Result message
-	 * @var tx_caretaker_ResultMessage
-	 */
-	protected $message = NULL;
+    /**
+     * The submessage
+     *
+     * @var array array of tx_caretaker_ResultMessage objects
+     */
+    protected $submessages = array();
 
-	/**
-	 * The submessage
-	 * @var array array of tx_caretaker_ResultMessage objects
-	 */
-	protected $submessages = array();
+    /**
+     * Constructor
+     *
+     * @param int $timestamp Timestamp of the result
+     * @param int $state Status of the result
+     * @param mixed $message Result message (string or tx_caretaker_ResultMessage Object )
+     * @param array $submessages
+     */
+    public function __construct($timestamp, $state, $message, $submessages)
+    {
+        $this->timestamp = (int)$timestamp;
+        $this->state = (int)$state;
 
-	/**
-	 * Constructor
-	 * @param integer $timestamp Timestamp of the result
-	 * @param integer $state Status of the result
-	 * @param mixed $message Result message (string or tx_caretaker_ResultMessage Object )
-	 * @param array $submessages
-	 */
-	public function __construct($timestamp, $state, $message, $submessages) {
-		$this->timestamp = (int)$timestamp;
-		$this->state = (int)$state;
+        if (is_a($message, 'tx_caretaker_ResultMessage')) {
+            $this->message = $message;
+        } else {
+            $this->message = new tx_caretaker_ResultMessage((string)$message);
+        }
 
-		if (is_a($message, 'tx_caretaker_ResultMessage')) {
-			$this->message = $message;
-		} else {
-			$this->message = new tx_caretaker_ResultMessage((string)$message);
-		}
+        if ($submessages) {
+            $this->submessages = $submessages;
+        }
+    }
 
-		if ($submessages) {
-			$this->submessages = $submessages;
-		}
+    /**
+     * Return Status Code of the Test
+     *
+     * @return int
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
 
-	}
+    /**
+     * Return human readable status message
+     *
+     * @return string
+     */
+    public function getStateInfo()
+    {
+        switch ($this->state) {
+            case tx_caretaker_Constants::state_ok:
+                return 'OK';
+            case tx_caretaker_Constants::state_error:
+                return 'ERROR';
+            case tx_caretaker_Constants::state_warning:
+                return 'WARNING';
+            case tx_caretaker_Constants::state_undefined:
+                return 'UNDEFINED';
+            case tx_caretaker_Constants::state_ack:
+                return 'ACK';
+            case tx_caretaker_Constants::state_due:
+                return 'DUE';
+        }
+    }
 
-	/**
-	 * Return Status Code of the Test
-	 * @return integer
-	 */
-	public function getState() {
-		return $this->state;
-	}
+    /**
+     * Get Timestamp of this Testresult
+     *
+     * @return int
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
+    }
 
-	/**
-	 * Return human readable status message
-	 * @return string
-	 */
-	public function getStateInfo() {
-		switch ($this->state) {
-			case tx_caretaker_Constants::state_ok:
-				return 'OK';
-			case tx_caretaker_Constants::state_error:
-				return 'ERROR';
-			case tx_caretaker_Constants::state_warning:
-				return 'WARNING';
-			case tx_caretaker_Constants::state_undefined:
-				return 'UNDEFINED';
-			case tx_caretaker_Constants::state_ack:
-				return 'ACK';
-			case tx_caretaker_Constants::state_due:
-				return 'DUE';
-		}
-	}
+    /**
+     * Return result message
+     *
+     * @return tx_caretaker_ResultMessage
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
 
-	/**
-	 * Get Timestamp of this Testresult
-	 * @return integer
-	 */
-	public function getTimestamp() {
-		return $this->timestamp;
-	}
+    /**
+     * add a submessage to the result
+     *
+     * @param mixed $message string or tx_caretaker_ResultMessage
+     */
+    public function addSubMessage($message)
+    {
+        if (is_a($message, 'tx_caretaker_ResultMessage')) {
+            $this->submessages[] = $message;
+        } else {
+            $this->submessages[] = new tx_caretaker_ResultMessage((string)$message);
+        }
+    }
 
-	/**
-	 * Return result message
-	 * @return tx_caretaker_ResultMessage
-	 */
-	public function getMessage() {
-		return $this->message;
-	}
+    /**
+     * Return the array of submessages
+     *
+     * @return array
+     */
+    public function getSubMessages()
+    {
+        return $this->submessages;
+    }
 
-	/**
-	 * add a submessage to the result
-	 * @param mixed $message string or tx_caretaker_ResultMessage
-	 */
-	public function addSubMessage($message) {
-		if (is_a($message, 'tx_caretaker_ResultMessage')) {
-			$this->submessages[] = $message;
-		} else {
-			$this->submessages[] = new tx_caretaker_ResultMessage ((string)$message);
-		}
-	}
+    /**
+     * Get a combined and locallized Info of message and all submessages
+     *
+     * @return string
+     */
+    public function getLocallizedInfotext()
+    {
+        $result = $this->message->getLocallizedInfotext();
+        if ($this->submessages) {
+            /** @var tx_caretaker_ResultMessage $submessage */
+            foreach ($this->submessages as $submessage) {
+                $result .= chr(10) . ' - ' . $submessage->getLocallizedInfotext();
+            }
+        }
 
-	/**
-	 * Return the array of submessages
-	 * @return array
-	 */
-	public function getSubMessages() {
-		return $this->submessages;
-	}
+        return $result;
+    }
 
-	/**
-	 * Get a combined and locallized Info of message and all submessages
-	 * @return string
-	 */
-	public function getLocallizedInfotext() {
-		$result = $this->message->getLocallizedInfotext();
-		if ($this->submessages) {
-			/** @var tx_caretaker_ResultMessage $submessage */
-			foreach ($this->submessages as $submessage) {
-				$result .= chr(10) . ' - ' . $submessage->getLocallizedInfotext();
-			}
-		}
-		return $result;
-	}
+    /**
+     * Get the localized StateInformation
+     *
+     * @return string
+     */
+    public function getLocallizedStateInfo()
+    {
+        return tx_caretaker_LocalizationHelper::localizeString('LLL:EXT:caretaker/locallang_fe.xml:state_' . strtolower($this->getStateInfo()));
+    }
 
-	/**
-	 * Get the localized StateInformation
-	 *
-	 * @return string
-	 */
-	public function getLocallizedStateInfo() {
-		return tx_caretaker_LocalizationHelper::localizeString('LLL:EXT:caretaker/locallang_fe.xml:state_' . strtolower($this->getStateInfo()));
-	}
+    /**
+     * Check if another Result is equal to this one
+     *
+     * @param tx_caretaker_NodeResult $result
+     * @return bool
+     */
+    public function equals(tx_caretaker_NodeResult $result)
+    {
+        if ($this->getResultHash() == $result->getResultHash()) {
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Check if another Result is equal to this one
-	 * @param tx_caretaker_NodeResult $result
-	 * @return bool
-	 */
-	public function equals(tx_caretaker_NodeResult $result) {
-		if ($this->getResultHash() == $result->getResultHash()) {
-			return TRUE;
-		} else {
-			return FALSE;
-		}
-	}
+    /**
+     * Check if another Result is different from this one
+     *
+     * @param tx_caretaker_NodeResult $result
+     * @return bool
+     */
+    public function isDifferent(tx_caretaker_NodeResult $result)
+    {
+        if ($this->getResultHash() != $result->getResultHash()) {
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Check if another Result is different from this one
-	 * @param tx_caretaker_NodeResult $result
-	 * @return bool
-	 */
-	public function isDifferent(tx_caretaker_NodeResult $result) {
-		if ($this->getResultHash() != $result->getResultHash()) {
-			return TRUE;
-		} else {
-			return FALSE;
-		}
-	}
-
-	/**
-	 * Get a Hash for the given Status. If two results give the same hash they
-	 * are considered to be equal.
-	 *
-	 * @return string ResultHash
-	 */
-	abstract public function getResultHash();
-
+    /**
+     * Get a Hash for the given Status. If two results give the same hash they
+     * are considered to be equal.
+     *
+     * @return string ResultHash
+     */
+    abstract public function getResultHash();
 }

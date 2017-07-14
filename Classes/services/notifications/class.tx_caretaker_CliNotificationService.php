@@ -42,54 +42,56 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
-class tx_caretaker_CliNotificationService extends tx_caretaker_AbstractNotificationService {
+class tx_caretaker_CliNotificationService extends tx_caretaker_AbstractNotificationService
+{
+    public function __construct()
+    {
+        parent::__construct('cli');
+    }
 
-	public function  __construct() {
-		parent::__construct('cli');
-	}
+    /**
+     * Notify the service about a test status
+     *
+     * @param string $event
+     * @param tx_caretaker_AbstractNode $node
+     * @param tx_caretaker_TestResult $result
+     * @param tx_caretaKer_TestResult $lastResult
+     */
+    public function addNotification($event, $node, $result = null, $lastResult = null)
+    {
+        $indent = $this->getCliIndentation($node);
 
-	/**
-	 * Notify the service about a test status
-	 *
-	 * @param string $event
-	 * @param tx_caretaker_AbstractNode $node
-	 * @param tx_caretaker_TestResult $result
-	 * @param tx_caretaKer_TestResult $lastResult
-	 */
-	public function addNotification($event, $node, $result = NULL, $lastResult = NULL) {
-		$indent = $this->getCliIndentation($node);
+        if (is_a($node, 'tx_caretaker_TestNode')) {
+            $infotext = $result->getLocallizedInfotext();
+            $msg = $indent . '--+ ' . $node->getTitle() . ' [' . $node->getCaretakerNodeId() . ']';
+            $msg .= str_replace(chr(10), chr(10) . $indent . '  | ', chr(10) . $infotext);
+            $msg .= chr(10) . $indent . '  +-> ' . $result->getLocallizedStateInfo() . ' (' . $event . ')';
+        } else {
+            if ($result == null) {
+                $msg = $indent . '--+ ' . $node->getTitle() . ' [' . $node->getCaretakerNodeId() . '] ' . $event;
+            } else {
+                $msg = $indent . '  +-> ' . $result->getLocallizedStateInfo() . ' ' . $event . ' [' . $node->getCaretakerNodeId() . ']';
+            }
+        }
 
-		if (is_a($node, 'tx_caretaker_TestNode')) {
-			$infotext = $result->getLocallizedInfotext();
-			$msg = $indent . '--+ ' . $node->getTitle() . ' [' . $node->getCaretakerNodeId() . ']';
-			$msg .= str_replace(chr(10), chr(10) . $indent . '  | ', chr(10) . $infotext);
-			$msg .= chr(10) . $indent . '  +-> ' . $result->getLocallizedStateInfo() . ' (' . $event . ')';
-		} else {
-			if ($result == NULL) {
-				$msg = $indent . '--+ ' . $node->getTitle() . ' [' . $node->getCaretakerNodeId() . '] '  . $event;
-			} else {
-				$msg = $indent . '  +-> ' . $result->getLocallizedStateInfo() . ' ' . $event . ' [' . $node->getCaretakerNodeId() . ']';
-			}
-		}
+        echo $msg . chr(10);
+        flush();
+    }
 
-		echo($msg . chr(10));
-		flush();
-	}
+    /**
+     * Get the prefix string for each line in the cli based on the current hirarchy depth
+     *
+     * @param tx_caretaker_AbstractNode $node
+     * @return string
+     */
+    protected function getCliIndentation($node)
+    {
+        $indentation = '';
+        while ($node && $node = $node->getParent()) {
+            $indentation .= '  |';
+        }
 
-	/**
-	 * Get the prefix string for each line in the cli based on the current hirarchy depth
-	 *
-	 * @param tx_caretaker_AbstractNode $node
-	 * @return string
-	 */
-	protected function getCliIndentation($node) {
-		$indentation = '';
-		while ($node && $node = $node->getParent()) {
-			$indentation .= '  |';
-		}
-		return $indentation;
-	}
+        return $indentation;
+    }
 }

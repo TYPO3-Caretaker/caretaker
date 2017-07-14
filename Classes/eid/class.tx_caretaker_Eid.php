@@ -42,265 +42,269 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
-class tx_caretaker_Eid {
+class tx_caretaker_Eid
+{
+    public function __construct()
+    {
+        \TYPO3\CMS\Frontend\Utility\EidUtility::initFeUser();
+        \TYPO3\CMS\Frontend\Utility\EidUtility::initLanguage();
+        \TYPO3\CMS\Frontend\Utility\EidUtility::initTCA();
+    }
 
-	/**
-	 *
-	 */
-	public function __construct() {
-		\TYPO3\CMS\Frontend\Utility\EidUtility::initFeUser();
-		\TYPO3\CMS\Frontend\Utility\EidUtility::initLanguage();
-		\TYPO3\CMS\Frontend\Utility\EidUtility::initTCA();
-	}
+    /**
+     * @param mixed $nodeId
+     * @return tx_caretaker_AggregatorNode
+     */
+    private function getRequestedNode($nodeId)
+    {
+        $node = false;
+        if ($nodeId) {
+            $node_repository = tx_caretaker_NodeRepository::getInstance();
+            $node = $node_repository->id2node($nodeId, false);
+        }
 
-	/**
-	 * @return tx_caretaker_AggregatorNode
-	 */
-	private function getRequestedNode($nodeId) {
-		$node = false;
-		if ($nodeId) {
-			$node_repository = tx_caretaker_NodeRepository::getInstance();
-			$node = $node_repository->id2node($nodeId, false);
-		}
-		return $node;
-	}
+        return $node;
+    }
 
-	/**
-	 * @param mixed $data
-	 * @param string $format
-	 */
-	private function sendResultData($data, $format) {
-		switch ($format) {
-			case 'xml':
-			case 'application/xml':
-				header('Cache-Control: no-cache, must-revalidate');
-				header('Content-type: text/xml; charset=UTF-8');
-				echo '<xml>' . $this->formatResultDataXml($data) . '</xml>';
-				break;
-			case 'json':
-			case 'application/json':
-			default:
-				header('Cache-Control: no-cache, must-revalidate');
-				header('Content-type: application/json; charset=UTF-8');
-				echo $this->formatResultDataJson($data);
-				break;
-		}
-	}
+    /**
+     * @param mixed $data
+     * @param string $format
+     */
+    private function sendResultData($data, $format)
+    {
+        switch ($format) {
+            case 'xml':
+            case 'application/xml':
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Content-type: text/xml; charset=UTF-8');
+                echo '<xml>' . $this->formatResultDataXml($data) . '</xml>';
+                break;
+            case 'json':
+            case 'application/json':
+            default:
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Content-type: application/json; charset=UTF-8');
+                echo $this->formatResultDataJson($data);
+                break;
+        }
+    }
 
-	/**
-	 * @param mixed $data
-	 * @return string
-	 */
-	private function formatResultDataXml($data) {
-		switch (gettype($data)) {
-			case 'array':
-				$result = '';
-				foreach ($data as $key => $value) {
-					if (is_int($key)) {
-						$result .= '<item index="' . $key . '">' . $this->formatResultDataXml($value) . '</item>';
-					} else {
-						$result .= '<' . $key . '>' . $this->formatResultDataXml($value) . '</' . $key . '>';
-					}
-				}
-				return $result;
-				break;
+    /**
+     * @param mixed $data
+     * @return string
+     */
+    private function formatResultDataXml($data)
+    {
+        switch (gettype($data)) {
+            case 'array':
+                $result = '';
+                foreach ($data as $key => $value) {
+                    if (is_int($key)) {
+                        $result .= '<item index="' . $key . '">' . $this->formatResultDataXml($value) . '</item>';
+                    } else {
+                        $result .= '<' . $key . '>' . $this->formatResultDataXml($value) . '</' . $key . '>';
+                    }
+                }
 
-			case 'boolean':
-				if ($data) {
-					return 'true';
-				} else {
-					return 'false';
-				}
-				break;
+                return $result;
+                break;
 
-			case 'string':
-				return '<![CDATA[' . $data . ']]>';
-				break;
+            case 'boolean':
+                if ($data) {
+                    return 'true';
+                }
+                    return 'false';
 
-			default:
-				if ($data) {
-					return $data;
-				} else {
-					return '';
-				}
-				break;
-		}
-	}
+                break;
 
-	/**
-	 * @param mixed $data
-	 * @return string
-	 */
-	private function formatResultDataJson($data) {
-		return json_encode($data);
-	}
+            case 'string':
+                return '<![CDATA[' . $data . ']]>';
+                break;
 
-	/**
-	 * @return mixed
-	 */
-	public function getEidFormat() {
-		$format = $_SERVER['HTTP_ACCEPT'];
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('format')) {
-			$format = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('format');
-		}
-		return $format;
-	}
+            default:
+                if ($data) {
+                    return $data;
+                }
+                    return '';
 
-	/**
-	 * Check for valid API key
-	 * Ugly temporary solution. Only check if provided API key exists in users table
-	 *
-	 * @return bool
-	 */
-	private function validApiKey()
-	{
-		$apiKey = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('apiKey');
+                break;
+        }
+    }
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'uid',
-			'fe_users',
-			'tx_caretaker_api_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($apiKey, 'fe_users'),
-			'',
-			'',
-			1
-		);
+    /**
+     * @param mixed $data
+     * @return string
+     */
+    private function formatResultDataJson($data)
+    {
+        return json_encode($data);
+    }
 
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		if (empty($row) || empty($row['uid'])) {
-			return false;
-		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+    /**
+     * @return mixed
+     */
+    public function getEidFormat()
+    {
+        $format = $_SERVER['HTTP_ACCEPT'];
+        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('format')) {
+            $format = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('format');
+        }
 
-		return true;
-	}
+        return $format;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getEidData() {
+    /**
+     * Check for valid API key
+     * Ugly temporary solution. Only check if provided API key exists in users table
+     *
+     * @return bool
+     */
+    private function validApiKey()
+    {
+        $apiKey = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('apiKey');
 
-		if (!$this->validApiKey()) {
-			return array('success' => false);
-		}
+        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+            'uid',
+            'fe_users',
+            'tx_caretaker_api_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($apiKey, 'fe_users'),
+            '',
+            '',
+            1
+        );
 
-		$nodeId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
-		$node = $this->getRequestedNode($nodeId);
+        $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+        if (empty($row) || empty($row['uid'])) {
+            return false;
+        }
+        $GLOBALS['TYPO3_DB']->sql_free_result($res);
 
-		if (!$node) {
-			return array('success' => false, 'id' => $nodeId);
-		}
+        return true;
+    }
 
-		$result = array(
-				'success' => true,
-				'id' => $nodeId
-		);
+    /**
+     * @return array
+     */
+    public function getEidData()
+    {
+        if (!$this->validApiKey()) {
+            return array('success' => false);
+        }
 
-		// add node infos
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addNode') == 1) {
-			$result['node'] = array(
-					'id' => $node->getCaretakerNodeId(),
-					'title' => $node->getTitle(),
-					'type' => $node->getType(),
-					'description' => $node->getDescription()
-			);
-		}
+        $nodeId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
+        $node = $this->getRequestedNode($nodeId);
 
-		// add result infos
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addResult') == 1) {
-			$nodeResult = $node->getTestResult();
-			$result['result'] = array(
-					'state' => $nodeResult->getState(),
-					'info' => $nodeResult->getLocallizedStateInfo(),
-					'message' => $nodeResult->getLocallizedInfotext(),
-					'timestamp' => $nodeResult->getTimestamp()
-			);
-		}
+        if (!$node) {
+            return array('success' => false, 'id' => $nodeId);
+        }
 
-		// add child infos
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addChildren') == 1) {
-			$result['children'] = false;
-			$children = $node->getChildren();
-			if ($children and count($children) > 0) {
-				/** @var tx_caretaker_AbstractNode $child */
-				foreach ($children as $child) {
-					$result['children'][] = $child->getCaretakerNodeId();
-				}
-			}
-		}
+        $result = array(
+            'success' => true,
+            'id' => $nodeId,
+        );
 
-		// add statistic infos
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addTestStatistics') == 1) {
-			$result['statistics']['count'] = array(
-					'error' => 0,
-					'warning' => 0,
-					'ok' => 0,
-					'undefined' => 0,
-					'ack' => 0,
-					'due' => 0
-			);
-			$result['statistics']['ids'] = array(
-					'error' => array(),
-					'warning' => array(),
-					'ok' => array(),
-					'undefined' => array(),
-					'ack' => array(),
-					'due' => array(),
-			);
+        // add node infos
+        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addNode') == 1) {
+            $result['node'] = array(
+                'id' => $node->getCaretakerNodeId(),
+                'title' => $node->getTitle(),
+                'type' => $node->getType(),
+                'description' => $node->getDescription(),
+            );
+        }
 
-			$tests = $node->getTestNodes();
-			if ($tests && count($tests)) {
-				/** @var tx_caretaker_TestNode $test */
-				foreach ($tests as $test) {
-					$testResult = $test->getTestResult();
-					switch ($testResult->getState()) {
-						case tx_caretaker_Constants::state_error:
-							$result['statistics']['ids']['error'][] = $test->getCaretakerNodeId();
-							$result['statistics']['count']['error']++;
-							break;
-						case tx_caretaker_Constants::state_warning:
-							$result['statistics']['ids']['warning'][] = $test->getCaretakerNodeId();
-							$result['statistics']['count']['warning']++;
-							break;
-						case tx_caretaker_Constants::state_ok:
-							$result['statistics']['ids']['ok'][] = $test->getCaretakerNodeId();
-							$result['statistics']['count']['ok']++;
-							break;
-						case tx_caretaker_Constants::state_undefined:
-							$result['statistics']['ids']['undefined'][] = $test->getCaretakerNodeId();
-							$result['statistics']['count']['undefined']++;
-							break;
-						case tx_caretaker_Constants::state_ack:
-							$result['statistics']['ids']['ack'][] = $test->getCaretakerNodeId();
-							$result['statistics']['count']['ack']++;
-							break;
-						case tx_caretaker_Constants::state_due:
-							$result['statistics']['id']['due'][] = $test->getCaretakerNodeId();
-							$result['statistics']['count']['due']++;
-							break;
-					}
-				}
-			}
-		}
+        // add result infos
+        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addResult') == 1) {
+            $nodeResult = $node->getTestResult();
+            $result['result'] = array(
+                'state' => $nodeResult->getState(),
+                'info' => $nodeResult->getLocallizedStateInfo(),
+                'message' => $nodeResult->getLocallizedInfotext(),
+                'timestamp' => $nodeResult->getTimestamp(),
+            );
+        }
 
-		return $result;
-	}
+        // add child infos
+        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addChildren') == 1) {
+            $result['children'] = false;
+            $children = $node->getChildren();
+            if ($children and count($children) > 0) {
+                /** @var tx_caretaker_AbstractNode $child */
+                foreach ($children as $child) {
+                    $result['children'][] = $child->getCaretakerNodeId();
+                }
+            }
+        }
 
-	/**
-	 *
-	 */
-	public function processEidRequest() {
-		$data = $this->getEidData();
-		$format = $this->getEidFormat();
-		$this->sendResultData($data, $format);
-	}
+        // add statistic infos
+        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addTestStatistics') == 1) {
+            $result['statistics']['count'] = array(
+                'error' => 0,
+                'warning' => 0,
+                'ok' => 0,
+                'undefined' => 0,
+                'ack' => 0,
+                'due' => 0,
+            );
+            $result['statistics']['ids'] = array(
+                'error' => array(),
+                'warning' => array(),
+                'ok' => array(),
+                'undefined' => array(),
+                'ack' => array(),
+                'due' => array(),
+            );
+
+            $tests = $node->getTestNodes();
+            if ($tests && count($tests)) {
+                /** @var tx_caretaker_TestNode $test */
+                foreach ($tests as $test) {
+                    $testResult = $test->getTestResult();
+                    switch ($testResult->getState()) {
+                        case tx_caretaker_Constants::state_error:
+                            $result['statistics']['ids']['error'][] = $test->getCaretakerNodeId();
+                            $result['statistics']['count']['error']++;
+                            break;
+                        case tx_caretaker_Constants::state_warning:
+                            $result['statistics']['ids']['warning'][] = $test->getCaretakerNodeId();
+                            $result['statistics']['count']['warning']++;
+                            break;
+                        case tx_caretaker_Constants::state_ok:
+                            $result['statistics']['ids']['ok'][] = $test->getCaretakerNodeId();
+                            $result['statistics']['count']['ok']++;
+                            break;
+                        case tx_caretaker_Constants::state_undefined:
+                            $result['statistics']['ids']['undefined'][] = $test->getCaretakerNodeId();
+                            $result['statistics']['count']['undefined']++;
+                            break;
+                        case tx_caretaker_Constants::state_ack:
+                            $result['statistics']['ids']['ack'][] = $test->getCaretakerNodeId();
+                            $result['statistics']['count']['ack']++;
+                            break;
+                        case tx_caretaker_Constants::state_due:
+                            $result['statistics']['id']['due'][] = $test->getCaretakerNodeId();
+                            $result['statistics']['count']['due']++;
+                            break;
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    public function processEidRequest()
+    {
+        $data = $this->getEidData();
+        $format = $this->getEidFormat();
+        $this->sendResultData($data, $format);
+    }
 }
 
 if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('eID')
-		&& \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('eID') == 'tx_caretaker') {
-	$SOBE = new tx_caretaker_Eid();
-	$SOBE->processEidRequest();
-	exit;
+    && \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('eID') == 'tx_caretaker'
+) {
+    $SOBE = new tx_caretaker_Eid();
+    $SOBE->processEidRequest();
+    exit;
 }

@@ -1,35 +1,46 @@
 <!-- ###CARETAKER-SINGLEVIEW begin -->
-<div class="caretaker_container caretaker_singleview" >
-	<h2 class="###STATE###"> ###TITLE###</h2>
-	<div class="caretaker_singleview_content">
-		<h3>###LABEL_ROOTLINE###</h3>
-		<ul class="rootline">
-			<!-- ###ROOTLINE### begin -->
-			<!-- ###ROOTLINE_ITEM### BEGIN --><li class="state_###STATE###">###TITLE###</li><!-- ###ROOTLINE_ITEM### END -->
-			<!-- ###ROOTLINE### end -->
-		</ul>
-		<table class="status">
-			<tr class="first"><td class="first">###LABEL_DESCRIPTION###</td><td>###DESCRIPTION###</td></tr>
-			<tr><td class="first">###LABEL_STATE###</td><td>###STATE###</td></tr>
-			<tr><td class="first">###LABEL_MESSAGE###</td><td>###MESSAGE###</td></tr>
-		</table>
-		<h3>###LABEL_CHILDREN###</h3>
-		<ul class="caretaker_children">
-			<!-- ###CARETAKER-CHILDREN### begin -->
-				<!-- ###CARETAKER-CHILD### begin --><li class="state_###STATE###" title="###DESCRIPTION###">###TITLE###</li><!-- ###CARETAKER-CHILD### end -->
-				<li class="state_ok"></li>
-				<li class="state_warning"></li>
-				<li class="state_undefined"></li>
-				<li class="state_error"></li>
-				<li class="state_ok"></li>
-				<li class="state_ok"></li>
-				<li class="state_ok"></li>
-			<!-- ###CARETAKER-CHILDREN### end -->	
-		</ul>
-		###CHART_LINKS###
-		<div class="caretaker_singleview_diagram">
-		###CHART###
-		</div>
-	</div>
+<div class="caretaker_container caretaker_singleview">
+    <h2 class="###STATE###"> ###TITLE###</h2>
+    <div class="caretaker_singleview_content">
+        <h3>###LABEL_ROOTLINE###</h3>
+        <ul class="rootline">
+            <!-- ###ROOTLINE### begin -->
+            <!-- ###ROOTLINE_ITEM### BEGIN -->
+            <li class="state_###STATE###">###TITLE###</li><!-- ###ROOTLINE_ITEM### END -->
+            <!-- ###ROOTLINE### end -->
+        </ul>
+        <table class="status">
+            <tr class="first">
+                <td class="first">###LABEL_DESCRIPTION###</td>
+                <td>###DESCRIPTION###</td>
+            </tr>
+            <tr>
+                <td class="first">###LABEL_STATE###</td>
+                <td>###STATE###</td>
+            </tr>
+            <tr>
+                <td class="first">###LABEL_MESSAGE###</td>
+                <td>###MESSAGE###</td>
+            </tr>
+        </table>
+        <h3>###LABEL_CHILDREN###</h3>
+        <ul class="caretaker_children">
+            <!-- ###CARETAKER-CHILDREN### begin -->
+            <!-- ###CARETAKER-CHILD### begin -->
+            <li class="state_###STATE###" title="###DESCRIPTION###">###TITLE###</li><!-- ###CARETAKER-CHILD### end -->
+            <li class="state_ok"></li>
+            <li class="state_warning"></li>
+            <li class="state_undefined"></li>
+            <li class="state_error"></li>
+            <li class="state_ok"></li>
+            <li class="state_ok"></li>
+            <li class="state_ok"></li>
+            <!-- ###CARETAKER-CHILDREN### end -->
+        </ul>
+        ###CHART_LINKS###
+        <div class="caretaker_singleview_diagram">
+            ###CHART###
+        </div>
+    </div>
 </div>
 <!-- ###CARETAKER-SINGLEVIEW -->

@@ -39,16 +39,10 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  *
  * $Id$
  */
-
-/**
- *
- */
-class NodeResultRange_testcase extends UnitTestCase
+class NodeResultRangeTest extends UnitTestCase
 {
-
-    function test_AddingOfResults()
+    public function test_AddingOfResults()
     {
-
         $range = new NodeResultRangeStub(123, 789);
 
         $this->assertEquals($range->getLength(), 0);
@@ -64,12 +58,10 @@ class NodeResultRange_testcase extends UnitTestCase
         $res_3 = new NodeResultStub(789, 2, '', array());
         $range->addResult($res_3);
         $this->assertEquals($range->getLength(), 3);
-
     }
 
-    function test_getFirstAndGetLastResults()
+    public function test_getFirstAndGetLastResults()
     {
-
         $range = new NodeResultRangeStub(123, 789);
 
         $res_1 = new NodeResultStub(456, 1, '', array());
@@ -84,12 +76,10 @@ class NodeResultRange_testcase extends UnitTestCase
 
         $this->assertEquals($range->getFirst()->getTimestamp(), 123);
         $this->assertEquals($range->getLast()->getTimestamp(), 789);
-
     }
 
-    function test_MinMaxTstamp()
+    public function test_MinMaxTstamp()
     {
-
         $range = new NodeResultRangeStub(100, 600);
 
         $this->assertEquals($range->getStartTimestamp(), 100);
@@ -109,7 +99,5 @@ class NodeResultRange_testcase extends UnitTestCase
 
         $this->assertEquals($range->getStartTimestamp(), 50);
         $this->assertEquals($range->getEndTimestamp(), 789);
-
     }
-
 }

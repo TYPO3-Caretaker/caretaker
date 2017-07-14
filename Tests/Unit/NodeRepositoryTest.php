@@ -39,7 +39,6 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  */
 class NodeRepositoryTest extends UnitTestCase
 {
-
     /**
      * @var \tx_caretaker_NodeRepository
      */
@@ -50,7 +49,7 @@ class NodeRepositoryTest extends UnitTestCase
         $this->repository = \tx_caretaker_NodeRepository::getInstance();
     }
 
-    function test_instance_repository()
+    public function test_instance_repository()
     {
         $this->markTestIncomplete('stub tx_caretaker_NodeRepository');
 
@@ -64,10 +63,9 @@ class NodeRepositoryTest extends UnitTestCase
         $target = $all_instances[0];
         $test = $this->repository->getInstanceByUid($target->getUid());
         $this->assertEquals($target, $test, 'instance found by id');
-
     }
 
-    function test_testgroup_repository()
+    public function test_testgroup_repository()
     {
         $this->markTestIncomplete('TODO: do not depend on records in database');
 
@@ -75,10 +73,9 @@ class NodeRepositoryTest extends UnitTestCase
         $test_instance = $all_instances[0];
         $groups = $test_instance->getChildren();
         $this->assertGreaterThan(0, count($groups), 'there are no groups present');
-
     }
 
-    function test_instancegroup_repository()
+    public function test_instancegroup_repository()
     {
         $this->markTestIncomplete('stub tx_caretaker_NodeRepository');
 
@@ -86,5 +83,4 @@ class NodeRepositoryTest extends UnitTestCase
         $test_instancegroup = $all_instancegroups[0];
         $this->assertEquals(get_class($test_instancegroup), '\tx_caretaker_InstancegroupNode', 'instance found by id');
     }
-
 }

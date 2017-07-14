@@ -43,77 +43,77 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
-class tx_caretaker_TreeLoader {
+class tx_caretaker_TreeLoader
+{
+    /**
+     * @param array $params
+     * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj
+     */
+    public function ajaxLoadTree($params, &$ajaxObj)
+    {
+        $node_id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
 
-	/**
-	 * @param array $params
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj
-	 */
-	public function ajaxLoadTree($params, &$ajaxObj) {
-		$node_id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
+        if ($node_id == 'root') {
+            $node_repository = tx_caretaker_NodeRepository::getInstance();
+            $node = $node_repository->getRootNode(true);
+            $result = $this->nodeToArray($node, 2);
+        } else {
+            $node_repository = tx_caretaker_NodeRepository::getInstance();
+            $node = $node_repository->id2node($node_id, 1);
+            $result = $this->nodeToArray($node);
+        }
 
-		if ($node_id == 'root') {
-			$node_repository = tx_caretaker_NodeRepository::getInstance();
-			$node = $node_repository->getRootNode(true);
-			$result = $this->nodeToArray($node, 2);
-		} else {
-			$node_repository = tx_caretaker_NodeRepository::getInstance();
-			$node = $node_repository->id2node($node_id, 1);
-			$result = $this->nodeToArray($node);
-		}
+        $ajaxObj->setContent($result['children']);
+        $ajaxObj->setContentFormat('jsonbody');
+    }
 
-		$ajaxObj->setContent($result['children']);
-		$ajaxObj->setContentFormat('jsonbody');
-	}
+    /**
+     * @param tx_caretaker_AbstractNode $node
+     * @param int $depth
+     * @return array
+     */
+    protected function nodeToArray($node, $depth = 1)
+    {
+        // show node and icon
+        $result = array();
+        $uid = $node->getUid();
+        $title = $node->getTitle();
+        $hidden = $node->getHidden();
 
-	/**
-	 * @param tx_caretaker_AbstractNode $node
-	 * @param int $depth
-	 * @return array
-	 */
-	protected function nodeToArray($node, $depth = 1) {
-		// show node and icon
-		$result = array();
-		$uid = $node->getUid();
-		$title = $node->getTitle();
-		$hidden = $node->getHidden();
+        $id = $node->getCaretakerNodeId();
 
-		$id = $node->getCaretakerNodeId();
+        $testResult = $node->getTestResult();
+        $resultClass = 'caretaker-state-' . strtolower($testResult->getStateInfo());
+        $typeClass = 'caretaker-type-' . strtolower($node->getType());
 
-		$testResult = $node->getTestResult();
-		$resultClass = 'caretaker-state-' . strtolower($testResult->getStateInfo());
-		$typeClass = 'caretaker-type-' . strtolower($node->getType());
+        $result['type'] = strtolower($node->getType());
+        $result['id'] = $id;
+        $result['uid'] = $uid;
+        $result['disabled'] = $hidden;
+        $result['text'] = $title ? $title : '[no title]';
+        $result['cls'] = $resultClass . ' ' . $typeClass;
+        $result['iconCls'] = 'icon-' . $typeClass . ($hidden ? '-hidden' : '');
+        if (strtolower($node->getType()) == 'instance' && $node instanceof tx_caretaker_InstanceNode) {
+            $result['url'] = $node->getUrl();
+        } else {
+            $result['url'] = false;
+        }
 
-		$result['type'] = strtolower($node->getType());
-		$result['id'] = $id;
-		$result['uid'] = $uid;
-		$result['disabled'] = $hidden;
-		$result['text'] = $title ? $title : '[no title]';
-		$result['cls'] = $resultClass . ' ' . $typeClass;
-		$result['iconCls'] = 'icon-' . $typeClass . ($hidden ? '-hidden' : '');
-		if (strtolower($node->getType()) == 'instance' && $node instanceof tx_caretaker_InstanceNode) {
-			$result['url'] = $node->getUrl();
-		} else {
-			$result['url'] = false;
-		}
+        // show subitems of tx_caretaker_AggregatorNodes
+        if ($node instanceof tx_caretaker_AggregatorNode) {
+            $children = $node->getChildren(true);
+            $result['leaf'] = (count($children) == 0) ? true : false;
+            if ($depth > 0) {
+                $result['children'] = array();
+                foreach ($children as $child) {
+                    $result['children'][] = $this->nodeToArray($child, $depth - 1);
+                }
+            }
+        } else {
+            $result['leaf'] = true;
+        }
 
-		// show subitems of tx_caretaker_AggregatorNodes
-		if ($node instanceof tx_caretaker_AggregatorNode) {
-			$children = $node->getChildren(true);
-			$result['leaf'] = (count($children) == 0) ? true : false;
-			if ($depth > 0) {
-				$result['children'] = array();
-				foreach ($children as $child) {
-					$result['children'][] = $this->nodeToArray($child, $depth - 1);
-				}
-			}
-		} else {
-			$result['leaf'] = TRUE;
-		}
-
-		return $result;
-	}
+        return $result;
+    }
 }

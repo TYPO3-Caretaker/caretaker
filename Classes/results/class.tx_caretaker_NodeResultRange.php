@@ -43,234 +43,251 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Tobias Liebig <liebig@networkteam.com>
  *
- * @package TYPO3
- * @subpackage caretaker
  */
-abstract class tx_caretaker_NodeResultRange implements Iterator, Countable {
+abstract class tx_caretaker_NodeResultRange implements Iterator, Countable
+{
+    /**
+     * Array of testResults
+     *
+     * @var array
+     */
+    private $array = array();
 
-	/**
-	 * Array of testResults
-	 * @var array
-	 */
-	private $array = array();
+    /**
+     * Minimal Timestamp of this Result Range
+     *
+     * @var int
+     */
+    private $start_timestamp = null;
 
-	/**
-	 * Minimal Timestamp of this Result Range
-	 *
-	 * @var int
-	 */
-	private $start_timestamp = NULL;
+    /**
+     * Maximal Timestamp of this Result Range
+     *
+     * @var int
+     */
+    private $end_timestamp = null;
 
-	/**
-	 * Maximal Timestamp of this Result Range
-	 *
-	 * @var int
-	 */
-	private $end_timestamp = NULL;
+    /**
+     * timestamp of last existing value
+     *
+     * @var int
+     */
+    private $last_timestamp = 0;
 
-	/**
-	 * timestamp of last existing value
-	 *
-	 * @var int
-	 */
-	private $last_timestamp = 0;
+    /**
+     * Constructur
+     *
+     * @param int $start_timestamp
+     * @param int $end_timestamp
+     */
+    public function __construct($start_timestamp, $end_timestamp)
+    {
+        $this->end_timestamp = $end_timestamp;
+        $this->start_timestamp = $start_timestamp;
+    }
 
-	/**
-	 * Constructur
-	 *
-	 * @param integer $start_timestamp
-	 * @param integer $end_timestamp
-	 */
-	public function __construct($start_timestamp, $end_timestamp) {
-		$this->end_timestamp = $end_timestamp;
-		$this->start_timestamp = $start_timestamp;
-	}
+    /**
+     * Add a Result to Range
+     *
+     * @param tx_caretaker_NodeResult $result
+     */
+    public function addResult($result)
+    {
+        $ts = (int)$result->getTimestamp();
+        $this->array[$ts] = $result;
 
-	/**
-	 * Add a Result to Range
-	 *
-	 * @param tx_caretaker_NodeResult $result
-	 */
-	public function addResult($result) {
-		$ts = (int)$result->getTimestamp();
-		$this->array[$ts] = $result;
+        if ($ts < $this->last_timestamp) {
+            ksort($this->array);
+        } else {
+            $this->last_timestamp = $ts;
+        }
 
-		if ($ts < $this->last_timestamp) {
-			ksort($this->array);
-		} else {
-			$this->last_timestamp = $ts;
-		}
+        if ($this->start_timestamp !== null && $ts < $this->start_timestamp) {
+            $this->start_timestamp = $ts;
+        }
 
-		if ($this->start_timestamp !== NULL && $ts < $this->start_timestamp) {
-			$this->start_timestamp = $ts;
-		}
+        if ($this->end_timestamp !== null && $ts > $this->end_timestamp) {
+            $this->end_timestamp = $ts;
+        }
+    }
 
-		if ($this->end_timestamp !== NULL && $ts > $this->end_timestamp) {
-			$this->end_timestamp = $ts;
-		}
-	}
+    /**
+     * Return minimal timestamp
+     *
+     * @return int
+     */
+    public function getStartTimestamp()
+    {
+        return $this->start_timestamp;
+    }
 
-	/**
-	 * Return minimal timestamp
-	 *
-	 * @return int
-	 */
-	public function getStartTimestamp() {
-		return $this->start_timestamp;
-	}
+    /**
+     * Return maximal timestamp
+     *
+     * @return int
+     */
+    public function getEndTimestamp()
+    {
+        return $this->end_timestamp;
+    }
 
-	/**
-	 * Return maximal timestamp
-	 *
-	 * @return int
-	 */
-	public function getEndTimestamp() {
-		return $this->end_timestamp;
-	}
+    /**
+     * Get the number of Results
+     *
+     * @return int
+     */
+    public function getLength()
+    {
+        return count($this->array);
+    }
 
-	/**
-	 * Get the number of Results
-	 *
-	 * @return integer
-	 */
-	public function getLength() {
-		return count($this->array);
-	}
+    /**
+     * Get the first Result
+     *
+     * @return tx_caretaker_NodeResult
+     */
+    public function getFirst()
+    {
+        return reset($this->array);
+    }
 
-	/**
-	 * Get the first Result
-	 *
-	 * @return tx_caretaker_NodeResult
-	 */
-	public function getFirst() {
-		return reset($this->array);
-	}
+    /**
+     * Get the last Result
+     *
+     * @return tx_caretaker_NodeResult
+     */
+    public function getLast()
+    {
+        return end($this->array);
+    }
 
-	/**
-	 * Get the last Result
-	 *
-	 * @return tx_caretaker_NodeResult
-	 */
-	public function getLast() {
-		return end($this->array);
-	}
+    /**
+     * Get some Statistic Information as an array
+     *
+     * @return array
+     */
+    public function getInfos()
+    {
+        $SecondsTotal = $this->end_timestamp - $this->start_timestamp;
+        $SecondsUNDEFINED = 0;
+        $SecondsOK = 0;
+        $SecondsWARNING = 0;
+        $SecondsERROR = 0;
+        $SecondsACK = 0;
+        $SecondsDUE = 0;
 
-	/**
-	 * Get some Statistic Information as an array
-	 *
-	 * @return array
-	 */
-	public function getInfos() {
-		$SecondsTotal = $this->end_timestamp - $this->start_timestamp;
-		$SecondsUNDEFINED = 0;
-		$SecondsOK = 0;
-		$SecondsWARNING = 0;
-		$SecondsERROR = 0;
-		$SecondsACK = 0;
-		$SecondsDUE = 0;
+        $lastTS = null;
+        $lastSTATE = null;
+        /**
+         * @var int $ts
+         * @var tx_caretaker_TestResult $result
+         */
+        foreach ($this->array as $ts => $result) {
+            if ($lastTS) {
+                $range = $ts - $lastTS;
+                switch ($lastSTATE) {
+                    case tx_caretaker_Constants::state_due:
+                        $SecondsDUE += $range;
+                        break;
+                    case tx_caretaker_Constants::state_ack:
+                        $SecondsACK += $range;
+                        break;
+                    case tx_caretaker_Constants::state_undefined:
+                        $SecondsUNDEFINED += $range;
+                        break;
+                    case tx_caretaker_Constants::state_ok:
+                        $SecondsOK += $range;
+                        break;
+                    case tx_caretaker_Constants::state_warning:
+                        $SecondsWARNING += $range;
+                        break;
+                    case tx_caretaker_Constants::state_error:
+                        $SecondsERROR += $range;
+                        break;
+                }
+            }
+            $lastTS = $ts;
+            $lastSTATE = $result->getState();
+        }
 
-		$lastTS = NULL;
-		$lastSTATE = NULL;
-		/**
-		 * @var int $ts
-		 * @var tx_caretaker_TestResult $result
-		 */
-		foreach ($this->array as $ts => $result) {
-			if ($lastTS) {
-				$range = $ts - $lastTS;
-				switch ($lastSTATE) {
-					case tx_caretaker_Constants::state_due :
-						$SecondsDUE += $range;
-						break;
-					case tx_caretaker_Constants::state_ack :
-						$SecondsACK += $range;
-						break;
-					case tx_caretaker_Constants::state_undefined :
-						$SecondsUNDEFINED += $range;
-						break;
-					case tx_caretaker_Constants::state_ok :
-						$SecondsOK += $range;
-						break;
-					case tx_caretaker_Constants::state_warning:
-						$SecondsWARNING += $range;
-						break;
-					case tx_caretaker_Constants::state_error:
-						$SecondsERROR += $range;
-						break;
-				}
-			}
-			$lastTS = $ts;
-			$lastSTATE = $result->getState();
-		}
+        return array(
+            'SecondsTotal' => $SecondsTotal,
+            'SecondsUNDEFINED' => $SecondsUNDEFINED,
+            'SecondsOK' => $SecondsOK,
+            'SecondsWARNING' => $SecondsWARNING,
+            'SecondsERROR' => $SecondsERROR,
+            'SecondsACK' => $SecondsACK,
+            'SecondsDUE' => $SecondsACK,
 
-		return array(
-				'SecondsTotal' => $SecondsTotal,
-				'SecondsUNDEFINED' => $SecondsUNDEFINED,
-				'SecondsOK' => $SecondsOK,
-				'SecondsWARNING' => $SecondsWARNING,
-				'SecondsERROR' => $SecondsERROR,
-				'SecondsACK' => $SecondsACK,
-				'SecondsDUE' => $SecondsACK,
+            'PercentAVAILABLE' => ($SecondsTotal - $SecondsERROR - $SecondsWARNING - $SecondsUNDEFINED) / $SecondsTotal,
+            'PercentUNDEFINED' => $SecondsUNDEFINED / $SecondsTotal,
+            'PercentOK' => $SecondsOK / $SecondsTotal,
+            'PercentWARNING' => $SecondsWARNING / $SecondsTotal,
+            'PercentERROR' => $SecondsERROR / $SecondsTotal,
+            'PercentACK' => $SecondsACK / $SecondsTotal,
+            'PercentDUE' => $SecondsDUE / $SecondsTotal,
+        );
+    }
 
-				'PercentAVAILABLE' => ($SecondsTotal - $SecondsERROR - $SecondsWARNING - $SecondsUNDEFINED) / $SecondsTotal,
-				'PercentUNDEFINED' => $SecondsUNDEFINED / $SecondsTotal,
-				'PercentOK' => $SecondsOK / $SecondsTotal,
-				'PercentWARNING' => $SecondsWARNING / $SecondsTotal,
-				'PercentERROR' => $SecondsERROR / $SecondsTotal,
-				'PercentACK' => $SecondsACK / $SecondsTotal,
-				'PercentDUE' => $SecondsDUE / $SecondsTotal,
-		);
-	}
+    /**
+     * Reset the counter and return the first result
+     */
+    public function rewind()
+    {
+        reset($this->array);
+    }
 
-	/**
-	 * Reset the counter and return the first result
-	 */
-	public function rewind() {
-		reset($this->array);
-	}
+    /**
+     * Get the current Result
+     *
+     * @return tx_caretaker_NodeResult
+     */
+    public function current()
+    {
+        return current($this->array);
+    }
 
-	/**
-	 * Get the current Result
-	 * @return tx_caretaker_NodeResult
-	 */
-	public function current() {
-		return current($this->array);
-	}
+    /**
+     * Return then current result number
+     *
+     * @return int
+     */
+    public function key()
+    {
+        return key($this->array);
+    }
 
-	/**
-	 * Return then current result number
-	 * @return integer
-	 */
-	public function key() {
-		return key($this->array);
-	}
+    /**
+     * Go to the next result and return it
+     */
+    public function next()
+    {
+        return next($this->array);
+    }
 
-	/**
-	 * Go to the next result and return it
-	 */
-	public function next() {
-		return next($this->array);
-	}
+    /**
+     * Check if the current value really exists
+     *
+     * @return bool
+     */
+    public function valid()
+    {
+        return isset($this->array[key($this->array)]);
+    }
 
-	/**
-	 * Check if the current value really exists
-	 * @return boolean
-	 */
-	public function valid() {
-		return isset($this->array[key($this->array)]);
-	}
+    /**
+     * Reverses the array of results
+     */
+    public function reverse()
+    {
+        $this->array = array_reverse($this->array);
+    }
 
-	/**
-	 * Reverses the array of results
-	 */
-	public function reverse() {
-		$this->array = array_reverse($this->array);
-	}
-
-	/**
-	 * @return integer
-	 */
-	public function count() {
-		return count($this->array);
-	}
+    /**
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->array);
+    }
 }

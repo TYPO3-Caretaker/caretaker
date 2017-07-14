@@ -33,42 +33,40 @@
  *
  * $Id$
  */
+class tx_caretaker_NotificationFileExitPoint extends tx_caretaker_NotificationBaseExitPoint
+{
+    /**
+     * @param array $notification
+     * @param array $overrideConfig
+     * @return void
+     */
+    public function addNotification($notification, $overrideConfig)
+    {
+        $config = $this->getConfig($overrideConfig);
 
-/**
- *
- */
-class tx_caretaker_NotificationFileExitPoint extends tx_caretaker_NotificationBaseExitPoint {
+        $line = implode(
+                ' ',
+                array(
+                    date('Y-m-d H:i:s'),
+                    ($notification['node'] instanceof tx_caretaker_AbstractNode ? $notification['node']->getInstance()->getTitle() : '-'),
+                    ($notification['node'] instanceof tx_caretaker_AbstractNode ? '[' . $notification['node']->getCaretakerNodeId() . ']' : '-'),
+                    $notification['node']->getTitle(),
+                    ($notification['lastResult'] instanceof tx_caretaker_TestResult ? $notification['lastResult']->getLocallizedStateInfo() : '-'),
+                    '->',
+                    ($notification['result'] instanceof tx_caretaker_TestResult ? $notification['result']->getLocallizedStateInfo() : '-'),
+                )
+            ) . chr(10);
 
-	/**
-	 * @param array $notification
-	 * @param array $overrideConfig
-	 * @return void
-	 */
-	public function addNotification($notification, $overrideConfig) {
-		$config = $this->getConfig($overrideConfig);
+        $fileHandle = fopen($config['filePath'], 'a');
+        fwrite($fileHandle, $line);
+        fclose($fileHandle);
+    }
 
-		$line = implode(
-						' ',
-						array(
-								date('Y-m-d H:i:s'),
-								($notification['node'] instanceof tx_caretaker_AbstractNode ? $notification['node']->getInstance()->getTitle() : '-'),
-								($notification['node'] instanceof tx_caretaker_AbstractNode ? '[' . $notification['node']->getCaretakerNodeId() . ']' : '-'),
-								$notification['node']->getTitle(),
-								($notification['lastResult'] instanceof tx_caretaker_TestResult ? $notification['lastResult']->getLocallizedStateInfo() : '-'),
-								'->',
-								($notification['result'] instanceof tx_caretaker_TestResult ? $notification['result']->getLocallizedStateInfo() : '-')
-						)
-				) . chr(10);
-
-		$fileHandle = fopen($config['filePath'], 'a');
-		fwrite($fileHandle, $line);
-		fclose($fileHandle);
-	}
-
-	/**
-	 * @return void
-	 */
-	public function execute() {
-		// nothing to do here
-	}
+    /**
+     * @return void
+     */
+    public function execute()
+    {
+        // nothing to do here
+    }
 }

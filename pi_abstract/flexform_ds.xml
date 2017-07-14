@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<!-- 
+<!--
 /**
  * This is a file of the caretaker project.
  * Copyright 2008 by n@work Internet Informationssystem GmbH (www.work.de)
- * 
+ *
  * @Author	Thomas Hempel 		<thomas@work.de>
  * @Author	Martin Ficzel		<martin@work.de>
  * @Author	Patrick Kollodzik	<patrick@work.de>
- * 
+ *
  * $$Id$$
  */
 -->
 <T3DataStructure>
-	<meta> 
-             <langDisable>1</langDisable> 
-     </meta> 
-	<ROOT>
-		<TCEforms>
-			<sheetTitle>Main</sheetTitle>
-		</TCEforms>
-		
-		
-		<type>array</type>
-		<el>
-			<node_id>
-				<TCEforms>
-					<label>LLL:EXT:caretaker/pi_abstract/locallang.xml:node_id</label>
-					<config>
-						<type>input</type>
-					</config>
-				</TCEforms>
-			</node_id>
-		
-		</el>
-	</ROOT>
+    <meta>
+        <langDisable>1</langDisable>
+    </meta>
+    <ROOT>
+        <TCEforms>
+            <sheetTitle>Main</sheetTitle>
+        </TCEforms>
+
+
+        <type>array</type>
+        <el>
+            <node_id>
+                <TCEforms>
+                    <label>LLL:EXT:caretaker/pi_abstract/locallang.xml:node_id</label>
+                    <config>
+                        <type>input</type>
+                    </config>
+                </TCEforms>
+            </node_id>
+
+        </el>
+    </ROOT>
 </T3DataStructure>

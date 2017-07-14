@@ -33,34 +33,36 @@
  *
  * $Id$
  */
-interface tx_caretaker_ResultRangeRenderer {
+interface tx_caretaker_ResultRangeRenderer
+{
+    /**
+     * Render the Result Range for this testNode
+     *
+     * @param string $filename
+     * @param tx_caretaker_TestResultRange $test_result_range
+     * @param string $title
+     * @param string $value_decription
+     * @return string HTML-Code to show the Chart
+     */
+    public function renderTestResultRange($filename, $test_result_range, $title, $value_decription);
 
-	/**
-	 * Render the Result Range for this testNode
-	 * @param string $filename
-	 * @param tx_caretaker_TestResultRange $test_result_range
-	 * @param string $title
-	 * @param string $value_decription
-	 * @return string HTML-Code to show the Chart
-	 */
-	public function renderTestResultRange($filename, $test_result_range, $title, $value_decription);
+    /**
+     * Render the ResultRange
+     *
+     * @param string $filename
+     * @param tx_caretaker_AggregatorResultRange $aggregator_result_range
+     * @param string $title
+     * @return string HTML-Code to show the Chart
+     */
+    public function renderAggregatorResultRange($filename, $aggregator_result_range, $title);
 
-	/**
-	 * Render the ResultRange
-	 * @param string $filename
-	 * @param tx_caretaker_AggregatorResultRange $aggregator_result_range
-	 * @param string $title
-	 * @return string HTML-Code to show the Chart
-	 */
-	public function renderAggregatorResultRange($filename, $aggregator_result_range, $title);
-
-	/**
-	 * Render multiple TestResultRanges
-	 * @param string $filename
-	 * @param array $test_result_ranges
-	 * @param array $titles
-	 * @return string
-	 */
-	public function renderMultipleTestResultRanges($filename, $test_result_ranges, $titles);
-
+    /**
+     * Render multiple TestResultRanges
+     *
+     * @param string $filename
+     * @param array $test_result_ranges
+     * @param array $titles
+     * @return string
+     */
+    public function renderMultipleTestResultRanges($filename, $test_result_ranges, $titles);
 }

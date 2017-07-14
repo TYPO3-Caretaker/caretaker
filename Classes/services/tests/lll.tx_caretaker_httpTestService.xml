@@ -1,83 +1,83 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-	<meta type="array">
-		<type>module</type>
-		<description>Locallang and CSH-Labels for caretaker http-TestService</description>
-	</meta>
-	<data type="array">
-		<languageKey index="default" type="array">
+    <meta type="array">
+        <type>module</type>
+        <description>Locallang and CSH-Labels for caretaker http-TestService</description>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
 
-			<!-- sheet default -->
-			<label index="sheet_default">Request</label>
-			<label index="request_query">URL path and query (e.g. index.php?id=123). Empty for root request.</label>
-			<label index="request_query.description">The query will be combined with the instance-url to form the requested URL.</label>
-			<!--
-			<label index="request_query.alttitle"></label>
-			<label index="request_query.details"></label>
-			<label index="request_query.syntax"></label>
-			<label index="request_query.image"></label>
-			<label index="request_query.image_descr"></label>
-			<label index="request_query.seeAlso"></label>
-			-->
-			<label index="max_time_warning">Milliseconds for warning</label>
-			<label index="max_time_warning.description">If the request takes longer than the selected milliseconds a warning will be displayed.</label>
-			<label index="max_time_error">Milliseconds for error</label>
-			<label index="max_time_error.description">If the request takes longer than the selected milliseconds an error will be displayed.</label>
+            <!-- sheet default -->
+            <label index="sheet_default">Request</label>
+            <label index="request_query">URL path and query (e.g. index.php?id=123). Empty for root request.</label>
+            <label index="request_query.description">The query will be combined with the instance-url to form the requested URL.</label>
+            <!--
+            <label index="request_query.alttitle"></label>
+            <label index="request_query.details"></label>
+            <label index="request_query.syntax"></label>
+            <label index="request_query.image"></label>
+            <label index="request_query.image_descr"></label>
+            <label index="request_query.seeAlso"></label>
+            -->
+            <label index="max_time_warning">Milliseconds for warning</label>
+            <label index="max_time_warning.description">If the request takes longer than the selected milliseconds a warning will be displayed.</label>
+            <label index="max_time_error">Milliseconds for error</label>
+            <label index="max_time_error.description">If the request takes longer than the selected milliseconds an error will be displayed.</label>
 
-			<!-- sheet  request -->
-			<label index="sheet_request">Advanced Request Setting</label>
-			<label index="request_username">Request HTTP-Username</label>
-			<label index="request_username.description">Username for HTTP Authentication. The username will override settings from the instance.</label>
-			<label index="request_password">Request HTTP-Password</label>
-			<label index="request_password.description">Password for HTTP Authentication. The username will override settings from the instance.</label>
-			<label index="request_method">Request HTTP-Method</label>
-			<label index="request_port">Request HTTP-Port</label>
-			<label index="request_data">Request HTTP-Data</label>
+            <!-- sheet  request -->
+            <label index="sheet_request">Advanced Request Setting</label>
+            <label index="request_username">Request HTTP-Username</label>
+            <label index="request_username.description">Username for HTTP Authentication. The username will override settings from the instance.</label>
+            <label index="request_password">Request HTTP-Password</label>
+            <label index="request_password.description">Password for HTTP Authentication. The username will override settings from the instance.</label>
+            <label index="request_method">Request HTTP-Method</label>
+            <label index="request_port">Request HTTP-Port</label>
+            <label index="request_data">Request HTTP-Data</label>
+            <label index="request_useragent">Request User-Agent header</label>
+            <label index="request_referer">Request Referer header</label>
 
-			<!-- sheet proxy -->
-			<label index="sheet_proxy">Proxy Setting</label>
-			<label index="request_proxy">Request Proxy</label>
-			<label index="request_proxyport">Port for Proxy</label>
+            <!-- sheet proxy -->
+            <label index="sheet_proxy">Proxy Setting</label>
+            <label index="request_proxy">Request Proxy</label>
+            <label index="request_proxyport">Port for Proxy</label>
 
-			<!-- sheet response -->
-			<label index="sheet_response">Response</label>
-			<label index="error_type_on_failure">Errortype on failure</label>
-			<label index="expected_status">expected HTTP status code</label>
-			<label index="expected_date_age">expected Age of Date-Header in seconds</label>
-			<label index="expected_date_age.description">An error will occur if the document was not generated in the selected period.</label>
-			<label index="expected_modified_age">expected Age of Modified-Header in seconds</label>
-			<label index="expected_modified_age.description">An error will occur if the document was not modifiend in the selected period.</label>
+            <!-- sheet response -->
+            <label index="sheet_response">Response</label>
+            <label index="error_type_on_failure">Errortype on failure</label>
+            <label index="expected_status">expected HTTP status code</label>
+            <label index="expected_date_age">expected Age of Date-Header in seconds</label>
+            <label index="expected_date_age.description">An error will occur if the document was not generated in the selected period.</label>
+            <label index="expected_modified_age">expected Age of Modified-Header in seconds</label>
+            <label index="expected_modified_age.description">An error will occur if the document was not modifiend in the selected period.</label>
 
-			<label index="expected_headers">expected HTTP Headers</label>
-			<label index="expected_headers.description">Add a list of header conditions which are checked.
-				Each line is interperted as a single condition. See syntax section for more informations about the syntax
-			</label>
-			<label index="expected_regex">expected Regular Expressions</label>
-			<label index="expected_regex.deacription">Add regular expressions that should match the HTTP-Response. Each line is checked separately with preg_match(). </label>
-			
-			<label index="expected_headers.syntax">
-				__HEADER-NAME__ __COMPARISON-OPERATOR__ __EXPECTED_VALUE__
+            <label index="expected_headers">expected HTTP Headers</label>
+            <label index="expected_headers.description">Add a list of header conditions which are checked. Each line is interperted as a single condition. See syntax section for more informations about the syntax</label>
+            <label index="expected_regex">expected Regular Expressions</label>
+            <label index="expected_regex.deacription">Add regular expressions that should match the HTTP-Response. Each line is checked separately with preg_match().</label>
 
-				Exemples:
-				- status:200 (status is 200)
-				- status:&lt; 404 (status is smaller than 404)
+            <label index="expected_headers.syntax">
+                __HEADER-NAME__ __COMPARISON-OPERATOR__ __EXPECTED_VALUE__
 
-				The following comparison Operators are allowed:
-				- : Value equals the
-				- :&lt; Value is bigger than
-				- :&gt; Value is smaller than
-				- := Value equals
-				- :Age:&lt; http header is interpreted as Timestamp and is smaller than
-				- :Age:&gt; http header is interpreted as Timestamp and is greater than
+                Exemples:
+                - status:200 (status is 200)
+                - status:&lt; 404 (status is smaller than 404)
 
-				The follwing marks are replaced:
-				- ###INSTANCE_URL###
-				- ###INSTANCE_PROTOCOL###
-				- ###INSTANCE_HOSTNAME###
-				- ###INSTANCE_QUERY###
-				- ###REQUEST_QUERY###
-			</label>
+                The following comparison Operators are allowed:
+                - : Value equals the
+                - :&lt; Value is bigger than
+                - :&gt; Value is smaller than
+                - := Value equals
+                - :Age:&lt; http header is interpreted as Timestamp and is smaller than
+                - :Age:&gt; http header is interpreted as Timestamp and is greater than
 
-		</languageKey>
-	</data>
+                The follwing marks are replaced:
+                - ###INSTANCE_URL###
+                - ###INSTANCE_PROTOCOL###
+                - ###INSTANCE_HOSTNAME###
+                - ###INSTANCE_QUERY###
+                - ###REQUEST_QUERY###
+            </label>
+
+        </languageKey>
+    </data>
 </T3locallang>

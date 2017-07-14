@@ -39,5 +39,10 @@ $MCONF['access'] = 'user,group';
 $MCONF['script'] = '_DISPATCH';
 $MCONF['navigationFrameModule'] = 'txcaretakerNav';
 
-$MLANG['default']['tabs_images']['tab'] = 'moduleicon.png';
+if (version_compare(TYPO3_version, '7.6', '<')) {
+    $MLANG['default']['tabs_images']['tab'] = 'moduleicon.png';
+} else {
+    $MLANG['default']['tabs_images']['tab'] = 'moduleicon.svg';
+}
+
 $MLANG['default']['ll_ref'] = 'LLL:EXT:caretaker/mod_overview/locallang_mod.xml';

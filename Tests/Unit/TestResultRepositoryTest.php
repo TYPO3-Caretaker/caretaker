@@ -37,29 +37,28 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  *
  * $Id$
  */
+class TestResultRepositoryTest extends UnitTestCase
+{
+    public function test_getLatest()
+    {
+        $this->markTestIncomplete('stub tx_caretaker_TestResultRepository');
+        $instance = new \tx_caretaker_InstanceNode(1, 'title', false, '', '');
+        $test = new \tx_caretaker_TestNode(0, 'title', $instance, '\tx_caretaker_ping', '');
 
-class TestResultRepositoryTest extends UnitTestCase {
+        $test_result_repository = \tx_caretaker_TestResultRepository::getInstance();
+        $result = $test_result_repository->getLatestByNode($test);
+        $this->assertEquals(get_class($result), '\tx_caretaker_TestResult', 'a testresult was found');
+    }
 
-	function test_getLatest() {
-		$this->markTestIncomplete('stub tx_caretaker_TestResultRepository');
-		$instance = new \tx_caretaker_InstanceNode(1, 'title', false, '', '');
-		$test = new \tx_caretaker_TestNode(0, 'title', $instance, '\tx_caretaker_ping', '');
+    public function test_getResultRange()
+    {
+        $this->markTestIncomplete('stub tx_caretaker_TestResultRepository');
+        $instance = new \tx_caretaker_InstanceNode(1, 'title', false, '');
+        $test = new \tx_caretaker_TestNode(0, 'title', $instance, '\tx_caretaker_ping', '');
 
-		$test_result_repository = \tx_caretaker_TestResultRepository::getInstance();
-		$result = $test_result_repository->getLatestByNode($test);
-		$this->assertEquals(get_class($result), '\tx_caretaker_TestResult', 'a testresult was found');
-	}
+        $test_result_repository = \tx_caretaker_TestResultRepository::getInstance();
 
-	function test_getResultRange() {
-		$this->markTestIncomplete('stub tx_caretaker_TestResultRepository');
-		$instance = new \tx_caretaker_InstanceNode(1, 'title', false, '');
-		$test = new \tx_caretaker_TestNode(0, 'title', $instance, '\tx_caretaker_ping', '');
-
-		$test_result_repository = \tx_caretaker_TestResultRepository::getInstance();
-
-		$result_range = $test_result_repository->getRangeByNode($test, time() - 10000, time());
-		$this->assertNotNull(count($result_range), 'there are tests found in range');
-
-	}
-
+        $result_range = $test_result_repository->getRangeByNode($test, time() - 10000, time());
+        $this->assertNotNull(count($result_range), 'there are tests found in range');
+    }
 }
