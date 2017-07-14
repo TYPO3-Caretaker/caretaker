@@ -14,19 +14,19 @@ branches:
     - /^[0-9]+\.[0-9]+\.[0-9]+$/
 
 env:
-  - TYPO3_VERSION="^6.2"
-  - TYPO3_VERSION="^7.6"
+  - TYPO3_VERSION="^6.2.0"
+  - TYPO3_VERSION="^7.6.0"
 
 matrix:
   exclude:
     - php: 5.3
-      env: TYPO3_VERSION="^7.6"
+      env: TYPO3_VERSION="^7.6.0"
     - php: 5.4
-      env: TYPO3_VERSION="^7.6"
+      env: TYPO3_VERSION="^7.6.0"
     - php: 7.0
-      env: TYPO3_VERSION="^6.2"
+      env: TYPO3_VERSION="^6.2.0"
     - php: 7.1
-      env: TYPO3_VERSION="^6.2"
+      env: TYPO3_VERSION="^6.2.0"
 
 sudo: false
 
@@ -50,16 +50,28 @@ before_script:
   - export TYPO3_PATH_WEB=$PWD/.Build/Web
 
 script:
-   - >
+  - >
     echo;
     echo "Running unit tests";
     .Build/bin/phpunit -c .Build/vendor/typo3/cms/typo3/sysext/core/Build/UnitTests.xml Tests/Unit/
 
-   - >
+  - >
     echo;
     echo "Running php lint";
     find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
 
-   - >
-    curl -sSL https://raw.githubusercontent.com/etobi/extension-build/master/scripts/travis/uploadToTER.bash | bash;
+after_script:
+  - >
+    if [ -n "$TRAVIS_TAG" ] && [ -n "$TYPO3_ORG_USERNAME" ] && [ -n "$TYPO3_ORG_PASSWORD" ]; then
+      echo -e "Preparing upload of release ${TRAVIS_TAG} to TER\n"
+      curl -sSL https://raw.githubusercontent.com/alrra/travis-after-all/1.4.4/lib/travis-after-all.js | node
+      if [ $? -eq 0 ]; then
+        # Cleanup before we upload
+        git reset --hard HEAD && git clean -fx
+        # Upload
+        TAG_MESSAGE=`git tag -n10 -l $TRAVIS_TAG | sed 's/^[0-9.]*[ ]*//g'`
+        echo "Uploading release ${TRAVIS_TAG} to TER"
+        .Build/bin/upload . "$TYPO3_ORG_USERNAME" "$TYPO3_ORG_PASSWORD" "$TAG_MESSAGE"
+      fi;
+    fi;
 
