@@ -130,7 +130,6 @@ class tx_caretaker_LatestVersionsHelper
                 foreach ($details['releases'] as $version => $versionDetails) {
                     $security[$major] = $version;
                     if ($versionDetails['type'] === 'security') {
-                        $security[$major] = $version;
                         break;
                     }
                 }
