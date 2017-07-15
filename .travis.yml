@@ -1,12 +1,12 @@
 language: php
 
 php:
-  - 5.3
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
   - 7.1
+  - 7.0
+  - 5.6
+  - 5.5
+  - 5.4
+  - 5.3
 
 branches:
   only:
@@ -14,19 +14,8 @@ branches:
     - /^[0-9]+\.[0-9]+\.[0-9]+$/
 
 env:
-  - TYPO3_VERSION="^6.2.0"
-  - TYPO3_VERSION="^7.6.0"
-
-matrix:
-  exclude:
-    - php: 5.3
-      env: TYPO3_VERSION="^7.6.0"
-    - php: 5.4
-      env: TYPO3_VERSION="^7.6.0"
-    - php: 7.0
-      env: TYPO3_VERSION="^6.2.0"
-    - php: 7.1
-      env: TYPO3_VERSION="^6.2.0"
+  - TYPO3_VERSION=^7.6
+  - TYPO3_VERSION=^6.2
 
 sudo: false
 
@@ -40,38 +29,52 @@ cache:
     - $HOME/.composer/cache
 
 before_install:
-  - if php -i | grep -q xdebug; then phpenv config-rm xdebug.ini; fi
-  - if [ "$GITHUB_COMPOSER_AUTH" ]; then composer config -g github-oauth.github.com $GITHUB_COMPOSER_AUTH; fi
+  - if php -i | grep -q xdebug; then phpenv config-rm xdebug.ini; fi;
+  - if [ "$GITHUB_COMPOSER_AUTH" ]; then composer config -g github-oauth.github.com $GITHUB_COMPOSER_AUTH; fi;
 
 before_script:
-  - if [ "$TYPO3_VERSION" == "^6.2.0" ]; then composer require typo3/cms-composer-installers="1.2.5 as 1.1.4" --no-update; fi
-  - composer require typo3/cms="$TYPO3_VERSION"
-  - git checkout composer.json
-  - export TYPO3_PATH_WEB=$PWD/.Build/Web
+  - |
+    set -e
+    if [ "$TRAVIS_ALLOW_FAILURE" == "true" ]; then return; fi;
+    if [ "$TYPO3_VERSION" == "^6.2.0" ]; then composer require typo3/cms-composer-installers="1.2.5 as 1.1.4" --no-update; fi;
+    composer require typo3/cms="$TYPO3_VERSION";
+    git checkout composer.json;
+    export TYPO3_PATH_WEB=$PWD/.Build/Web;
 
 script:
-  - >
-    echo;
+  - |
+    set -e
+    if [ "$TRAVIS_ALLOW_FAILURE" == "true" ]; then echo "skip testing"; return; fi;
     echo "Running unit tests";
-    .Build/bin/phpunit -c .Build/vendor/typo3/cms/typo3/sysext/core/Build/UnitTests.xml Tests/Unit/
+    .Build/bin/phpunit;
 
-  - >
-    echo;
     echo "Running php lint";
     find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
 
-after_script:
-  - >
-    if [ -n "$TRAVIS_TAG" ] && [ -n "$TYPO3_ORG_USERNAME" ] && [ -n "$TYPO3_ORG_PASSWORD" ]; then
-      echo -e "Preparing upload of release ${TRAVIS_TAG} to TER\n"
-      curl -sSL https://raw.githubusercontent.com/alrra/travis-after-all/1.4.4/lib/travis-after-all.js | node
-      if [ $? -eq 0 ]; then
-        # Cleanup before we upload
-        git reset --hard HEAD && git clean -fx
-        # Upload
-        TAG_MESSAGE=`git tag -n10 -l $TRAVIS_TAG | sed 's/^[0-9.]*[ ]*//g'`
-        echo "Uploading release ${TRAVIS_TAG} to TER"
-        .Build/bin/upload . "$TYPO3_ORG_USERNAME" "$TYPO3_ORG_PASSWORD" "$TAG_MESSAGE"
-      fi;
-    fi;
-
+jobs:
+  fast_finish: true
+  allow_failures:
+    - php: 5.4
+      env: TYPO3_VERSION=^7.6
+    - php: 5.3
+      env: TYPO3_VERSION=^7.6
+    - php: 7.0
+      env: TYPO3_VERSION=^6.2
+    - php: 7.1
+      env: TYPO3_VERSION=^6.2
+  include:
+    - stage: deploy to ter
+      php: 7.1
+      env: TYPO3_VERSION=
+      install: skip
+      before_script: skip
+      script:
+        - |
+          set -e
+          if [ -n "$TRAVIS_TAG" ] && [ -n "$TYPO3_ORG_USERNAME" ] && [ -n "$TYPO3_ORG_PASSWORD" ]; then
+            echo -e "Preparing upload of release ${TRAVIS_TAG} to TER\n";
+            git reset --hard HEAD && git clean -fx;
+            TAG_MESSAGE=`git tag -n10 -l $TRAVIS_TAG | sed 's/^[0-9.]*[ ]*//g'`;
+            echo "Uploading release ${TRAVIS_TAG} to TER";
+            .Build/bin/upload . "$TYPO3_ORG_USERNAME" "$TYPO3_ORG_PASSWORD" "$TAG_MESSAGE";
+          fi;
