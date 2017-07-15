@@ -52,8 +52,8 @@ class tx_caretaker_LatestVersionsHelper
     protected static $releaseJsonFeed = 'https://get.typo3.org/json';
 
     /**
-     * @return bool
      * @throws Exception
+     * @return bool
      */
     public static function updateLatestTypo3VersionRegistry()
     {
@@ -61,8 +61,8 @@ class tx_caretaker_LatestVersionsHelper
 
         if (!is_array($releases)) {
             throw new Exception(
-                'It seems like ' . self::$releaseJsonFeed .
-                ' did not return the json string for the TYPO3 releases. Maybe it has been moved!?'
+                    'It seems like ' . self::$releaseJsonFeed .
+                    ' did not return the json string for the TYPO3 releases. Maybe it has been moved!?'
             );
         }
 

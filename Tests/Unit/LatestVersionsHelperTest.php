@@ -38,7 +38,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class LatestVersionsHelperTest extends UnitTestCase
 {
-
     /**
      * @var array
      */
