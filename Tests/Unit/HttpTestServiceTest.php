@@ -236,8 +236,11 @@ class HttpTestServiceTest extends UnitTestCase
 
     /**
      * @dataProvider parseHeaderDateDataProvider
+     * @param mixed $dateString
+     * @param mixed $expectedDate
      */
-    public function testParseHeaderDate($dateString, $expectedDate) {
+    public function testParseHeaderDate($dateString, $expectedDate)
+    {
         $subject = new \Caretaker\Caretaker\Tests\Unit\Stubs\HttpTestServiceStub();
         $this->assertEquals($expectedDate, $subject->parseHeaderDate($dateString));
     }
@@ -245,7 +248,8 @@ class HttpTestServiceTest extends UnitTestCase
     /**
      * @return array
      */
-    public function parseHeaderDateDataProvider() {
+    public function parseHeaderDateDataProvider()
+    {
         $now = time();
         return array(
                 array('Tue, 15 Nov 1994 08:12:31 GMT', '784887151'),
@@ -253,7 +257,7 @@ class HttpTestServiceTest extends UnitTestCase
                 array('Tue, 15 Jul 2014 10:48:22 UTC', '1405421302'),
                 array('Sat, 15 Jul 2017 10:48:22 UTC', '1500115702'),
                 array('Sat, 15 Jul 2017 10:48:22 +0200', '1500108502'),
-                array(date(DATE_RFC1123, $now), $now)
+                array(date(DATE_RFC1123, $now), $now),
         );
     }
 }
