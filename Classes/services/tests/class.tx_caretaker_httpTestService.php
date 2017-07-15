@@ -356,38 +356,14 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
         return $result;
     }
 
+    /**
+     * @param string $datestring
+     * @return string
+     */
     public function parseHeaderDate($datestring)
     {
-        // replace  weekdays >> %u
-        $datestring = str_replace(array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'), array(
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-        ), $datestring);
-        // replace month >> %m or %e
-        $datestring = str_replace(array(
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec',
-        ), array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), $datestring);
-        // convert
-        $date = strptime($datestring, '%u, %e %m %Y %H:%M:%S %Z');
-        $timestamp = mktime($date['tm_hour'], $date['tm_min'], $date['tm_sec'], $date['tm_mon'] + 1, $date['tm_mday'], 1900 + $date['tm_year']);
-
-        return $timestamp;
+        $date = \DateTime::createFromFormat(\DateTime::RFC1123, $datestring);
+        return $date->format('U');
     }
 
     /**
