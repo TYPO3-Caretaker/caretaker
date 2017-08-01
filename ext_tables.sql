@@ -419,5 +419,5 @@ CREATE TABLE fe_users (
 # Table structure for table 'tt_address'
 #
 CREATE TABLE tt_address (
-	tx_caretaker_xmpp varchar(30) NOT NULL default ''
+	tx_caretaker_xmpp varchar(30) DEFAULT '' NOT NULL
 );
