@@ -66,6 +66,7 @@ jobs:
       env: TYPO3_VERSION=^6.2
   include:
     - stage: deploy to ter
+      if: tag IS present
       php: 7.1
       env: TYPO3_VERSION=
       install: skip
