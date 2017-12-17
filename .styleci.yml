@@ -43,7 +43,6 @@ enabled:
   - phpdoc_scalar
   - phpdoc_types
   - short_scalar_cast
-  - self_accessor
   - single_quote
   - standardize_not_equals
   - ternary_operator_spaces
@@ -56,6 +55,6 @@ finder:
   exclude:
     - ".Build"
     - "doc"
-    - "Resources"
+    - "res"
   not-name:
     - "ext_emconf.php"
