@@ -62,7 +62,6 @@ return PhpCsFixer\Config::create()
         'phpdoc_order' => true,
         'phpdoc_scalar' => true,
         'phpdoc_types' => true,
-        'self_accessor' => true,
         'short_scalar_cast' => true,
         'single_quote' => true,
         'standardize_not_equals' => true,
@@ -75,6 +74,6 @@ return PhpCsFixer\Config::create()
             ->in(__DIR__)
             ->exclude('.Build')
             ->exclude('doc')
-            ->exclude('Resources')
+            ->exclude('res')
             ->notName('ext_emconf.php')
     );
