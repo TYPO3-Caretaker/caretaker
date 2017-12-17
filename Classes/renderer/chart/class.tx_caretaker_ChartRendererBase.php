@@ -405,7 +405,7 @@ abstract class tx_caretaker_ChartRendererBase
      */
     public function getChartImagePng($filename)
     {
-        $absoluteFilename = PATH_site . PathUtility::stripPathSitePrefix($filename);
+        $absoluteFilename = PathUtility::isAbsolutePath($file) ? $filename : PATH_site . ltrim($filename, '/');
         if (!file_exists(dirname($absoluteFilename))) {
             GeneralUtility::mkdir_deep(dirname($absoluteFilename));
         }
