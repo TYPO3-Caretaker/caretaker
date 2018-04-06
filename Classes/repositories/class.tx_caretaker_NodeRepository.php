@@ -279,7 +279,7 @@ class tx_caretaker_NodeRepository
         if (!$show_hidden) {
             $hidden = ' AND hidden=0 ';
         }
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instancegroup', 'deleted=0 ' . $hidden . ' AND parent_group=' . (int)$parent_group_uid, 'title');
+        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instancegroup', 'deleted=0 ' . $hidden . ' AND parent_group=' . (int)$parent_group_uid, '', 'title');
         $result = array();
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $item = $this->dbrow2instancegroup($row, $parent);
