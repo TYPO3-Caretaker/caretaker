@@ -511,7 +511,6 @@ abstract class tx_caretaker_ChartRendererBase
         if ($timerange >= 24 * 60 * 60 * 30 * 6) {
             $times_super = $this->getYearTimestamps($this->startTimestamp, $this->endTimestamp);
             $times_major = $this->getMonthTimestamps($this->startTimestamp, $this->endTimestamp);
-            //$times_minor = $this->getWeekTimestamps($this->startTimestamp,$this->endTimestamp);
         } // quarter
         elseif ($timerange >= 24 * 60 * 60 * 30 * 3) {
             $times_super = $this->getYearTimestamps($this->startTimestamp, $this->endTimestamp);
