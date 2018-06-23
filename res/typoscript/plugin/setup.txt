@@ -9,6 +9,7 @@ plugin.tx_caretaker_pi_overview {
         STATE = TEXT
         STATE.field = state_info
         STATE.case = lower
+        STATE.htmlSpecialChars = 1
 
         TITLE = TEXT
         TITLE.field = title
@@ -16,33 +17,34 @@ plugin.tx_caretaker_pi_overview {
         #TITLE.append.field = instance
         #TITLE.append.noTrimWrap = | [|]|
         #TITLE.append.required = 1
-        TITLE.insertData = 1
         TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
         TITLE.typolink.additionalParams.field = link_parameters
         TITLE.typolink.additionalParams.wrap = |&tx_caretaker_pi_singleview[range]=24
         TITLE.typolink.target = _blank
+        TITLE.htmlSpecialChars = 1
 
         DESCRIPTION = TEXT
-        DESCRIPTION.stdWrap.override = {field:type} {field:state_msg}
-        DESCRIPTION.stdWrap.override.insertData = 1
+        DESCRIPTION.stdWrap.override.dataWrap = {field:type} {field:state_msg}
         DESCRIPTION.htmlSpecialChars = 1
 
         TYPE = TEXT
         TYPE.field = type
         TYPE.case = lower
+        TYPE.htmlSpecialChars = 1
 
         NODE = TEXT
         NODE.field = node_id
+        NODE.htmlSpecialChars = 1
     }
 
     childMarkers {
         STATE = TEXT
         STATE.field = state_info
         STATE.case = lower
+        STATE.htmlSpecialChars = 1
 
         TITLE = TEXT
-        TITLE.value = {field:title}
-        TITLE.insertData = 1
+        TITLE.field = title
         TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
         TITLE.typolink.additionalParams.field = link_parameters
         TITLE.typolink.additionalParams.wrap = |&tx_caretaker_pi_singleview[range]=24
@@ -61,14 +63,15 @@ plugin.tx_caretaker_pi_overview {
             instancegroup.data = LLL:EXT:caretaker/locallang_fe.xml:instancegroup
             instancegroup.noTrimWrap = | [|]|
         }
+        TITLE.htmlSpecialChars = 1
 
         DESCRIPTION = TEXT
-        DESCRIPTION.stdWrap.override = {field:state_msg}
-        DESCRIPTION.stdWrap.override.insertData = 1
+        DESCRIPTION.field = field:state_msg
         DESCRIPTION.htmlSpecialChars = 1
 
         NODE = TEXT
         NODE.field = node_id
+        NODE.htmlSpecialChars = 1
     }
 
     stdWrap.wrap = <div style="clear:both;"><!-- --></div>
@@ -88,9 +91,11 @@ plugin.tx_caretaker_pi_singleview {
         STATE = TEXT
         STATE.field = state_info
         STATE.case = lower
+        STATE.htmlSpecialChars = 1
 
         STATE_INFO = TEXT
         STATE_INFO.field = state_show
+        STATE_INFO.htmlSpecialChars = 1
 
         LAST_RUN = TEXT
         LAST_RUN.field = state_tstamp
@@ -98,16 +103,20 @@ plugin.tx_caretaker_pi_singleview {
 
         VALUE = TEXT
         VALUE.field = state_value
+        VALUE.htmlSpecialChars = 1
 
         TYPE = TEXT
         TYPE.field = type
+        TYPE.htmlSpecialChars = 1
 
         CONFIGURATION = TEXT
         CONFIGURATION.field = configuration
+        CONFIGURATION.htmlSpecialChars = 1
 
         MESSAGE = TEXT
         MESSAGE.field = state_msg
         MESSAGE.br = 1
+        MESSAGE.htmlSpecialChars = 1
 
         CHART_TITLE = TEXT
         CHART_TITLE.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:chart
@@ -122,10 +131,8 @@ plugin.tx_caretaker_pi_singleview {
         CHART_LINKS.wrap = <ul class="chart_links" >|</ul>
         CHART_LINKS.10 = TEXT
         CHART_LINKS.10.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:1hour
-        CHART_LINKS.10.typolink.parameter = {page:uid},0
-        CHART_LINKS.10.typolink.parameter.insertData = 1
-        CHART_LINKS.10.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=1
-        CHART_LINKS.10.typolink.additionalParams.insertData = 1
+        CHART_LINKS.10.typolink.parameter.dataWrap = {page:uid},0
+        CHART_LINKS.10.typolink.additionalParams.dataWrap = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=1
         CHART_LINKS.10.typolink.useCacheHash = 1
         CHART_LINKS.10.wrap = <li>|</li>
 
@@ -158,19 +165,20 @@ plugin.tx_caretaker_pi_singleview {
         CHART_LINKS.90.typolink.additionalParams = &tx_caretaker_pi_singleview[id]={GP:tx_caretaker_pi_singleview|id}&tx_caretaker_pi_singleview[range]=8760
 
         CHART = TEXT
-        CHART.value.field = chart
+        CHART.field = chart
 
         TITLE = TEXT
         TITLE.field = title
-        TITLE.insertData = 1
         TITLE.append = TEXT
         TITLE.append {
             field = node_type
             noTrimWrap = | [|]|
         }
+        TITLE.htmlSpecialChars = 1
 
         DESCRIPTION = TEXT
         DESCRIPTION.field = description
+        DESCRIPTION.htmlSpecialChars = 1
 
         LABEL_DESCRIPTION = TEXT
         LABEL_DESCRIPTION.data = LLL:EXT:caretaker/pi_singleview/locallang.xml:description
@@ -207,10 +215,10 @@ plugin.tx_caretaker_pi_singleview {
         STATE = TEXT
         STATE.field = state_info
         STATE.case = lower
+        STATE.htmlSpecialChars = 1
 
         TITLE = TEXT
-        TITLE.value = {field:title}
-        TITLE.insertData = 1
+        TITLE.field = title
         TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
         TITLE.typolink.additionalParams.field = link_parameters
         TITLE.typolink.target = _self
@@ -219,27 +227,29 @@ plugin.tx_caretaker_pi_singleview {
             field = node_type
             noTrimWrap = | [|]|
         }
+        TITLE.htmlSpecialChars = 1
 
         DESCRIPTION = TEXT
-        DESCRIPTION.value = {field:type}: {field:state_msg}
-        DESCRIPTION.insertData = 1
+        DESCRIPTION.dataWrap = {field:type}: {field:state_msg}
+        DESCRIPTION.htmlSpecialChars = 1
     }
 
     rootlineMarkers {
         STATE = TEXT
         STATE.field = state_info
         STATE.case = lower
+        STATE.htmlSpecialChars = 1
 
         TITLE = TEXT
-        TITLE.value = {field:title}
-        TITLE.insertData = 1
+        TITLE.field = title
         TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
         TITLE.typolink.additionalParams.field = link_parameters
         TITLE.typolink.target = _self
+        TITLE.htmlSpecialChars = 1
 
         DESCRIPTION = TEXT
-        DESCRIPTION.value = {field:type}: {field:state_msg}
-        DESCRIPTION.insertData = 1
+        DESCRIPTION.dataWrap = {field:type}: {field:state_msg}
+        DESCRIPTION.htmlSpecialChars = 1
     }
 }
 
@@ -263,10 +273,8 @@ plugin.tx_caretaker_pi_graphreport {
         CHART_LINKS.wrap = <ul class="chart_links" >|</ul>
         CHART_LINKS.10 = TEXT
         CHART_LINKS.10.data = LLL:EXT:caretaker/pi_graphreport/locallang.xml:24hours
-        CHART_LINKS.10.typolink.parameter = {page:uid},0
-        CHART_LINKS.10.typolink.parameter.insertData = 1
+        CHART_LINKS.10.typolink.parameter.dataWrap = {page:uid},0
         CHART_LINKS.10.typolink.additionalParams = &tx_caretaker_pi_graphreport[range]=24
-        CHART_LINKS.10.typolink.additionalParams.insertData = 1
         CHART_LINKS.10.typolink.useCacheHash = 1
         CHART_LINKS.10.wrap = <li>|</li>
 
@@ -297,27 +305,35 @@ plugin.tx_caretaker_pi_abstract {
         STATE = TEXT
         STATE.field = stateInfo
         STATE.case = lower
+        STATE.htmlSpecialChars = 1
 
         NODE_TITLE = TEXT
         NODE_TITLE.field = nodeTitle
+        NODE_TITLE.htmlSpecialChars = 1
 
         NUM_ERROR = TEXT
         NUM_ERROR.field = numError
+        NUM_ERROR.htmlSpecialChars = 1
 
         NUM_WARNING = TEXT
         NUM_WARNING.field = numWarning
+        NUM_WARNING.htmlSpecialChars = 1
 
         NUM_OK = TEXT
         NUM_OK.field = numOk
+        NUM_OK.htmlSpecialChars = 1
 
         NUM_UNDEFINED = TEXT
         NUM_UNDEFINED.field = numUndefined
+        NUM_UNDEFINED.htmlSpecialChars = 1
 
         NUM_ACK = TEXT
         NUM_ACK.field = numAck
+        NUM_ACK.htmlSpecialChars = 1
 
         NUM_DUE = TEXT
         NUM_DUE.field = numDue
+        NUM_DUE.htmlSpecialChars = 1
     }
 
     subparts {
@@ -334,6 +350,7 @@ plugin.tx_caretaker_pi_abstract {
 
             50 = TEXT
             50.field = renderedDueNodes
+            stdWrap.htmlSpecialChars = 1
         }
     }
 
@@ -341,17 +358,19 @@ plugin.tx_caretaker_pi_abstract {
         STATE = TEXT
         STATE.field = stateinfo
         STATE.case = lower
+        STATE.htmlSpecialChars = 1
 
         TITLE = TEXT
-        TITLE.value = {field:title}
-        TITLE.insertData = 1
+        TITLE.field = title
         TITLE.typolink.parameter = {$caretaker.singleLinkID} {$caretaker.singleLinkParameter}
         TITLE.typolink.additionalParams.field = link_parameters
         TITLE.typolink.target = _self
+        TITLE.htmlSpecialChars = 1
 
         INFO = TEXT
         INFO.field = message_ll
         INFO.br = 1
+        INFO.htmlSpecialChars = 1
     }
 }
 
