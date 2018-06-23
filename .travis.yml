@@ -27,19 +27,19 @@ before_script:
     set -e
     if [ "$TRAVIS_ALLOW_FAILURE" == "true" ]; then return; fi;
     if [ "$TYPO3_VERSION" == "^6.2.0" ]; then composer require typo3/cms-composer-installers="1.2.5 as 1.1.4" --no-update; fi;
-    composer require typo3/cms="$TYPO3_VERSION";
+    composer require typo3/cms "$TYPO3_VERSION"
     git checkout composer.json;
-    export TYPO3_PATH_WEB=$PWD/.Build/Web;
+    export TYPO3_PATH_WEB=$PWD/.Build/public;
 
 script:
   - |
     set -e
     if [ "$TRAVIS_ALLOW_FAILURE" == "true" ]; then echo "skip testing"; return; fi;
     echo "Running unit tests";
-    .Build/bin/phpunit;
+    composer test:phpunit
 
     echo "Running php lint";
-    find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
+    composer test:phplint
 
 jobs:
   fast_finish: true
