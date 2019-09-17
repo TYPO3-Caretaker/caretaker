@@ -44,6 +44,9 @@
  * @author Tobias Liebig <liebig@networkteam.com>
  *
  */
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class tx_caretaker_ServiceHelper
 {
     /**
@@ -65,7 +68,7 @@ class tx_caretaker_ServiceHelper
      * @var array
      */
     protected static $tcaExitPointConfigDs = array(
-        'default' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?><T3DataStructure><meta></meta></T3DataStructure>',
+        'default' => 'FILE:EXT:caretaker/Classes/services/tests/ds.tx_caretaker_default.xml',
     );
 
     /**
@@ -171,8 +174,17 @@ class tx_caretaker_ServiceHelper
         $dsArray = array(
             'default' => self::$tcaTestConfigDs['default'],
         );
-        if (isset($GLOBALS['TYPO3_DB'])) {
+        if (version_compare(TYPO3_version, '8.0', '<') && isset($GLOBALS['TYPO3_DB'])) {
             $tests = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_caretaker_test', 'deleted=0');
+        } else {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_caretaker_test');
+            try {
+                $tests = $queryBuilder->select('*')
+                    ->from('tx_caretaker_test')
+                    ->where($queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter('0')))
+                    ->execute();
+            } catch (Exception $exception) {
+            }
         }
         if (!empty($tests)) {
             foreach ($tests as $testRecord) {

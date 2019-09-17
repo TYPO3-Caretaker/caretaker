@@ -30,29 +30,28 @@ $GLOBALS['TCA']['tx_caretaker_instancegroup'] = array(
     ),
     'columns' => array(
         'hidden' => array(
-            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => array(
                 'type' => 'check',
                 'default' => '0',
             ),
         ),
         'starttime' => array(
-            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
                 'size' => '8',
-                'max' => '20',
                 'eval' => 'date',
                 'default' => '0',
                 'checkbox' => '0',
+                'renderType' => 'inputDateTime',
             ),
         ),
         'endtime' => array(
-            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => array(
                 'type' => 'input',
                 'size' => '8',
-                'max' => '20',
                 'eval' => 'date',
                 'checkbox' => '0',
                 'default' => '0',
@@ -60,10 +59,11 @@ $GLOBALS['TCA']['tx_caretaker_instancegroup'] = array(
                     'upper' => mktime(0, 0, 0, 12, 31, 2020),
                     'lower' => mktime(0, 0, 0, date('m') - 1, date('d'), date('Y')),
                 ),
+                'renderType' => 'inputDateTime',
             ),
         ),
         'fe_group' => array(
-            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.fe_group',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.fe_group',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -93,8 +93,8 @@ $GLOBALS['TCA']['tx_caretaker_instancegroup'] = array(
                 'type' => 'text',
                 'cols' => '50',
                 'rows' => '5',
+                'enableRichtext' => true,
             ),
-            'defaultExtras' => 'richtext',
         ),
         'parent_group' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.parent_group',
@@ -143,9 +143,12 @@ $GLOBALS['TCA']['tx_caretaker_instancegroup'] = array(
     ),
     'types' => array(
         '0' => array(
-            'showitem' => 'title;;1;;1-1-1, parent_group;;;;2-2-2,' .
-                '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.description, description, ' .
-                '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.contacts, contacts, ' .
+            'showitem' => '
+                title, 
+                --palette--;;1,
+                parent_group, 
+                --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.description, description, 
+                --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.contacts, contacts, ' .
                 ($advancedNotificationsEnabled ? '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.notifications, notification_strategies, ' : '') .
                 '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.access, hidden, starttime, endtime, fe_group',
         ),

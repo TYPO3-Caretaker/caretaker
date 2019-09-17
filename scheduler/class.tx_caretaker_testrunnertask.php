@@ -23,6 +23,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This is a file of the caretaker project.
  * http://forge.typo3.org/projects/show/extension-caretaker
@@ -79,7 +81,11 @@ class tx_caretaker_TestrunnerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
         }
 
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode'] != 'disable') {
-            $lockObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Locking\Locker', 'tx_caretaker_update_' . $node->getCaretakerNodeId(), $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
+            if (class_exists('\\TYPO3\\CMS\\Core\\Locking\\LockFactory')) {
+                $lockObj = GeneralUtility::makeInstance('TYPO3\CMS\Core\Locking\LockFactory')->createLocker('tx_caretaker_update_' . $node->getCaretakerNodeId());
+            } else {
+                $lockObj = GeneralUtility::makeInstance('TYPO3\CMS\Core\Locking\Locker', 'tx_caretaker_update_' . $node->getCaretakerNodeId(), $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
+            }
             // no output during scheduler runs
             tx_caretaker_ServiceHelper::unregisterCaretakerNotificationService('CliNotificationService');
 

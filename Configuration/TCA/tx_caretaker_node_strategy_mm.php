@@ -24,7 +24,7 @@ if ($advancedNotificationsEnabled) {
             ),
         ),
         'types' => array(
-            '0' => array('showitem' => 'uid_strategy;;1;;1-1-1'),
+            '0' => array('showitem' => 'uid_strategy, --palette--;;1'),
         ),
     );
 }

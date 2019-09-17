@@ -14,17 +14,17 @@
 -->
 
 <T3DataStructure>
-    <meta>
-        <langDisable>1</langDisable>
-    </meta>
     <ROOT>
         <type>array</type>
         <el>
-            <dummy>
-                <config>
-                    <default></default>
-                </config>
-            </dummy>
+            <xmlTitle>
+                <TCEforms>
+                    <label>The Title:</label>
+                    <config>
+                        <type>input</type>
+                    </config>
+                </TCEforms>
+            </xmlTitle>
         </el>
     </ROOT>
 </T3DataStructure>

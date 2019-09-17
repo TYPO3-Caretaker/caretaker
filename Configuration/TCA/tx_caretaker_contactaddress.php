@@ -21,7 +21,7 @@ $GLOBALS['TCA']['tx_caretaker_contactaddress'] = array(
     ),
     'columns' => array(
         'hidden' => array(
-            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => array(
                 'type' => 'check',
                 'default' => '0',
@@ -53,7 +53,7 @@ $GLOBALS['TCA']['tx_caretaker_contactaddress'] = array(
         ),
     ),
     'types' => array(
-        '0' => array('showitem' => 'id;;;;1-1-1, name, email, xmpp'),
+        '0' => array('showitem' => 'id, name, email, xmpp'),
     ),
     'palettes' => array(
         '1' => array('showitem' => 'hidden'),
