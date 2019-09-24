@@ -18,7 +18,6 @@ if ($advancedNotificationsEnabled) {
                 'disabled' => 'hidden',
             ),
             'iconfile' => 'EXT:caretaker/res/icons/exitpoint.png',
-            'requestUpdate' => 'service',
             'searchFields' => 'name, description',
         ),
         'interface' => array(
@@ -26,7 +25,7 @@ if ($advancedNotificationsEnabled) {
         ),
         'columns' => array(
             'hidden' => array(
-                'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+                'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
                 'config' => array(
                     'type' => 'check',
                     'default' => '0',
@@ -62,16 +61,14 @@ if ($advancedNotificationsEnabled) {
                     'renderType' => 'selectSingle',
                     'items' => array_merge(
                         array(
-                            0 => array(
-                                'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service.select_exitpoint',
-                                '',
-                            ),
+                            0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service.select_exitpoint', ''),
                         ),
                         \tx_caretaker_ServiceHelper::getTcaExitPointServiceItems()
                     ),
                     'size' => 1,
                     'maxitems' => 1,
                 ),
+                'onChange' => 'reload',
             ),
             'config' => array(
                 'displayCond' => 'FIELD:service:REQ:true',
@@ -84,7 +81,7 @@ if ($advancedNotificationsEnabled) {
             ),
         ),
         'types' => array(
-            '0' => array('showitem' => 'id;;;;1-1-1, name, description, service, config'),
+            '0' => array('showitem' => 'id, name, description, service, config'),
         ),
         'palettes' => array(
             '1' => array('showitem' => 'hidden'),

@@ -25,7 +25,7 @@ if ($advancedNotificationsEnabled) {
         ),
         'columns' => array(
             'hidden' => array(
-                'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
+                'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.disable',
                 'config' => array(
                     'type' => 'check',
                     'default' => '0',
@@ -57,7 +57,7 @@ if ($advancedNotificationsEnabled) {
             ),
         ),
         'types' => array(
-            '0' => array('showitem' => 'hidden;;;;1-1-1, id;;;;1-1-1, name, description, config'),
+            '0' => array('showitem' => 'hidden, id, name, description, config'),
         ),
         'palettes' => array(
             '1' => array(),

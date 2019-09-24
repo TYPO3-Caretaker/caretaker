@@ -23,6 +23,9 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This is a file of the caretaker project.
  * http://forge.typo3.org/projects/show/extension-caretaker
@@ -105,7 +108,7 @@ class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractServi
         } elseif (is_array($configuration) && is_array($configuration['data'])) {
             $this->flexform_configuration = $configuration;
         } elseif (!is_array($configuration)) {
-            $this->flexform_configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($configuration);
+            $this->flexform_configuration = GeneralUtility::xml2array($configuration);
         }
     }
 
@@ -267,7 +270,7 @@ class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractServi
 
         switch (TYPO3_MODE) {
             case 'FE':
-                $lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+                $lcObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 
                 return $lcObj->TEXT(array('data' => $locallang_string));
 
@@ -275,10 +278,29 @@ class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractServi
                 $locallang_key = array_pop($locallang_parts);
                 $locallang_file = implode(':', $locallang_parts);
                 $language_key = $GLOBALS['BE_USER']->uc['lang'];
-                $LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Lang\LanguageService');
+                $LANG = GeneralUtility::makeInstance('TYPO3\CMS\Lang\LanguageService');
                 $LANG->init($language_key);
 
-                return $LANG->getLLL($locallang_key, \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($locallang_file), $LANG->lang, $LANG->charSet));
+                if (version_compare(TYPO3_version, '8.0', '<')) {
+                    $localLanguage = GeneralUtility::readLLfile(
+                        GeneralUtility::getFileAbsFileName($locallang_file),
+                        $LANG->lang,
+                        $LANG->charSet
+                    );
+                } else {
+                    /** @var $languageFactory LocalizationFactory */
+                    $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+                    $localLanguage = $languageFactory->getParsedData(
+                        GeneralUtility::getFileAbsFileName($locallang_file),
+                        $LANG->lang,
+                        $LANG->charSet
+                    );
+                }
+
+                return $LANG->getLLL(
+                    $locallang_key,
+                    $localLanguage
+                );
 
             default:
                 return $locallang_string;

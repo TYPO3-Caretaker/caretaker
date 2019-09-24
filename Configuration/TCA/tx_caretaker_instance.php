@@ -35,29 +35,28 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
     ),
     'columns' => array(
         'hidden' => array(
-            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => array(
                 'type' => 'check',
                 'default' => '0',
             ),
         ),
         'starttime' => array(
-            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
                 'size' => '8',
-                'max' => '20',
                 'eval' => 'date',
                 'default' => '0',
                 'checkbox' => '0',
+                'renderType' => 'inputDateTime',
             ),
         ),
         'endtime' => array(
-            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => array(
                 'type' => 'input',
                 'size' => '8',
-                'max' => '20',
                 'eval' => 'date',
                 'checkbox' => '0',
                 'default' => '0',
@@ -65,10 +64,11 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
                     'upper' => mktime(0, 0, 0, 12, 31, 2020),
                     'lower' => mktime(0, 0, 0, date('m') - 1, date('d'), date('Y')),
                 ),
+                'renderType' => 'inputDateTime',
             ),
         ),
         'fe_group' => array(
-            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.fe_group',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.fe_group',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -98,8 +98,8 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
                 'type' => 'text',
                 'cols' => '50',
                 'rows' => '5',
+                'enableRichtext' => true,
             ),
-            'defaultExtras' => 'richtext',
         ),
         'url' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.url',
@@ -149,38 +149,22 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
                 'autoSizeMax' => 10,
                 'minitems' => 0,
                 'maxitems' => 10000,
-                'wizards' => array(
-                    '_PADDING' => 1,
-                    '_VERTICAL' => 1,
-                    'edit' => array(
-                        'type' => 'popup',
-                        'title' => 'Edit Test',
-                        'module' => array(
-                            'name' => 'wizard_edit',
-                        ),
-                        'icon' => 'edit2.gif',
-                        'popup_onlyOpenIfSelected' => 1,
-                        'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
-                    ),
-                    'add' => array(
-                        'type' => 'script',
+                'fieldControl' => array(
+                    'addRecord' => array(
+                        'pid' => '###CURRENT_PID###',
+                        'table' => 'tx_caretaker_test',
                         'title' => 'Create new Test',
-                        'icon' => 'add.gif',
-                        'params' => array(
-                            'table' => 'tx_caretaker_test',
-                            'pid' => '###CURRENT_PID###',
-                            'setValue' => 'prepend',
-                        ),
-                        'module' => array(
-                            'name' => 'wizard_add',
-                        ),
+                        'setValue' => 'prepend',
+                    ),
+                    'editPopup' => array(
+                        'title' => 'Edit Test',
+                        'windowOpenParameters' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
                     ),
                 ),
             ),
         ),
         'public_key' => array(
             'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.public_key',
-            'displayCond' => 'EXT:caretaker_instance:LOADED:true',
             'config' => array(
                 'type' => 'input',
                 'eval' => 'trim',
@@ -267,12 +251,18 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
     ),
     'types' => array(
         '0' => array(
-            'showitem' => 'title;;;;2-2-2, instancegroup, url;;;;3-3-3, host, public_key,' .
-                '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.description, description, ' .
-                '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests, ' .
-                '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.contacts, contacts, ' .
+            'showitem' => '
+                title, 
+                instancegroup, 
+                url, 
+                host, 
+                public_key, 
+                --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.description, description, 
+                --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests, 
+                --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.contacts, contacts, ' .
                 ($advancedNotificationsEnabled ? '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, notification_strategies, ' : '') .
-                '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.testconfigurations, ' . ($enableNewConfigurationOverrides ? 'configuration_overrides, ' : 'testconfigurations,') .
+                '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.testconfigurations, ' .
+                ($enableNewConfigurationOverrides ? 'configuration_overrides, ' : 'testconfigurations,') .
                 '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.access, hidden, starttime, endtime, fe_group',
         ),
     ),

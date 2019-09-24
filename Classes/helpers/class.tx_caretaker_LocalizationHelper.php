@@ -23,6 +23,9 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This is a file of the caretaker project.
  * http://forge.typo3.org/projects/show/extension-caretaker
@@ -69,20 +72,31 @@ class tx_caretaker_LocalizationHelper
 
                     // FE
                     if ($GLOBALS['TSFE']) {
-                        $lcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+                        $lcObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
                         $result = $lcObj->TEXT(array('data' => $locallangString));
                     } // eID
                     else {
                         /** @var \TYPO3\CMS\Lang\LanguageService $LANG */
-                        $LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Lang\LanguageService');
+                        $LANG = GeneralUtility::makeInstance('TYPO3\CMS\Lang\LanguageService');
                         $LANG->init($language_key);
-                        $result = $LANG->getLLL(
-                            $locallang_key,
-                            \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(
-                                \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($locallang_file),
+                        if (version_compare(TYPO3_version, '8.0', '<')) {
+                            $localLanguage = GeneralUtility::readLLfile(
+                                GeneralUtility::getFileAbsFileName($locallang_file),
                                 $LANG->lang,
                                 $LANG->charSet
-                            )
+                            );
+                        } else {
+                            /** @var $languageFactory LocalizationFactory */
+                            $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+                            $localLanguage = $languageFactory->getParsedData(
+                                GeneralUtility::getFileAbsFileName($locallang_file),
+                                $LANG->lang,
+                                $LANG->charSet
+                            );
+                        }
+                        $result = $LANG->getLLL(
+                            $locallang_key,
+                            $localLanguage
                         );
                     }
                     break;
@@ -94,17 +108,26 @@ class tx_caretaker_LocalizationHelper
                     $locallang_file = implode(':', $locallangParts);
 
                     $language_key = $GLOBALS['BE_USER']->uc['lang'];
-                    $LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Lang\LanguageService');
+                    $LANG = GeneralUtility::makeInstance('TYPO3\CMS\Lang\LanguageService');
                     $LANG->init($language_key);
-                    $result = $LANG->getLLL(
-                        $locallang_key,
-                        \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(
-                            \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
-                                $locallang_file
-                            ),
+                    if (version_compare(TYPO3_version, '8.0', '<')) {
+                        $localLanguage = GeneralUtility::readLLfile(
+                            GeneralUtility::getFileAbsFileName($locallang_file),
                             $LANG->lang,
                             $LANG->charSet
-                        )
+                        );
+                    } else {
+                        /** @var $languageFactory LocalizationFactory */
+                        $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+                        $localLanguage = $languageFactory->getParsedData(
+                            GeneralUtility::getFileAbsFileName($locallang_file),
+                            $LANG->lang,
+                            $LANG->charSet
+                        );
+                    }
+                    $result = $LANG->getLLL(
+                        $locallang_key,
+                        $localLanguage
                     );
                     break;
 

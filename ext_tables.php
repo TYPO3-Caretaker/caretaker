@@ -38,8 +38,6 @@ if (!defined('TYPO3_MODE')) {
 }
 
 // overview
-$TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY . '_pi_overview'] = 'layout,select_key,pages';
-$TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_pi_overview'] = 'pi_flexform';
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_overview', 'FILE:EXT:' . $_EXTKEY . '/pi_overview/flexform_ds.xml');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array(
     'LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_overview',
@@ -50,8 +48,6 @@ if (TYPO3_MODE == 'BE') {
 }
 
 // singleview
-$TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY . '_pi_singleview'] = 'layout,select_key,pages';
-$TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_pi_singleview'] = 'pi_flexform';
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_singleview', 'FILE:EXT:' . $_EXTKEY . '/pi_singleview/flexform_ds.xml');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array(
     'LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_singleview',
@@ -62,8 +58,6 @@ if (TYPO3_MODE == 'BE') {
 }
 
 // graphreport
-$TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY . '_pi_graphreport'] = 'layout,select_key,pages';
-$TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_pi_graphreport'] = 'pi_flexform';
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_graphreport', 'FILE:EXT:' . $_EXTKEY . '/pi_graphreport/flexform_ds.xml');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array(
     'LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_graphreport',
@@ -74,8 +68,6 @@ if (TYPO3_MODE == 'BE') {
 }
 
 // abstract
-$TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY . '_pi_abstract'] = 'layout,select_key,pages';
-$TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_pi_abstract'] = 'pi_flexform';
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_abstract', 'FILE:EXT:' . $_EXTKEY . '/pi_abstract/flexform_ds.xml');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array(
     'LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_abstract',
@@ -92,8 +84,31 @@ if (TYPO3_MODE == 'BE') {
 
 // Register Backend Modules
 if (TYPO3_MODE == 'BE') {
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('txcaretakerNav', '', '', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod_nav/');
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('txcaretakerNav', 'txcaretakerOverview', '', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod_overview/');
+    if (version_compare(TYPO3_version, '8.0', '<')) {
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('txcaretakerNav', '', '', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod_nav/');
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('txcaretakerNav', 'txcaretakerOverview', '', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod_overview/');
+    } else {
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+            'txcaretakerNav', '', '', '',
+            array(
+                'name' => 'txcaretakerNav',
+                'access' => 'user,group',
+                'labels' => 'LLL:EXT:caretaker/mod_nav/locallang_mod.xml',
+                'routeTarget' => \Caretaker\Caretaker\Module\Navigation::class . '::mainAction',
+            )
+        );
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+            'txcaretakerNav', 'txcaretakerOverview', '', '',
+            array(
+                'name' => 'txcaretakerNav_txcaretakerOverview',
+                'access' => 'user,group',
+                'icon' => 'EXT:caretaker/mod_overview/moduleicon.svg',
+                'labels' => 'LLL:EXT:caretaker/mod_overview/locallang_mod.xml',
+                'routeTarget' => \Caretaker\Caretaker\Module\Overview::class . '::mainAction',
+                'navigationFrameModule' => 'txcaretakerNav',
+            )
+        );
+    }
 
     $caretaker_modconf = null;
     if (isset($TBE_MODULES['file'])) {
