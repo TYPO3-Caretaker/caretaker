@@ -133,7 +133,7 @@ class tx_caretaker_NodeInfo
 
     /**
      * @param array $params
-     * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler ajaxObj
+     * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj
      */
     public function ajaxRefreshNode($params, &$ajaxObj)
     {
