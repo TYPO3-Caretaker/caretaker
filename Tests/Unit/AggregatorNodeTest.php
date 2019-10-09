@@ -2,7 +2,7 @@
 namespace Caretaker\Caretaker\Tests\Unit;
 
 use Caretaker\Caretaker\Tests\Unit\Stubs\AggregatorNodeStub;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /***************************************************************
  * Copyright notice

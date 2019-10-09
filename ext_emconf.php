@@ -3,21 +3,20 @@ $EM_CONF[$_EXTKEY] = array (
   'title' => 'Caretaker',
   'description' => 'Server for caretaker observation system',
   'category' => 'misc',
-  'author' => 'Martin Ficzel,Thomas Hempel,Christopher Hlubek,Tobias Liebig',
+  'author' => 'Martin Ficzel, Thomas Hempel, Christopher Hlubek, Tobias Liebig, Jan Haffner',
   'author_email' => 'ficzel@work.de,hempel@work.de,hlubek@networkteam.com,typo3@etobi.de',
   'state' => 'stable',
   'uploadfolder' => 0,
   'createDirs' => 'typo3temp/caretaker/charts',
   'clearCacheOnLoad' => 0,
   'author_company' => '',
-  'version' => '0.8.0',
+  'version' => '1.0.0',
   'constraints' => 
   array (
     'depends' => 
     array (
-      'caretaker_instance' => '0.7.0-0.0.0',
-      'typo3' => '6.2.0-7.6.99',
-      'php' => '5.3.0-7.0.99',
+      'caretaker_instance' => '1.0.0-2.99.99',
+      'typo3' => '7.6.0-8.7.99',
     ),
     'conflicts' => 
     array (

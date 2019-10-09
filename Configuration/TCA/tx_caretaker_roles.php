@@ -21,7 +21,7 @@ $GLOBALS['TCA']['tx_caretaker_roles'] = array(
     ),
     'columns' => array(
         'hidden' => array(
-            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => array(
                 'type' => 'check',
                 'default' => '0',
@@ -53,7 +53,7 @@ $GLOBALS['TCA']['tx_caretaker_roles'] = array(
         ),
     ),
     'types' => array(
-        '0' => array('showitem' => 'id;;;;1-1-1, name, description'),
+        '0' => array('showitem' => 'id, name, description'),
     ),
     'palettes' => array(
         '1' => array('showitem' => 'hidden'),

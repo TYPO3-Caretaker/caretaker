@@ -3,7 +3,7 @@ namespace Caretaker\Caretaker\Tests\Unit;
 
 use Caretaker\Caretaker\Tests\Unit\Stubs\NodeResultRangeStub;
 use Caretaker\Caretaker\Tests\Unit\Stubs\NodeResultStub;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /***************************************************************
  * Copyright notice

@@ -3,19 +3,13 @@
   "description": "TYPO3 caretaker server",
   "type": "typo3-cms-extension",
   "homepage": "https://github.com/TYPO3-Caretaker/",
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/TYPO3-Caretaker/caretaker_instance"
-    }
-  ],
+  "license": "GPL-2.0",
   "require": {
-    "typo3/cms-core": "^6.2.14|^7.6.0",
-    "caretaker/caretaker_instance": "*"
+    "typo3/cms-core": "^7.6|^8.7",
+    "caretaker/caretaker_instance": "^1.0|^2.0"
   },
   "require-dev": {
-    "namelesscoder/typo3-repository-client": "^1.1",
-    "nimut/testing-framework": "^1.0"
+    "nimut/testing-framework": "^2.0 || ^4.0"
   },
   "autoload": {
     "psr-4": {

@@ -23,6 +23,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This is a file of the caretaker project.
  * http://forge.typo3.org/projects/show/extension-caretaker
@@ -110,7 +112,11 @@ class tx_caretaker_Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
 
                 if ($task == 'update' || $task == 'ack' || $task == 'due') {
                     try {
-                        $lockObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Locking\Locker', 'tx_caretaker_update_' . $node->getCaretakerNodeId(), $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
+                        if (class_exists('TYPO3\CMS\Core\Locking\LockFactory')) {
+                            $lockObj = GeneralUtility::makeInstance('TYPO3\CMS\Core\Locking\LockFactory')->createLocker('tx_caretaker_update_' . $node->getCaretakerNodeId());
+                        } else {
+                            $lockObj = GeneralUtility::makeInstance('TYPO3\CMS\Core\Locking\Locker', 'tx_caretaker_update_' . $node->getCaretakerNodeId(), $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
+                        }
                         $lockIsAquired = $lockObj->acquire();
                     } catch (Exception $e) {
                         $this->cli_echo('lock ' . 'tx_caretaker_update_' . $node->getCaretakerNodeId() . ' could not be aquired!' . chr(10) . $e->getMessage());
@@ -156,7 +162,7 @@ class tx_caretaker_Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
         } elseif ($task == 'update-typo3-latest-version-list') {
             $result = tx_caretaker_LatestVersionsHelper::updateLatestTypo3VersionRegistry();
             $this->cli_echo('TYPO3 latest version list update result: ' . $result . chr(10));
-            $versions = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry')->get('tx_caretaker', 'TYPO3versions');
+            $versions = GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry')->get('tx_caretaker', 'TYPO3versions');
             foreach ($versions as $key => $version) {
                 $this->cli_echo($key . ' => ' . $version . chr(10));
             }
@@ -200,9 +206,9 @@ class tx_caretaker_Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
     protected function parseOptions($optionsString)
     {
         $options = array();
-        $optionParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $optionsString);
+        $optionParts = GeneralUtility::trimExplode(' ', $optionsString);
         foreach ($optionParts as $optionPart) {
-            list($optionKey, $optionValue) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $optionPart, 2);
+            list($optionKey, $optionValue) = GeneralUtility::trimExplode('=', $optionPart, 2);
             $options[$optionKey] = $optionValue;
         }
 
@@ -215,5 +221,5 @@ if (!defined('TYPO3_cliMode')) {
     die('You cannot run this script directly!');
 }
 
-$sobe = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_caretaker_Cli');
+$sobe = GeneralUtility::makeInstance('tx_caretaker_Cli');
 $sobe->cli_main($_SERVER['argv']);
