@@ -1,7 +1,7 @@
 <?php
 namespace Caretaker\Caretaker\Tests\Unit;
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /***************************************************************
  * Copyright notice

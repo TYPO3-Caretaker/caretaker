@@ -1,12 +1,5 @@
 language: php
 
-dist: precise
-
-branches:
-  only:
-    - master
-    - /^[0-9]+\.[0-9]+\.[0-9]+$/
-
 sudo: false
 
 addons:
@@ -25,9 +18,7 @@ before_install:
 before_script:
   - |
     set -e
-    if [ "$TRAVIS_ALLOW_FAILURE" == "true" ]; then return; fi;
-    if [ "$TYPO3_VERSION" == "^6.2.0" ]; then composer require typo3/cms-composer-installers="1.2.5 as 1.1.4" --no-update; fi;
-    composer require typo3/cms "$TYPO3_VERSION"
+    composer require nimut/typo3-complete "$TYPO3_VERSION";
     git checkout composer.json;
     export TYPO3_PATH_WEB=$PWD/.Build/public;
 
@@ -36,14 +27,28 @@ script:
     set -e
     if [ "$TRAVIS_ALLOW_FAILURE" == "true" ]; then echo "skip testing"; return; fi;
     echo "Running unit tests";
-    composer test:phpunit
-
+    composer test:phpunit;
     echo "Running php lint";
     composer test:phplint
 
 jobs:
   fast_finish: true
   include:
+    - stage: test
+      php: 7.3
+      env: TYPO3_VERSION=^8.7
+    - stage: test
+      php: 7.2
+      env: TYPO3_VERSION=^8.7
+    - stage: test
+      php: 7.1
+      env: TYPO3_VERSION=^8.7
+    - stage: test
+      php: 7.0
+      env: TYPO3_VERSION=^8.7
+    - stage: test
+      php: 7.2
+      env: TYPO3_VERSION=^7.6
     - stage: test
       php: 7.1
       env: TYPO3_VERSION=^7.6
@@ -54,34 +59,22 @@ jobs:
       php: 5.6
       env: TYPO3_VERSION=^7.6
     - stage: test
-      php: 5.6
-      env: TYPO3_VERSION=^6.2
-    - stage: test
+      dist: trusty
       php: 5.5
       env: TYPO3_VERSION=^7.6
-    - stage: test
-      php: 5.5
-      env: TYPO3_VERSION=^6.2
-    - stage: test
-      php: 5.4
-      env: TYPO3_VERSION=^6.2
-    - stage: test
-      php: 5.3
-      env: TYPO3_VERSION=^6.2
-
-    - stage: deploy to ter
+    - stage: 🚢 to TER
       if: tag IS present
-      php: 7.1
-      env: TYPO3_VERSION=
+      php: 7.0
       install: skip
       before_script: skip
       script:
         - |
-          set -e
-          if [ -n "$TRAVIS_TAG" ] && [ -n "$TYPO3_ORG_USERNAME" ] && [ -n "$TYPO3_ORG_PASSWORD" ]; then
+          if [ -n "$TYPO3_ORG_USERNAME" ] && [ -n "$TYPO3_ORG_PASSWORD" ]; then
             echo -e "Preparing upload of release ${TRAVIS_TAG} to TER\n";
-            git reset --hard HEAD && git clean -fx;
-            TAG_MESSAGE=`git tag -n10 -l $TRAVIS_TAG | sed 's/^[0-9.]*[ ]*//g'`;
-            echo "Uploading release ${TRAVIS_TAG} to TER";
-            .Build/bin/upload . "$TYPO3_ORG_USERNAME" "$TYPO3_ORG_PASSWORD" "$TAG_MESSAGE";
+            # Install ter client
+            composer global require helhum/ter-client
+            # Upload
+            TAG_MESSAGE=`git tag -n10 -l $TRAVIS_TAG | sed 's/^[0-9.]*[ ]*//g'`
+            echo "Uploading release ${TRAVIS_TAG} to TER"
+            $HOME/.composer/vendor/bin/ter-client upload caretaker . -u "$TYPO3_ORG_USERNAME" -p "$TYPO3_ORG_PASSWORD" -m "$TAG_MESSAGE"
           fi;
