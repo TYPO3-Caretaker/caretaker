@@ -20,12 +20,6 @@ violet : due       : #cd7de3
 
 */
 
-div.tx-caretaker-pi-overview,
-div.tx-caretaker-pi-singleview,
-div.tx-caretaker-pi-overview,
-tx-caretaker-pi-graphreport {
-}
-
 div.tx-caretaker-pi-abstract h2,
 div.tx-caretaker-pi-overview h2,
 div.tx-caretaker-pi-singleview h2,
@@ -43,7 +37,6 @@ div.tx-caretaker-pi-graphreport h2 {
     -moz-border-radius: 10px 10px 0 0;
     -webkit-border-top-left-radius: 10px;
     -webkit-border-top-right-radius: 10px;
-
     border-radius: 10px 10px 0 0;
 }
 
@@ -95,8 +88,6 @@ div.tx-caretaker-pi-graphreport div.caretaker_container {
     -webkit-box-shadow: 0 0 3px #b8b8b8;
     border-radius: 10px;
     box-shadow: 0 0 3px #b8b8b8;
-    border-radius: 10px;
-    box-shadow: 0 0 3px #b8b8b8;
     margin: 0 20px 20px 0;
     padding: 0;
 }
@@ -129,7 +120,7 @@ div.tx-caretaker-pi-abstract div.caretaker_status_infoliste ul li.caretaker_stat
     font-weight: bold;
     min-width: 66px;
     height: 66px;
-    padding: 3px 6px 0px 6px;
+    padding: 3px 6px 0 6px;
     border: 1px solid #fff;
     -moz-border-radius: 10px;
     -moz-box-shadow: 0 0 4px #bfbfbf;
@@ -277,7 +268,7 @@ div.tx-caretaker-pi-overview div.caretaker_children ul {
 div.tx-caretaker-pi-overview div.caretaker_children ul li {
     list-style: none;
     font-size: 1em;
-    margin: 0px;
+    margin: 0;
     padding: 2px 2px 2px 20px;
     background-repeat: no-repeat;
     background-position: 5px 5px;
@@ -318,9 +309,6 @@ div.tx-caretaker-pi-overview div.caretaker_children ul li.state_error a {
     color: red;
 }
 
-div.tx-caretaker-pi-overview div.caretaker_children ul li.state_undefined {
-}
-
 div.tx-caretaker-pi-overview div.caretaker_children ul li.state_undefined a {
     color: grey;
 }
@@ -352,7 +340,7 @@ div.caretaker_singleview div.caretaker_singleview_content {
 }
 
 div.caretaker_singleview h3 {
-    font-size: 1em:
+    font-size: 1em;
 }
 
 div.caretaker_singleview ul.rootline {
@@ -453,7 +441,7 @@ div.caretaker_singleview_due h2 {
 
 div.caretaker_singleview ul.caretaker_children {
     margin: 0 0 20px 0;
-    padding: 5px 0px;
+    padding: 5px 0;
 }
 
 div.caretaker_singleview ul.caretaker_children li {
@@ -493,9 +481,6 @@ div.caretaker_singleview ul.caretaker_children li.state_error {
 
 div.caretaker_singleview ul.caretaker_children li.state_error a {
     color: red;
-}
-
-div.caretaker_singleview ul.caretaker_children li.state_undefined {
 }
 
 div.caretaker_singleview ul.caretaker_children li.state_undefined a {
@@ -555,10 +540,10 @@ div.caretaker_singleview ul.chart_links li {
     margin: 0 10px 0 0;
     -moz-border-radius-topright: 10px;
     -moz-border-radius-topleft: 10px;
-    -webkit-border-radius-topright: 10px;
-    -webkit-border-radius-topleft: 10px;
-    border-radius-topright: 10px;
-    border-radius-topleft: 10px;
+    -webkit-border-top-right-radius: 10px;
+    -webkit-border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
     background-color: #eeeeee;
     font-size: 12px;
 }
@@ -587,12 +572,12 @@ div.caretaker_singleview div.caretaker_singleview_diagram img {
     -moz-border-radius-topright: 7px;
     -moz-border-radius-bottomleft: 7px;
     -moz-border-radius-bottomright: 7px;
-    -webkit-border-radius-topright: 7px;
-    -webkit-border-radius-bottomleft: 7px;
-    -webkit-border-radius-bottomright: 7px;
-    border-radius-topright: 7px;
-    border-radius-bottomleft: 7px;
-    border-radius-bottomright: 7px;
+    -webkit-border-top-right-radius: 7px;
+    -webkit-border-bottom-left-radius: 7px;
+    -webkit-border-bottom-right-radius: 7px;
+    border-top-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
 }
 
 /*
@@ -621,10 +606,10 @@ div.caretaker_graphreport div.caretaker_graphreport_content ul.chart_links li {
     margin: 0 10px 0 0;
     -moz-border-radius-topright: 10px;
     -moz-border-radius-topleft: 10px;
-    -webkit-border-radius-topright: 10px;
-    -webkit-border-radius-topleft: 10px;
-    border-radius-topright: 10px;
-    border-radius-topleft: 10px;
+    -webkit-border-top-right-radius: 10px;
+    -webkit-border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
     background-color: #eeeeee;
     font-size: 12px;
 }
@@ -653,10 +638,10 @@ div.caretaker_graphreport div.caretaker_graphreport_content img {
     -moz-border-radius-topright: 7px;
     -moz-border-radius-bottomleft: 7px;
     -moz-border-radius-bottomright: 7px;
-    -webkit-border-radius-topright: 7px;
-    -webkit-border-radius-bottomleft: 7px;
-    -webkit-border-radius-bottomright: 7px;
-    border-radius-topright: 7px;
-    border-radius-bottomleft: 7px;
-    border-radius-bottomright: 7px;
+    -webkit-border-top-right-radius: 7px;
+    -webkit-border-bottom-left-radius: 7px;
+    -webkit-border-bottom-right-radius: 7px;
+    border-top-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
 }

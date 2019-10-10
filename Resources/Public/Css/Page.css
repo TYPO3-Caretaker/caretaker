@@ -24,8 +24,6 @@ body {
 }
 
 body #page {
-    /*	background-color:#535353; */
-
     width: 850px;
     padding: 0 80px;
     margin-left: auto;
@@ -59,10 +57,6 @@ body #page #header #branding {
     left: -45px;
     color: grey;
     font-size: 0.8em;
-}
-
-body #page #header #branding a {
-
 }
 
 body #page #menu_main {
@@ -110,10 +104,6 @@ body #page #footer {
     margin-bottom: 15px;
 }
 
-body #page #content {
-
-}
-
 h1 {
     font-family: DroidSans, Verdana, Helvetica, sans-serif;
     color: #c31125;
@@ -157,14 +147,8 @@ a:visited {
     color: #c31125;
     padding: 0 3px;
     text-decoration: underline;
-
-}
-
-a:hover {
-
 }
 
 .cleardiv {
     clear: both;
 }
-

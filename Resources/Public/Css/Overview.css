@@ -11,7 +11,7 @@
 
 #ext-caretaker-mod-overview-index-php .x-panel-tbar {
     height: 28px;
-    padding: 0px;
+    padding: 0;
     border: none;
 }
 
@@ -88,10 +88,6 @@
     background-image: url(../../../res/icons/contacts.png) !important;
 }
 
-.tx-caretaker-panel-nodeaccounts {
-    background-image: url(../../../res/icons/accounts.png) !important;
-}
-
 .tx-caretaker-panel-nodecharts {
     background-image: url(../../../res/icons/charts.png) !important;
 }
@@ -130,9 +126,6 @@
 
 .tx_caretaker_node_info_state_due {
     color: violet;
-}
-
-.tx_caretaker_node_logrow {
 }
 
 .tx_caretaker_node_logrow_ok .x-grid3-cell-inner {
