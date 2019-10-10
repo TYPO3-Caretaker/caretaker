@@ -77,7 +77,7 @@ class Overview extends BaseScriptClass
             $storagePid = (int)$confArray['storagePid'];
 
             //Add caretaker css
-            $this->pageRenderer->addCssFile($BACK_PATH . ExtensionManagementUtility::extRelPath('caretaker') . 'res/css/tx.caretaker.overview.css');
+            $this->pageRenderer->addCssFile($BACK_PATH . ExtensionManagementUtility::extRelPath('caretaker') . 'Resources/Public/Css/tx.caretaker.overview.css');
 
             $pluginItems = array();
             foreach ($panels as $id => $xtype) {

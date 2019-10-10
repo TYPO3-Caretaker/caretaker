@@ -45,63 +45,63 @@
 }
 
 .icon-caretaker-root {
-    background-image: url(../icons/caretaker.png) !important;
+    background-image: url(../../../res/icons/caretaker.png) !important;
 }
 
 .icon-caretaker-type-root {
-    background-image: url(../icons/caretaker.png) !important;
+    background-image: url(../../../res/icons/caretaker.png) !important;
 }
 
 .icon-caretaker-type-test {
-    background-image: url(../icons/test.png) !important;
+    background-image: url(../../../res/icons/test.png) !important;
 }
 
 .icon-caretaker-type-test-hidden {
-    background-image: url(../icons/test__h.png) !important;
+    background-image: url(../../../res/icons/test__h.png) !important;
 }
 
 .icon-caretaker-type-testgroup {
-    background-image: url(../icons/group.png) !important;
+    background-image: url(../../../res/icons/group.png) !important;
 }
 
 .icon-caretaker-type-testgroup-hidden {
-    background-image: url(../icons/group__h.png) !important;
+    background-image: url(../../../res/icons/group__h.png) !important;
 }
 
 .icon-caretaker-type-instance {
-    background-image: url(../icons/instance.png) !important;
+    background-image: url(../../../res/icons/instance.png) !important;
 }
 
 .icon-caretaker-type-instance-hidden {
-    background-image: url(../icons/instance__h.png) !important;
+    background-image: url(../../../res/icons/instance__h.png) !important;
 }
 
 .icon-caretaker-type-instancegroup {
-    background-image: url(../icons/instancegroup.png) !important;
+    background-image: url(../../../res/icons/instancegroup.png) !important;
 }
 
 .icon-caretaker-type-instancegroup-hidden {
-    background-image: url(../icons/instancegroup__h.png) !important;
+    background-image: url(../../../res/icons/instancegroup__h.png) !important;
 }
 
 .tx-caretaker-panel-nodecontacts {
-    background-image: url(../icons/contacts.png) !important;
+    background-image: url(../../../res/icons/contacts.png) !important;
 }
 
 .tx-caretaker-panel-nodeaccounts {
-    background-image: url(../icons/accounts.png) !important;
+    background-image: url(../../../res/icons/accounts.png) !important;
 }
 
 .tx-caretaker-panel-nodecharts {
-    background-image: url(../icons/charts.png) !important;
+    background-image: url(../../../res/icons/charts.png) !important;
 }
 
 .tx-caretaker-panel-nodelogs {
-    background-image: url(../icons/logs.png) !important;
+    background-image: url(../../../res/icons/logs.png) !important;
 }
 
 .tx-caretaker-panel-nodeproblems {
-    background-image: url(../icons/problems.png) !important;
+    background-image: url(../../../res/icons/problems.png) !important;
 }
 
 .tx_caretaker_node_info {

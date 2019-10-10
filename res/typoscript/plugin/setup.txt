@@ -404,4 +404,4 @@ plugin.tx_caretaker_pi_abstract {
     plugin.tx_caretaker_pi_singleview.nodeMarkers.CHART_LINKS.90.wrap = <li class="active">|</li>
 [global]
 
-page.includeCSS.caretaker = EXT:caretaker/res/css/caretaker.css
+page.includeCSS.caretaker = EXT:caretaker/Resources/Public/Css/caretaker.css

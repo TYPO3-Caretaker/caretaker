@@ -56,7 +56,7 @@ tx_caretaker_ServiceHelper::registerNotificationExitPoint($_EXTKEY, 'Classes/ser
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
     'node-info',
     'caretaker-nodeinfo',
-    array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+    array('EXT:caretaker/Resources/Public/Css/tx.caretaker.overview.css'),
     array('EXT:caretaker/res/js/tx.caretaker.NodeInfo.js'),
     $_EXTKEY
 );
@@ -64,7 +64,7 @@ tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
     'node-charts',
     'caretaker-nodecharts',
-    array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+    array('EXT:caretaker/Resources/Public/Css/tx.caretaker.overview.css'),
     array('EXT:caretaker/res/js/tx.caretaker.NodeCharts.js'),
     $_EXTKEY
 );
@@ -72,7 +72,7 @@ tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
     'node-log',
     'caretaker-nodelog',
-    array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+    array('EXT:caretaker/Resources/Public/Css/tx.caretaker.overview.css'),
     array('EXT:caretaker/res/js/tx.caretaker.NodeLog.js'),
     $_EXTKEY
 );
@@ -80,7 +80,7 @@ tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
     'node-contacts',
     'caretaker-nodecontacts',
-    array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+    array('EXT:caretaker/Resources/Public/Css/tx.caretaker.overview.css'),
     array('EXT:caretaker/res/js/tx.caretaker.NodeContacts.js'),
     $_EXTKEY
 );
@@ -88,7 +88,7 @@ tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
 tx_caretaker_ServiceHelper::registerExtJsBackendPanel(
     'node-problems',
     'caretaker-nodeproblems',
-    array('EXT:caretaker/res/css/tx.caretaker.overview.css'),
+    array('EXT:caretaker/Resources/Public/Css/tx.caretaker.overview.css'),
     array('EXT:caretaker/res/js/tx.caretaker.NodeProblems.js'),
     $_EXTKEY
 );

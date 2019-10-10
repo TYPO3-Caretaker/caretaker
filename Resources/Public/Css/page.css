@@ -4,12 +4,12 @@
 
 @font-face {
     font-family: 'DroidSans';
-    src: url('../fonts/DroidSans.ttf') format('truetype');
+    src: url('../../../res/fonts/DroidSans.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'DroidSans-Bold';
-    src: url('../fonts/DroidSans-Bold.ttf') format('truetype');
+    src: url('../../../res/fonts/DroidSans-Bold.ttf') format('truetype');
 }
 
 body {
@@ -19,7 +19,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #eeeeee;
-    background-image: url('../img/bg_page.png');
+    background-image: url('../../../res/img/bg_page.png');
     background-repeat: repeat-x;
 }
 
@@ -82,7 +82,7 @@ body #page #menu_main ul li {
     float: left;
     margin: 0 15px 0 0;
     padding: 4px;
-    background-image: url('../img/bg_menu.png');
+    background-image: url('../../../res/img/bg_menu.png');
     background-repeat: repeat-x;
     border: 1px solid white;
     -moz-border-radius: 4px;
