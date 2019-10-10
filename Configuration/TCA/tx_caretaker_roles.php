@@ -2,7 +2,7 @@
 
 $GLOBALS['TCA']['tx_caretaker_roles'] = array(
     'ctrl' => array(
-        'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles',
+        'title' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_roles',
         'label' => 'name',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -28,7 +28,7 @@ $GLOBALS['TCA']['tx_caretaker_roles'] = array(
             ),
         ),
         'id' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles.id',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_roles.id',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -36,7 +36,7 @@ $GLOBALS['TCA']['tx_caretaker_roles'] = array(
             ),
         ),
         'name' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles.name',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_roles.name',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -44,7 +44,7 @@ $GLOBALS['TCA']['tx_caretaker_roles'] = array(
             ),
         ),
         'description' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles.description',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_roles.description',
             'config' => array(
                 'type' => 'text',
                 'cols' => '50',

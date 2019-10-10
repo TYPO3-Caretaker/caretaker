@@ -57,14 +57,14 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
      *
      * @var string
      */
-    protected $typeDescription = 'LLL:EXT:caretaker/locallang_fe.xml:http_service_description';
+    protected $typeDescription = 'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_service_description';
 
     /**
      * Template to display the test Configuration in human readable form.
      *
      * @var string
      */
-    protected $configurationInfoTemplate = 'LLL:EXT:caretaker/locallang_fe.xml:http_service_configuration';
+    protected $configurationInfoTemplate = 'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_service_configuration';
 
     /**
      * (non-PHPdoc)
@@ -123,7 +123,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
 
         // no query
         if (!($expectedStatus && $request_url)) {
-            return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_undefined, 0, 'LLL:EXT:caretaker/locallang_fe.xml:http_no_query');
+            return tx_caretaker_TestResult::create(tx_caretaker_Constants::state_undefined, 0, 'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_no_query');
         }
 
         // execute query
@@ -136,7 +136,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
         if ($timeError && $time > $timeError) {
             $resultState = tx_caretaker_Constants::state_error;
             $submessages[] = new tx_caretaker_ResultMessage(
-                'LLL:EXT:caretaker/locallang_fe.xml:http_time_error',
+                'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_time_error',
                 array('time' => $time)
             );
         } // time-WARNING
@@ -145,7 +145,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
                 $resultState = tx_caretaker_Constants::state_warning;
             }
             $submessages[] = new tx_caretaker_ResultMessage(
-                'LLL:EXT:caretaker/locallang_fe.xml:http_time_warning',
+                'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_time_warning',
                 array('time' => $time)
             );
         }
@@ -154,7 +154,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
         if (!in_array($info['http_code'], $expectedStatus)) {
             $resultState = $this->getErrorTypeOnFailure();
             $submessages[] = new tx_caretaker_ResultMessage(
-                'LLL:EXT:caretaker/locallang_fe.xml:http_state_error',
+                'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_state_error',
                 array(
                     'state_returned' => $info['http_code'],
                     'state_expected' => implode(',', $expectedStatus),
@@ -170,7 +170,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
                 if (!$returnedValue) {
                     $resultState = tx_caretaker_Constants::state_error;
                     $submessages[] = new tx_caretaker_ResultMessage(
-                        'LLL:EXT:caretaker/locallang_fe.xml:http_header_missing',
+                        'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_header_missing',
                         array('name' => $headerName)
                     );
                 } else {
@@ -178,7 +178,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
                     if ($partialSuccess == false) {
                         $headerSuccess = false;
                         $submessages[] = new tx_caretaker_ResultMessage(
-                            'LLL:EXT:caretaker/locallang_fe.xml:http_header_error',
+                            'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_header_error',
                             array(
                                 'name' => $headerName,
                                 'expected' => $expectedValue,
@@ -187,7 +187,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
                         );
                     } else {
                         $submessages[] = new tx_caretaker_ResultMessage(
-                            'LLL:EXT:caretaker/locallang_fe.xml:http_header_ok',
+                            'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_header_ok',
                             array(
                                 'name' => $headerName,
                                 'expected' => $expectedValue,
@@ -208,7 +208,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
             foreach ($expectedRegex as $regex) {
                 if (preg_match($regex, $content)) {
                     $submessages[] = new tx_caretaker_ResultMessage(
-                        'LLL:EXT:caretaker/locallang_fe.xml:http_regex_ok',
+                        'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_regex_ok',
                         array(
                             'regex' => htmlspecialchars($regex),
                         )
@@ -216,7 +216,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
                 } else {
                     $regexSuccess = false;
                     $submessages[] = new tx_caretaker_ResultMessage(
-                        'LLL:EXT:caretaker/locallang_fe.xml:http_regex_error',
+                        'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_regex_error',
                         array(
                             'regex' => htmlspecialchars($regex),
                         )
@@ -235,7 +235,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
             if (!$returnedDate) {
                 $resultState = tx_caretaker_Constants::state_error;
                 $submessages[] = new tx_caretaker_ResultMessage(
-                    'LLL:EXT:caretaker/locallang_fe.xml:http_header_missing',
+                    'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_header_missing',
                     array('name' => 'Date')
                 );
             } else {
@@ -243,7 +243,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
                 if (!$partialSuccess) {
                     $resultState = tx_caretaker_Constants::state_error;
                     $submessages[] = new tx_caretaker_ResultMessage(
-                        'LLL:EXT:caretaker/locallang_fe.xml:http_date_error',
+                        'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_date_error',
                         array(
                             'plain' => $returnedDate,
                             'parsed' => strftime('%X %x', $this->parseHeaderDate($returnedDate)),
@@ -261,7 +261,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
             if (!$returnedDate) {
                 $resultState = tx_caretaker_Constants::state_error;
                 $submessages[] = new tx_caretaker_ResultMessage(
-                    'LLL:EXT:caretaker/locallang_fe.xml:http_header_missing',
+                    'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_header_missing',
                     array('name' => 'Last-Modified')
                 );
             } else {
@@ -269,7 +269,7 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
                 if (!$partialSuccess) {
                     $resultState = tx_caretaker_Constants::state_error;
                     $submessages[] = new tx_caretaker_ResultMessage(
-                        'LLL:EXT:caretaker/locallang_fe.xml:http_modified_error',
+                        'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_modified_error',
                         array(
                             'plain' => $returnedDate,
                             'parsed' => strftime('%X %x', $this->parseHeaderDate($returnedDate)),
@@ -284,13 +284,13 @@ class tx_caretaker_httpTestService extends tx_caretaker_TestServiceBase
         $values = array('url' => $request_url, 'time' => $time, 'state' => $info['http_code']);
         switch ($resultState) {
             case tx_caretaker_Constants::state_error:
-                $message = 'LLL:EXT:caretaker/locallang_fe.xml:http_error';
+                $message = 'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_error';
                 break;
             case tx_caretaker_Constants::state_warning:
-                $message = 'LLL:EXT:caretaker/locallang_fe.xml:http_warning';
+                $message = 'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_warning';
                 break;
             case tx_caretaker_Constants::state_ok:
-                $message = 'LLL:EXT:caretaker/locallang_fe.xml:http_ok';
+                $message = 'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:http_ok';
                 break;
         }
 

@@ -135,7 +135,7 @@ class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractSer
             try {
                 $result = $testService->runTest();
             } catch (Exception $e) {
-                $result = tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}' . $e->getMessage);
+                $result = tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, '{LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:service_exception}' . $e->getMessage);
             }
 
             // retry if not ok and retrying is enabled
@@ -147,11 +147,11 @@ class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractSer
                     try {
                         $result = $testService->runTest();
                     } catch (Exception $e) {
-                        $result = tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}' . $e->getMessage);
+                        $result = tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, '{LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:service_exception}' . $e->getMessage);
                     }
                     $round++;
                 }
-                $result->addSubMessage(new tx_caretaker_ResultMessage('LLL:EXT:caretaker/locallang_fe.xml:retry_info', array('number' => $round)));
+                $result->addSubMessage(new tx_caretaker_ResultMessage('LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:retry_info', array('number' => $round)));
             }
 
             // save to repository after reading the previous result

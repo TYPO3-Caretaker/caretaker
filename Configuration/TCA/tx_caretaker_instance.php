@@ -12,7 +12,7 @@ if (VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::ge
 
 $GLOBALS['TCA']['tx_caretaker_instance'] = array(
     'ctrl' => array(
-        'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance',
+        'title' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -85,7 +85,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
             ),
         ),
         'title' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.title',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.title',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -93,7 +93,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
             ),
         ),
         'description' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.description',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.description',
             'config' => array(
                 'type' => 'text',
                 'cols' => '50',
@@ -102,7 +102,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
             ),
         ),
         'url' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.url',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.url',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -110,7 +110,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
             ),
         ),
         'host' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.host',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.host',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -118,7 +118,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
             ),
         ),
         'groups' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.groups',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.groups',
             'config' => array(
                 'type' => 'select',
                 'renderMode' => 'tree',
@@ -137,7 +137,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
             ),
         ),
         'tests' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tests',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.tests',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -164,7 +164,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
             ),
         ),
         'public_key' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.public_key',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.public_key',
             'config' => array(
                 'type' => 'input',
                 'eval' => 'trim',
@@ -172,7 +172,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
             ),
         ),
         'instancegroup' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.instancegroup',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.instancegroup',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -187,7 +187,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
             ),
         ),
         'testconfigurations' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_conf',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_test.test_conf',
             'config' => array(
                 'type' => 'flex',
                 'ds' => array(
@@ -196,7 +196,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
             ),
         ),
         'configuration_overrides' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_conf',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_test.test_conf',
             'config' => array(
                 'type' => 'inline',
                 'foreign_table' => 'tx_caretaker_instance_override',
@@ -221,7 +221,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
             ),
         ),
         'contacts' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.contacts',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.contacts',
             'config' => array(
                 'type' => 'inline',
                 'foreign_table' => 'tx_caretaker_node_address_mm',
@@ -235,7 +235,7 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
             ),
         ),
         'notification_strategies' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_general.notification_strategies',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_general.notification_strategies',
             'config' => array(
                 'type' => 'inline',
                 'foreign_table' => 'tx_caretaker_node_strategy_mm',
@@ -257,13 +257,13 @@ $GLOBALS['TCA']['tx_caretaker_instance'] = array(
                 url, 
                 host, 
                 public_key, 
-                --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.description, description, 
-                --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.relations, groups, tests, 
-                --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.contacts, contacts, ' .
-                ($advancedNotificationsEnabled ? '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.notifications, notification_strategies, ' : '') .
-                '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.testconfigurations, ' .
+                --div--;LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.tab.description, description, 
+                --div--;LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.tab.relations, groups, tests, 
+                --div--;LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.tab.contacts, contacts, ' .
+                ($advancedNotificationsEnabled ? '--div--;LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.tab.notifications, notification_strategies, ' : '') .
+                '--div--;LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.tab.testconfigurations, ' .
                 ($enableNewConfigurationOverrides ? 'configuration_overrides, ' : 'testconfigurations,') .
-                '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.tab.access, hidden, starttime, endtime, fe_group',
+                '--div--;LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.tab.access, hidden, starttime, endtime, fe_group',
         ),
     ),
     'palettes' => array(),

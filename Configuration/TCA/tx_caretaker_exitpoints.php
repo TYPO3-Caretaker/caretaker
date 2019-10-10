@@ -6,7 +6,7 @@ $advancedNotificationsEnabled = $extConfig['notifications.']['advanced.']['enabl
 if ($advancedNotificationsEnabled) {
     $GLOBALS['TCA']['tx_caretaker_exitpoints'] = array(
         'ctrl' => array(
-            'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints',
+            'title' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_exitpoints',
             'label' => 'name',
             'tstamp' => 'tstamp',
             'crdate' => 'crdate',
@@ -32,7 +32,7 @@ if ($advancedNotificationsEnabled) {
                 ),
             ),
             'id' => array(
-                'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.id',
+                'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_exitpoints.id',
                 'config' => array(
                     'type' => 'input',
                     'size' => 30,
@@ -40,14 +40,14 @@ if ($advancedNotificationsEnabled) {
                 ),
             ),
             'name' => array(
-                'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.name',
+                'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_exitpoints.name',
                 'config' => array(
                     'type' => 'input',
                     'size' => '255',
                 ),
             ),
             'description' => array(
-                'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.description',
+                'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_exitpoints.description',
                 'config' => array(
                     'type' => 'text',
                     'cols' => '50',
@@ -55,13 +55,13 @@ if ($advancedNotificationsEnabled) {
                 ),
             ),
             'service' => array(
-                'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service',
+                'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_exitpoints.service',
                 'config' => array(
                     'type' => 'select',
                     'renderType' => 'selectSingle',
                     'items' => array_merge(
                         array(
-                            0 => array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.service.select_exitpoint', ''),
+                            0 => array('LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_exitpoints.service.select_exitpoint', ''),
                         ),
                         \tx_caretaker_ServiceHelper::getTcaExitPointServiceItems()
                     ),
@@ -72,7 +72,7 @@ if ($advancedNotificationsEnabled) {
             ),
             'config' => array(
                 'displayCond' => 'FIELD:service:REQ:true',
-                'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_exitpoints.config',
+                'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_exitpoints.config',
                 'config' => array(
                     'type' => 'flex',
                     'ds_pointerField' => 'service',

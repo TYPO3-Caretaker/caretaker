@@ -104,16 +104,16 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleField
 // Register scheduler tasks for caretaker testrunner
 $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TestrunnerTask'] = array(
     'extension' => $_EXTKEY,
-    'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:testrunnerTask.name',
-    'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:testrunnerTask.description',
+    'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:testrunnerTask.name',
+    'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:testrunnerTask.description',
     'additionalFields' => 'tx_caretaker_TestrunnerTask_AdditionalFieldProvider',
 );
 
 // Register scheduler tasks for caretaker typo3 version number update
 $TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_Typo3versionnumbersupdateTask'] = array(
     'extension' => $_EXTKEY,
-    'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:typo3versionnumbersupdateTask.name',
-    'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:typo3versionnumbersupdateTask.description',
+    'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:typo3versionnumbersupdateTask.name',
+    'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:typo3versionnumbersupdateTask.description',
 );
 
 require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('caretaker') . '/ext_conf_include.php');

@@ -200,7 +200,7 @@ abstract class tx_caretaker_NodeResult
      */
     public function getLocallizedStateInfo()
     {
-        return tx_caretaker_LocalizationHelper::localizeString('LLL:EXT:caretaker/locallang_fe.xml:state_' . strtolower($this->getStateInfo()));
+        return tx_caretaker_LocalizationHelper::localizeString('LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:state_' . strtolower($this->getStateInfo()));
     }
 
     /**

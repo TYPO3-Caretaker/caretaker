@@ -40,7 +40,7 @@ if (!defined('TYPO3_MODE')) {
 // overview
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_overview', 'FILE:EXT:' . $_EXTKEY . '/pi_overview/flexform_ds.xml');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array(
-    'LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_overview',
+    'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi_overview',
     $_EXTKEY . '_pi_overview',
 ), 'list_type');
 if (TYPO3_MODE == 'BE') {
@@ -50,7 +50,7 @@ if (TYPO3_MODE == 'BE') {
 // singleview
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_singleview', 'FILE:EXT:' . $_EXTKEY . '/pi_singleview/flexform_ds.xml');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array(
-    'LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_singleview',
+    'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi_singleview',
     $_EXTKEY . '_pi_singleview',
 ), 'list_type');
 if (TYPO3_MODE == 'BE') {
@@ -60,7 +60,7 @@ if (TYPO3_MODE == 'BE') {
 // graphreport
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_graphreport', 'FILE:EXT:' . $_EXTKEY . '/pi_graphreport/flexform_ds.xml');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array(
-    'LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_graphreport',
+    'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi_graphreport',
     $_EXTKEY . '_pi_graphreport',
 ), 'list_type');
 if (TYPO3_MODE == 'BE') {
@@ -70,7 +70,7 @@ if (TYPO3_MODE == 'BE') {
 // abstract
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_abstract', 'FILE:EXT:' . $_EXTKEY . '/pi_abstract/flexform_ds.xml');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array(
-    'LLL:EXT:caretaker/locallang_db.xml:tt_content.list_type_pi_abstract',
+    'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi_abstract',
     $_EXTKEY . '_pi_abstract',
 ), 'list_type');
 if (TYPO3_MODE == 'BE') {

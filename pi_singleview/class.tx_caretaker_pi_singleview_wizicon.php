@@ -66,7 +66,7 @@ class tx_caretaker_pi_singleview_wizicon
     {
         global $LANG;
 
-        $LOCAL_LANG = $LANG->includeLLFile('EXT:caretaker/locallang_db.xml', false);
+        $LOCAL_LANG = $LANG->includeLLFile('EXT:caretaker/Resources/Private/Language/locallang_db.xlf', false);
 
         return $LOCAL_LANG;
     }

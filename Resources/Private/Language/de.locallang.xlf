@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+    <file source-language="en" target-language="de" datatype="plaintext" original="messages" product-name="caretaker">
+        <header/>
+        <body>
+            <!--
+                FRONTEND
+            -->
+            <trans-unit id="test" xml:space="preserve">
+                <target>Test</target>
+            </trans-unit>
+            <trans-unit id="testgroup" xml:space="preserve">
+                <target>Testgruppe</target>
+            </trans-unit>
+            <trans-unit id="instance" xml:space="preserve">
+                <target>Instanz</target></trans-unit>
+            <trans-unit id="instancegroup" xml:space="preserve"><target>Instanzgruppe</target></trans-unit>
+
+            <trans-unit id="state" xml:space="preserve">
+                <target>Status</target>
+            </trans-unit>
+            <trans-unit id="lastRun" xml:space="preserve">
+                <target>Datum</target>
+            </trans-unit>
+            <trans-unit id="value" xml:space="preserve">
+                <target>Messwert</target>
+            </trans-unit>
+            <trans-unit id="message" xml:space="preserve">
+                <target>Meldung</target>
+            </trans-unit>
+            <trans-unit id="children" xml:space="preserve">
+                <target>Gruppenelemente</target>
+            </trans-unit>
+            <trans-unit id="24hours" xml:space="preserve">
+                <target>24 Stunden</target>
+            </trans-unit>
+            <trans-unit id="7days" xml:space="preserve">
+                <target>7 Tage</target>
+            </trans-unit>
+            <trans-unit id="30days" xml:space="preserve">
+                <target>30 Tage</target>
+            </trans-unit>
+            <trans-unit id="times" xml:space="preserve">
+                <target>Zeiten</target>
+            </trans-unit>
+            <trans-unit id="values" xml:space="preserve">
+                <target>Werte</target>
+            </trans-unit>
+            <trans-unit id="date" xml:space="preserve">
+                <target>Datum</target>
+            </trans-unit>
+            <trans-unit id="state_ok" xml:space="preserve">
+                <target>OK</target>
+            </trans-unit>
+            <trans-unit id="state_warning" xml:space="preserve">
+                <target>Warnung</target>
+            </trans-unit>
+            <trans-unit id="state_error" xml:space="preserve">
+                <target>Fehler</target>
+            </trans-unit>
+            <trans-unit id="state_undefined" xml:space="preserve">
+                <target>Undefiniert</target>
+            </trans-unit>
+            <trans-unit id="state_due" xml:space="preserve">
+                <target>Fällig</target>
+            </trans-unit>
+            <trans-unit id="state_ack" xml:space="preserve">
+                <target>Akzeptiert</target>
+            </trans-unit>
+
+            <trans-unit id="message_due" xml:space="preserve">
+                <target>Test wird beim nächsten Testdurchlauf durchgeführt: ###VALUE_USERNAME###</target>
+            </trans-unit>
+            <trans-unit id="message_ack" xml:space="preserve">
+                <target>Das aktuelle Testergebnis wurde akzeptiert: ###VALUE_USERNAME###</target>
+            </trans-unit>
+
+
+            <trans-unit id="available" xml:space="preserve">
+                <target>verfügbar</target>
+            </trans-unit>
+            <trans-unit id="description" xml:space="preserve">
+                <target>Beschreibung</target>
+            </trans-unit>
+            <trans-unit id="lastRunHeader" xml:space="preserve">
+                <target>Letzter Lauf:</target>
+            </trans-unit>
+
+            <trans-unit id="service_exception" xml:space="preserve">
+                <target>Die Testausführung schlug mit dem folgenden PHP-Fehler fehl:</target>
+            </trans-unit>
+            <trans-unit id="retry_info" xml:space="preserve">
+                <target>Der Test wurde ###VALUE_NUMBER### mal wiederholt.</target>
+            </trans-unit>
+
+
+            <trans-unit id="aggregator_result_message" xml:space="preserve">
+                <target>###VALUE_NUM_OK### von ###VALUE_NUM_TESTS### Unterelementen haben die Tests bestanden (###VALUE_NUM_ERROR### Fehler ###VALUE_NUM_WARNING### Warnungen)</target>
+            </trans-unit>
+            <trans-unit id="aggregator_result_submessage_error" xml:space="preserve">
+                <target>Fehler in Unterelement ###VALUE_TITLE###</target>
+            </trans-unit>
+            <trans-unit id="aggregator_result_submessage_warning" xml:space="preserve">
+                <target>Warnung in Unterelement ###VALUE_TITLE###</target>
+            </trans-unit>
+            <trans-unit id="aggregator_result_submessage_undefined" xml:space="preserve">
+                <target>Undefinierter Status in Unterelement ###VALUE_TITLE###</target>
+            </trans-unit>
+            <trans-unit id="aggregator_result_submessage_ack" xml:space="preserve">
+                <target>Akzeptierter Status im Unterelement ###VALUE_TITLE###</target>
+            </trans-unit>
+            <trans-unit id="aggregator_result_submessage_due" xml:space="preserve">
+                <target>Unterelement ###VALUE_TITLE### wird beim nächsten Testdurchlauf durchgeführt</target>
+            </trans-unit>
+
+            <trans-unit id="ping_service_description" xml:space="preserve">
+                <target>Ping Test</target>
+            </trans-unit>
+            <trans-unit id="ping_service_configuration" xml:space="preserve">
+                <target>Warnung: ###MAX_TIME_WARNING### Ms Fehler: ###MAX_TIME_ERROR### Ms</target>
+            </trans-unit>
+
+            <trans-unit id="ping_info" xml:space="preserve">
+                <target>Ping dauerte ###VALUE### Millisekunden</target>
+            </trans-unit>
+            <trans-unit id="ping_error" xml:space="preserve">
+                <target>Das Ping Kommando (###VALUE_COMMAND###) konnte nicht ausgeführt werden. Fehler: ###VALUE_RESULT###</target>
+            </trans-unit>
+            <trans-unit id="ping_no_command_template" xml:space="preserve">
+                <target>Das Ping Kommandotemplate muss in der Extension Konfiguration definiert werden.</target>
+            </trans-unit>
+
+            <trans-unit id="http_service_description" xml:space="preserve">
+                <target>HTTP Test</target>
+            </trans-unit>
+            <trans-unit id="http_service_configuration" xml:space="preserve">
+                <target>Erwarteter HTTP-Status: ###EXPECTED_STATUS### Warnung: ###MAX_TIME_WARNING### Ms Fehler: ###MAX_TIME_ERROR### Ms</target>
+            </trans-unit>
+
+            <trans-unit id="http_error" xml:space="preserve">
+                <target>HTTP Test der URL ###VALUE_URL### ergab einen FEHLER</target>
+            </trans-unit>
+            <trans-unit id="http_warning" xml:space="preserve">
+                <target>HTTP Test der URL ###VALUE_URL### ergab eine WARNUNG</target>
+            </trans-unit>
+            <trans-unit id="http_ok" xml:space="preserve">
+                <target>HTTP Test der URL ###VALUE_URL### war erfolgreich in ###VALUE_TIME### Millisekuden und gab den Status ###VALUE_STATE### zurück</target>
+            </trans-unit>
+
+            <trans-unit id="http_time_error" xml:space="preserve">
+                <target>Der HTTP-Request dauerte ###VALUE_TIME### Millisekunden gab einen Fehler aufgrund Zeitüberschreitung zurück</target>
+            </trans-unit>
+            <trans-unit id="http_time_warning" xml:space="preserve">
+                <target>Der HTTP-Request dauerte ###VALUE_TIME### Millisekunden gab eine Warnung aufgrund Zeitüberschreitung zurück</target>
+            </trans-unit>
+            <trans-unit id="http_state_error" xml:space="preserve">
+                <target>Der HTTP Status ###VALUE_STATE_RETURNED### entspricht nicht dem erwarteten Wert von ###VALUE_STATE_EXPECTED###</target>
+            </trans-unit>
+            <trans-unit id="http_header_error" xml:space="preserve">
+                <target>Der Wert "###VALUE_RETURNED###" im HTTP-Header "###VALUE_NAME###" entsprach nicht der Erwartung "###VALUE_EXPECTED###"</target>
+            </trans-unit>
+            <trans-unit id="http_header_ok" xml:space="preserve">
+                <target>Der Wert im HTTP-Header "###VALUE_NAME###" entsprach dem erwarteten Wert von "###VALUE_EXPECTED###"</target>
+            </trans-unit>
+            <trans-unit id="http_header_missing" xml:space="preserve">
+                <target>Der erwartete HTTP-Header ###VALUE_NAME### wurde nicht gefunden</target>
+            </trans-unit>
+            <trans-unit id="http_regex_error" xml:space="preserve">
+                <target>Der reguläre Ausdruck ###VALUE_REGEX### passte nicht auf die HTTP-Antwort</target>
+            </trans-unit>
+            <trans-unit id="http_regex_ok" xml:space="preserve">
+                <target>Der reguläre Ausdruck ###VALUE_REGEX### passte auf die HTTP-Antwort</target>
+            </trans-unit>
+            <trans-unit id="http_date_error" xml:space="preserve">
+                <target>HTTP-Date-Header ###VALUE_PLAIN### (###VALUE_PARSED###) ist älter als ###VALUE_MAX_AGE### Sekunden</target>
+            </trans-unit>
+            <trans-unit id="http_modified_error" xml:space="preserve">
+                <target>HTTP-Last-Modified-Header ###VALUE_PLAIN### (###VALUE_PARSED###) ist älter als ###VALUE_MAX_AGE### Sekunden</target>
+            </trans-unit>
+            <trans-unit id="http_no_query" xml:space="preserve">
+                <target>Kein HTTP-Status-Code oder kein Query wurde eingegeben</target>
+            </trans-unit>
+
+            <trans-unit id="touch_service_description" xml:space="preserve">
+                <target>Touch Test</target>
+            </trans-unit>
+            <trans-unit id="touch_service_configuration" xml:space="preserve">
+                <target>Touch-Befehl auf Datei: ###TIMESTAMP_FILENAME###</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

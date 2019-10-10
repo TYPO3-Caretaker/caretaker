@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+    <file source-language="en" datatype="plaintext" original="messages" product-name="caretaker">
+        <header/>
+        <body>
+            <trans-unit id="testrunnerTask.name" xml:space="preserve">
+                <source>Testrunner</source>
+            </trans-unit>
+            <trans-unit id="testrunnerTask.description" xml:space="preserve">
+                <source>This task executes the caretaker tests.</source>
+            </trans-unit>
+
+            <trans-unit id="terupdateTask.name" xml:space="preserve">
+                <source>TER Update</source>
+            </trans-unit>
+            <trans-unit id="terupdateTask.description" xml:space="preserve">
+                <source>This task updates the ter extension list.</source>
+            </trans-unit>
+
+            <trans-unit id="typo3versionnumbersupdateTask.name" xml:space="preserve">
+                <source>TYPO3 Versionnumbers Update</source>
+            </trans-unit>
+            <trans-unit id="typo3versionnumbersupdateTask.description" xml:space="preserve">
+                <source>This task updates the available TYPO3 versionnumbers.</source>
+            </trans-unit>
+
+            <trans-unit id="scheduler_update_node" xml:space="preserve">
+                <source>Update NodeId</source>
+            </trans-unit>
+            <trans-unit id="scheduler_update_node_required" xml:space="preserve">
+                <source>You have to enter a valid node ID.</source>
+            </trans-unit>
+            <trans-unit id="scheduler_update_ter" xml:space="preserve">
+                <source>Update Extension List</source>
+            </trans-unit>
+
+            <!-- 
+                FRONTEND
+            -->
+            <trans-unit id="test" xml:space="preserve">
+                <source>Test</source>
+            </trans-unit>
+            <trans-unit id="testgroup" xml:space="preserve">
+                <source>Testgroup</source>
+            </trans-unit>
+            <trans-unit id="instance" xml:space="preserve">
+                <source>Instance</source>
+            </trans-unit>
+            <trans-unit id="instancegroup" xml:space="preserve">
+                <source>Instancegroup</source>
+            </trans-unit>
+
+            <trans-unit id="state" xml:space="preserve">
+                <source>State</source>
+            </trans-unit>
+            <trans-unit id="lastRun" xml:space="preserve">
+                <source>Date</source>
+            </trans-unit>
+            <trans-unit id="value" xml:space="preserve">
+                <source>Value</source>
+            </trans-unit>
+            <trans-unit id="message" xml:space="preserve">
+                <source>Message</source>
+            </trans-unit>
+            <trans-unit id="children" xml:space="preserve">
+                <source>Children</source>
+            </trans-unit>
+            <trans-unit id="24hours" xml:space="preserve">
+                <source>24 hours</source>
+            </trans-unit>
+            <trans-unit id="7days" xml:space="preserve">
+                <source>7 days</source>
+            </trans-unit>
+            <trans-unit id="30days" xml:space="preserve">
+                <source>30 days</source>
+            </trans-unit>
+            <trans-unit id="times" xml:space="preserve">
+                <source>Times</source>
+            </trans-unit>
+            <trans-unit id="values" xml:space="preserve">
+                <source>Values</source>
+            </trans-unit>
+            <trans-unit id="date" xml:space="preserve">
+                <source>Date</source>
+            </trans-unit>
+            <trans-unit id="state_ok" xml:space="preserve">
+                <source>OK</source>
+            </trans-unit>
+            <trans-unit id="state_warning" xml:space="preserve">
+                <source>Warning</source>
+            </trans-unit>
+            <trans-unit id="state_error" xml:space="preserve">
+                <source>Error</source>
+            </trans-unit>
+            <trans-unit id="state_undefined" xml:space="preserve">
+                <source>Undefined</source>
+            </trans-unit>
+            <trans-unit id="state_due" xml:space="preserve">
+                <source>Due to execution</source>
+            </trans-unit>
+            <trans-unit id="state_ack" xml:space="preserve">
+                <source>Acknowledged</source>
+            </trans-unit>
+
+            <trans-unit id="message_due" xml:space="preserve">
+                <source>node was set to Due state by user: ###VALUE_USERNAME###</source>
+            </trans-unit>
+            <trans-unit id="message_ack" xml:space="preserve">
+                <source>node was set to Acknowledged state by user: ###VALUE_USERNAME###</source>
+            </trans-unit>
+
+
+            <trans-unit id="available" xml:space="preserve">
+                <source>available</source>
+            </trans-unit>
+            <trans-unit id="description" xml:space="preserve">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="lastRunHeader" xml:space="preserve">
+                <source>Last run:</source>
+            </trans-unit>
+
+            <trans-unit id="service_exception" xml:space="preserve">
+                <source>Execution of Test failed with php-exception:</source>
+            </trans-unit>
+            <trans-unit id="retry_info" xml:space="preserve">
+                <source>Test was retried ###VALUE_NUMBER### times.</source>
+            </trans-unit>
+
+
+            <trans-unit id="aggregator_result_message" xml:space="preserve">
+                <source>###VALUE_NUM_OK### of ###VALUE_NUM_TESTS### subnodes passed the tests (###VALUE_NUM_ERROR### Errors, ###VALUE_NUM_WARNING### Warnings).</source>
+            </trans-unit>
+            <trans-unit id="aggregator_result_submessage_error" xml:space="preserve">
+                <source>Error in subnode ###VALUE_TITLE###</source>
+            </trans-unit>
+            <trans-unit id="aggregator_result_submessage_warning" xml:space="preserve">
+                <source>Warning in subnode ###VALUE_TITLE###</source>
+            </trans-unit>
+            <trans-unit id="aggregator_result_submessage_undefined" xml:space="preserve">
+                <source>Undefined state in subnode ###VALUE_TITLE###</source>
+            </trans-unit>
+            <trans-unit id="aggregator_result_submessage_ack" xml:space="preserve">
+                <source>Subnode ###VALUE_TITLE### has an acknowledged problem</source>
+            </trans-unit>
+            <trans-unit id="aggregator_result_submessage_due" xml:space="preserve">
+                <source>Subnode ###VALUE_TITLE### is Due to execution</source>
+            </trans-unit>
+
+            <trans-unit id="ping_service_description" xml:space="preserve">
+                <source>Ping Test</source>
+            </trans-unit>
+            <trans-unit id="ping_service_configuration" xml:space="preserve">
+                <source>Warning: ###MAX_TIME_WARNING### Ms Error: ###MAX_TIME_ERROR### Ms</source>
+            </trans-unit>
+
+            <trans-unit id="ping_info" xml:space="preserve">
+                <source>Ping command took ###VALUE### milliseconds</source>
+            </trans-unit>
+            <trans-unit id="ping_error" xml:space="preserve">
+                <source>Ping command (###VALUE_COMMAND###) failed with Message: ###VALUE_MESSAGE###</source>
+            </trans-unit>
+            <trans-unit id="ping_no_command_template" xml:space="preserve">
+                <source>Ping command template must be configured in tx_caretaker extension configuration.</source>
+            </trans-unit>
+
+            <trans-unit id="http_service_description" xml:space="preserve">
+                <source>HTTP Test</source>
+            </trans-unit>
+            <trans-unit id="http_service_configuration" xml:space="preserve">
+                <source>Expected HTTP-Status: ###EXPECTED_STATUS### Warning: ###MAX_TIME_WARNING### Ms Error: ###MAX_TIME_ERROR### Ms</source>
+            </trans-unit>
+
+            <trans-unit id="http_error" xml:space="preserve">
+                <source>HTTP Test of ###VALUE_URL### failed</source>
+            </trans-unit>
+            <trans-unit id="http_warning" xml:space="preserve">
+                <source>HTTP Test of ###VALUE_URL### returned a warning</source>
+            </trans-unit>
+            <trans-unit id="http_ok" xml:space="preserve">
+                <source>HTTP Test of ###VALUE_URL### passed succesfully in ###VALUE_TIME### milliseconds and returned state ###VALUE_STATE###</source>
+            </trans-unit>
+
+            <trans-unit id="http_time_error" xml:space="preserve">
+                <source>HTTP-Request took ###VALUE_TIME### milliseconds returned an timeout-error</source>
+            </trans-unit>
+            <trans-unit id="http_time_warning" xml:space="preserve">
+                <source>HTTP-Request took ###VALUE_TIME### milliseconds returned an timeout-warning</source>
+            </trans-unit>
+            <trans-unit id="http_state_error" xml:space="preserve">
+                <source>Returned Status ###VALUE_STATE_RETURNED### does not match expected state ###VALUE_STATE_EXPECTED###</source>
+            </trans-unit>
+            <trans-unit id="http_header_error" xml:space="preserve">
+                <source>HTTP-Header ###VALUE_NAME###:###VALUE_RETURNED### did not match expected value ###VALUE_EXPECTED###</source>
+            </trans-unit>
+            <trans-unit id="http_header_ok" xml:space="preserve">
+                <source>HTTP-Header ###VALUE_NAME### matched expected value ###VALUE_EXPECTED###</source>
+            </trans-unit>
+            <trans-unit id="http_header_missing" xml:space="preserve">
+                <source>Expected HTTP-Header ###VALUE_NAME### was not found</source>
+            </trans-unit>
+            <trans-unit id="http_regex_error" xml:space="preserve">
+                <source>Regular Expression ###VALUE_REGEX### did not match the http response</source>
+            </trans-unit>
+            <trans-unit id="http_regex_ok" xml:space="preserve">
+                <source>Regular Expression ###VALUE_REGEX### matched the http response</source>
+            </trans-unit>
+            <trans-unit id="http_date_error" xml:space="preserve">
+                <source>HTTP-Date-Header ###VALUE_PLAIN### (###VALUE_PARSED###) is older than ###VALUE_MAX_AGE### seconds</source>
+            </trans-unit>
+            <trans-unit id="http_modified_error" xml:space="preserve"><source>HTTP-Last-Modified-Header ###VALUE_PLAIN### (###VALUE_PARSED###) is older than ###VALUE_MAX_AGE### seconds</source></trans-unit>
+            <trans-unit id="http_no_query" xml:space="preserve"><source>No HTTP-Code or no query was set</source></trans-unit>
+
+            <trans-unit id="touch_service_description" xml:space="preserve">
+                <source>Touch Test</source>
+            </trans-unit>
+            <trans-unit id="touch_service_configuration" xml:space="preserve">
+                <source>Touch file: ###TIMESTAMP_FILENAME###</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

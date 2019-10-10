@@ -6,7 +6,7 @@ $advancedNotificationsEnabled = $extConfig['notifications.']['advanced.']['enabl
 if ($advancedNotificationsEnabled) {
     $GLOBALS['TCA']['tx_caretaker_strategies'] = array(
         'ctrl' => array(
-            'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies',
+            'title' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_strategies',
             'label' => 'name',
             'tstamp' => 'tstamp',
             'crdate' => 'crdate',
@@ -32,7 +32,7 @@ if ($advancedNotificationsEnabled) {
                 ),
             ),
             'name' => array(
-                'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies.name',
+                'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_strategies.name',
                 'config' => array(
                     'type' => 'input',
                     'size' => '30',
@@ -40,7 +40,7 @@ if ($advancedNotificationsEnabled) {
                 ),
             ),
             'description' => array(
-                'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies.description',
+                'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_strategies.description',
                 'config' => array(
                     'type' => 'text',
                     'cols' => '50',
@@ -48,7 +48,7 @@ if ($advancedNotificationsEnabled) {
                 ),
             ),
             'config' => array(
-                'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies.config',
+                'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_strategies.config',
                 'config' => array(
                     'type' => 'text',
                     'cols' => 50,

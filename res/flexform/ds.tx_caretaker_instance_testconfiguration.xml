@@ -9,19 +9,19 @@
                     <test>
                         <type>array</type>
                         <tx_templavoila type="array">
-                            <title>LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance.testconfigurations</title>
+                            <title>LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance.testconfigurations</title>
                         </tx_templavoila>
                         <el>
 
                             <test_service>
                                 <TCEforms>
                                     <exclude>1</exclude>
-                                    <label>LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service</label>
+                                    <label>LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_test.test_service</label>
                                     <config>
                                         <type>select</type>
                                         <items>
                                             <numIndex index="0">
-                                                <numIndex index="0">LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_service.select_service</numIndex>
+                                                <numIndex index="0">LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_test.test_service.select_service</numIndex>
                                                 <numIndex index="1"></numIndex>
                                             </numIndex>
                                         </items>
@@ -49,7 +49,7 @@
                             <test_conf>
                                 <TCEforms>
                                     <displayCond>FIELD:test_service:REQ:true</displayCond>
-                                    <label>LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_test.test_conf</label>
+                                    <label>LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_test.test_conf</label>
                                     <config>
                                         <type>flex</type>
                                         <ds_pointerField>test_service</ds_pointerField>

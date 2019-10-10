@@ -30,7 +30,7 @@ $GLOBALS['TCA']['tx_caretaker_node_address_mm'] = array(
             ),
         ),
         'role' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_roles',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_roles',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
