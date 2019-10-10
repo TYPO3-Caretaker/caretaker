@@ -17,8 +17,8 @@ config {
 
 page = PAGE
 page {
-    includeCSS.page = EXT:caretaker/Resources/Public/Css/page.css
-    includeCSS.plugin = EXT:caretaker/Resources/Public/Css/plugin.css
+    includeCSS.page = EXT:caretaker/Resources/Public/Css/Page.css
+    includeCSS.plugin = EXT:caretaker/Resources/Public/Css/Plugin.css
 
     10 = TEMPLATE
     10 {
