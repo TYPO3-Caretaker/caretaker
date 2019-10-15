@@ -126,7 +126,7 @@ class tx_caretaker_mod_overview extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             $storagePid = (int)$confArray['storagePid'];
 
             //Add caretaker css
-            $this->pageRenderer->addCssFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/css/tx.caretaker.overview.css');
+            $this->pageRenderer->addCssFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'Resources/Public/Css/Overview.css');
 
             $pluginItems = array();
             foreach ($panels as $id => $xtype) {

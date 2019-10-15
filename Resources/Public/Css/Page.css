@@ -4,12 +4,12 @@
 
 @font-face {
     font-family: 'DroidSans';
-    src: url('../fonts/DroidSans.ttf') format('truetype');
+    src: url('../../../res/fonts/DroidSans.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'DroidSans-Bold';
-    src: url('../fonts/DroidSans-Bold.ttf') format('truetype');
+    src: url('../../../res/fonts/DroidSans-Bold.ttf') format('truetype');
 }
 
 body {
@@ -19,13 +19,11 @@ body {
     margin: 0;
     padding: 0;
     background-color: #eeeeee;
-    background-image: url('../img/bg_page.png');
+    background-image: url('../../../res/img/bg_page.png');
     background-repeat: repeat-x;
 }
 
 body #page {
-    /*	background-color:#535353; */
-
     width: 850px;
     padding: 0 80px;
     margin-left: auto;
@@ -61,10 +59,6 @@ body #page #header #branding {
     font-size: 0.8em;
 }
 
-body #page #header #branding a {
-
-}
-
 body #page #menu_main {
     position: absolute;
     right: 0;
@@ -82,7 +76,7 @@ body #page #menu_main ul li {
     float: left;
     margin: 0 15px 0 0;
     padding: 4px;
-    background-image: url('../img/bg_menu.png');
+    background-image: url('../../../res/img/bg_menu.png');
     background-repeat: repeat-x;
     border: 1px solid white;
     -moz-border-radius: 4px;
@@ -108,10 +102,6 @@ body #page #footer {
     text-align: center;
     margin-top: 35px;
     margin-bottom: 15px;
-}
-
-body #page #content {
-
 }
 
 h1 {
@@ -157,14 +147,8 @@ a:visited {
     color: #c31125;
     padding: 0 3px;
     text-decoration: underline;
-
-}
-
-a:hover {
-
 }
 
 .cleardiv {
     clear: both;
 }
-

@@ -45,7 +45,7 @@ class Navigation extends BaseScriptClass
             $this->pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeTree.js', 'text/javascript', false, false);
 
             //Add caretaker css
-            $this->pageRenderer->addCssFile(ExtensionManagementUtility::extRelPath('caretaker') . 'res/css/tx.caretaker.nodetree.css', 'stylesheet', 'all', '', false);
+            $this->pageRenderer->addCssFile(ExtensionManagementUtility::extRelPath('caretaker') . 'Resources/Public/Css/Nodetree.css', 'stylesheet', 'all', '', false);
 
             // storage Pid
             $confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);

@@ -91,7 +91,7 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $this->pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/js/tx.caretaker.NodeTree.js', 'text/javascript', false, false);
 
             //Add caretaker css
-            $this->pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'res/css/tx.caretaker.nodetree.css', 'stylesheet', 'all', '', false);
+            $this->pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('caretaker') . 'Resources/Public/Css/Nodetree.css', 'stylesheet', 'all', '', false);
 
             // storage Pid
             $confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
