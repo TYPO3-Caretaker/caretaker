@@ -59,14 +59,14 @@ class tx_caretaker_TouchTestService extends tx_caretaker_TestServiceBase
      *
      * @var string
      */
-    protected $typeDescription = 'LLL:EXT:caretaker/locallang_fe.xml:touch_service_description';
+    protected $typeDescription = 'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:touch_service_description';
 
     /**
      * Template to display the test Configuration in human readable form.
      *
      * @var string
      */
-    protected $configurationInfoTemplate = 'LLL:EXT:caretaker/locallang_fe.xml:touch_service_configuration';
+    protected $configurationInfoTemplate = 'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:touch_service_configuration';
 
     /**
      * @return tx_caretaker_TestResult

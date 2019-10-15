@@ -2,7 +2,7 @@
 
 $GLOBALS['TCA']['tx_caretaker_testgroup'] = array(
     'ctrl' => array(
-        'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup',
+        'title' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_testgroup',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -73,7 +73,7 @@ $GLOBALS['TCA']['tx_caretaker_testgroup'] = array(
             ),
         ),
         'title' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.title',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_testgroup.title',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -81,7 +81,7 @@ $GLOBALS['TCA']['tx_caretaker_testgroup'] = array(
             ),
         ),
         'description' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.description',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_testgroup.description',
             'config' => array(
                 'type' => 'text',
                 'cols' => '50',
@@ -90,7 +90,7 @@ $GLOBALS['TCA']['tx_caretaker_testgroup'] = array(
             ),
         ),
         'parent_group' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.parent_group',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_testgroup.parent_group',
             'config' => array(
                 'type' => 'select',
                 'renderMode' => 'tree', // for old versions
@@ -108,7 +108,7 @@ $GLOBALS['TCA']['tx_caretaker_testgroup'] = array(
             ),
         ),
         'instances' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.instances',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_testgroup.instances',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -122,7 +122,7 @@ $GLOBALS['TCA']['tx_caretaker_testgroup'] = array(
             ),
         ),
         'tests' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tests',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_testgroup.tests',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -156,8 +156,8 @@ $GLOBALS['TCA']['tx_caretaker_testgroup'] = array(
                 --palette--;;1, 
                 title, 
                 parent_group,
-                --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.description,description,
-		        --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_testgroup.tab.relations,tests
+                --div--;LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_testgroup.tab.description,description,
+		        --div--;LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_testgroup.tab.relations,tests
 		    ',
         ),
     ),

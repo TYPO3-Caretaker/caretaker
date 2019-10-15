@@ -304,7 +304,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode
         $resultRepository = tx_caretaker_TestResultRepository::getInstance();
         $latestTestResult = $resultRepository->getLatestByNode($this);
 
-        $message = new tx_caretaker_ResultMessage('LLL:EXT:caretaker/locallang_fe.xml:message_ack', $info);
+        $message = new tx_caretaker_ResultMessage('LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:message_ack', $info);
         $result = tx_caretaker_TestResult::create(tx_caretaker_Constants::state_ack, 0, $message);
         $resultRepository->saveTestResultForNode($this, $result);
 
@@ -334,7 +334,7 @@ class tx_caretaker_TestNode extends tx_caretaker_AbstractNode
         $resultRepository = tx_caretaker_TestResultRepository::getInstance();
         $latestTestResult = $resultRepository->getLatestByNode($this);
 
-        $message = new tx_caretaker_ResultMessage('LLL:EXT:caretaker/locallang_fe.xml:message_due', $info);
+        $message = new tx_caretaker_ResultMessage('LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:message_due', $info);
         $result = tx_caretaker_TestResult::create(tx_caretaker_Constants::state_due, 0, $message);
         $resultRepository->saveTestResultForNode($this, $result);
 

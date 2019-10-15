@@ -244,7 +244,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode
         );
 
         $message = new tx_caretaker_ResultMessage(
-            'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_message',
+            'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:aggregator_result_message',
             $values
         );
 
@@ -254,7 +254,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode
         if ($num_errors > 0) {
             foreach ($childnode_titles_error as $childTitle) {
                 $submessages[] = new tx_caretaker_ResultMessage(
-                    'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_error',
+                    'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:aggregator_result_submessage_error',
                     array('title' => $childTitle)
                 );
             }
@@ -263,7 +263,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode
         if ($num_warnings > 0) {
             foreach ($childnode_titles_warning as $childTitle) {
                 $submessages[] = new tx_caretaker_ResultMessage(
-                    'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_warning',
+                    'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:aggregator_result_submessage_warning',
                     array('title' => $childTitle)
                 );
             }
@@ -272,7 +272,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode
         if ($num_undefined > 0) {
             foreach ($childnode_titles_undefined as $childTitle) {
                 $submessages[] = new tx_caretaker_ResultMessage(
-                    'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_undefined',
+                    'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:aggregator_result_submessage_undefined',
                     array('title' => $childTitle)
                 );
             }
@@ -281,7 +281,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode
         if ($num_ack > 0) {
             foreach ($childnode_titles_ack as $childTitle) {
                 $submessages[] = new tx_caretaker_ResultMessage(
-                    'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_ack',
+                    'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:aggregator_result_submessage_ack',
                     array('title' => $childTitle)
                 );
             }
@@ -290,7 +290,7 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode
         if ($num_due > 0) {
             foreach ($childnode_titles_due as $childTitle) {
                 $submessages[] = new tx_caretaker_ResultMessage(
-                    'LLL:EXT:caretaker/locallang_fe.xml:aggregator_result_submessage_due',
+                    'LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:aggregator_result_submessage_due',
                     array('title' => $childTitle)
                 );
             }

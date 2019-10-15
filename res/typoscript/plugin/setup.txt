@@ -54,13 +54,13 @@ plugin.tx_caretaker_pi_overview {
             key.field = node_type
             key.case = lower
             instance = TEXT
-            instance.data = LLL:EXT:caretaker/locallang_fe.xml:instance
+            instance.data = LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:instance
             instance.noTrimWrap = | [|]|
             testgroup = TEXT
-            testgroup.data = LLL:EXT:caretaker/locallang_fe.xml:testgroup
+            testgroup.data = LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:testgroup
             testgroup.noTrimWrap = | [|]|
             instancegroup = TEXT
-            instancegroup.data = LLL:EXT:caretaker/locallang_fe.xml:instancegroup
+            instancegroup.data = LLL:EXT:caretaker/Resources/Private/Language/locallang.xlf:instancegroup
             instancegroup.noTrimWrap = | [|]|
         }
         TITLE.htmlSpecialChars = 1

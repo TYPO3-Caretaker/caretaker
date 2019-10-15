@@ -2,7 +2,7 @@
 
 $GLOBALS['TCA']['tx_caretaker_instance_override'] = array(
     'ctrl' => array(
-        'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_override',
+        'title' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance_override',
         'label' => 'type',
         'label_alt' => 'test,curl_option',
         'label_userFunc' => 'Caretaker\\Caretaker\\UserFunc\\LabelUserFunc->getLabel',
@@ -22,17 +22,17 @@ $GLOBALS['TCA']['tx_caretaker_instance_override'] = array(
     ),
     'columns' => array(
         'type' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_override.type',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance_override.type',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => array(
                     array(
-                        'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_override.type.test_configuration',
+                        'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance_override.type.test_configuration',
                         'test_configuration',
                     ),
                     array(
-                        'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_override.type.curl_option',
+                        'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance_override.type.curl_option',
                         'curl_option',
                     ),
                 ),
@@ -40,7 +40,7 @@ $GLOBALS['TCA']['tx_caretaker_instance_override'] = array(
             ),
         ),
         'test' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_override.test',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance_override.test',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -49,13 +49,13 @@ $GLOBALS['TCA']['tx_caretaker_instance_override'] = array(
             'onChange' => 'reload',
         ),
         'test_hidden' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_override.test_hidden',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance_override.test_hidden',
             'config' => array(
                 'type' => 'check',
             ),
         ),
         'test_configuration' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_override.test_configuration',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance_override.test_configuration',
             'config' => array(
                 'type' => 'flex',
                 'ds_pointerField' => 'test',
@@ -64,7 +64,7 @@ $GLOBALS['TCA']['tx_caretaker_instance_override'] = array(
             'displayCond' => 'FIELD:test:REQ:true',
         ),
         'curl_option' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_override.curl_option',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance_override.curl_option',
             'config' => array(
                 'type' => 'select',
                 'size' => '1',
@@ -82,7 +82,7 @@ $GLOBALS['TCA']['tx_caretaker_instance_override'] = array(
             'onChange' => 'reload',
         ),
         'curl_value_int' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_override.curl_value',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance_override.curl_value',
             'config' => array(
                 'type' => 'input',
                 'eval' => 'trim,int',
@@ -90,7 +90,7 @@ $GLOBALS['TCA']['tx_caretaker_instance_override'] = array(
             'displayCond' => 'FIELD:curl_option:=:CURLOPT_TIMEOUT_MS',
         ),
         'curl_value_string' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_override.curl_value',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance_override.curl_value',
             'config' => array(
                 'type' => 'input',
                 'eval' => 'trim',
@@ -98,19 +98,19 @@ $GLOBALS['TCA']['tx_caretaker_instance_override'] = array(
             'displayCond' => 'FIELD:curl_option:IN:CURLOPT_INTERFACE,CURLOPT_USERPWD',
         ),
         'curl_value_bool' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_override.curl_value',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance_override.curl_value',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => array(
-                    array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_override.curl_value.true', 'true'),
-                    array('LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_override.curl_value.false', 'false'),
+                    array('LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance_override.curl_value.true', 'true'),
+                    array('LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance_override.curl_value.false', 'false'),
                 ),
             ),
             'displayCond' => 'FIELD:curl_option:=:CURLOPT_SSL_VERIFYPEER',
         ),
         'curl_value_httpauth' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instance_override.curl_value',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instance_override.curl_value',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',

@@ -5,7 +5,7 @@ $advancedNotificationsEnabled = $extConfig['notifications.']['advanced.']['enabl
 
 $GLOBALS['TCA']['tx_caretaker_instancegroup'] = array(
     'ctrl' => array(
-        'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup',
+        'title' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instancegroup',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -80,7 +80,7 @@ $GLOBALS['TCA']['tx_caretaker_instancegroup'] = array(
             ),
         ),
         'title' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.title',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instancegroup.title',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -88,7 +88,7 @@ $GLOBALS['TCA']['tx_caretaker_instancegroup'] = array(
             ),
         ),
         'description' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.description',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instancegroup.description',
             'config' => array(
                 'type' => 'text',
                 'cols' => '50',
@@ -97,7 +97,7 @@ $GLOBALS['TCA']['tx_caretaker_instancegroup'] = array(
             ),
         ),
         'parent_group' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.parent_group',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instancegroup.parent_group',
             'config' => array(
                 'type' => 'select',
                 'renderMode' => 'tree',
@@ -114,7 +114,7 @@ $GLOBALS['TCA']['tx_caretaker_instancegroup'] = array(
             ),
         ),
         'contacts' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.contacts',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instancegroup.contacts',
             'config' => array(
                 'type' => 'inline',
                 'foreign_table' => 'tx_caretaker_node_address_mm',
@@ -127,7 +127,7 @@ $GLOBALS['TCA']['tx_caretaker_instancegroup'] = array(
             ),
         ),
         'notification_strategies' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_general.notification_strategies',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_general.notification_strategies',
             'config' => array(
                 'type' => 'inline',
                 'foreign_table' => 'tx_caretaker_node_strategy_mm',
@@ -147,10 +147,10 @@ $GLOBALS['TCA']['tx_caretaker_instancegroup'] = array(
                 title, 
                 --palette--;;1,
                 parent_group, 
-                --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.description, description, 
-                --div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.contacts, contacts, ' .
-                ($advancedNotificationsEnabled ? '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.notifications, notification_strategies, ' : '') .
-                '--div--;LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_instancegroup.tab.access, hidden, starttime, endtime, fe_group',
+                --div--;LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instancegroup.tab.description, description, 
+                --div--;LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instancegroup.tab.contacts, contacts, ' .
+                ($advancedNotificationsEnabled ? '--div--;LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instancegroup.tab.notifications, notification_strategies, ' : '') .
+                '--div--;LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_instancegroup.tab.access, hidden, starttime, endtime, fe_group',
         ),
     ),
     'palettes' => array(),

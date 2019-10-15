@@ -6,7 +6,7 @@
     array(
         'tx_caretaker_api_key' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:fe_users.tx_caretaker_api_key',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:fe_users.tx_caretaker_api_key',
             'config' => array(
                 'type' => 'input',
             ),

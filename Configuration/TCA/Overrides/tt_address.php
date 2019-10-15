@@ -9,7 +9,7 @@ if ($advancedNotificationsEnabled && \TYPO3\CMS\Core\Utility\ExtensionManagement
         array(
             'tx_caretaker_xmpp' => array(
                 'exclude' => 0,
-                'label' => 'LLL:EXT:caretaker/locallang_db.xml:tt_address.tx_caretaker_xmpp',
+                'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tt_address.tx_caretaker_xmpp',
                 'config' => array(
                     'type' => 'input',
                     'size' => '30',

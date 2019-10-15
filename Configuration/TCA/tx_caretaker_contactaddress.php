@@ -2,7 +2,7 @@
 
 $GLOBALS['TCA']['tx_caretaker_contactaddress'] = array(
     'ctrl' => array(
-        'title' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_contactaddress',
+        'title' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_contactaddress',
         'label' => 'name',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -28,7 +28,7 @@ $GLOBALS['TCA']['tx_caretaker_contactaddress'] = array(
             ),
         ),
         'name' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_contactaddress.name',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_contactaddress.name',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -36,7 +36,7 @@ $GLOBALS['TCA']['tx_caretaker_contactaddress'] = array(
             ),
         ),
         'email' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_contactaddress.email',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_contactaddress.email',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -44,7 +44,7 @@ $GLOBALS['TCA']['tx_caretaker_contactaddress'] = array(
             ),
         ),
         'xmpp' => array(
-            'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_contactaddress.xmpp',
+            'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_contactaddress.xmpp',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',

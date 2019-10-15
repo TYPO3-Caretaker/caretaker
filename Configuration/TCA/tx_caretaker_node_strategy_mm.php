@@ -15,7 +15,7 @@ if ($advancedNotificationsEnabled) {
         ),
         'columns' => array(
             'uid_strategy' => array(
-                'label' => 'LLL:EXT:caretaker/locallang_db.xml:tx_caretaker_strategies',
+                'label' => 'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tx_caretaker_strategies',
                 'config' => array(
                     'type' => 'select',
                     'renderType' => 'selectSingle',

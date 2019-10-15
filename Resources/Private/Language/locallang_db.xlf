@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+    <file source-language="en" datatype="plaintext" original="messages" product-name="caretaker">
+        <header/>
+        <body>
+            <trans-unit id="fe_users.tx_caretaker_api_key" xml:space="preserve">
+                <source>Caretaker API Key</source>
+            </trans-unit>
+            <trans-unit id="tt_address.tx_caretaker_xmpp" xml:space="preserve">
+                <source>XMPP/Jabber</source>
+            </trans-unit>
+
+            <trans-unit id="tx_caretaker_general.notification_strategies" xml:space="preserve">
+                <source>Notification strategies</source>
+            </trans-unit>
+
+            <!--
+                CARETAKER INSTANCE GROUP
+            -->
+            <trans-unit id="tx_caretaker_instancegroup" xml:space="preserve">
+                <source>Instancegroup</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instancegroup.tab.description" xml:space="preserve">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instancegroup.tab.notifications" xml:space="preserve">
+                <source>Notifications</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instancegroup.tab.contacts" xml:space="preserve">
+                <source>Contacts</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instancegroup.tab.access" xml:space="preserve">
+                <source>Access</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instancegroup.title" xml:space="preserve">
+                <source>Title</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instancegroup.contacts" xml:space="preserve">
+                <source>Contacts</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instancegroup.description" xml:space="preserve">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instancegroup.parent_group" xml:space="preserve">
+                <source>Parent Group</source>
+            </trans-unit>
+
+            <!--
+                CARETAKER INSTANCE TEST
+            -->
+            <trans-unit id="tx_caretaker_instance_test_rel" xml:space="preserve">
+                <source>Instance-Test Relation</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance_test_rel.instance_id" xml:space="preserve">
+                <source>Instance</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance_test_rel.test_id" xml:space="preserve">
+                <source>Test</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance_test_rel.instance_sorting" xml:space="preserve">
+                <source>Instance Sorting</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance_test_rel.test_sorting" xml:space="preserve">
+                <source>Test Sorting</source>
+            </trans-unit>
+
+            <!--
+                CARETAKER INSTANCE
+            -->
+            <trans-unit id="tx_caretaker_instance" xml:space="preserve">
+                <source>Instance</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.tab.description" xml:space="preserve">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.tab.relations" xml:space="preserve">
+                <source>Groups &amp; Tests</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.tab.notifications" xml:space="preserve">
+                <source>Notifications</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.tab.contacts" xml:space="preserve">
+                <source>Contacts</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.tab.testconfigurations" xml:space="preserve">
+                <source>Test Configuration</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.tab.access" xml:space="preserve">
+                <source>Access</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.title" xml:space="preserve">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.contacts" xml:space="preserve">
+                <source>Contacts</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.description" xml:space="preserve">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.instancegroup" xml:space="preserve">
+                <source>Instancegroup</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.url" xml:space="preserve">
+                <source>Instance URL (http://www.domain.com)</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.host" xml:space="preserve">
+                <source>Hostname (www.domain.com)</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.groups" xml:space="preserve">
+                <source>Testgroups assigned to this instance</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.tests" xml:space="preserve">
+                <source>Tests assigned to this instance</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.public_key" xml:space="preserve">
+                <source>Public Key of Instance</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.notifications" xml:space="preserve">
+                <source>Notifications</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.contacts" xml:space="preserve">
+                <source>Contacts</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance.testconfigurations" xml:space="preserve">
+                <source>Overwrite Test Configuration</source>
+            </trans-unit>
+
+            <!--
+                CARETAKER INSTANCE OVERRIDE
+            -->
+            <trans-unit id="tx_caretaker_instance_override" xml:space="preserve">
+                <source>Test configuration/curl option override</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance_override.test_hidden" xml:space="preserve">
+                <source>Hide</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance_override.type" xml:space="preserve">
+                <source>Type</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance_override.type.test_configuration" xml:space="preserve">
+                <source>Test configuration</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance_override.type.curl_option" xml:space="preserve">
+                <source>cURL option</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance_override.test" xml:space="preserve">
+                <source>Test</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance_override.test_configuration" xml:space="preserve">
+                <source>Test configuration</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance_override.curl_option" xml:space="preserve">
+                <source>cURL option</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance_override.curl_value" xml:space="preserve">
+                <source>cURL value</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance_override.curl_value.true" xml:space="preserve">
+                <source>True</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_instance_override.curl_value.false" xml:space="preserve">
+                <source>False</source>
+            </trans-unit>
+
+            <!--
+                CARETAKER TEST GROUP
+            -->
+            <trans-unit id="tx_caretaker_testgroup" xml:space="preserve">
+                <source>Testgroup</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_testgroup.tab.description" xml:space="preserve">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_testgroup.tab.relations" xml:space="preserve">
+                <source>Tests</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_testgroup.tab.notifications" xml:space="preserve">
+                <source>Notifications</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_testgroup.tab.contacts" xml:space="preserve">
+                <source>Contacts</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_testgroup.title" xml:space="preserve">
+                <source>Title</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_testgroup.description" xml:space="preserve">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_testgroup.parent_group" xml:space="preserve">
+                <source>Parent Group</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_testgroup.instances" xml:space="preserve">
+                <source>Instances</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_testgroup.tests" xml:space="preserve">
+                <source>Tests</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_testgroup_test_rel" xml:space="preserve">
+                <source>Group-Test Relation</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_testgroup_test_rel.group_id" xml:space="preserve">
+                <source>Instance</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_testgroup_test_rel.test_id" xml:space="preserve">
+                <source>Test</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_testgroup_test_rel.group_sorting" xml:space="preserve">
+                <source>Instance Sorting</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_testgroup_test_rel.test_sorting" xml:space="preserve">
+                <source>Test Sorting</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_testgroup.notifications" xml:space="preserve">
+                <source>Notifications</source>
+            </trans-unit>
+
+            <!--
+                CARETAKER TEST
+            -->
+            <trans-unit id="tx_caretaker_test" xml:space="preserve">
+                <source>Test</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.tab.relations" xml:space="preserve">
+                <source>Instances &amp; Groups</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.tab.description" xml:space="preserve">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.tab.notifications" xml:space="preserve">
+                <source>Notifications</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.tab.configuration" xml:space="preserve">
+                <source>Test-Configuration</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.tab.contacts" xml:space="preserve">
+                <source>Contacts</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.title" xml:space="preserve">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.notifiactions" xml:space="preserve">
+                <source>Notifications</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.description" xml:space="preserve">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_service.select_service" xml:space="preserve">
+                <source>Please select a test</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_service" xml:space="preserve">
+                <source>Test Service</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_interval" xml:space="preserve">
+                <source>Test Interval</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_interval_start_hour" xml:space="preserve">
+                <source>Run after this Hour</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_interval_stop_hour" xml:space="preserve">
+                <source>Run before this Hour</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_service" xml:space="preserve">
+                <source>Test Service</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_conf" xml:space="preserve">
+                <source>Test Configuration</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_mode" xml:space="preserve">
+                <source>Test Mode</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_retry" xml:space="preserve">
+                <source>Retry if Result is not OK</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_retry_0" xml:space="preserve">
+                <source>don't retry (wait for next interval)</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_retry_1" xml:space="preserve">
+                <source>retry once immediately</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_retry_2" xml:space="preserve">
+                <source>retry twice immediately</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_retry_3" xml:space="preserve">
+                <source>retry immediately 3 times</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_retry_4" xml:space="preserve">
+                <source>retry immediately 4 times</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_retry_5" xml:space="preserve">
+                <source>retry immediately 5 times</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_due" xml:space="preserve">
+                <source>Test is due if the last result was not OK</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.test_mode.group" xml:space="preserve">
+                <source>run once for group</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.instances" xml:space="preserve">
+                <source>Include Test for those Instances</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.groups" xml:space="preserve">
+                <source>Include Test for those Testgroups</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.notifications" xml:space="preserve">
+                <source>Notifications</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_test.roles" xml:space="preserve">
+                <source>Belongs to the following roles</source>
+            </trans-unit>
+
+            <!--
+                CARETAKER ROLES
+            -->
+            <trans-unit id="tx_caretaker_roles" xml:space="preserve">
+                <source>Role</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_roles.id" xml:space="preserve">
+                <source>Unique identifier</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_roles.name" xml:space="preserve">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_roles.description" xml:space="preserve">
+                <source>Description</source>
+            </trans-unit>
+
+            <!--
+                CARETAKER CONTACT ADDRESS
+            -->
+            <trans-unit id="tx_caretaker_contactaddress" xml:space="preserve">
+                <source>Contact address</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_contactaddress.name" xml:space="preserve">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_contactaddress.email" xml:space="preserve">
+                <source>E-Mail</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_contactaddress.xmpp" xml:space="preserve">
+                <source>XMPP</source>
+            </trans-unit>
+
+            <!--
+                CARETAKER EXIT POINTS
+            -->
+            <trans-unit id="tx_caretaker_exitpoints" xml:space="preserve">
+                <source>Exitpoint</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_exitpoints.id" xml:space="preserve">
+                <source>Unique identifier</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_exitpoints.name" xml:space="preserve">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_exitpoints.description" xml:space="preserve">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_exitpoints.service" xml:space="preserve">
+                <source>Service</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_exitpoints.config" xml:space="preserve">
+                <source>Configuration</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_exitpoints.service.select_exitpoint" xml:space="preserve">
+                <source>Select the Exitpointtype</source>
+            </trans-unit>
+
+            <!--
+                CARETAKER STRATEGIES
+            -->
+            <trans-unit id="tx_caretaker_strategies" xml:space="preserve">
+                <source>Strategy</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_strategies.name" xml:space="preserve">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_strategies.description" xml:space="preserve">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="tx_caretaker_strategies.config" xml:space="preserve">
+                <source>Configuration</source>
+            </trans-unit>
+
+            <!--
+                PLUGIN OVERVIEW
+            -->
+            <trans-unit id="tt_content.list_type_pi_overview" xml:space="preserve">
+                <source>Caretaker Tactical Overview</source>
+            </trans-unit>
+            <trans-unit id="pi_overview_title" xml:space="preserve">
+                <source>Caretaker Tactical Overview</source>
+            </trans-unit>
+            <trans-unit id="pi_overview_plus_wiz_description" xml:space="preserve">
+                <source>Show Tactical Overview of selected Caretaker Records</source>
+            </trans-unit>
+
+            <!--
+                PLUGIN SINGLE VIEW
+            -->
+            <trans-unit id="tt_content.list_type_pi_singleview" xml:space="preserve">
+                <source>Caretaker Details</source>
+            </trans-unit>
+            <trans-unit id="pi_singleview_title" xml:space="preserve">
+                <source>Caretaker Details</source>
+            </trans-unit>
+            <trans-unit id="pi_singleview_plus_wiz_description" xml:space="preserve">
+                <source>Show Caretaker Node Details</source>
+            </trans-unit>
+
+            <!--
+                PLUGIN GRAPH REPORT
+            -->
+            <trans-unit id="tt_content.list_type_pi_graphreport" xml:space="preserve">
+                <source>Caretaker Graphical Report</source>
+            </trans-unit>
+            <trans-unit id="pi_graphreport_title" xml:space="preserve">
+                <source>Caretaker Graphical Report</source>
+            </trans-unit>
+            <trans-unit id="pi_graphreport_plus_wiz_description" xml:space="preserve">
+                <source>Show combined Graphical Report of selected tests.</source>
+            </trans-unit>
+
+            <!--
+                PLUGIN ABSTRACT
+            -->
+            <trans-unit id="tt_content.list_type_pi_abstract" xml:space="preserve">
+                <source>Caretaker Abstract</source>
+            </trans-unit>
+            <trans-unit id="pi_abstract_title" xml:space="preserve">
+                <source>Caretaker Abstract</source>
+            </trans-unit>
+            <trans-unit id="pi_abstract_plus_wiz_description" xml:space="preserve">
+                <source>Show number and list of all Errors and Warnings.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
