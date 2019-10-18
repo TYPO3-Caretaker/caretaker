@@ -1,4 +1,8 @@
 <?php
+namespace Caretaker\Caretaker\Task;
+
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
+
 /***************************************************************
  * Copyright notice
  *
@@ -35,19 +39,15 @@
  */
 
 /**
- * Scheduler Task to update the TYPO3 version numbers from the SVN tags
+ * Scheduler Task to update the TYPO3 version numbers
  *
  * @author Felix Oertel <oertel@networkteam.com>
  *
  */
-class tx_caretaker_Typo3versionnumbersupdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+class Typo3VersionNumbersUpdateTask extends AbstractTask
 {
     public function execute()
     {
         return tx_caretaker_LatestVersionsHelper::updateLatestTypo3VersionRegistry();
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_typo3versionnumbersupdatetask.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_typo3versionnumbersupdatetask.php']);
 }

@@ -1,4 +1,6 @@
 <?php
+namespace Caretaker\Caretaker\Task;
+
 /***************************************************************
  * Copyright notice
  *
@@ -23,7 +25,9 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * This is a file of the caretaker project.
@@ -45,7 +49,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Tobias Liebig <liebig@networkteam.com>
  *
  */
-class tx_caretaker_TestrunnerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+class TestRunnerTask extends AbstractTask
 {
     /**
      * @var string
@@ -81,11 +85,8 @@ class tx_caretaker_TestrunnerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
         }
 
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode'] != 'disable') {
-            if (class_exists('\\TYPO3\\CMS\\Core\\Locking\\LockFactory')) {
-                $lockObj = GeneralUtility::makeInstance('TYPO3\CMS\Core\Locking\LockFactory')->createLocker('tx_caretaker_update_' . $node->getCaretakerNodeId());
-            } else {
-                $lockObj = GeneralUtility::makeInstance('TYPO3\CMS\Core\Locking\Locker', 'tx_caretaker_update_' . $node->getCaretakerNodeId(), $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
-            }
+            $lockObj = GeneralUtility::makeInstance(LockFactory::class)
+                ->createLocker('tx_caretaker_update_' . $node->getCaretakerNodeId());
             // no output during scheduler runs
             tx_caretaker_ServiceHelper::unregisterCaretakerNotificationService('CliNotificationService');
 
@@ -108,8 +109,4 @@ class tx_caretaker_TestrunnerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 
         return true;
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_testrunnertask.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_testrunnertask.php']);
 }

@@ -102,15 +102,15 @@ if (TYPO3_MODE == 'BE') {
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass'][] = 'EXT:caretaker/Classes/hooks/class.tx_caretaker_hooks_tceforms_getSingleFieldClass.php:tx_caretaker_hooks_tceforms_getSingleFieldClass';
 
 // Register scheduler tasks for caretaker testrunner
-$TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_TestrunnerTask'] = array(
+$TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks'][\Caretaker\Caretaker\Task\TestRunnerTask::class] = array(
     'extension' => $_EXTKEY,
     'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:testrunnerTask.name',
     'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:testrunnerTask.description',
-    'additionalFields' => 'tx_caretaker_TestrunnerTask_AdditionalFieldProvider',
+    'additionalFields' => \Caretaker\Caretaker\Task\TestRunnerAdditionalFieldProvider::class,
 );
 
 // Register scheduler tasks for caretaker typo3 version number update
-$TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks']['tx_caretaker_Typo3versionnumbersupdateTask'] = array(
+$TYPO3_CONF_VARS['SC_OPTIONS']['scheduler']['tasks'][\Caretaker\Caretaker\Task\Typo3VersionNumbersUpdateTask::class] = array(
     'extension' => $_EXTKEY,
     'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:typo3versionnumbersupdateTask.name',
     'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:typo3versionnumbersupdateTask.description',
