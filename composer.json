@@ -34,7 +34,6 @@
     }
   },
   "replace": {
-    "caretaker": "self.version",
     "typo3-ter/caretaker": "self.version"
   },
   "config": {
