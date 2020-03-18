@@ -22,6 +22,8 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
@@ -125,6 +127,8 @@ class tx_caretaker_Utility
                 }
                 break;
             case 'hide':
+                /** @var UriBuilder $uriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                 if (VersionNumberUtility::convertVersionNumberToInteger(
                         VersionNumberUtility::getNumericTypo3Version()
                     ) < VersionNumberUtility::convertVersionNumberToInteger('7.0.0')
@@ -134,19 +138,20 @@ class tx_caretaker_Utility
                         VersionNumberUtility::getNumericTypo3Version()
                     ) < VersionNumberUtility::convertVersionNumberToInteger('7.6.0')
                 ) {
-                    $moduleUrl = BackendUtility::getAjaxUrl(
+                    $moduleUrl = $uriBuilder->buildUriFromRoute(
                         'DataHandler::process',
                         array('data' => array($table => array($node => array('hidden' => 1))))
                     );
                 } else {
-                    $moduleUrl = BackendUtility::getAjaxUrl(
+                    $moduleUrl = $uriBuilder->buildUriFromRoute(
                         'record_process',
                         array('data' => array($table => array($node => array('hidden' => 1))))
                     );
                 }
                 break;
-            case
-            'unhide':
+            case 'unhide':
+                /** @var UriBuilder $uriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                 if (VersionNumberUtility::convertVersionNumberToInteger(
                         VersionNumberUtility::getNumericTypo3Version()
                     ) < VersionNumberUtility::convertVersionNumberToInteger('7.0.0')
@@ -156,12 +161,12 @@ class tx_caretaker_Utility
                         VersionNumberUtility::getNumericTypo3Version()
                     ) < VersionNumberUtility::convertVersionNumberToInteger('7.6.0')
                 ) {
-                    $moduleUrl = BackendUtility::getAjaxUrl(
+                    $moduleUrl = $uriBuilder->buildUriFromRoute(
                         'DataHandler::process',
                         array('data' => array($table => array($node => array('hidden' => 0))))
                     );
                 } else {
-                    $moduleUrl = BackendUtility::getAjaxUrl(
+                    $moduleUrl = $uriBuilder->buildUriFromRoute(
                         'record_process',
                         array('data' => array($table => array($node => array('hidden' => 0))))
                     );
