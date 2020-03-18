@@ -23,6 +23,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Core\Environment;
+
 /**
  * This is a file of the caretaker project.
  * http://forge.typo3.org/projects/show/extension-caretaker
@@ -254,9 +256,9 @@ class tx_caretaker_NodeInfo
         if ($node_id && $node) {
             $result_range = $node->getTestResultRange($date_start, $date_stop);
             if ($result_range->count()) {
-                if (!is_dir(PATH_site . self::PATH_CHARTS)) {
-                    if (!mkdir(PATH_site . self::PATH_CHARTS, 0770, true)) {
-                        throw new \TYPO3\CMS\Core\Cache\Exception('can\'t create path "' . PATH_site . self::PATH_CHARTS . '"', 1465993775);
+                if (!is_dir(Environment::getPublicPath() . '/' . self::PATH_CHARTS)) {
+                    if (!mkdir(Environment::getPublicPath() . '/' . self::PATH_CHARTS, 0770, true)) {
+                        throw new \TYPO3\CMS\Core\Cache\Exception('can\'t create path "' . Environment::getPublicPath() . '/' . self::PATH_CHARTS . '"', 1465993775);
                     }
                 }
                 $filename = self::PATH_CHARTS . DIRECTORY_SEPARATOR . $node_id . '_' . $duration . '.png';

@@ -3,6 +3,7 @@ namespace Caretaker\Caretaker\Module;
 
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -53,13 +54,13 @@ class Overview extends BaseScriptClass
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'] as $extJsBackendPanel) {
                 // register JS
                 foreach ($extJsBackendPanel['jsIncludes'] as $jsInclude) {
-                    $filename = $BACK_PATH . '../' . str_replace(PATH_site, '', GeneralUtility::getFileAbsFileName($jsInclude));
+                    $filename = $BACK_PATH . '../' . str_replace(Environment::getPublicPath() . '/', '', GeneralUtility::getFileAbsFileName($jsInclude));
                     $this->pageRenderer->addJsFile($filename);
                 }
 
                 // register CSS
                 foreach ($extJsBackendPanel['cssIncludes'] as $cssInclude) {
-                    $filename = $BACK_PATH . '../' . str_replace(PATH_site, '', GeneralUtility::getFileAbsFileName($cssInclude));
+                    $filename = $BACK_PATH . '../' . str_replace(Environment::getPublicPath() . '/', '', GeneralUtility::getFileAbsFileName($cssInclude));
                     $this->pageRenderer->addCssFile($filename);
                 }
 

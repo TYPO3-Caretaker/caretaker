@@ -23,6 +23,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -405,7 +406,7 @@ abstract class tx_caretaker_ChartRendererBase
      */
     public function getChartImagePng($filename)
     {
-        $absoluteFilename = PathUtility::isAbsolutePath($file) ? $filename : PATH_site . ltrim($filename, '/');
+        $absoluteFilename = PathUtility::isAbsolutePath($file) ? $filename : Environment::getPublicPath() . '/' . ltrim($filename, '/');
         if (!file_exists(dirname($absoluteFilename))) {
             GeneralUtility::mkdir_deep(dirname($absoluteFilename));
         }

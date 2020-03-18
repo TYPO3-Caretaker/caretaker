@@ -23,6 +23,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Core\Environment;
+
 /**
  * This is a file of the caretaker project.
  * http://forge.typo3.org/projects/show/extension-caretaker
@@ -102,13 +104,13 @@ class tx_caretaker_mod_overview extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['caretaker']['extJsBackendPanels'] as $extJsBackendPanel) {
                 // register JS
                 foreach ($extJsBackendPanel['jsIncludes'] as $jsInclude) {
-                    $filename = $BACK_PATH . '../' . str_replace(PATH_site, '', \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($jsInclude));
+                    $filename = $BACK_PATH . '../' . str_replace(Environment::getPublicPath() . '/', '', \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($jsInclude));
                     $this->pageRenderer->addJsFile($filename);
                 }
 
                 // register CSS
                 foreach ($extJsBackendPanel['cssIncludes'] as $cssInclude) {
-                    $filename = $BACK_PATH . '../' . str_replace(PATH_site, '', \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($cssInclude));
+                    $filename = $BACK_PATH . '../' . str_replace(Environment::getPublicPath() . '/', '', \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($cssInclude));
                     $this->pageRenderer->addCssFile($filename);
                 }
 
