@@ -39,40 +39,24 @@ if (!defined('TYPO3_MODE')) {
 
 // overview
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_overview', 'FILE:EXT:' . $_EXTKEY . '/pi_overview/flexform_ds.xml');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array(
-    'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi_overview',
-    $_EXTKEY . '_pi_overview',
-), 'list_type');
 if (TYPO3_MODE == 'BE') {
     $TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_caretaker_pi_overview_wizicon'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'pi_overview/class.tx_caretaker_pi_overview_wizicon.php';
 }
 
 // singleview
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_singleview', 'FILE:EXT:' . $_EXTKEY . '/pi_singleview/flexform_ds.xml');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array(
-    'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi_singleview',
-    $_EXTKEY . '_pi_singleview',
-), 'list_type');
 if (TYPO3_MODE == 'BE') {
     $TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_caretaker_pi_singleview_wizicon'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'pi_singleview/class.tx_caretaker_pi_singleview_wizicon.php';
 }
 
 // graphreport
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_graphreport', 'FILE:EXT:' . $_EXTKEY . '/pi_graphreport/flexform_ds.xml');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array(
-    'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi_graphreport',
-    $_EXTKEY . '_pi_graphreport',
-), 'list_type');
 if (TYPO3_MODE == 'BE') {
     $TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_caretaker_pi_graphreport_wizicon'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'pi_graphreport/class.tx_caretaker_pi_graphreport_wizicon.php';
 }
 
 // abstract
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi_abstract', 'FILE:EXT:' . $_EXTKEY . '/pi_abstract/flexform_ds.xml');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array(
-    'LLL:EXT:caretaker/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi_abstract',
-    $_EXTKEY . '_pi_abstract',
-), 'list_type');
 if (TYPO3_MODE == 'BE') {
     $TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_caretaker_pi_abstract_wizicon'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'pi_abstract/class.tx_caretaker_pi_abstract_wizicon.php';
 }
