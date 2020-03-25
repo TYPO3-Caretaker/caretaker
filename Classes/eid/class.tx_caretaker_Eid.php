@@ -23,6 +23,10 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This is a file of the caretaker project.
  * http://forge.typo3.org/projects/show/extension-caretaker
@@ -147,8 +151,8 @@ class tx_caretaker_Eid
     public function getEidFormat()
     {
         $format = $_SERVER['HTTP_ACCEPT'];
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('format')) {
-            $format = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('format');
+        if (GeneralUtility::_GP('format')) {
+            $format = GeneralUtility::_GP('format');
         }
 
         return $format;
@@ -162,22 +166,24 @@ class tx_caretaker_Eid
      */
     private function validApiKey()
     {
-        $apiKey = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('apiKey');
+        $apiKey = GeneralUtility::_GP('apiKey');
 
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            'uid',
-            'fe_users',
-            'tx_caretaker_api_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($apiKey, 'fe_users'),
-            '',
-            '',
-            1
-        );
+        $table = 'fe_users';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('uid')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('tx_caretaker_api_key',
+                    $queryBuilder->createNamedParameter($apiKey, PDO::PARAM_STR))
+            )
+            ->execute();
 
-        $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+        $row = $statement->fetch();
         if (empty($row) || empty($row['uid'])) {
             return false;
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
 
         return true;
     }
@@ -191,7 +197,7 @@ class tx_caretaker_Eid
             return array('success' => false);
         }
 
-        $nodeId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('node');
+        $nodeId = GeneralUtility::_GP('node');
         $node = $this->getRequestedNode($nodeId);
 
         if (!$node) {
@@ -204,7 +210,7 @@ class tx_caretaker_Eid
         );
 
         // add node infos
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addNode') == 1) {
+        if (GeneralUtility::_GP('addNode') == 1) {
             $result['node'] = array(
                 'id' => $node->getCaretakerNodeId(),
                 'title' => $node->getTitle(),
@@ -214,7 +220,7 @@ class tx_caretaker_Eid
         }
 
         // add result infos
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addResult') == 1) {
+        if (GeneralUtility::_GP('addResult') == 1) {
             $nodeResult = $node->getTestResult();
             $result['result'] = array(
                 'state' => $nodeResult->getState(),
@@ -225,7 +231,7 @@ class tx_caretaker_Eid
         }
 
         // add child infos
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addChildren') == 1) {
+        if (GeneralUtility::_GP('addChildren') == 1) {
             $result['children'] = false;
             $children = $node->getChildren();
             if ($children and count($children) > 0) {
@@ -237,7 +243,7 @@ class tx_caretaker_Eid
         }
 
         // add statistic infos
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addTestStatistics') == 1) {
+        if (GeneralUtility::_GP('addTestStatistics') == 1) {
             $result['statistics']['count'] = array(
                 'error' => 0,
                 'warning' => 0,
@@ -301,8 +307,8 @@ class tx_caretaker_Eid
     }
 }
 
-if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('eID')
-    && \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('eID') == 'tx_caretaker'
+if (GeneralUtility::_GP('eID')
+    && GeneralUtility::_GP('eID') == 'tx_caretaker'
 ) {
     $SOBE = new tx_caretaker_Eid();
     $SOBE->processEidRequest();

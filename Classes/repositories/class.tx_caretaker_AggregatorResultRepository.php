@@ -23,6 +23,10 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This is a file of the caretaker project.
  * http://forge.typo3.org/projects/show/extension-caretaker
@@ -93,8 +97,28 @@ class tx_caretaker_AggregatorResultRepository
         $nodeType = $node->getType();
         $nodeUid = $node->getUid();
 
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_aggregatorresult', 'aggregator_uid=' . $nodeUid . ' AND aggregator_type="' . $nodeType . '" AND instance_uid=' . $instanceUid, '', 'tstamp DESC', '1');
-        $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+        $table = 'tx_caretaker_aggregatorresult';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('aggregator_uid',
+                    $queryBuilder->createNamedParameter($nodeUid, PDO::PARAM_INT))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('aggregator_type',
+                    $queryBuilder->createNamedParameter($nodeType, PDO::PARAM_STR))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('instance_uid',
+                    $queryBuilder->createNamedParameter($instanceUid, PDO::PARAM_INT))
+            )
+            ->orderBy('tstamp', 'DESC')
+            ->setMaxResults(1)
+            ->execute();
+        $row = $statement->fetch();
 
         if ($row) {
             $result = $this->dbrow2instance($row);
@@ -126,10 +150,36 @@ class tx_caretaker_AggregatorResultRepository
         $nodeType = $node->getType();
         $nodeUid = $node->getUid();
 
-        $base_condition = 'aggregator_uid=' . $nodeUid . ' AND aggregator_type="' . $nodeType . '" AND instance_uid=' . $instanceUid;
+        $table = 'tx_caretaker_aggregatorresult';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('aggregator_uid',
+                    $queryBuilder->createNamedParameter($nodeUid, PDO::PARAM_INT))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('aggregator_type',
+                    $queryBuilder->createNamedParameter($nodeType, PDO::PARAM_STR))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('instance_uid',
+                    $queryBuilder->createNamedParameter($instanceUid, PDO::PARAM_INT))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->gte('tstamp',
+                    $queryBuilder->createNamedParameter($start_timestamp, PDO::PARAM_INT))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->lte('tstamp',
+                    $queryBuilder->createNamedParameter($stop_timestamp, PDO::PARAM_INT))
+            )
+            ->orderBy('tstamp', 'ASC')
+            ->execute();
 
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_aggregatorresult', $base_condition . ' AND tstamp >=' . $start_timestamp . ' AND tstamp <=' . $stop_timestamp, '', 'tstamp ASC');
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        while ($row = $statement->fetch()) {
             $result = $this->dbrow2instance($row);
             $result_range->addResult($result);
         }
@@ -137,9 +187,32 @@ class tx_caretaker_AggregatorResultRepository
         // add first value if needed
         $first = $result_range->getFirst();
         if (!$first || ($first && $first->getTimestamp() > $start_timestamp)) {
-            $GLOBALS['TYPO3_DB']->store_lastBuiltQuery = true;
-            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_aggregatorresult', $base_condition . ' AND tstamp <' . $start_timestamp, '', 'tstamp DESC', 1);
-            if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+            $table = 'tx_caretaker_aggregatorresult';
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $statement = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq('aggregator_uid',
+                        $queryBuilder->createNamedParameter($nodeUid, PDO::PARAM_INT))
+                )
+                ->andWhere(
+                    $queryBuilder->expr()->eq('aggregator_type',
+                        $queryBuilder->createNamedParameter($nodeType, PDO::PARAM_STR))
+                )
+                ->andWhere(
+                    $queryBuilder->expr()->eq('instance_uid',
+                        $queryBuilder->createNamedParameter($instanceUid, PDO::PARAM_INT))
+                )
+                ->andWhere(
+                    $queryBuilder->expr()->lt('tstamp',
+                        $queryBuilder->createNamedParameter($start_timestamp, PDO::PARAM_INT))
+                )
+                ->orderBy('tstamp', 'DESC')
+                ->setMaxResults(1)
+                ->execute();
+            if ($row = $statement->fetch()) {
                 $row['tstamp'] = $start_timestamp;
                 $result = $this->dbrow2instance($row);
                 $result_range->addResult($result);
@@ -174,10 +247,28 @@ class tx_caretaker_AggregatorResultRepository
         $nodeType = $node->getType();
         $nodeUid = $node->getUid();
 
-        $base_condition = 'aggregator_uid=' . $nodeUid . ' AND aggregator_type="' . $nodeType . '" AND instance_uid=' . $instanceUid;
+        $table = 'tx_caretaker_aggregatorresult';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('COUNT(*) AS number')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('aggregator_uid',
+                    $queryBuilder->createNamedParameter($nodeUid, PDO::PARAM_INT))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('aggregator_type',
+                    $queryBuilder->createNamedParameter($nodeType, PDO::PARAM_STR))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('instance_uid',
+                    $queryBuilder->createNamedParameter($instanceUid, PDO::PARAM_INT))
+            )
+            ->setMaxResults(1)
+            ->execute();
 
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COUNT(*) AS number', 'tx_caretaker_aggregatorresult', $base_condition, '', '', 1);
-        $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+        $row = $statement->fetch();
 
         if ($row) {
             return $row['number'];
@@ -205,10 +296,30 @@ class tx_caretaker_AggregatorResultRepository
         $nodeType = $node->getType();
         $nodeUid = $node->getUid();
 
-        $base_condition = 'aggregator_uid=' . $nodeUid . ' AND aggregator_type="' . $nodeType . '" AND instance_uid=' . $instanceUid;
+        $table = 'tx_caretaker_aggregatorresult';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('aggregator_uid',
+                    $queryBuilder->createNamedParameter($nodeUid, PDO::PARAM_INT))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('aggregator_type',
+                    $queryBuilder->createNamedParameter($nodeType, PDO::PARAM_STR))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('instance_uid',
+                    $queryBuilder->createNamedParameter($instanceUid, PDO::PARAM_INT))
+            )
+            ->orderBy('tstamp', 'DESC')
+            ->setFirstResult((int) $offset)
+            ->setMaxResults((int) $limit)
+            ->execute();
 
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_aggregatorresult', $base_condition, '', 'tstamp DESC', (int)$offset . ',' . (int)$limit);
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        while ($row = $statement->fetch()) {
             $result = $this->dbrow2instance($row);
             $result_range->addResult($result);
         }

@@ -23,6 +23,10 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This is a file of the caretaker project.
  * http://forge.typo3.org/projects/show/extension-caretaker
@@ -95,13 +99,26 @@ class tx_caretaker_TestResultRepository
         $testUID = $testNode->getUid();
         $instanceUID = $testNode->getInstance()->getUid();
 
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_lasttestresult', 'test_uid=' . $testUID . ' AND instance_uid=' . $instanceUID, '', '', '1');
-        $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+        $table = 'tx_caretaker_lasttestresult';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('test_uid',
+                    $queryBuilder->createNamedParameter($testUID, PDO::PARAM_INT))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('instance_uid',
+                    $queryBuilder->createNamedParameter($instanceUID, PDO::PARAM_INT))
+            )
+            ->setMaxResults(1)
+            ->execute();
+        $row = $statement->fetch();
 
         if ($row) {
-            $result = $this->dbrow2instance($row);
-
-            return $result;
+            return $this->dbrow2instance($row);
         }
         return new tx_caretaker_TestResult();
     }
@@ -120,18 +137,33 @@ class tx_caretaker_TestResultRepository
             $testUID = $testNode->getUid();
             $instanceUID = $testNode->getInstance()->getUid();
 
-            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-                '*',
-                'tx_caretaker_testresult',
-                'test_uid = ' . $testUID .
-                ' AND instance_uid = ' . $instanceUID .
-                ' AND result_status <> ' . $currentResult->getState() .
-                ' AND tstamp < ' . $currentResult->getTimestamp(),
-                'tstamp DESC, uid DESC',
-                '',
-                '1'
-            );
-            $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+            $table = 'tx_caretaker_testresult';
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $statement = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq('test_uid',
+                        $queryBuilder->createNamedParameter($testUID, PDO::PARAM_INT))
+                )
+                ->andWhere(
+                    $queryBuilder->expr()->eq('instance_uid',
+                        $queryBuilder->createNamedParameter($instanceUID, PDO::PARAM_INT))
+                )
+                ->andWhere(
+                    $queryBuilder->expr()->neq('result_status',
+                        $queryBuilder->createNamedParameter($currentResult->getState(), PDO::PARAM_INT))
+                )
+                ->andWhere(
+                    $queryBuilder->expr()->lt('tstamp',
+                        $queryBuilder->createNamedParameter($currentResult->getTimestamp(), PDO::PARAM_INT))
+                )
+                ->orderBy('tstamp', 'DESC')
+                ->addOrderBy('uid', 'DESC')
+                ->setMaxResults(1)
+                ->execute();
+            $row = $statement->fetch();
         }
 
         if ($row) {
@@ -153,8 +185,23 @@ class tx_caretaker_TestResultRepository
         $testUID = $testNode->getUid();
         $instanceUID = $testNode->getInstance()->getUid();
 
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COUNT(*) AS number', 'tx_caretaker_testresult', 'test_uid=' . $testUID . ' AND instance_uid=' . $instanceUID, '', '', '1');
-        $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+        $table = 'tx_caretaker_testresult';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('COUNT(*) AS number')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('test_uid',
+                    $queryBuilder->createNamedParameter($testUID, PDO::PARAM_INT))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('instance_uid',
+                    $queryBuilder->createNamedParameter($instanceUID, PDO::PARAM_INT))
+            )
+            ->setMaxResults(1)
+            ->execute();
+        $row = $statement->fetch();
 
         if ($row) {
             return (int)$row['number'];
@@ -176,12 +223,27 @@ class tx_caretaker_TestResultRepository
         $instanceUID = $testNode->getInstance()->getUid();
 
         $result_range = new tx_caretaker_TestResultRange(null, null);
-        $base_condition = 'test_uid=' . $testUID . ' AND instance_uid=' . $instanceUID . ' ';
 
-        $GLOBALS['TYPO3_DB']->store_lastBuiltQuery = true;
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_testresult', $base_condition, '', 'tstamp DESC', (int)$offset . ',' . (int)$limit);
+        $table = 'tx_caretaker_testresult';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('test_uid',
+                    $queryBuilder->createNamedParameter($testUID, PDO::PARAM_INT))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('instance_uid',
+                    $queryBuilder->createNamedParameter($instanceUID, PDO::PARAM_INT))
+            )
+            ->orderBy('tstamp', 'DESC')
+            ->setFirstResult((int)$offset)
+            ->setMaxResults((int)$limit)
+            ->execute();
 
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        while ($row = $statement->fetch()) {
             $result = $this->dbrow2instance($row);
             $result_range->addResult($result);
         }
@@ -204,12 +266,33 @@ class tx_caretaker_TestResultRepository
         $instanceUID = $testNode->getInstance()->getUid();
 
         $result_range = new tx_caretaker_TestResultRange($start_timestamp, $stop_timestamp);
-        $base_condition = 'test_uid=' . $testUID . ' AND instance_uid=' . $instanceUID . ' ';
 
-        $GLOBALS['TYPO3_DB']->store_lastBuiltQuery = true;
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_testresult', $base_condition . 'AND tstamp >=' . $start_timestamp . ' AND tstamp <=' . $stop_timestamp, '', 'tstamp ASC');
+        $table = 'tx_caretaker_testresult';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('test_uid',
+                    $queryBuilder->createNamedParameter($testUID, PDO::PARAM_INT))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('instance_uid',
+                    $queryBuilder->createNamedParameter($instanceUID, PDO::PARAM_INT))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->gte('tstamp',
+                    $queryBuilder->createNamedParameter($start_timestamp, PDO::PARAM_INT))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->lte('tstamp',
+                    $queryBuilder->createNamedParameter($stop_timestamp, PDO::PARAM_INT))
+            )
+            ->orderBy('tstamp', 'ASC')
+            ->execute();
 
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        while ($row = $statement->fetch()) {
             $result = $this->dbrow2instance($row);
             $result_range->addResult($result);
         }
@@ -217,9 +300,28 @@ class tx_caretaker_TestResultRepository
         // add first value if needed
         $first = $result_range->getFirst();
         if (!$first || ($first && $first->getTimestamp() > $start_timestamp)) {
-            $GLOBALS['TYPO3_DB']->store_lastBuiltQuery = true;
-            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_testresult', $base_condition . ' AND tstamp <' . $start_timestamp, '', 'tstamp DESC', 1);
-            if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+            $table = 'tx_caretaker_testresult';
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $statement = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq('test_uid',
+                        $queryBuilder->createNamedParameter($testUID, PDO::PARAM_INT))
+                )
+                ->andWhere(
+                    $queryBuilder->expr()->eq('instance_uid',
+                        $queryBuilder->createNamedParameter($instanceUID, PDO::PARAM_INT))
+                )
+                ->andWhere(
+                    $queryBuilder->expr()->lt('tstamp',
+                        $queryBuilder->createNamedParameter($start_timestamp, PDO::PARAM_INT))
+                )
+                ->orderBy('tstamp', 'DESC')
+                ->setMaxResults(1)
+                ->execute();
+            if ($row = $statement->fetch()) {
                 $row['tstamp'] = $start_timestamp;
                 $result = $this->dbrow2instance($row);
                 $result_range->addResult($result, 'first');
@@ -282,8 +384,23 @@ class tx_caretaker_TestResultRepository
         $GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_testresult', $values);
 
         // store last results for fast access
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tx_caretaker_lasttestresult', 'test_uid = ' . $test->getUid() . ' AND instance_uid = ' . $test->getInstance()->getUid(), '', '', 1);
-        if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        $table = 'tx_caretaker_lasttestresult';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('uid')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('test_uid',
+                    $queryBuilder->createNamedParameter($test->getUid(), PDO::PARAM_INT))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('instance_uid',
+                    $queryBuilder->createNamedParameter($test->getInstance()->getUid(), PDO::PARAM_INT))
+            )
+            ->setMaxResults(1)
+            ->execute();
+        if ($row = $statement->fetch()) {
             $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_caretaker_lasttestresult', 'uid = ' . $row['uid'], $values);
         } else {
             $GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_caretaker_lasttestresult', $values);

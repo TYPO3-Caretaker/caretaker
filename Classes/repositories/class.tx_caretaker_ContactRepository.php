@@ -23,6 +23,10 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This is a file of the caretaker project.
  * http://forge.typo3.org/projects/show/extension-caretaker
@@ -79,12 +83,24 @@ class tx_caretaker_ContactRepository
      * Get Role Object for given Uid
      *
      * @param <type> $uid
-     * @return  tx_caretaker_ContactRole
+     * @return bool|tx_caretaker_ContactRole
      */
     public function getContactRoleByUid($uid)
     {
-        $rolesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Roles, 'uid = ' . intval($uid) . ' AND hidden=0 AND deleted=0');
-        if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rolesRes)) {
+        $table = tx_caretaker_Constants::table_Roles;
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('uid',
+                    $queryBuilder->createNamedParameter(intval($uid), PDO::PARAM_INT))
+            )
+            ->andWhere($queryBuilder->expr()->eq('hidden', 0))
+            ->andWhere($queryBuilder->expr()->eq('deleted', 0))
+            ->execute();
+        if ($row = $statement->fetch()) {
             return $this->dbrow2contact_role($row);
         }
         return false;
@@ -94,12 +110,24 @@ class tx_caretaker_ContactRepository
      * Get Role Object for given String
      *
      * @param string $id
-     * @return tx_caretaker_ContactRole
+     * @return bool|tx_caretaker_ContactRole
      */
     public function getContactRoleById($id)
     {
-        $rolesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::table_Roles, 'id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($id, tx_caretaker_Constants::table_Roles) . ' AND hidden=0 AND deleted=0');
-        if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($rolesRes)) {
+        $table = tx_caretaker_Constants::table_Roles;
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('id',
+                    $queryBuilder->createNamedParameter($id, PDO::PARAM_INT))
+            )
+            ->andWhere($queryBuilder->expr()->eq('hidden', 0))
+            ->andWhere($queryBuilder->expr()->eq('deleted', 0))
+            ->execute();
+        if ($row = $statement->fetch()) {
             return $this->dbrow2contact_role($row);
         }
         return false;
@@ -135,8 +163,22 @@ class tx_caretaker_ContactRepository
         }
 
         $storageTable = $node->getStorageTable();
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::relationTable_Node2Address, 'uid_node=' . $node->getUid() . ' AND node_table=\'' . $storageTable . '\'');
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        $table = tx_caretaker_Constants::relationTable_Node2Address;
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('uid_node',
+                    $queryBuilder->createNamedParameter($node->getUid(), PDO::PARAM_INT))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('node_table',
+                    $queryBuilder->createNamedParameter($storageTable, PDO::PARAM_STR))
+            )
+            ->execute();
+        while ($row = $statement->fetch()) {
             if ($contact = $this->dbrow2contact($row)) {
                 $contacts[] = $contact;
             }
@@ -163,8 +205,26 @@ class tx_caretaker_ContactRepository
         }
 
         $storageTable = $node->getStorageTable();
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', tx_caretaker_Constants::relationTable_Node2Address, 'uid_node=' . $node->getUid() . ' AND node_table=\'' . $storageTable . '\'' . ' AND role=' . $role->getUid());
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        $table = tx_caretaker_Constants::relationTable_Node2Address;
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('uid_node',
+                    $queryBuilder->createNamedParameter($node->getUid(), PDO::PARAM_INT))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('node_table',
+                    $queryBuilder->createNamedParameter($storageTable, PDO::PARAM_STR))
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq('role',
+                    $queryBuilder->createNamedParameter($role->getUid(), PDO::PARAM_INT))
+            )
+            ->execute();
+        while ($row = $statement->fetch()) {
             if ($contact = $this->dbrow2contact($row)) {
                 $contacts[] = $contact;
             }
@@ -187,8 +247,20 @@ class tx_caretaker_ContactRepository
             if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address')) {
                 $table = tx_caretaker_Constants::table_TTAddressAddresses;
             }
-            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid=' . $row['uid_address'] . ' AND hidden=0 AND deleted=0', '', '', 1);
-            $address_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $statement = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq('uid',
+                        $queryBuilder->createNamedParameter($row['uid_address'], PDO::PARAM_INT))
+                )
+                ->andWhere($queryBuilder->expr()->eq('hidden', 0))
+                ->andWhere($queryBuilder->expr()->eq('deleted', 0))
+                ->setMaxResults(1)
+                ->execute();
+            $address_row = $statement->fetch();
             if ($address_row) {
                 $address = $address_row;
             } else {

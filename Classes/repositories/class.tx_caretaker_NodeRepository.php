@@ -22,6 +22,10 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
@@ -227,13 +231,19 @@ class tx_caretaker_NodeRepository
      */
     public function getAllInstancegroups($parent = false, $show_hidden = false)
     {
-        $hidden = '';
+        $table = 'tx_caretaker_instancegroup';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('deleted', 0));
         if (!$show_hidden) {
-            $hidden = ' AND hidden=0 ';
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('hidden', 0));
         }
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instancegroup', 'deleted=0' . $hidden);
+        $statement = $queryBuilder->execute();
         $result = array();
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        while ($row = $statement->fetch()) {
             $item = $this->dbrow2instancegroup($row, $parent);
             if ($item) {
                 $result[] = $item;
@@ -253,12 +263,22 @@ class tx_caretaker_NodeRepository
      */
     public function getInstancegroupByUid($uid, $parent = false, $show_hidden = false)
     {
-        $hidden = '';
+        $table = 'tx_caretaker_instancegroup';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('deleted', 0))
+            ->andWhere(
+                $queryBuilder->expr()->eq('uid',
+                    $queryBuilder->createNamedParameter((int)$uid, PDO::PARAM_INT))
+            );
         if (!$show_hidden) {
-            $hidden = ' AND hidden=0 ';
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('hidden', 0));
         }
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instancegroup', 'deleted=0 ' . $hidden . ' AND uid=' . (int)$uid);
-        $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+        $statement = $queryBuilder->execute();
+        $row = $statement->fetch();
         if ($row) {
             return $this->dbrow2instancegroup($row, $parent);
         }
@@ -275,13 +295,24 @@ class tx_caretaker_NodeRepository
      */
     public function getInstancegroupsByParentGroupUid($parent_group_uid, $parent, $show_hidden = false)
     {
-        $hidden = '';
+        $table = 'tx_caretaker_instancegroup';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('deleted', 0))
+            ->andWhere(
+                $queryBuilder->expr()->eq('parent_group',
+                    $queryBuilder->createNamedParameter((int)$parent_group_uid, PDO::PARAM_INT))
+            )
+            ->groupBy('title');
         if (!$show_hidden) {
-            $hidden = ' AND hidden=0 ';
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('hidden', 0));
         }
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instancegroup', 'deleted=0 ' . $hidden . ' AND parent_group=' . (int)$parent_group_uid, 'title');
+        $statement = $queryBuilder->execute();
         $result = array();
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        while ($row = $statement->fetch()) {
             $item = $this->dbrow2instancegroup($row, $parent);
             if ($item) {
                 $result[] = $item;
@@ -296,19 +327,27 @@ class tx_caretaker_NodeRepository
      *
      * @param int $child_group_uid
      * @param bool $show_hidden
-     * @return tx_caretaker_InstancegroupNode
+     * @return bool|tx_caretaker_InstancegroupNode
      */
     public function getInstancegroupByChildGroupUid($child_group_uid, $show_hidden = false)
     {
-        $hidden = '';
+        $table = 'tx_caretaker_instancegroup';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder
+            ->select('parent_group')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('deleted', 0))
+            ->andWhere(
+                $queryBuilder->expr()->eq('uid',
+                    $queryBuilder->createNamedParameter((int)$child_group_uid, PDO::PARAM_INT))
+            );
         if (!$show_hidden) {
-            $hidden = ' AND hidden=0 ';
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('hidden', 0));
         }
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('parent_group', 'tx_caretaker_instancegroup', 'deleted=0 ' . $hidden . ' AND uid=' . (int)$child_group_uid);
-        if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-            $parent_item = $this->getInstancegroupByUid($row['parent_group']);
-
-            return $parent_item;
+        $statement = $queryBuilder->execute();
+        if ($row = $statement->fetch()) {
+            return $this->getInstancegroupByUid($row['parent_group']);
         }
 
         return false;
@@ -369,13 +408,19 @@ class tx_caretaker_NodeRepository
      */
     public function getAllInstances($parent = false, $show_hidden = false)
     {
-        $hidden = '';
+        $table = 'tx_caretaker_instance';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('deleted', 0));
         if (!$show_hidden) {
-            $hidden = ' AND hidden=0 ';
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('hidden', 0));
         }
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instance', 'deleted=0 ' . $hidden);
+        $statement = $queryBuilder->execute();
         $result = array();
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        while ($row = $statement->fetch()) {
             $item = $this->dbrow2instance($row, $parent);
             if ($item) {
                 $result[] = $item;
@@ -391,16 +436,26 @@ class tx_caretaker_NodeRepository
      * @param int $uid
      * @param $parent
      * @param $show_hidden
-     * @return tx_caretaker_InstanceNode
+     * @return bool|tx_caretaker_InstanceNode
      */
     public function getInstanceByUid($uid, $parent = null, $show_hidden = false)
     {
-        $hidden = '';
+        $table = 'tx_caretaker_instance';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('deleted', 0))
+            ->andWhere(
+                $queryBuilder->expr()->eq('uid',
+                    $queryBuilder->createNamedParameter((int)$uid, PDO::PARAM_INT))
+            );
         if (!$show_hidden) {
-            $hidden = ' AND hidden=0 ';
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('hidden', 0));
         }
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_instance', 'deleted=0 ' . $hidden . ' AND uid = ' . (int)$uid);
-        $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+        $statement = $queryBuilder->execute();
+        $row = $statement->fetch();
         if ($row) {
             return $this->dbrow2instance($row, $parent);
         }
@@ -417,9 +472,20 @@ class tx_caretaker_NodeRepository
      */
     public function getInstancesByInstancegroupUid($uid, $parent = null, $show_hidden = false)
     {
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tx_caretaker_instance', 'instancegroup = ' . (int)$uid, '', 'title');
+        $table = 'tx_caretaker_instance';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('uid')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('instancegroup',
+                    $queryBuilder->createNamedParameter((int)$uid, PDO::PARAM_INT))
+            )
+            ->orderBy('title')
+            ->execute();
         $result = array();
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        while ($row = $statement->fetch()) {
             $item = $this->getInstanceByUid($row['uid'], $parent, $show_hidden);
             if ($item) {
                 $result[] = $item;
@@ -502,13 +568,19 @@ class tx_caretaker_NodeRepository
      */
     public function getAllTestgroups($parent = false, $show_hidden = false)
     {
-        $hidden = '';
+        $table = 'tx_caretaker_testgroup';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('deleted', 0));
         if (!$show_hidden) {
-            $hidden = ' AND hidden=0 ';
+            $queryBuilder->expr()->eq('hidden', 0);
         }
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_testgroup', 'deleted=0 ' . $hidden);
+        $statement = $queryBuilder->execute();
         $result = array();
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        while ($row = $statement->fetch()) {
             $result[] = $this->dbrow2testgroup($row, $parent);
         }
 
@@ -525,9 +597,20 @@ class tx_caretaker_NodeRepository
      */
     public function getTestgroupsByInstanceUid($instanceId, $parent = false, $show_hidden = false)
     {
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_foreign', 'tx_caretaker_instance_testgroup_mm', 'uid_local=' . (int)$instanceId, '', 'sorting');
+        $table = 'tx_caretaker_instance_testgroup_mm';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('uid_foreign')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('uid_local',
+                    $queryBuilder->createNamedParameter((int)$instanceId, PDO::PARAM_INT))
+            )
+            ->orderBy('sorting')
+            ->execute();
         $instance_group_ids = array();
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        while ($row = $statement->fetch()) {
             $instance_group_ids[] = $row['uid_foreign'];
         }
 
@@ -570,16 +653,26 @@ class tx_caretaker_NodeRepository
      * @param int $uid
      * @param bool|tx_caretaker_AbstractNode $parent
      * @param bool $show_hidden
-     * @return tx_caretaker_TestgroupNode
+     * @return bool|tx_caretaker_TestgroupNode
      */
     public function getTestgroupByUid($uid, $parent = false, $show_hidden = false)
     {
-        $hidden = '';
+        $table = 'tx_caretaker_testgroup';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('deleted', 0))
+            ->andWhere(
+                $queryBuilder->expr()->eq('uid',
+                    $queryBuilder->createNamedParameter((int)$uid, PDO::PARAM_INT))
+            );
         if (!$show_hidden) {
-            $hidden = ' AND hidden=0 ';
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('hidden', 0));
         }
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_testgroup', 'deleted=0 ' . $hidden . 'AND uid=' . (int)$uid);
-        $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+        $statement = $queryBuilder->execute();
+        $row = $statement->fetch();
         if ($row) {
             return $this->dbrow2testgroup($row, $parent);
         }
@@ -596,13 +689,23 @@ class tx_caretaker_NodeRepository
      */
     public function getTestgroupsByParentGroupUid($parent_group_uid, $parent, $show_hidden)
     {
-        $hidden = '';
+        $table = 'tx_caretaker_testgroup';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('deleted', 0))
+            ->andWhere(
+                $queryBuilder->expr()->eq('parent_group',
+                    $queryBuilder->createNamedParameter((int)$parent_group_uid, PDO::PARAM_INT))
+            );
         if (!$show_hidden) {
-            $hidden = ' AND hidden=0 ';
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('hidden', 0));
         }
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_caretaker_testgroup', 'deleted=0 ' . $hidden . ' AND parent_group=' . (int)$parent_group_uid);
+        $statement = $queryBuilder->execute();
         $result = array();
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        while ($row = $statement->fetch()) {
             $result[] = $this->dbrow2testgroup($row, $parent);
         }
 
@@ -664,8 +767,19 @@ class tx_caretaker_NodeRepository
     public function getTestsByGroupUid($group_id, $parent = false, $show_hidden = false)
     {
         $ids = array();
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local', 'tx_caretaker_testgroup_test_mm', 'uid_foreign=' . (int)$group_id, '', 'sorting_foreign');
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        $table = 'tx_caretaker_testgroup_test_mm';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('uid_local')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('uid_foreign',
+                    $queryBuilder->createNamedParameter((int)$group_id, PDO::PARAM_INT))
+            )
+            ->orderBy('sorting_foreign')
+            ->execute();
+        while ($row = $statement->fetch()) {
             $ids[] = $row['uid_local'];
         }
         $tests = array();
@@ -690,8 +804,19 @@ class tx_caretaker_NodeRepository
     public function getTestsByInstanceUid($instance_id, $parent = false, $show_hidden = false)
     {
         $ids = array();
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local', 'tx_caretaker_instance_test_mm', 'uid_foreign=' . (int)$instance_id, '', 'sorting_foreign');
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        $table = 'tx_caretaker_instance_test_mm';
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $statement = $queryBuilder
+            ->select('uid_local')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('uid_foreign',
+                    $queryBuilder->createNamedParameter((int)$instance_id, PDO::PARAM_INT))
+            )
+            ->orderBy('sorting_foreign')
+            ->execute();
+        while ($row = $statement->fetch()) {
             $ids[] = $row['uid_local'];
         }
         $tests = array();
@@ -719,13 +844,14 @@ class tx_caretaker_NodeRepository
         if (!$show_hidden) {
             $hidden = ' AND hidden=0 ';
         }
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tx_caretaker_test.*, (
-	SELECT GROUP_CONCAT(r.id)
-	FROM tx_caretaker_roles r, tx_caretaker_test_roles_mm mm
-	WHERE mm.uid_local = tx_caretaker_test.uid
-	AND r.uid = mm.uid_foreign
-	AND deleted = 0 ' . $hidden . '
-	) as roles_ids',
+        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+            'tx_caretaker_test.*, (
+                SELECT GROUP_CONCAT(r.id)
+                FROM tx_caretaker_roles r, tx_caretaker_test_roles_mm mm
+                WHERE mm.uid_local = tx_caretaker_test.uid
+                AND r.uid = mm.uid_foreign
+                AND deleted = 0 ' . $hidden . '
+	        ) as roles_ids',
             'tx_caretaker_test',
             'deleted=0 ' . $hidden . ' AND uid=' . (int)$uid);
         $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);

@@ -6,7 +6,8 @@
   "license": "GPL-2.0",
   "require": {
     "typo3/cms-core": "^7.6|^8.7",
-    "caretaker/caretaker_instance": "^1.0|^2.0"
+    "caretaker/caretaker_instance": "^1.0|^2.0",
+    "ext-pdo": "*"
   },
   "require-dev": {
     "nimut/testing-framework": "^2.0 || ^4.0"
