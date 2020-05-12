@@ -10,7 +10,7 @@ $EM_CONF[$_EXTKEY] = array (
   'createDirs' => 'typo3temp/caretaker/charts',
   'clearCacheOnLoad' => 0,
   'author_company' => '',
-  'version' => '1.0.2',
+  'version' => '1.0.3',
   'constraints' => 
   array (
     'depends' => 
