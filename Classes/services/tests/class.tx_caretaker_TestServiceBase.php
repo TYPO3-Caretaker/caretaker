@@ -272,7 +272,7 @@ class tx_caretaker_TestServiceBase extends \TYPO3\CMS\Core\Service\AbstractServi
             case 'FE':
                 $lcObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 
-                return $lcObj->TEXT(array('data' => $locallang_string));
+                return $lcObj->cObjGetSingle('TEXT', array('data' => $locallang_string));
 
             case 'BE':
                 $locallang_key = array_pop($locallang_parts);
