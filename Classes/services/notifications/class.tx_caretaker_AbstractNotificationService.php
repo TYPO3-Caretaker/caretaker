@@ -132,7 +132,7 @@ class tx_caretaker_AbstractNotificationService implements tx_caretaker_Notificat
         $enabled = (bool)$this->getConfigValue('enabled');
         $beUsername = $GLOBALS['BE_USER']->user['username'];
 
-        return $enabled === true && TYPO3_MODE == 'BE' && (defined('TYPO3_cliMode') && ($beUsername == '_cli_caretaker' || $beUsername == '_cli_scheduler') || !empty($GLOBALS['SOBE']) && $GLOBALS['SOBE']->MCONF['name'] == 'system_txschedulerM1');
+        return $enabled === true && TYPO3_MODE == 'BE' && ((defined('TYPO3_cliMode') || defined('TYPO3_REQUESTTYPE_CLI')) && ($beUsername == '_cli_caretaker' || $beUsername == '_cli_scheduler' || $beUsername == '_cli_') || !empty($GLOBALS['SOBE']) && $GLOBALS['SOBE']->MCONF['name'] == 'system_txschedulerM1');
     }
 
     /**
