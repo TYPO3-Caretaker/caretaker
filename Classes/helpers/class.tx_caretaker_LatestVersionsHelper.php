@@ -52,6 +52,7 @@ class tx_caretaker_LatestVersionsHelper
     protected static $releaseJsonFeed = 'https://get.typo3.org/json';
 
     /**
+     * @throws Exception
      * @return bool
      */
     public static function updateLatestTypo3VersionRegistry()
@@ -60,24 +61,18 @@ class tx_caretaker_LatestVersionsHelper
 
         if (!is_array($releases)) {
             throw new Exception(
-                'It seems like ' . self::$releaseJsonFeed .
-                ' did not return the json string for the TYPO3 releases. Maybe it has been moved!?'
+                    'It seems like ' . self::$releaseJsonFeed .
+                    ' did not return the json string for the TYPO3 releases. Maybe it has been moved!?'
             );
         }
 
-        $max = array();
-        $stable = array();
-        foreach ($releases as $major => $details) {
-            if (is_array($details) && !empty($details['latest'])) {
-                $max[$major] = $details['latest'];
-            }
+        $latestVersions = self::getLatestFromReleases($releases);
 
-            if (is_array($details) && !empty($details['stable'])) {
-                $stable[$major] = $details['stable'];
-            }
-        }
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versions', $max);
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry')->set('tx_caretaker', 'TYPO3versionsStable', $stable);
+        /** @var \TYPO3\CMS\Core\Registry $registry */
+        $registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Registry');
+        $registry->set('tx_caretaker', 'TYPO3versions', $latestVersions['max']);
+        $registry->set('tx_caretaker', 'TYPO3versionsStable', $latestVersions['stable']);
+        $registry->set('tx_caretaker', 'TYPO3versionsSecurity', $latestVersions['security']);
 
         return true;
     }
@@ -112,5 +107,39 @@ class tx_caretaker_LatestVersionsHelper
         curl_close($curl);
 
         return $response;
+    }
+
+    /**
+     * @param array $releases
+     * @return array
+     */
+    public static function getLatestFromReleases($releases)
+    {
+        $max = array();
+        $stable = array();
+        $security = array();
+        foreach ($releases as $major => $details) {
+            if (is_array($details) && !empty($details['latest'])) {
+                $max[$major] = $details['latest'];
+            }
+
+            if (is_array($details) && !empty($details['stable'])) {
+                $stable[$major] = $details['stable'];
+            }
+            if (is_array($details) && is_array($details['releases'])) {
+                foreach ($details['releases'] as $version => $versionDetails) {
+                    $security[$major] = $version;
+                    if ($versionDetails['type'] === 'security') {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return array(
+                'max' => $max,
+                'stable' => $stable,
+                'security' => $security,
+        );
     }
 }
