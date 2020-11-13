@@ -135,7 +135,8 @@ class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractSer
             try {
                 $result = $testService->runTest();
             } catch (Exception $e) {
-                $result = tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}' . $e->getMessage);
+                throw new RuntimeException(
+                    'Execution of Caretaker TestService failed with: ' . $e->getMessage(), 1605201669);
             }
 
             // retry if not ok and retrying is enabled
@@ -147,7 +148,9 @@ class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractSer
                     try {
                         $result = $testService->runTest();
                     } catch (Exception $e) {
-                        $result = tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}' . $e->getMessage);
+                        throw new RuntimeException(
+                            'Execution of Caretaker TestService failed with: ' . $e->getMessage(),
+                            1605201757);
                     }
                     $round++;
                 }
