@@ -12,7 +12,6 @@ enabled:
   - method_separation
   - native_function_casing
   - new_with_braces
-  - no_alias_functions
   - no_blank_lines_after_class_opening
   - no_blank_lines_after_phpdoc
   - no_blank_lines_before_namespace
@@ -30,7 +29,6 @@ enabled:
   - no_trailing_comma_in_list_call
   - no_trailing_comma_in_singleline_array
   - no_unneeded_control_parentheses
-  - no_unreachable_default_argument_value
   - no_unused_imports
   - no_useless_else
   - no_useless_return
