@@ -23,7 +23,9 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * This is a file of the caretaker project.
@@ -45,7 +47,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Tobias Liebig <liebig@networkteam.com>
  *
  */
-class tx_caretaker_TestrunnerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+class tx_caretaker_TestrunnerTask extends AbstractTask
 {
     /**
      * @var string
@@ -73,27 +75,25 @@ class tx_caretaker_TestrunnerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     public function execute()
     {
-        $node_repository = tx_caretaker_NodeRepository::getInstance();
-        $node = $node_repository->id2node($this->node_id);
+        $node = tx_caretaker_NodeRepository::getInstance()->id2node($this->node_id);
 
         if (!$node) {
             return false;
         }
 
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode'] != 'disable') {
-            if (class_exists('\\TYPO3\\CMS\\Core\\Locking\\LockFactory')) {
-                $lockObj = GeneralUtility::makeInstance('TYPO3\CMS\Core\Locking\LockFactory')->createLocker('tx_caretaker_update_' . $node->getCaretakerNodeId());
-            } else {
-                $lockObj = GeneralUtility::makeInstance('TYPO3\CMS\Core\Locking\Locker', 'tx_caretaker_update_' . $node->getCaretakerNodeId(), $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
-            }
-            // no output during scheduler runs
-            tx_caretaker_ServiceHelper::unregisterCaretakerNotificationService('CliNotificationService');
+            try {
+                $lockingStrategy = GeneralUtility::makeInstance(LockFactory::class)
+                    ->createLocker('tx_caretaker_update_' . $node->getCaretakerNodeId());
 
-            if ($lockObj->acquire()) {
+                // no output during scheduler runs
+                tx_caretaker_ServiceHelper::unregisterCaretakerNotificationService('CliNotificationService');
+
+                $lockingStrategy->acquire();
                 $node->updateTestResult();
-                $lockObj->release();
-            } else {
-                return true;
+                $lockingStrategy->release();
+            } catch (Exception $e) {
+                return false;
             }
         } else {
             $node->updateTestResult();
@@ -108,8 +108,4 @@ class tx_caretaker_TestrunnerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 
         return true;
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_testrunnertask.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/caretaker/scheduler/class.tx_caretaker_testrunnertask.php']);
 }

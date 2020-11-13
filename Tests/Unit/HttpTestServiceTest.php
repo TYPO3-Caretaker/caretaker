@@ -1,6 +1,7 @@
 <?php
 namespace Caretaker\Caretaker\Tests\Unit;
 
+use Caretaker\Caretaker\Tests\Unit\Stubs\HttpTestServiceStub;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /***************************************************************
@@ -44,7 +45,8 @@ class HttpTestServiceTest extends UnitTestCase
         /** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_httpTestService $stub */
         $stub = $this->getMockBuilder('tx_caretaker_httpTestService')
             ->setMethods(
-                array('getTimeError', 'getTimeWarning', 'getExpectedReturnCode', 'getRequestQuery', 'getInstanceUrl'))
+                array('getTimeError', 'getTimeWarning', 'getExpectedReturnCode', 'getRequestQuery', 'getInstanceUrl')
+            )
             ->getMock();
 
         $this->setMethodReturnValue($stub, 'getTimeError', 200);
@@ -70,9 +72,9 @@ class HttpTestServiceTest extends UnitTestCase
     private function setMethodReturnValue(&$stub, $method_name, $return_value)
     {
         $stub->expects($this->any())
-                ->method($method_name)
-                ->with()
-                ->will($this->returnValue($return_value));
+            ->method($method_name)
+            ->with()
+            ->will($this->returnValue($return_value));
     }
 
     public function testEverythingWentFine()
@@ -87,7 +89,8 @@ class HttpTestServiceTest extends UnitTestCase
                     'getRequestQuery',
                     'getInstanceUrl',
                     'executeCurlRequest',
-                ))
+                )
+            )
             ->getMock();
 
         $this->setMethodReturnValue($stub, 'getTimeError', 20);
@@ -95,7 +98,11 @@ class HttpTestServiceTest extends UnitTestCase
         $this->setMethodReturnValue($stub, 'getExpectedReturnCode', array(200));
         $this->setMethodReturnValue($stub, 'getRequestQuery', true);
         $this->setMethodReturnValue($stub, 'getInstanceUrl', true);
-        $this->setMethodReturnValue($stub, 'executeCurlRequest', array(5, '', array('http_code' => 200, array())));
+        $this->setMethodReturnValue(
+            $stub,
+            'executeCurlRequest',
+            array(5, '', array('http_code' => 200, array()))
+        );
 
         $result = $stub->runTest();
 
@@ -116,7 +123,8 @@ class HttpTestServiceTest extends UnitTestCase
                     'getRequestQuery',
                     'getInstanceUrl',
                     'executeCurlRequest',
-                ))
+                )
+            )
             ->getMock();
 
         $this->setMethodReturnValue($stub, 'getTimeError', 20);
@@ -124,7 +132,11 @@ class HttpTestServiceTest extends UnitTestCase
         $this->setMethodReturnValue($stub, 'getExpectedReturnCode', array(200));
         $this->setMethodReturnValue($stub, 'getRequestQuery', true);
         $this->setMethodReturnValue($stub, 'getInstanceUrl', true);
-        $this->setMethodReturnValue($stub, 'executeCurlRequest', array(12, '', array('http_code' => 200, array())));
+        $this->setMethodReturnValue(
+            $stub,
+            'executeCurlRequest',
+            array(12, '', array('http_code' => 200, array()))
+        );
 
         $result = $stub->runTest();
 
@@ -145,7 +157,8 @@ class HttpTestServiceTest extends UnitTestCase
                     'getRequestQuery',
                     'getInstanceUrl',
                     'executeCurlRequest',
-                ))
+                )
+            )
             ->getMock();
 
         $this->setMethodReturnValue($stub, 'getTimeError', 20);
@@ -153,7 +166,11 @@ class HttpTestServiceTest extends UnitTestCase
         $this->setMethodReturnValue($stub, 'getExpectedReturnCode', array(200));
         $this->setMethodReturnValue($stub, 'getRequestQuery', true);
         $this->setMethodReturnValue($stub, 'getInstanceUrl', true);
-        $this->setMethodReturnValue($stub, 'executeCurlRequest', array(22, '', array('http_code' => 200, array())));
+        $this->setMethodReturnValue(
+            $stub,
+            'executeCurlRequest',
+            array(22, '', array('http_code' => 200, array()))
+        );
 
         $result = $stub->runTest();
 
@@ -174,7 +191,8 @@ class HttpTestServiceTest extends UnitTestCase
                     'getRequestQuery',
                     'getInstanceUrl',
                     'executeCurlRequest',
-                ))
+                )
+            )
             ->getMock();
 
         $this->setMethodReturnValue($stub, 'getTimeError', 20);
@@ -182,7 +200,11 @@ class HttpTestServiceTest extends UnitTestCase
         $this->setMethodReturnValue($stub, 'getExpectedReturnCode', array(404));
         $this->setMethodReturnValue($stub, 'getRequestQuery', true);
         $this->setMethodReturnValue($stub, 'getInstanceUrl', true);
-        $this->setMethodReturnValue($stub, 'executeCurlRequest', array(5, '', array('http_code' => 200, array())));
+        $this->setMethodReturnValue(
+            $stub,
+            'executeCurlRequest',
+            array(5, '', array('http_code' => 200, array()))
+        );
 
         $result = $stub->runTest();
 
@@ -193,7 +215,7 @@ class HttpTestServiceTest extends UnitTestCase
 
     public function testHttpHeaderComparison()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_httpTestService|\Caretaker\Caretaker\Tests\Unit\Stubs\HttpTestServiceStub $stub */
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\tx_caretaker_httpTestService|HttpTestServiceStub $stub */
         $stub = $this->getMockBuilder('\Caretaker\Caretaker\Tests\Unit\Stubs\HttpTestServiceStub')
             ->setMethods(array('getRequestQuery', 'getInstanceUrl'))
             ->getMock();
@@ -240,12 +262,12 @@ class HttpTestServiceTest extends UnitTestCase
     {
         $now = time();
         return array(
-                array('Tue, 15 Nov 1994 08:12:31 GMT', '784887151'),
-                array('Mon, 14 Jul 2014 10:48:22 UTC', '1405334902'),
-                array('Tue, 15 Jul 2014 10:48:22 UTC', '1405421302'),
-                array('Sat, 15 Jul 2017 10:48:22 UTC', '1500115702'),
-                array('Sat, 15 Jul 2017 10:48:22 +0200', '1500108502'),
-                array(date(DATE_RFC1123, $now), $now),
+            array('Tue, 15 Nov 1994 08:12:31 GMT', '784887151'),
+            array('Mon, 14 Jul 2014 10:48:22 UTC', '1405334902'),
+            array('Tue, 15 Jul 2014 10:48:22 UTC', '1405421302'),
+            array('Sat, 15 Jul 2017 10:48:22 UTC', '1500115702'),
+            array('Sat, 15 Jul 2017 10:48:22 +0200', '1500108502'),
+            array(date(DATE_RFC1123, $now), $now),
         );
     }
 
@@ -256,7 +278,7 @@ class HttpTestServiceTest extends UnitTestCase
      */
     public function testParseHeaderDate($dateString, $expectedDate)
     {
-        $subject = new \Caretaker\Caretaker\Tests\Unit\Stubs\HttpTestServiceStub();
+        $subject = new HttpTestServiceStub();
         $this->assertEquals($expectedDate, $subject->parseHeaderDate($dateString));
     }
 }

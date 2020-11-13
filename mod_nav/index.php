@@ -97,30 +97,30 @@ class tx_caretaker_mod_nav extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['caretaker']);
             $storagePid = (int)$confArray['storagePid'];
 
-            $this->pageRenderer->addJsInlineCode('Caretaker_Nodetree',
-                '
-			Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-			Ext.ns("tx.caretaker");
-			Ext.onReady(function() {
-				tx.caretaker.view = new Ext.Viewport({
-					layout: "fit",
-					items: {
-						id: "cartaker-tree",
-						xtype: "caretaker-nodetree",
-						autoScroll: true,
-						dataUrl: TYPO3.settings.ajaxUrls[\'tx_caretaker::treeloader\'],
-						getModuleUrlUrl: TYPO3.settings.ajaxUrls[\'tx_caretaker::getModuleUrl\'],
-						storagePid: ' . $storagePid . ',
-						addUrl: "' . $PATH_TYPO3 . 'alt_doc.php?edit[###NODE_TYPE###][' . $storagePid . ']=new"
-					}
-				});
-
-				tx_caretaker_updateTreeById = function( id ){
-					tx_caretaker_tree = Ext.getCmp("cartaker-tree");
-					tx_caretaker_tree.reloadTreePartial( id );
-				}
-			});
-			');
+            $this->pageRenderer->addJsInlineCode(
+                'Caretaker_Nodetree',
+                'Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+                Ext.ns("tx.caretaker");
+                Ext.onReady(function() {
+                    tx.caretaker.view = new Ext.Viewport({
+                        layout: "fit",
+                        items: {
+                            id: "cartaker-tree",
+                            xtype: "caretaker-nodetree",
+                            autoScroll: true,
+                            dataUrl: TYPO3.settings.ajaxUrls[\'tx_caretaker::treeloader\'],
+                            getModuleUrlUrl: TYPO3.settings.ajaxUrls[\'tx_caretaker::getModuleUrl\'],
+                            storagePid: ' . $storagePid . ',
+                            addUrl: "' . $PATH_TYPO3 . 'alt_doc.php?edit[###NODE_TYPE###][' . $storagePid . ']=new"
+                        }
+                    });
+    
+                    tx_caretaker_updateTreeById = function( id ){
+                        tx_caretaker_tree = Ext.getCmp("cartaker-tree");
+                        tx_caretaker_tree.reloadTreePartial( id );
+                    }
+                });'
+            );
 
             $this->content .= $this->doc->startPage($LANG->getLL('title'));
             $this->doc->form = '';

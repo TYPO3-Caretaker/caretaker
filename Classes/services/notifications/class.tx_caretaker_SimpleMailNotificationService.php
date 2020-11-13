@@ -190,7 +190,8 @@ class tx_caretaker_SimpleMailNotificationService extends tx_caretaker_AbstractNo
                     $this->recipients_messages[$recipientId]['num_due']++;
                     break;
             }
-            array_unshift($this->recipients_messages[$recipientId]['messages'],
+            array_unshift(
+                $this->recipients_messages[$recipientId]['messages'],
                 '*' . ($lastResult ? $lastResult->getLocallizedStateInfo() . '->' : '') . $result->getLocallizedStateInfo() . ' ' . $node->getInstance()->getTitle() . ':' . $node->getTitle() . '* ' . $node->getCaretakerNodeId() . chr(10) . chr(10) .
                 $result->getLocallizedInfotext() . chr(10) .
                 str_replace('###', $node->getCaretakerNodeId(), $this->mail_link) . chr(10)

@@ -89,7 +89,10 @@ if (TYPO3_MODE == 'BE') {
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('txcaretakerNav', 'txcaretakerOverview', '', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod_overview/');
     } else {
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
-            'txcaretakerNav', '', '', '',
+            'txcaretakerNav',
+            '',
+            '',
+            '',
             array(
                 'name' => 'txcaretakerNav',
                 'access' => 'user,group',
@@ -98,7 +101,10 @@ if (TYPO3_MODE == 'BE') {
             )
         );
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
-            'txcaretakerNav', 'txcaretakerOverview', '', '',
+            'txcaretakerNav',
+            'txcaretakerOverview',
+            '',
+            '',
             array(
                 'name' => 'txcaretakerNav_txcaretakerOverview',
                 'access' => 'user,group',
