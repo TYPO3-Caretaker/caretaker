@@ -93,7 +93,8 @@ class tx_caretaker_AdvancedNotificationService extends tx_caretaker_AbstractNoti
                     'node' => $node,
                     'result' => $result,
                     'lastResult' => $lastResult,
-                ));
+                )
+            );
 
             if ($config['stop']) {
                 break;

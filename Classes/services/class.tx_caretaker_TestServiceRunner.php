@@ -34,6 +34,8 @@
  * $Id: class.tx_caretaker_TestServiceBase.php 43817 2011-02-18 11:29:43Z etobi.de $
  */
 
+use TYPO3\CMS\Core\Service\AbstractService;
+
 /**
  * Base strategy for running test services for a test node.
  * A custom implementation could be used to clus
@@ -44,7 +46,7 @@
  * @author Tobias Liebig <liebig@networkteam.com>
  *
  */
-class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractService
+class tx_caretaker_TestServiceRunner extends AbstractService
 {
     /**
      * Run a test service for the given test node
@@ -66,7 +68,7 @@ class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractSer
 
             return $latestTestResult;
         }
-        return $this->executeTestServiceRun($testService, $node, $latestTestResult, $options);
+        return $this->executeTestServiceRun($testService, $node, $latestTestResult);
     }
 
     /**
@@ -125,17 +127,19 @@ class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractSer
      * @param tx_caretaker_TestServiceInterface $testService
      * @param tx_caretaker_TestNode $node
      * @param tx_caretaker_NodeResult $latestTestResult
-     * @param array $options
      * @return tx_caretaker_NodeResult
      */
-    protected function executeTestServiceRun($testService, $node, $latestTestResult, $options)
+    protected function executeTestServiceRun($testService, $node, $latestTestResult)
     {
         // check whether the test can be executed
         if ($testService && $testService->isExecutable()) {
             try {
                 $result = $testService->runTest();
             } catch (Exception $e) {
-                $result = tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}' . $e->getMessage);
+                throw new RuntimeException(
+                    'Execution of Caretaker TestService failed with: ' . $e->getMessage(),
+                    1605201669
+                );
             }
 
             // retry if not ok and retrying is enabled
@@ -147,11 +151,17 @@ class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractSer
                     try {
                         $result = $testService->runTest();
                     } catch (Exception $e) {
-                        $result = tx_caretaker_TestResult::create(tx_caretaker_Constants::state_error, 0, '{LLL:EXT:caretaker/locallang_fe.xml:service_exception}' . $e->getMessage);
+                        throw new RuntimeException(
+                            'Execution of Caretaker TestService failed with: ' . $e->getMessage(),
+                            1605201757
+                        );
                     }
                     $round++;
                 }
-                $result->addSubMessage(new tx_caretaker_ResultMessage('LLL:EXT:caretaker/locallang_fe.xml:retry_info', array('number' => $round)));
+                $result->addSubMessage(new tx_caretaker_ResultMessage(
+                    'LLL:EXT:caretaker/locallang_fe.xml:retry_info',
+                    array('number' => $round)
+                ));
             }
 
             // save to repository after reading the previous result
@@ -164,7 +174,9 @@ class tx_caretaker_TestServiceRunner extends \TYPO3\CMS\Core\Service\AbstractSer
             return $result;
         }
         $result = tx_caretaker_TestResult::undefined();
-        $result->addSubMessage(new tx_caretaker_ResultMessage('test service was not executable this time so the cached result is used'));
+        $result->addSubMessage(new tx_caretaker_ResultMessage(
+            'test service was not executable this time so the cached result is used'
+        ));
         $node->notify('cachedTestResult', $result, $latestTestResult);
 
         return $latestTestResult;

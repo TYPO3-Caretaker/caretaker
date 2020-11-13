@@ -91,12 +91,12 @@ class tx_caretaker_Utility
                         break;
                 }
                 if (VersionNumberUtility::convertVersionNumberToInteger(
-                        VersionNumberUtility::getNumericTypo3Version()
-                    ) < VersionNumberUtility::convertVersionNumberToInteger('7.0.0')
+                    VersionNumberUtility::getNumericTypo3Version()
+                ) < VersionNumberUtility::convertVersionNumberToInteger('7.0.0')
                 ) {
                     $moduleUrl = 'alt_doc.php?edit[' . $table . '][' . (int)$storagePid . ']=new&' . http_build_query(
-                            array('defVals' => $defaultValues)
-                        );
+                        array('defVals' => $defaultValues)
+                    );
                 } else {
                     $moduleUrl = BackendUtility::getModuleUrl(
                         'record_edit',
@@ -110,8 +110,8 @@ class tx_caretaker_Utility
                 break;
             case 'edit':
                 if (VersionNumberUtility::convertVersionNumberToInteger(
-                        VersionNumberUtility::getNumericTypo3Version()
-                    ) < VersionNumberUtility::convertVersionNumberToInteger('7.0.0')
+                    VersionNumberUtility::getNumericTypo3Version()
+                ) < VersionNumberUtility::convertVersionNumberToInteger('7.0.0')
                 ) {
                     $moduleUrl = 'alt_doc.php?edit[' . $table . '][' . (int)$node . ']=edit';
                 } else {
@@ -126,13 +126,13 @@ class tx_caretaker_Utility
                 break;
             case 'hide':
                 if (VersionNumberUtility::convertVersionNumberToInteger(
-                        VersionNumberUtility::getNumericTypo3Version()
-                    ) < VersionNumberUtility::convertVersionNumberToInteger('7.0.0')
+                    VersionNumberUtility::getNumericTypo3Version()
+                ) < VersionNumberUtility::convertVersionNumberToInteger('7.0.0')
                 ) {
                     $moduleUrl = 'tce_db.php?data[' . $table . '][' . $node . '][hidden]=1' . BackendUtility::getUrlToken('tceAction');
                 } elseif (VersionNumberUtility::convertVersionNumberToInteger(
-                        VersionNumberUtility::getNumericTypo3Version()
-                    ) < VersionNumberUtility::convertVersionNumberToInteger('7.6.0')
+                    VersionNumberUtility::getNumericTypo3Version()
+                ) < VersionNumberUtility::convertVersionNumberToInteger('7.6.0')
                 ) {
                     $moduleUrl = BackendUtility::getAjaxUrl(
                         'DataHandler::process',
@@ -148,13 +148,13 @@ class tx_caretaker_Utility
             case
             'unhide':
                 if (VersionNumberUtility::convertVersionNumberToInteger(
-                        VersionNumberUtility::getNumericTypo3Version()
-                    ) < VersionNumberUtility::convertVersionNumberToInteger('7.0.0')
+                    VersionNumberUtility::getNumericTypo3Version()
+                ) < VersionNumberUtility::convertVersionNumberToInteger('7.0.0')
                 ) {
                     $moduleUrl = 'tce_db.php?data[' . $table . '][' . $node . '][hidden]=0' . BackendUtility::getUrlToken('tceAction');
                 } elseif (VersionNumberUtility::convertVersionNumberToInteger(
-                        VersionNumberUtility::getNumericTypo3Version()
-                    ) < VersionNumberUtility::convertVersionNumberToInteger('7.6.0')
+                    VersionNumberUtility::getNumericTypo3Version()
+                ) < VersionNumberUtility::convertVersionNumberToInteger('7.6.0')
                 ) {
                     $moduleUrl = BackendUtility::getAjaxUrl(
                         'DataHandler::process',

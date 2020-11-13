@@ -45,17 +45,17 @@ class tx_caretaker_NotificationFileExitPoint extends tx_caretaker_NotificationBa
         $config = $this->getConfig($overrideConfig);
 
         $line = implode(
-                ' ',
-                array(
-                    date('Y-m-d H:i:s'),
-                    ($notification['node'] instanceof tx_caretaker_AbstractNode ? $notification['node']->getInstance()->getTitle() : '-'),
-                    ($notification['node'] instanceof tx_caretaker_AbstractNode ? '[' . $notification['node']->getCaretakerNodeId() . ']' : '-'),
-                    $notification['node']->getTitle(),
-                    ($notification['lastResult'] instanceof tx_caretaker_TestResult ? $notification['lastResult']->getLocallizedStateInfo() : '-'),
-                    '->',
-                    ($notification['result'] instanceof tx_caretaker_TestResult ? $notification['result']->getLocallizedStateInfo() : '-'),
-                )
-            ) . chr(10);
+            ' ',
+            array(
+                date('Y-m-d H:i:s'),
+                ($notification['node'] instanceof tx_caretaker_AbstractNode ? $notification['node']->getInstance()->getTitle() : '-'),
+                ($notification['node'] instanceof tx_caretaker_AbstractNode ? '[' . $notification['node']->getCaretakerNodeId() . ']' : '-'),
+                $notification['node']->getTitle(),
+                ($notification['lastResult'] instanceof tx_caretaker_TestResult ? $notification['lastResult']->getLocallizedStateInfo() : '-'),
+                '->',
+                ($notification['result'] instanceof tx_caretaker_TestResult ? $notification['result']->getLocallizedStateInfo() : '-'),
+            )
+        ) . chr(10);
 
         $fileHandle = fopen($config['filePath'], 'a');
         fwrite($fileHandle, $line);

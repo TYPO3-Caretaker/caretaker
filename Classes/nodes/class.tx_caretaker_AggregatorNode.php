@@ -376,7 +376,8 @@ abstract class tx_caretaker_AggregatorNode extends tx_caretaker_AbstractNode
                 's.*',
                 tx_caretaker_Constants::table_Strategies . ' s,' . tx_caretaker_Constants::relationTable_Node2Strategy . ' rel',
                 'rel.uid_node=' . $this->getUid() . ' AND rel.node_table=\'' . $this->getStorageTable() . '\' AND rel.uid_strategy=s.uid' .
-                ' AND s.deleted = 0 AND s.hidden = 0');
+                ' AND s.deleted = 0 AND s.hidden = 0'
+            );
         }
         if ($this->getParent()) {
             $strategies = array_merge($strategies, $this->getParent()->getStrategies());
